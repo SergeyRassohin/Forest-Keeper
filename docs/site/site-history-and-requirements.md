@@ -28,10 +28,7 @@ The visual requirements discussed for the site were:
 - responsive layout;
 - pages should remain extensible rather than being hard-coded dead ends.
 
-The desired impression was premium and deliberate, not a generic corporate template.
-
 ## Protected sections
-Two separate protected areas were discussed:
 
 ### `/edit`
 An editor area intended to evolve toward a WYSIWYG experience where content could be changed without editing source manually.
@@ -57,13 +54,12 @@ The discussed content included:
 `/edit` and `/service` were intended to be protected independently from the public pages.
 
 ## Authorization UX
-For protected areas, the password field should include a show/hide control (eye icon).
+For protected areas, the password field should include a show/hide control.
 
 A previously observed implementation problem was that the service login used PBKDF2 with 210,000 iterations while the execution environment imposed a 100,000-iteration limit. This broke the service login and must not be repeated blindly in a rebuilt version. Authentication parameters must be compatible with the actual runtime and should be tested end-to-end.
 
-## Content themes from the original site
-The site previously covered at least these product messages:
-
+## Content themes
+The site previously covered at least:
 - Forest Keeper concept;
 - comparison / matching of data from different systems;
 - operating modes;
@@ -71,9 +67,9 @@ The site previously covered at least these product messages:
 - pilot implementation.
 
 ## Repository / Project Portal direction
-The long-term direction is to make GitHub the engineering source of truth for Forest Keeper, with the website, documentation, requirements and source code stored together in the private repository.
+GitHub is the engineering source of truth for Forest Keeper. The website, documentation, requirements and source code should live together in the private repository.
 
-The Project Portal idea should provide a coherent entry point to:
+The Project Portal should provide a coherent entry point to:
 - current requirements;
 - architecture;
 - decisions;
@@ -84,12 +80,12 @@ The Project Portal idea should provide a coherent entry point to:
 - Git history.
 
 ## Current migration status
-This document preserves the known site structure and requirements from prior work. It does **not** prove that the original site source code has already been recovered into this repository.
+This document preserves the known site structure and requirements from prior work. It does not prove that the original site source code has already been recovered into this repository.
 
-Next migration step for the site:
+Next migration steps:
 1. locate the original site source or exported project artifacts;
 2. add them under a dedicated application/site directory;
 3. verify the historical deployment URL;
 4. record local run/build instructions;
 5. test public routes plus `/edit` and `/service` authentication;
-6. then wire the site into the repository-wide Project Portal/index.
+6. wire the site into the repository-wide Project Portal/index.
