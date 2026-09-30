@@ -45,3 +45,28 @@ Git is the engineering source of truth. The future Forest Keeper Project Portal 
 - Whether recommendation similarity in 0.1 is rules/SQL, embeddings, or a hybrid.
 - Exact public/private portal boundary.
 - Production deployment topology for first pilot.
+
+
+### Adaptive client model
+FK starts from a vendor baseline master-data/rules template. During implementation the customer may adapt it. During operation, confirmed user decisions are stored and used to recommend handling of similar future cases. Repeated patterns may trigger a proposal to formalize a new customer rule. FK must not silently change the customer's rules; formal rule/template changes require human approval.
+
+### AI purpose
+AI/LLM is a functional part of the adaptive recommendation loop. It uses structured customer context and retrieved confirmed decisions to explain and recommend. It is not a decorative feature and is not the system of record.
+
+### Client access
+Backend/API remain client-independent. Support both controlled Desktop Client and Web Client. Desktop may be used for stronger device trust, but server-side network/auth controls remain mandatory.
+
+### Installation model
+Deliver a conventional Forest Keeper Server Setup experience to the customer while using containerized deployment internally. Installer should support offline enterprise installation and hide Docker/container mechanics from ordinary administrators.
+
+### Licensing
+Add License Service to FK Server. Support online and offline signed licenses. Use a separate internal supplier-side FK License Generator. Private signing key stays only with supplier; customer receives license file and public-verification capability.
+
+### License expiry
+Recommended lifecycle is ACTIVE → GRACE_PERIOD → READ_ONLY. Expired license must not make customer-owned data inaccessible. Admin access, audit, export and license renewal remain possible.
+
+### Updates
+Add Update Service with online/offline modes, signed update packages, compatibility checks, backup, DB migration, health checks and rollback.
+
+### Release/versioning
+Git remains source of truth. Version product, DB migrations, rules/config, connectors, tests and documentation. Release artifacts must be traceable to Git tags.
