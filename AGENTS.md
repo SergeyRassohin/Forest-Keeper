@@ -30,3 +30,14 @@ Prototype boundaries:
 - Prefer a monorepo and version code, DB migrations, rules, models/config, connectors, tests and documentation.
 
 When documents conflict, prefer the newest explicit decision in docs/decisions/decision-log.md and flag the conflict rather than silently guessing.
+
+
+## Additional mandatory architecture context
+- Adaptive behavior is a core FK feature: vendor baseline template → customer configuration → confirmed human decisions → similar-case retrieval → explainable AI recommendation → optional proposal to formalize a new rule → human approval.
+- Never implement "self-learning" as silent automatic rule mutation.
+- Add License Service and Update Service as first-class server components.
+- Supplier-side FK License Generator signs license payloads with a private key; customer side only verifies signatures.
+- Support online and offline licensing/update flows.
+- Default license-expiry behavior should preserve customer data access and administration while restricting new processing after grace period.
+- Deployment should present a conventional enterprise installer while containerization remains an implementation detail.
+- Backend/API must remain independent from client type; support both controlled desktop and web clients.
