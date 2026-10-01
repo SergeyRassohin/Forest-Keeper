@@ -491,7 +491,7 @@ Forest Keeper не должен активировать новое правил
 
 Текущее состояние лицензии без раскрытия служебных секретов.
 
-Коды модулей должны совпадать с `docs/licensing/licensing-v0.1.md`; API не вводит отдельный набор названий модулей.
+Коды модулей и состояния лицензии должны совпадать с `docs/licensing/licensing-v0.1.md` и `docs/development/object-lifecycles-v0.1.md`; API не вводит отдельные наборы названий. Допустимые состояния lifecycle: `ACTIVE`, `GRACE_PERIOD`, `READ_ONLY`, `INVALID`.
 
 Пример:
 
@@ -500,7 +500,7 @@ Forest Keeper не должен активировать новое правил
   "edition": "Enterprise",
   "valid_until": "2027-10-01",
   "modules": ["core", "entity-resolution", "recommendations"],
-  "status": "VALID"
+  "status": "ACTIVE"
 }
 ```
 
