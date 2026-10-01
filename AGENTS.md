@@ -10,7 +10,10 @@ Forest Keeper is a vendor-neutral enterprise data intelligence and governance la
 5. docs/architecture/technical-stack-and-module-map-v0.1.md
 6. docs/development/mvp-development-plan-v0.1.md
 7. docs/development/object-lifecycles-v0.1.md
-8. docs/decisions/decision-log.md
+8. docs/security/access-control-matrix-v0.1.xlsx
+9. docs/requirements/functional-nonfunctional-v0.3.md
+10. docs/testing/testing-strategy-v0.1.md
+11. docs/decisions/decision-log.md
 
 ## Prototype 0.1
 Prove one narrow hypothesis: Forest Keeper can ingest data about the same entities from two sources, normalize it, resolve entity identity, detect conflicts, explain them, obtain a human decision, store that decision, and use confirmed decisions to recommend handling of similar later cases.
@@ -34,6 +37,9 @@ Prototype boundaries:
 - Git is the engineering source of truth.
 - Prefer a monorepo and version code, DB migrations, rules, models/config, connectors, tests and documentation.
 - Object state transitions must follow docs/development/object-lifecycles-v0.1.md. Do not invent new states or transitions silently.
+- Authorization must follow docs/security/access-control-matrix-v0.1.xlsx. Do not infer permissions from role names.
+- ADMIN is a technical/system administration role. ADMIN alone does not grant authority to make business Decisions; the user must also hold REVIEWER or DATA_OWNER permission as defined by the access matrix.
+- MVP engineering quality/performance targets are defined by docs/requirements/functional-nonfunctional-v0.3.md and are mandatory acceptance baselines unless a newer explicit decision overrides them.
 
 When documents conflict, prefer the newest explicit decision in docs/decisions/decision-log.md and flag the conflict rather than silently guessing.
 
