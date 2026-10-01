@@ -436,11 +436,14 @@ matching
   ↓
 conflicts
   ↓
-decisions
-  ↓
 recommendations
   ↓
-rules/templates
+human review
+  ↓
+decisions
+
+rules/templates ──→ conflicts/recommendations
+historical decisions ──→ similarity ──→ recommendations
 ```
 
 Дополнительные зависимости:
@@ -491,7 +494,7 @@ application modules → database
 2. PostgreSQL + Alembic migrations.
 3. Redis + RQ.
 4. React/TypeScript frontend.
-5. Импорт XLSX/CSV минимум из двух источников.
+5. Импорт XLSX/CSV/XML минимум из двух источников, включая выгрузку 1С XML как целевой сценарий MVP.
 6. RawRecord + provenance.
 7. Нормализацию.
 8. Matching.
