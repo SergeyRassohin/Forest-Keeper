@@ -21,21 +21,22 @@
 7. `docs/architecture/technical-stack-and-module-map-v0.1.md`
 8. `docs/development/mvp-development-plan-v0.1.md`
 9. `docs/development/object-lifecycles-v0.1.md`
-10. `docs/requirements/functional-nonfunctional-v0.2.md`
-11. `docs/workflows/workflows-v0.2.md`
-12. `docs/security/security-v0.1.md`
-13. `docs/testing/testing-strategy-v0.1.md`
-14. `docs/licensing/licensing-v0.1.md`
-15. `docs/deployment/server-installation-v0.1.md`
-16. `docs/deployment/update-model-v0.1.md`
+10. `docs/security/access-control-matrix-v0.1.xlsx`
+11. `docs/requirements/functional-nonfunctional-v0.3.md`
+12. `docs/workflows/workflows-v0.2.md`
+13. `docs/security/security-v0.1.md`
+14. `docs/testing/testing-strategy-v0.1.md`
+15. `docs/licensing/licensing-v0.1.md`
+16. `docs/deployment/server-installation-v0.1.md`
+17. `docs/deployment/update-model-v0.1.md`
 
 ## Структура
 
-- `docs/requirements/` — требования
+- `docs/requirements/` — функциональные и нефункциональные требования
 - `docs/architecture/` — архитектура
 - `docs/workflows/` — рабочие процессы
 - `docs/interface/` — интерфейс
-- `docs/security/` — безопасность
+- `docs/security/` — безопасность и матрица доступа
 - `docs/testing/` — тестирование
 - `docs/decisions/` — журнал решений
 - `docs/sessions/` — краткие итоги обсуждений
