@@ -3,6 +3,8 @@
 ## Цель
 Не доверять качеству автора кода, будь это человек или AI. Доверять процессу проверки.
 
+Численные MVP acceptance targets берутся из `docs/requirements/functional-nonfunctional-v0.3.md`.
+
 ## Слои тестирования
 
 ### Unit
@@ -13,7 +15,7 @@ API ↔ DB, ingestion ↔ normalization, matching ↔ conflict engine, decision 
 
 ### End-to-End
 Полный сценарий:
-`source → ingestion → normalization → matching → conflict → recommendation → human decision → Decision Registry → audit`
+`source → ingestion → normalization → matching → conflict → recommendation → human decision → Decision Registry → audit → similar future recommendation`
 
 ### Negative / failure
 Проверять:
@@ -22,11 +24,36 @@ API ↔ DB, ingestion ↔ normalization, matching ↔ conflict engine, decision 
 - повторные события;
 - недоступность БД/AI;
 - частичную обработку;
-- неизвестные атрибуты.
+- неизвестные атрибуты;
+- restart сервисов;
+- update rollback.
+
+### State models
+Для каждого lifecycle-объекта:
+- разрешённые переходы;
+- критические запрещённые переходы;
+- отсутствие изменения статуса при ошибке операции;
+- AuditEvent на значимый переход.
+
+### RBAC
+Канонический источник permission: `docs/security/access-control-matrix-v0.1.xlsx`.
+
+Для каждой permission:
+- минимум один разрешённый backend/API сценарий;
+- минимум один запрещённый сценарий;
+- frontend не считается механизмом безопасности.
 
 ### Entity Resolution quality
 Измерять precision / recall.
 Отдельно контролировать false merge.
+
+### Performance / capacity
+Использовать baseline из NFR v0.3:
+- интерактивный API;
+- Conflict card;
+- healthcheck;
+- 100k-record import profile;
+- Decision Registry similarity profile.
 
 ### Security
 Проверять:
@@ -35,7 +62,7 @@ API ↔ DB, ingestion ↔ normalization, matching ↔ conflict engine, decision 
 - секреты;
 - невозможность write-back в MVP;
 - отсутствие production credentials у AI;
-- защиту audit.
+- защиту Audit.
 
 ### SAST / SCA / secrets
 Автоматические проверки кода, зависимостей и секретов.
@@ -50,10 +77,10 @@ API ↔ DB, ingestion ↔ normalization, matching ↔ conflict engine, decision 
 Prompt injection, poisoned data, data leakage, forbidden action attempts.
 
 ### Mutation testing
-Проверять, что тесты действительно обнаруживают намеренно внесённые ошибки.
+Использовать точечно для критичных правил, когда базовый набор unit/integration tests стабилен.
 
 ### Pentest
 Независимый pentest перед промышленным пилотом.
 
 ## Release gate
-Изменение не попадает в релиз при провале обязательных тестов или наличии критической security-проблемы.
+Изменение не попадает в релиз при провале обязательных тестов, migration validation, build/lint/type checks или наличии Critical security-проблемы без документированного исключения.
