@@ -38,15 +38,6 @@ Home screen represents the health/state of the enterprise information environmen
 ### Git and portal
 Git is the engineering source of truth. The future Forest Keeper Project Portal should render repository-backed content and must not become a separate competing documentation source.
 
-## Open decisions
-- Exact first pilot domain.
-- Exact schema of Decision Registry and similarity features.
-- Thresholds for automatic entity matching versus human review.
-- Whether recommendation similarity in 0.1 is rules/SQL, embeddings, or a hybrid.
-- Exact public/private portal boundary.
-- Production deployment topology for first pilot.
-
-
 ### Adaptive client model
 FK starts from a vendor baseline master-data/rules template. During implementation the customer may adapt it. During operation, confirmed user decisions are stored and used to recommend handling of similar future cases. Repeated patterns may trigger a proposal to formalize a new customer rule. FK must not silently change the customer's rules; formal rule/template changes require human approval.
 
@@ -54,7 +45,11 @@ FK starts from a vendor baseline master-data/rules template. During implementati
 AI/LLM is a functional part of the adaptive recommendation loop. It uses structured customer context and retrieved confirmed decisions to explain and recommend. It is not a decorative feature and is not the system of record.
 
 ### Client access
-Backend/API remain client-independent. Support both controlled Desktop Client and Web Client. Desktop may be used for stronger device trust, but server-side network/auth controls remain mandatory.
+**Web Client is the primary client for MVP and the default Forest Keeper user interface.**
+It runs in the browser and communicates with FK Server only through HTTPS/API Gateway.
+Desktop Client is optional and may be introduced later for customers with special device-trust or information-security requirements.
+Backend/API remains client-independent so both clients can use the same business contract.
+Neither client has direct access to PostgreSQL or internal services.
 
 ### Installation model
 Deliver a conventional Forest Keeper Server Setup experience to the customer while using containerized deployment internally. Installer should support offline enterprise installation and hide Docker/container mechanics from ordinary administrators.
@@ -70,3 +65,11 @@ Add Update Service with online/offline modes, signed update packages, compatibil
 
 ### Release/versioning
 Git remains source of truth. Version product, DB migrations, rules/config, connectors, tests and documentation. Release artifacts must be traceable to Git tags.
+
+## Open decisions
+- Exact first pilot domain.
+- Exact schema of Decision Registry and similarity features.
+- Thresholds for automatic entity matching versus human review.
+- Whether recommendation similarity in 0.1 is rules/SQL, embeddings, or a hybrid.
+- Exact public/private portal boundary.
+- Production deployment topology for first pilot.
