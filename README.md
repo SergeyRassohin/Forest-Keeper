@@ -19,7 +19,8 @@
 5. `docs/data-model/Forest_Keeper_Data_Model_v0.1.xlsx`
 6. `docs/api/api-contract-v0.1.md`
 7. `docs/architecture/technical-stack-and-module-map-v0.1.md`
-8. `docs/requirements/functional-nonfunctional-v0.2.md`
+8. `docs/development/mvp-development-plan-v0.1.md`
+9. `docs/requirements/functional-nonfunctional-v0.2.md`
 9. `docs/workflows/workflows-v0.2.md`
 10. `docs/security/security-v0.1.md`
 11. `docs/testing/testing-strategy-v0.1.md`
