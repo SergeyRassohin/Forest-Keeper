@@ -1,5 +1,7 @@
 # Forest Keeper — Architecture v0.1
 
+> **ARCHIVED / SUPERSEDED.** Эта версия сохранена как история проектирования. Для разработки использовать `docs/architecture/architecture-v0.2.md`, `docs/architecture/technical-stack-and-module-map-v0.1.md` и `docs/decisions/decision-log.md`. Технические решения ниже, включая старый frontend stack, не являются актуальными.
+
 ## 1. Назначение
 
 Forest Keeper принимает данные из различных корпоративных источников, сопоставляет одинаковые сущности, выявляет расхождения и нарушения правил, передаёт неоднозначные случаи человеку и сохраняет принятые решения.
