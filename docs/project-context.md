@@ -33,13 +33,13 @@ Initial realistic small-company scenario: 1C (possibly accounting/warehouse), ma
 
 The prototype should demonstrate ingestion, raw preservation, normalization, entity matching, conflict detection, human review, Decision Registry, recommendation from confirmed similar decisions, export/audit and a simple Data Health view.
 
-Do not initially require direct 1C writeback, OAuth/SSO, Four Eyes, HA/DR, industrial updater, OCR or broad connector coverage.
+Do not initially require direct 1C writeback, OAuth/SSO, Four Eyes, HA/DR, OCR or broad connector coverage. A basic Update Service with signed online/offline packages, backup, migration, health check and rollback is part of the current architecture; advanced enterprise update orchestration is deferred.
 
 ## Security direction
 Reader and future Publisher identities are separate. LLM has no production credentials. Critical publication requires APPROVED. Security pipeline should include lint/type checking, unit/integration/E2E tests, SAST, SCA, secret scanning, DAST, security tests, fuzz/property tests, AI-specific red teaming, security regression and independent pentest before serious industrial deployment.
 
 ## Repository direction
-Use a monorepo. Suggested top-level areas: apps, services, packages, migrations, tests, docs, deploy, scripts, portal. The future FK Project Portal should render Git-backed Markdown/YAML/JSON rather than become a second source of truth. Public and private documentation must be separated before publication.
+Use a monorepo. Current canonical layout is defined in `docs/architecture/technical-stack-and-module-map-v0.1.md` and uses `backend/`, `frontend/`, `license-generator/`, `docs/`, `deploy/`, `scripts/` and `tests/e2e/`. The future FK Project Portal should render Git-backed Markdown/YAML/JSON rather than become a second source of truth. Public and private documentation must be separated before publication.
 
 ## Interface direction
 The main screen is a control panel for the state of the enterprise information environment, not a task tracker. It should emphasize Data Health, monitored entities, conflicts, rule violations/anomalies, cases requiring human attention, domain/system state and recent significant events.
