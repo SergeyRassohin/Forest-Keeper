@@ -86,14 +86,21 @@ flowchart LR
     NORM --> CAN[Canonical Model]
     CAN --> MATCH[Matching / Entity Resolution]
     MATCH --> CONFLICT[Rules & Conflict Engine]
-    CONFLICT --> REVIEW[Human Review]
-    REVIEW --> DEC[Decision Registry]
-    DEC --> SIM[Similarity / Embedding Engine]
+
+    CONFLICT --> SIM[Similarity / Embedding Engine]
+    DEC[Decision Registry] -->|confirmed historical decisions| SIM
     SIM --> REC[Recommendation Engine]
-    REC --> AI[AI / LLM Service]
-    AI --> REVIEW
+    CONFLICT --> REC
+    RULES[Rules / Customer Template] --> REC
+    AI[AI / LLM Service] -. explain / analyze context .-> REC
+
+    REC --> REVIEW[Human Review]
+    REVIEW --> DEC
+
     CONFLICT --> AUDIT[Audit Log]
+    REC --> AUDIT
     REVIEW --> AUDIT
+    DEC --> AUDIT
 ```
 
 ## 5. Адаптивная модель
