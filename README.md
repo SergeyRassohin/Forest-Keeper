@@ -20,13 +20,14 @@
 6. `docs/api/api-contract-v0.1.md`
 7. `docs/architecture/technical-stack-and-module-map-v0.1.md`
 8. `docs/development/mvp-development-plan-v0.1.md`
-9. `docs/requirements/functional-nonfunctional-v0.2.md`
-9. `docs/workflows/workflows-v0.2.md`
-10. `docs/security/security-v0.1.md`
-11. `docs/testing/testing-strategy-v0.1.md`
-12. `docs/licensing/licensing-v0.1.md`
-13. `docs/deployment/server-installation-v0.1.md`
-14. `docs/deployment/update-model-v0.1.md`
+9. `docs/development/object-lifecycles-v0.1.md`
+10. `docs/requirements/functional-nonfunctional-v0.2.md`
+11. `docs/workflows/workflows-v0.2.md`
+12. `docs/security/security-v0.1.md`
+13. `docs/testing/testing-strategy-v0.1.md`
+14. `docs/licensing/licensing-v0.1.md`
+15. `docs/deployment/server-installation-v0.1.md`
+16. `docs/deployment/update-model-v0.1.md`
 
 ## Структура
 
@@ -40,7 +41,7 @@
 - `docs/sessions/` — краткие итоги обсуждений
 - `docs/site/` — сайт / Project Portal
 - `docs/marketing/` — позиционирование и материалы
-- `docs/development/` — правила разработки и синхронизации
+- `docs/development/` — правила разработки, MVP-план и жизненные циклы объектов
 - `docs/api/` — API-контракты
 - `docs/data-model/` — модель данных
 - `docs/licensing/` — лицензирование и License Generator
