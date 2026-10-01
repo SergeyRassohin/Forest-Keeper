@@ -8,7 +8,8 @@ Forest Keeper is a vendor-neutral enterprise data intelligence and governance la
 3. docs/data-model/Forest_Keeper_Data_Model_v0.1.xlsx
 4. docs/api/api-contract-v0.1.md
 5. docs/architecture/technical-stack-and-module-map-v0.1.md
-6. docs/decisions/decision-log.md
+6. docs/development/mvp-development-plan-v0.1.md
+7. docs/decisions/decision-log.md
 
 ## Prototype 0.1
 Prove one narrow hypothesis: Forest Keeper can ingest data about the same entities from two sources, normalize it, resolve entity identity, detect conflicts, explain them, obtain a human decision, store that decision, and use confirmed decisions to recommend handling of similar later cases.
