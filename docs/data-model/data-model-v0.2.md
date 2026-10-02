@@ -81,7 +81,9 @@ Recommendation не имеет состояния ACCEPTED. Согласие п�
 ACTIVE → SUPERSEDED.
 
 decision_type:
-HUMAN_CONFIRMED / INSUFFICIENT_DATA / DEFERRED.
+SELECT_VALUE / ENTER_VALUE / INSUFFICIENT_DATA / DEFERRED.
+
+Все записи Decision по определению являются human-confirmed; HUMAN_CONFIRMED не используется как отдельный decision_type.
 
 Decision является append-only бизнес-фактом.
 
