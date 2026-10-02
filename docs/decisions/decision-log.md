@@ -73,13 +73,17 @@ ADMIN is a technical/system administration role. ADMIN alone does not authorize 
 ### Canonical data model
 For MVP development, docs/data-model/data-model-v0.2.md is the canonical data-structure and enum reference. Forest_Keeper_Data_Model_v0.1.xlsx is retained only as historical design material and must not override v0.2, Object Lifecycles, API or Access Control Matrix.
 
+### MVP recommendation similarity
+MVP 0.1 uses a hybrid similarity approach: structured filters/SQL for deterministic narrowing plus pgvector embeddings for semantic similarity of Decision context. Recommendation must remain explainable and must degrade to the deterministic/rule path if AI/LLM is unavailable.
+
+### Decision Registry schema baseline
+The logical Decision Registry schema is fixed by docs/data-model/data-model-v0.2.md for MVP. Physical indexes, JSONB decomposition and query tuning remain implementation details and may evolve without changing the API/business contract.
+
 ### MVP engineering NFR baseline
 `docs/requirements/functional-nonfunctional-v0.3.md` is the mandatory engineering acceptance baseline for MVP development. Its performance/capacity values are development targets, not contractual customer SLA. Production SLA, RPO/RTO and pilot-scale limits are established after benchmark/pilot evidence.
 
 ## Open decisions
 - Exact first pilot domain.
-- Exact schema of Decision Registry and similarity features.
 - Thresholds for automatic entity matching versus human review.
-- Whether recommendation similarity in 0.1 is rules/SQL, embeddings, or a hybrid.
 - Exact public/private portal boundary.
 - Production deployment topology for first pilot.
