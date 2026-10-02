@@ -225,7 +225,7 @@ Embeddings на этом этапе допускаются как дополни
 ## Definition of Done
 FK умеет разделить:
 - MATCHED;
-- POSSIBLE_MATCH / NEEDS_REVIEW;
+- POSSIBLE_MATCH (в UI может отображаться как NEEDS_REVIEW);
 - NOT_MATCHED;
 
 и хранит основания сопоставления.
