@@ -69,6 +69,10 @@ Git remains source of truth. Version product, DB migrations, rules/config, conne
 ### Separation of duties / ADMIN
 ADMIN is a technical/system administration role. ADMIN alone does not authorize a user to make business Decisions on Conflict. Business decision authority requires the applicable REVIEWER or DATA_OWNER permission according to `docs/security/access-control-matrix-v0.1.xlsx`. A user may hold multiple roles.
 
+
+### Canonical data model
+For MVP development, docs/data-model/data-model-v0.2.md is the canonical data-structure and enum reference. Forest_Keeper_Data_Model_v0.1.xlsx is retained only as historical design material and must not override v0.2, Object Lifecycles, API or Access Control Matrix.
+
 ### MVP engineering NFR baseline
 `docs/requirements/functional-nonfunctional-v0.3.md` is the mandatory engineering acceptance baseline for MVP development. Its performance/capacity values are development targets, not contractual customer SLA. Production SLA, RPO/RTO and pilot-scale limits are established after benchmark/pilot evidence.
 
