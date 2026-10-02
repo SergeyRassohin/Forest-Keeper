@@ -16,7 +16,7 @@
 2. `docs/project-context.md`
 3. `docs/decisions/decision-log.md`
 4. `docs/architecture/architecture-v0.2.md`
-5. `docs/data-model/Forest_Keeper_Data_Model_v0.1.xlsx`
+5. `docs/data-model/data-model-v0.2.md`
 6. `docs/api/api-contract-v0.1.md`
 7. `docs/architecture/technical-stack-and-module-map-v0.1.md`
 8. `docs/development/mvp-development-plan-v0.1.md`
@@ -44,6 +44,6 @@
 - `docs/marketing/` — позиционирование и материалы
 - `docs/development/` — правила разработки, MVP-план и жизненные циклы объектов
 - `docs/api/` — API-контракты
-- `docs/data-model/` — модель данных
+- `docs/data-model/` — каноническая модель данных; XLSX v0.1 сохранён как исторический черновик
 - `docs/licensing/` — лицензирование и License Generator
 - `docs/deployment/` — установка и обновления
