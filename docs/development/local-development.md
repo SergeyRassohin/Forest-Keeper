@@ -1,0 +1,76 @@
+# Локальная разработка MVP
+
+Реализован этап 0: запускаемый каркас. Бизнес-сценарий импорта и Human Review пока не реализован. Python 3.13, FastAPI/Pydantic v2, SQLAlchemy 2, Alembic, PostgreSQL 17 + pgvector, Redis 7.4/RQ, React/TypeScript/Vite. Зависимости зафиксированы в `backend/uv.lock` и `frontend/package-lock.json`.
+
+## Запуск
+
+Нужны Docker с Compose v2, Bash и OpenSSL. Из корня репозитория:
+
+```bash
+bash scripts/dev-init.sh
+docker compose up --build -d --wait --wait-timeout 180
+curl --fail --retry 15 --retry-connrefused --retry-delay 1 --cacert deploy/local/tls/dev.crt https://localhost:8443/api/v1/health
+```
+
+Web Client доступен по `https://localhost:8443`. Локальный самоподписанный сертификат создаётся на 30 дней; браузеру нужно доверить этот сертификат. Скрипт не перезаписывает существующие `.env` и сертификаты. Для обновления истёкшего локального сертификата переместите оба файла из `deploy/local/tls/` и повторите инициализацию. Не используйте эти настройки как production deployment: корпоративный TLS, аутентификация и лицензирование появятся в следующих этапах.
+
+Compose сначала ждёт PostgreSQL/Redis, применяет миграцию, затем запускает API, RQ worker и Web Client. API и порты инфраструктуры доступны только через loopback. Данные сохраняются в named volumes; обычный `docker compose down` их не удаляет. Не используйте `down -v`, если данные нужно сохранить.
+
+`GET /api/v1/health` возвращает 200 только при доступности PostgreSQL с текущей миграцией и pgvector, а также Redis; при недоступности — 503. Web Client показывает реальные состояния. `GET /api/v1/version` возвращает версию и текущий этап реализации. Health не проверяет готовность ещё не реализованных бизнес-модулей или AI.
+
+SQL-таймаут 500 мс задаётся через `SET LOCAL` только внутри транзакции health. Он не остаётся на pooled connection после завершения транзакции. Общий engine и Alembic используют обычную политику таймаутов PostgreSQL; миграции не ограничены этим health-таймаутом.
+
+## Проверки
+
+Для инструментов на хосте нужны Python 3.13, uv и Node.js 22–24:
+
+```bash
+cd backend
+uv sync --frozen
+cd ../frontend
+npm ci
+npx playwright install chromium
+cd ..
+bash scripts/check.sh
+bash scripts/check-sast.sh
+bash scripts/check-secrets.sh
+bash scripts/test-security-gates.sh
+bash scripts/check-dependencies.sh
+bash scripts/check-integration.sh
+```
+
+На Linux для Playwright могут понадобиться системные библиотеки: `npx playwright install --with-deps chromium`. Проверка интеграции предполагает, что Compose уже запущен; она использует локальный `.env`, проверяет health, vector SQL, исполнение задания реальным RQ worker и открытие Web Client в Chromium. Не запускайте её против production.
+
+Security gates запускаются отдельно от lint/type checks. `check-sast.sh` выполняет Bandit для backend/app и миграций и ESLint security для frontend/src; любая находка или ошибка инструмента блокирует проверку. `check-dependencies.sh` выполняет SCA через pip-audit и npm audit. `check-secrets.sh` использует официальный Gitleaks v8.24.2 image, закреплённый по SHA-256 digest, и проверяет доступную историю всех Git refs плюс текущие tracked-файлы. На чистой машине Docker скачает image из `ghcr.io`. Для полного сканирования истории нужен полный checkout (в CI задан `fetch-depth: 0`). Перед локальным сканированием добавьте новые исходники в индекс; `.env`, TLS private keys и dependency caches должны оставаться вне Git. Найденные секреты маскируются в выводе; baseline и исключения для подавления находок не добавлены.
+
+`test-security-gates.sh` создаёт временные синтетические примеры вне репозитория и проверяет отклонение shell injection, динамического eval и тестового PAT. Небезопасные примеры не исполняются. Скрипт проверяет именно код возврата находки и соответствующее правило, поэтому ошибка запуска scanner не считается успешным тестом. Скрипт очистит временные файлы после завершения.
+
+Если Chromium уже установлен, можно использовать его без загрузки: `FK_BROWSER_EXECUTABLE_PATH=/usr/bin/chromium bash scripts/check-integration.sh`.
+
+В облачной среде с HTTPS-прокси Docker может не разрешать имя прокси или не доверять его сертификату. Используйте `bash scripts/build-with-proxy.sh`, затем `docker compose up -d --wait --wait-timeout 180`. Адаптер передаёт DNS-сопоставление и системный CA bundle только на этапе сборки через BuildKit mount; сертификат не копируется в образ. Для корпоративного bundle задайте `FK_BUILD_CA_BUNDLE`. Проверка TLS сохраняется. В среде с read-only домашним каталогом задайте `DOCKER_CONFIG`, `UV_CACHE_DIR`, `UV_PYTHON_INSTALL_DIR`, `npm_config_cache` в доступных каталогах; это настройки инструментов, а не приложение.
+
+Unit-проверки явно исключают integration; integration без `FK_TEST_INTEGRATION=1` пропускается. Обязательный продуктовый E2E из плана MVP будет добавлен вместе с соответствующими этапами; `tests/e2e/foundation.spec.ts` проверяет только каркас.
+
+Повторная проверка после перезапуска:
+
+```bash
+docker compose restart postgres redis backend worker frontend
+bash scripts/check-integration.sh
+```
+
+Дождитесь ответа health 200 после перезапуска зависимостей. Миграция `0001_foundation` включает pgvector; она не создаёт бизнес-таблиц. Alembic downgrade до base убирает запись версии, но сохраняет расширение для защиты зависимых объектов. Повторный upgrade восстанавливает готовность.
+
+## Разработка без пересборки контейнеров
+
+Поднимите PostgreSQL/Redis через `docker compose up -d postgres redis`, установите зависимости, экспортируйте переменные из локального `.env`, затем:
+
+```bash
+set -a
+source .env
+set +a
+cd backend
+uv run --frozen alembic upgrade head
+uv run --frozen uvicorn app.main:app --reload
+```
+
+Во втором терминале — `cd frontend && npm run dev`; Vite проксирует `/api` на loopback backend. Это внутренний HTTP-режим разработки; браузерный smoke-тест полного контура использует HTTPS gateway из Compose.

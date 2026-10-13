@@ -1,0 +1,27 @@
+:root { font-family: Inter, system-ui, sans-serif; color: #16352c; background: #f3f5f1; font-synthesis: none; }
+* { box-sizing: border-box; }
+body { margin: 0; }
+.shell { max-width: 1120px; margin: auto; padding: 0 32px; }
+header { display: flex; align-items: center; gap: 12px; padding: 28px 0; border-bottom: 1px solid #dbe3db; font-size: 20px; font-weight: 650; }
+.brand-mark { background: #153c31; color: white; padding: 10px; border-radius: 12px; font-size: 16px; }
+.release { margin-left: auto; font-size: 13px; color: #5c7167; font-weight: 400; }
+main { padding: 64px 0; }
+.eyebrow { color: #5c7167; font-size: 13px; text-transform: uppercase; letter-spacing: .12em; }
+h1 { font-size: clamp(28px, 4vw, 44px); line-height: 1.15; max-width: 700px; margin: 14px 0 20px; }
+.intro { color: #5c7167; max-width: 660px; font-size: 18px; line-height: 1.7; }
+.panel { background: #fff; padding: 28px; border: 1px solid #dbe3db; border-radius: 16px; margin: 36px 0; }
+.panel-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+h2 { font-size: 20px; margin: 0 0 12px; }
+button { border: 1px solid #153c31; color: #153c31; background: white; border-radius: 8px; padding: 10px 16px; cursor: pointer; font: inherit; }
+button:focus-visible { outline: 3px solid #62a588; outline-offset: 3px; }
+button:disabled { opacity: .5; cursor: wait; }
+.healthy { color: #21654b; font-weight: 650; }
+.warning { color: #915721; font-weight: 650; }
+.components { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 0; }
+.components div { background: #f3f5f1; border-radius: 10px; padding: 18px; }
+dt { color: #5c7167; font-size: 14px; }
+dd { margin: 8px 0 0; font-weight: 600; }
+.next { line-height: 1.7; color: #5c7167; }
+.next h2 { color: #16352c; }
+footer { border-top: 1px solid #dbe3db; padding: 24px 0; color: #5c7167; font-size: 13px; }
+@media (max-width: 600px) { .shell { padding: 0 20px; } main { padding: 32px 0; } .panel { padding: 20px; } .panel-heading { align-items: start; flex-direction: column; } .components { grid-template-columns: 1fr; } }

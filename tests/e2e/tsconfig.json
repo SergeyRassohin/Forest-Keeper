@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "paths": { "@playwright/test": ["../../frontend/node_modules/@playwright/test"] }
+  },
+  "include": ["*.ts"]
+}

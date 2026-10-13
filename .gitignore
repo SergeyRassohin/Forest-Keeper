@@ -10,3 +10,20 @@ models/cache/
 models/downloads/
 models/offline/
 .huggingface/
+
+# Development tools and generated outputs
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+*.egg-info/
+node_modules/
+dist/
+coverage/
+playwright-report/
+test-results/
+.env
+deploy/local/
+*.tsbuildinfo
