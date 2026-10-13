@@ -13,7 +13,9 @@ Forest Keeper is a vendor-neutral enterprise data intelligence and governance la
 8. docs/security/access-control-matrix-v0.1.xlsx
 9. docs/requirements/functional-nonfunctional-v0.3.md
 10. docs/testing/testing-strategy-v0.1.md
-11. docs/decisions/decision-log.md
+11. docs/ai/local-model-v0.1.md
+12. models/model-manifest.yaml
+13. docs/decisions/decision-log.md
 
 ## Prototype 0.1
 Prove one narrow hypothesis: Forest Keeper can ingest data about the same entities from two sources, normalize it, resolve entity identity, detect conflicts, explain them, obtain a human decision, store that decision, and use confirmed decisions to recommend handling of similar later cases.
@@ -41,6 +43,8 @@ Prototype boundaries:
 - Authorization must follow docs/security/access-control-matrix-v0.1.xlsx. Do not infer permissions from role names.
 - ADMIN is a technical/system administration role. ADMIN alone does not grant authority to make business Decisions; the user must also hold REVIEWER or DATA_OWNER permission as defined by the access matrix.
 - MVP engineering quality/performance targets are defined by docs/requirements/functional-nonfunctional-v0.3.md and are mandatory acceptance baselines unless a newer explicit decision overrides them.
+- Local AI baseline must follow docs/ai/local-model-v0.1.md and models/model-manifest.yaml. Do not silently substitute model family, revision, quantization or embedding dimension.
+- Model weights are external release artifacts and must never be committed to Git.
 
 When documents conflict, prefer the newest explicit decision in docs/decisions/decision-log.md and flag the conflict rather than silently guessing.
 
