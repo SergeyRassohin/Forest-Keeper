@@ -16,6 +16,14 @@ curl --fail --silent --show-error --retry 15 --retry-connrefused --retry-delay 1
   uv run --frozen alembic current
 )
 (
+  cd backend
+  FK_TEST_INTEGRATION=1 uv run --frozen python -m tests.e2e_accounts prepare
+)
+cleanup() {
+  (cd backend && FK_TEST_INTEGRATION=1 uv run --frozen python -m tests.e2e_accounts cleanup)
+}
+trap cleanup EXIT
+(
   cd frontend
   npm run test:e2e
 )

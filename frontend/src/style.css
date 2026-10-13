@@ -24,4 +24,12 @@ dd { margin: 8px 0 0; font-weight: 600; }
 .next { line-height: 1.7; color: #5c7167; }
 .next h2 { color: #16352c; }
 footer { border-top: 1px solid #dbe3db; padding: 24px 0; color: #5c7167; font-size: 13px; }
+.identity { margin-left: auto; font-size: 14px; font-weight: 400; }
+.login-panel { max-width: 520px; margin: 24px auto; }
+form { display: grid; gap: 18px; max-width: 520px; }
+label { display: grid; gap: 8px; font-size: 14px; }
+input { border: 1px solid #9eafa3; border-radius: 6px; padding: 12px; font: inherit; min-width: 0; }
+input:focus-visible { outline: 3px solid #62a588; outline-offset: 2px; }
+.role-choice { display: flex; align-items: center; gap: 8px; }
+fieldset { border: 1px solid #dbe3db; border-radius: 8px; display: grid; gap: 10px; }
 @media (max-width: 600px) { .shell { padding: 0 20px; } main { padding: 32px 0; } .panel { padding: 20px; } .panel-heading { align-items: start; flex-direction: column; } .components { grid-template-columns: 1fr; } }

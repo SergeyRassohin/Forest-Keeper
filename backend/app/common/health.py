@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from redis import Redis
 from sqlalchemy import Engine, text
 
-SCHEMA_REVISION = "0001_foundation"
+SCHEMA_REVISION = "0002_auth"
 ComponentStatus = Literal["ok", "unavailable"]
 
 
