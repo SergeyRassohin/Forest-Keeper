@@ -26,9 +26,11 @@
 12. `docs/workflows/workflows-v0.2.md`
 13. `docs/security/security-v0.1.md`
 14. `docs/testing/testing-strategy-v0.1.md`
-15. `docs/licensing/licensing-v0.1.md`
-16. `docs/deployment/server-installation-v0.1.md`
-17. `docs/deployment/update-model-v0.1.md`
+15. `docs/ai/local-model-v0.1.md`
+16. `models/model-manifest.yaml`
+17. `docs/licensing/licensing-v0.1.md`
+18. `docs/deployment/server-installation-v0.1.md`
+19. `docs/deployment/update-model-v0.1.md`
 
 ## Структура
 
@@ -47,3 +49,5 @@
 - `docs/data-model/` — каноническая модель данных; XLSX v0.1 сохранён как исторический черновик
 - `docs/licensing/` — лицензирование и License Generator
 - `docs/deployment/` — установка и обновления
+- `docs/ai/` — AI/embedding baseline и правила интеграции
+- `models/` — manifest и конфигурация моделей без весовых файлов
