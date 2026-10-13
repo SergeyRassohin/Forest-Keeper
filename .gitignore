@@ -1,0 +1,12 @@
+# Local AI model weights and caches
+models/**/*.gguf
+models/**/*.safetensors
+models/**/*.bin
+models/**/*.pt
+models/**/*.pth
+models/**/*.onnx
+models/**/*.pkg
+models/cache/
+models/downloads/
+models/offline/
+.huggingface/
