@@ -204,7 +204,7 @@ def account_payload(account):
     return {"login": account["login"], "password": account["password"]}
 
 
-def test_invalid_credentials_are_generic(client, account):
+def test_invalid_credentials_are_generic(client, account, auth_env):
     body = account_payload(account)
     body["password"] = secrets.token_urlsafe(20)
     wrong = client.post("/api/v1/auth/login", json=body)
@@ -212,6 +212,15 @@ def test_invalid_credentials_are_generic(client, account):
     missing = client.post("/api/v1/auth/login", json=body)
     assert wrong.status_code == missing.status_code == 401
     assert wrong.json() == missing.json()
+    engine = make_engine(auth_env)
+    with Session(engine) as session:
+        event = session.scalar(
+            select(AuditEvent).where(
+                AuditEvent.event_type == "AUTH_LOGIN_DENIED", AuditEvent.object_id == account["id"]
+            )
+        )
+        assert event is not None and event.user_id is None
+    engine.dispose()
 
 
 def test_unauthenticated_endpoints_and_forged_token(client):

@@ -77,7 +77,8 @@ def login(
         body.password.get_secret_value(), user.password_hash if user else dummy_hash
     )
     if not valid or user is None or user.status != "ACTIVE":
-        audit(session, "AUTH_LOGIN_DENIED", user.id if user else None)
+        # The attempted account is the target, not an authenticated actor.
+        audit(session, "AUTH_LOGIN_DENIED", None, user.id if user else None)
         session.commit()
         raise ApiError(401, "INVALID_CREDENTIALS", "Неверный логин или пароль")
     token = secrets.token_urlsafe(32)

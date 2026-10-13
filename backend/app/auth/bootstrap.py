@@ -48,7 +48,7 @@ def main() -> None:
             session.add(
                 AuditEvent(
                     event_type="ADMIN_BOOTSTRAPPED",
-                    user_id=user.id,
+                    user_id=None,
                     object_type="User",
                     object_id=user.id,
                     payload={},
