@@ -1,0 +1,61 @@
+schema_version: 1
+bundle_id: forest-keeper-ai-baseline
+bundle_version: "0.1"
+
+policy:
+  runtime_network_required: false
+  allow_unpinned_revisions: false
+  commit_weights_to_git: false
+  verify_offline_bundle_signature: true
+  record_model_revision_in_recommendation: true
+
+llm:
+  purpose:
+    - recommendation_explanation
+    - conflict_explanation
+  provider: Qwen
+  repository: Qwen/Qwen3-8B-GGUF
+  revision: 7c41481f57cb95916b40956ab2f0b139b296d974
+  artifact: Qwen3-8B-Q4_K_M.gguf
+  format: GGUF
+  quantization: Q4_K_M
+  license: Apache-2.0
+  runtime: llama.cpp
+  context:
+    native_tokens: 32768
+    configured_tokens: 32768
+    extended_upstream_yarn_tokens: 131072
+  inference:
+    default_thinking_mode: disabled
+    temperature: 0.2
+    structured_output_required: true
+  verification:
+    upstream_revision_required: true
+    sha256: generated-and-locked-during-packaging
+
+embedding:
+  purpose:
+    - decision_similarity
+  provider: Qwen
+  repository: Qwen/Qwen3-Embedding-0.6B
+  revision: 97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3
+  format: safetensors
+  license: Apache-2.0
+  runtime: sentence-transformers
+  context_tokens: 32768
+  embedding_dimension: 1024
+  vector_store: postgresql-pgvector
+  verification:
+    upstream_revision_required: true
+    sha256: generated-and-locked-during-packaging
+
+offline_bundle:
+  suggested_filename: FK_AI_Model_Bundle_0.1.pkg
+  required_contents:
+    - llm_artifact
+    - embedding_model_files
+    - model-manifest.yaml
+    - license_and_notice_files
+    - SHA256SUMS
+    - compatibility_manifest
+    - package_signature
