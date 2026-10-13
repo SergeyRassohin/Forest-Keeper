@@ -137,7 +137,9 @@ Forest Keeper использует браузерный клиент.
 ## 7. AI / Similarity
 
 ### Embeddings
-Локальная embedding-модель, запускаемая внутри контура заказчика.
+MVP baseline: **Qwen/Qwen3-Embedding-0.6B**, 1024 dimensions, локально внутри контура заказчика через `sentence-transformers`; хранение и поиск — PostgreSQL + pgvector.
+
+Точные revision и параметры задаёт `models/model-manifest.yaml`; архитектурные правила — `docs/ai/local-model-v0.1.md`.
 
 Поддержка должна идти через абстракцию `EmbeddingProvider`.
 
@@ -146,6 +148,8 @@ Forest Keeper использует браузерный клиент.
 - позднее при необходимости `ExternalEmbeddingProvider`.
 
 ### LLM
+MVP baseline: **Qwen/Qwen3-8B-GGUF**, `Q4_K_M`, runtime **llama.cpp**, локально внутри контура заказчика. Точные revision и параметры задаёт `models/model-manifest.yaml`.
+
 LLM не является обязательным источником истины.
 
 Он используется для:
@@ -326,6 +330,9 @@ Backend общается с LLM через интерфейс `LLMProvider`.
 ├─ license-generator/
 │
 ├─ docs/
+├─ models/
+│  ├─ model-manifest.yaml
+│  └─ README.md
 ├─ deploy/
 │  ├─ docker/
 │  └─ installer/
@@ -503,7 +510,7 @@ application modules → database
 11. Decision Registry.
 12. pgvector similarity по прошлым решениям.
 13. Recommendation Engine.
-14. Локальный AI provider как подключаемый компонент.
+14. Локальный AI provider по baseline `docs/ai/local-model-v0.1.md` + `models/model-manifest.yaml`.
 15. Audit.
 16. Базовые API и E2E-тест главного сценария.
 
