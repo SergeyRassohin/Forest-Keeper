@@ -1,6 +1,8 @@
 import os
 
 import pytest
+from alembic.migration import MigrationContext
+from alembic.operations import Operations
 from fastapi.testclient import TestClient
 from redis import Redis
 from rq import Queue
@@ -8,6 +10,7 @@ from sqlalchemy import text
 
 from app.common.config import Settings
 from app.common.database import make_engine
+from app.common.health import HealthChecker
 from app.main import create_app
 
 pytestmark = [
@@ -55,3 +58,22 @@ def test_rq_worker_executes_job() -> None:
     finally:
         job.delete()
         connection.close()
+
+
+def test_health_timeout_does_not_limit_migration_connections() -> None:
+    settings = Settings()  # type: ignore[call-arg]
+    engine = make_engine(settings)
+    connection = Redis.from_url(settings.redis_url.get_secret_value())
+    try:
+        with engine.begin() as database:
+            original_timeout = database.execute(text("SHOW statement_timeout")).scalar_one()
+            # Exercises Alembic's engine path with work longer than the old 500ms limit.
+            Operations(MigrationContext.configure(database)).execute("SELECT pg_sleep(0.6)")
+        checker = HealthChecker(engine, connection, settings.health_timeout_seconds)
+        assert checker.database_ready()
+        with engine.begin() as database:
+            assert database.execute(text("SHOW statement_timeout")).scalar_one() == original_timeout
+            Operations(MigrationContext.configure(database)).execute("SELECT pg_sleep(0.6)")
+    finally:
+        connection.close()
+        engine.dispose()

@@ -18,6 +18,8 @@ Compose сначала ждёт PostgreSQL/Redis, применяет мигра�
 
 `GET /api/v1/health` возвращает 200 только при доступности PostgreSQL с текущей миграцией и pgvector, а также Redis; при недоступности — 503. Web Client показывает реальные состояния. `GET /api/v1/version` возвращает версию и текущий этап реализации. Health не проверяет готовность ещё не реализованных бизнес-модулей или AI.
 
+SQL-таймаут 500 мс задаётся через `SET LOCAL` только внутри транзакции health. Он не остаётся на pooled connection после завершения транзакции. Общий engine и Alembic используют обычную политику таймаутов PostgreSQL; миграции не ограничены этим health-таймаутом.
+
 ## Проверки
 
 Для инструментов на хосте нужны Python 3.13, uv и Node.js 22–24:
@@ -30,11 +32,18 @@ npm ci
 npx playwright install chromium
 cd ..
 bash scripts/check.sh
+bash scripts/check-sast.sh
+bash scripts/check-secrets.sh
+bash scripts/test-security-gates.sh
 bash scripts/check-dependencies.sh
 bash scripts/check-integration.sh
 ```
 
 На Linux для Playwright могут понадобиться системные библиотеки: `npx playwright install --with-deps chromium`. Проверка интеграции предполагает, что Compose уже запущен; она использует локальный `.env`, проверяет health, vector SQL, исполнение задания реальным RQ worker и открытие Web Client в Chromium. Не запускайте её против production.
+
+Security gates запускаются отдельно от lint/type checks. `check-sast.sh` выполняет Bandit для backend/app и миграций и ESLint security для frontend/src; любая находка или ошибка инструмента блокирует проверку. `check-dependencies.sh` выполняет SCA через pip-audit и npm audit. `check-secrets.sh` использует официальный Gitleaks v8.24.2 image, закреплённый по SHA-256 digest, и проверяет доступную историю всех Git refs плюс текущие tracked-файлы. На чистой машине Docker скачает image из `ghcr.io`. Для полного сканирования истории нужен полный checkout (в CI задан `fetch-depth: 0`). Перед локальным сканированием добавьте новые исходники в индекс; `.env`, TLS private keys и dependency caches должны оставаться вне Git. Найденные секреты маскируются в выводе; baseline и исключения для подавления находок не добавлены.
+
+`test-security-gates.sh` создаёт временные синтетические примеры вне репозитория и проверяет отклонение shell injection, динамического eval и тестового PAT. Небезопасные примеры не исполняются. Скрипт проверяет именно код возврата находки и соответствующее правило, поэтому ошибка запуска scanner не считается успешным тестом. Скрипт очистит временные файлы после завершения.
 
 Если Chromium уже установлен, можно использовать его без загрузки: `FK_BROWSER_EXECUTABLE_PATH=/usr/bin/chromium bash scripts/check-integration.sh`.
 

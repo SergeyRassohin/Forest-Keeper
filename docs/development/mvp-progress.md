@@ -14,14 +14,19 @@
 Проверено в облачной Linux-среде:
 
 - 6 backend unit-тестов, 4 frontend component-теста;
-- 2 integration-теста: реальный PostgreSQL/vector SQL и задание в RQ worker;
+- 3 integration-теста: реальный PostgreSQL/vector SQL, задание в RQ worker и отсутствие health-таймаута на длительных операциях Alembic;
 - 1 Playwright smoke-тест Web Client → HTTPS → API → PostgreSQL/Redis;
 - lint, форматирование Python, mypy, TypeScript (включая E2E), production build;
 - контейнерные сборки и запуск, перезапуск всех runtime-сервисов и повторная integration/E2E-проверка;
 - Alembic downgrade → health 503 → upgrade → health 200, повторный upgrade;
 - `pip-audit` и `npm audit`: известных уязвимостей не обнаружено после обновления Vitest до исправленной версии. Собственный editable backend проверяется тестами и статическими анализаторами, а не каталогом уязвимостей сторонних пакетов.
+- отдельный SAST: Bandit для Python и ESLint security для TypeScript;
+- Gitleaks: история Git и текущие tracked-файлы, с маскированием находок в выводе;
+- отрицательные проверки security gates: синтетические shell injection, динамический eval и PAT отклоняются соответствующими scanner-правилами.
 
-Команды: [локальная разработка](local-development.md). CI workflow добавлен; успешный запуск GitHub Actions отдельно ещё не подтверждён.
+Команды: [локальная разработка](local-development.md). GitHub Actions для первоначального каркаса прошёл успешно, что подтверждено ревью. Результат CI для последующих ревизий проверяется отдельно.
+
+В ревизии по замечаниям убран глобальный `statement_timeout=500` из engine: этот предел применяется только к health-транзакции через `SET LOCAL`. Alembic сохраняет обычную политику PostgreSQL; регрессионный тест выполняет операции дольше 500 мс до и после health, проверяя отсутствие утечки настройки в пул.
 
 Это завершённый этап 0, а не готовый продуктовый MVP. Нет auth/RBAC, импорта, canonical/matching/conflicts, Human Review, Decision Registry, AI/similarity, правил, бизнес-аудита, лицензирования и Update Service. Модели не скачивались. Главный двухитерационный продуктовый E2E, RBAC-тесты и capacity/performance acceptance всего MVP пока не выполнялись.
 

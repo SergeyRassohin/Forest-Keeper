@@ -22,7 +22,10 @@ class HealthChecker:
         self.timeout = timeout
 
     def database_ready(self) -> bool:
-        with self.engine.connect() as connection:
+        with self.engine.begin() as connection:
+            # Bound only this probe transaction; pooled connections and migrations
+            # retain their normal database timeout policy after the transaction ends.
+            connection.execute(text("SET LOCAL statement_timeout = '500ms'"))
             # A listening DB without the required migration/extension is not ready.
             revision = connection.execute(text("SELECT version_num FROM alembic_version")).scalar()
             vector = connection.execute(

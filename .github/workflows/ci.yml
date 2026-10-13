@@ -3,11 +3,18 @@ on:
   push:
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Secret scan (Git history and tracked working tree)
+        run: bash scripts/check-secrets.sh
       - uses: astral-sh/setup-uv@v6
         with:
           version: '0.12.23'
@@ -25,6 +32,10 @@ jobs:
       - run: npx playwright install --with-deps chromium
         working-directory: frontend
       - run: bash scripts/check.sh
+      - name: Security SAST (Python and TypeScript)
+        run: bash scripts/check-sast.sh
+      - name: Verify security gates reject unsafe fixtures
+        run: bash scripts/test-security-gates.sh
       - run: bash scripts/check-dependencies.sh
       - run: bash scripts/dev-init.sh
       - run: docker compose up --build --wait --wait-timeout 180
