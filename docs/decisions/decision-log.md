@@ -44,6 +44,9 @@ FK starts from a vendor baseline master-data/rules template. During implementati
 ### AI purpose
 AI/LLM is a functional part of the adaptive recommendation loop. It uses structured customer context and retrieved confirmed decisions to explain and recommend. It is not a decorative feature and is not the system of record.
 
+### Local AI baseline
+MVP local LLM baseline is `Qwen/Qwen3-8B-GGUF`, artifact `Qwen3-8B-Q4_K_M.gguf`, served through `llama.cpp`. MVP embedding baseline is `Qwen/Qwen3-Embedding-0.6B` at 1024 dimensions, used through `sentence-transformers` with PostgreSQL + pgvector. Exact upstream revisions and packaging rules are pinned in `models/model-manifest.yaml`. Model weights are release artifacts outside Git. Replacing model family/revision/quantization/embedding dimension requires an explicit compatibility decision and tests.
+
 ### Client access
 **Web Client is the primary client for MVP and the default Forest Keeper user interface.**
 It runs in the browser and communicates with FK Server only through HTTPS/API Gateway.
