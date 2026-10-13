@@ -1,0 +1,21 @@
+# Optional build-only trust/DNS adapter; normal local Compose is unchanged.
+x-proxy-build: &proxy-build
+  extra_hosts:
+    - ${FK_BUILD_PROXY_HOST_ENTRY:?Use scripts/build-with-proxy.sh}
+  secrets:
+    - source: build_network_ca
+      target: network_ca
+
+services:
+  backend:
+    build: *proxy-build
+  migrate:
+    build: *proxy-build
+  worker:
+    build: *proxy-build
+  frontend:
+    build: *proxy-build
+
+secrets:
+  build_network_ca:
+    file: ${FK_BUILD_CA_BUNDLE:-/etc/ssl/certs/ca-certificates.crt}
