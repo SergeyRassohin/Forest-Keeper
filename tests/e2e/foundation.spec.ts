@@ -62,6 +62,28 @@ test('invalid password is rejected and cleared', async ({ page }) => {
   await expect(page.getByLabel('Пароль', { exact: true })).toHaveValue('');
 });
 
+test('network failure during login shows a clear error and clears the password', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await page.route('**/api/v1/auth/login', (route) => route.abort('failed'));
+  await page.getByLabel('Логин', { exact: true }).fill(accounts.VIEWER.login);
+  await page.getByLabel('Пароль', { exact: true }).fill(accounts.VIEWER.password);
+  await page.getByRole('button', { name: 'Войти', exact: true }).click();
+  await expect(page.getByRole('alert')).toHaveText(
+    'Не удалось подключиться к серверу. Повторите попытку.',
+  );
+  await expect(page.getByLabel('Пароль', { exact: true })).toHaveValue('');
+  await expect(
+    page.getByRole('heading', { name: 'Вход в Forest Keeper' }),
+  ).toBeVisible();
+  expect(
+    (await page.context().cookies()).some(
+      (item) => item.name === '__Host-fk_session',
+    ),
+  ).toBe(false);
+});
+
 test('ADMIN creates a reviewer without inheriting business permissions', async ({
   page,
 }) => {

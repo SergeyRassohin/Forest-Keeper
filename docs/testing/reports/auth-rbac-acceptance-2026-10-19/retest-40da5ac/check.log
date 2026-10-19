@@ -1,0 +1,55 @@
+All checks passed!
+25 files already formatted
+Success: no issues found in 16 source files
+============================= test session starts ==============================
+platform linux -- Python 3.13.16, pytest-9.1.1, pluggy-1.6.0
+rootdir: /workspace/Forest-Keeper/backend
+configfile: pyproject.toml
+testpaths: tests
+plugins: anyio-4.15.1, platformdirs-4.13.0
+collected 230 items / 222 deselected / 8 selected
+
+tests/test_health.py ......                                              [ 75%]
+tests/test_policy.py ..                                                  [100%]
+
+=============================== warnings summary ===============================
+.venv/lib/python3.13/site-packages/fastapi/testclient.py:1
+  /workspace/Forest-Keeper/backend/.venv/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================= 8 passed, 222 deselected, 1 warning in 0.92s =================
+
+> forest-keeper-web@0.1.0 lint
+> eslint .
+
+
+> forest-keeper-web@0.1.0 test
+> vitest run
+
+
+ RUN  v5.0.4 /workspace/Forest-Keeper/frontend
+
+
+ Test Files  2 passed (2)
+      Tests  9 passed (9)
+   Start at  12:38:53
+   Duration  774ms (environment 52%, tests 27%, setup 14%, transform 5%, import 1%, worker 1%)
+
+
+> forest-keeper-web@0.1.0 build
+> tsc -b && vite build
+
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 18 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.44 kB │ gzip:  0.28 kB
+dist/assets/index-CiV9obTq.css    2.25 kB │ gzip:  0.90 kB
+dist/assets/index-Buntmobz.js   230.19 kB │ gzip: 72.20 kB
+
+✓ built in 128ms
+
+> forest-keeper-web@0.1.0 typecheck:e2e
+> tsc -p ../tests/e2e/tsconfig.json
