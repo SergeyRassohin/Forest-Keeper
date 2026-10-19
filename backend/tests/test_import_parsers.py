@@ -1,10 +1,13 @@
 import hashlib
 import io
 import json
+from datetime import timedelta
 from pathlib import Path
 from uuid import uuid4
 
 import pytest
+from openpyxl import Workbook
+from openpyxl.worksheet.formula import ArrayFormula, DataTableFormula
 
 from app.common.errors import ApiError
 from app.imports.models import ImportBatch, ImportStatus
@@ -53,6 +56,67 @@ def test_xlsx_first_sheet_and_formula_preserved_without_execution():
     assert rows[1].payload["name"] == "=1+1"
     assert rows[1].position["cell_types"][1] == "f"
     assert rows[1].payload["price"] == 2
+
+
+@pytest.mark.parametrize(
+    "field", ['"' + "x" * 1_000_001 + '\n3,phantom\ntail"', '"open\n3,phantom']
+)
+def test_csv_lost_record_boundary_stops_without_inventing_records(tmp_path, field):
+    path = tmp_path / "broken.csv"
+    path.write_text("id,name\n1,Before\n2," + field + "\n4,After\n")
+    rows = []
+    with pytest.raises(ParseFailure) as error:
+        rows.extend(parse_records(path, "CSV", "FILE", 512_000_000))
+    assert error.value.code == "INVALID_CSV_STRUCTURE"
+    assert error.value.position["line_start"] == 3
+    assert [row.record_key for row in rows] == ["1"]
+
+
+@pytest.mark.parametrize(
+    "value,expected",
+    [
+        (
+            timedelta(hours=25, minutes=30, milliseconds=123),
+            {"excel_type": "timedelta", "days": 1, "seconds": 5400, "microseconds": 123000},
+        ),
+        (
+            timedelta(hours=-1),
+            {"excel_type": "timedelta", "days": -1, "seconds": 82800, "microseconds": 0},
+        ),
+        (
+            ArrayFormula(ref="B3", text="=SUM(1,2)"),
+            {
+                "excel_type": "ArrayFormula",
+                "text": "=SUM(1,2)",
+                "attributes": {"t": "array", "ref": "B3"},
+            },
+        ),
+        (
+            DataTableFormula(ref="B3", r1="B2"),
+            {
+                "excel_type": "DataTableFormula",
+                "attributes": {"t": "dataTable", "ref": "B3", "r1": "B2"},
+            },
+        ),
+    ],
+)
+def test_xlsx_duration_and_special_formula_values_remain_json_serializable(
+    tmp_path, value, expected
+):
+    path = tmp_path / "typed.xlsx"
+    workbook = Workbook()
+    sheet = workbook.active
+    sheet.append(["id", "value"])
+    sheet.append(["001", "Before"])
+    sheet.append(["002", value])
+    sheet.append(["003", "After"])
+    workbook.save(path)
+    rows = list(parse_records(path, "XLSX", "FILE", 512_000_000))
+    assert len(rows) == 3 and not any(row.error_code for row in rows)
+    assert rows[1].payload["value"] == expected
+    assert rows[1].position["row"] == 3
+    assert json.loads(json.dumps(rows[1].payload))["value"] == expected
+    assert rows[2].payload == {"id": "003", "value": "After"}
 
 
 @pytest.mark.parametrize(

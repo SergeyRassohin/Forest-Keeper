@@ -5,19 +5,21 @@ import posixpath
 import re
 from collections.abc import Iterator
 from dataclasses import dataclass, field
-from datetime import date, datetime, time
+from datetime import date, datetime, time, timedelta
 from pathlib import Path
 from typing import Any, Protocol
 from zipfile import BadZipFile, ZipFile
 
 from defusedxml.ElementTree import iterparse, parse
 from openpyxl import load_workbook
+from openpyxl.worksheet.formula import ArrayFormula, DataTableFormula
 
 
 class ParseFailure(Exception):
-    def __init__(self, code: str, message: str) -> None:
+    def __init__(self, code: str, message: str, position: dict[str, Any] | None = None) -> None:
         self.code = code
         self.message = message
+        self.position = position
 
 
 class XmlNode(Protocol):
@@ -100,14 +102,13 @@ def csv_records(path: Path) -> Iterator[ParsedRecord]:
             except StopIteration:
                 break
             except csv.Error:
-                number += 1
-                yield ParsedRecord(
-                    f"csv:{number}",
+                # The reader may be inside a quoted multiline field. Continuing
+                # would mistake its remaining physical lines for new records.
+                raise ParseFailure(
+                    "INVALID_CSV_STRUCTURE",
+                    "Нарушена структура CSV. Дальнейший разбор остановлен.",
                     {"line_start": start, "line_end": reader.line_num},
-                    error_code="INVALID_CSV_ROW",
-                    error_message="Некорректная CSV-запись",
-                )
-                continue
+                ) from None
             if not row:  # Empty physical lines are ignored; quoted empty cells are records.
                 continue
             number += 1
@@ -300,6 +301,18 @@ def json_cell(value: Any) -> Any:
     # JSON encoding of Excel's typed values is explicit, not business normalization.
     if isinstance(value, (datetime, date, time)):
         return {"iso8601": value.isoformat(), "excel_type": type(value).__name__}
+    if isinstance(value, timedelta):
+        return {
+            "excel_type": "timedelta",
+            "days": value.days,
+            "seconds": value.seconds,
+            "microseconds": value.microseconds,
+        }
+    if isinstance(value, (ArrayFormula, DataTableFormula)):
+        formula: dict[str, Any] = {"excel_type": type(value).__name__, "attributes": dict(value)}
+        if isinstance(value, ArrayFormula):
+            formula["text"] = value.text
+        return formula
     return value
 
 

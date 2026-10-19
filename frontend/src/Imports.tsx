@@ -58,6 +58,7 @@ export function Imports({ user, onSessionExpired }: { user: User; onSessionExpir
 
   useEffect(() => {
     const controller = new AbortController();
+    let timer: number | undefined;
     async function load() {
       try {
         const [sourceRows, importRows] = await Promise.all([
@@ -71,32 +72,45 @@ export function Imports({ user, onSessionExpired }: { user: User; onSessionExpir
           else setError('Не удалось обновить список импортов. Проверьте подключение.');
         }
       }
+      if (!controller.signal.aborted) timer = window.setTimeout(() => { void load(); }, 2000);
     }
     void load();
-    const timer = window.setInterval(() => { void load(); setRefresh((value) => value + 1); }, 2000);
-    return () => { controller.abort(); window.clearInterval(timer); };
-  }, [listOffset, onSessionExpired]);
+    return () => { controller.abort(); window.clearTimeout(timer); };
+  }, [listOffset, refresh, onSessionExpired]);
 
   useEffect(() => {
     if (!selected) return;
     const controller = new AbortController();
-    Promise.all([
-      api<Batch>(`/imports/${selected}`, { signal: controller.signal }),
-      api<Raw[]>(`/imports/${selected}/records?limit=50&offset=${rawOffset}`, { signal: controller.signal }),
-      api<ParseError[]>(`/imports/${selected}/errors?limit=50&offset=${errorOffset}`, { signal: controller.signal }),
-    ]).then(([detail, raw, problems]) => {
-      if (!controller.signal.aborted) { setBatch(detail); setRecords(raw); setErrors(problems); }
-    }).catch((cause) => {
+    let timer: number | undefined;
+    function failed(cause: unknown) {
       if (!controller.signal.aborted) {
         if (cause instanceof SessionExpired) onSessionExpired();
         else setError('Не удалось загрузить пакет импорта. Повторите попытку.');
       }
-    });
-    return () => controller.abort();
+    }
+    async function load() {
+      // Metadata can appear while raw data is still loading. Wait for each
+      // request to finish before polling again; only navigation cancels it.
+      await Promise.all([
+        api<Batch>(`/imports/${selected}`, { signal: controller.signal }).then((detail) => {
+          if (!controller.signal.aborted) setBatch(detail);
+        }).catch(failed),
+        api<Raw[]>(`/imports/${selected}/records?limit=50&offset=${rawOffset}`, { signal: controller.signal }).then((raw) => {
+          if (!controller.signal.aborted) setRecords(raw);
+        }).catch(failed),
+        api<ParseError[]>(`/imports/${selected}/errors?limit=50&offset=${errorOffset}`, { signal: controller.signal }).then((problems) => {
+          if (!controller.signal.aborted) setErrors(problems);
+        }).catch(failed),
+      ]);
+      if (!controller.signal.aborted) timer = window.setTimeout(() => { void load(); }, 2000);
+    }
+    void load();
+    return () => { controller.abort(); window.clearTimeout(timer); };
   }, [selected, refresh, rawOffset, errorOffset, onSessionExpired]);
 
   function choose(id: string) {
     setSelected(id); setRawOffset(0); setErrorOffset(0); setBatch(null);
+    setRecords([]); setErrors([]); setRefresh((value) => value + 1);
   }
 
   async function upload(event: FormEvent) {
@@ -109,7 +123,7 @@ export function Imports({ user, onSessionExpired }: { user: User; onSessionExpir
       setNotice(result.duplicate
         ? `Этот файл уже загружен: ${result.original_filename}. Открыт существующий пакет.`
         : 'Файл сохранён. Статус фоновой обработки показан ниже.');
-      choose(result.id); setRefresh((value) => value + 1);
+      choose(result.id);
     } catch (cause) {
       if (cause instanceof SessionExpired) onSessionExpired();
       else setError(cause instanceof TypeError ? 'Не удалось подключиться к серверу.' :

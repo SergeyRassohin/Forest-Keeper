@@ -41,6 +41,18 @@ test('browser imports two sources, shows raw/provenance, duplicates and partial 
   await expect(card).toContainText('Завершён', { timeout: 30000 });
   await expect(card).toContainText('001.2300');
   await expect(card).toContainText('line_start');
+  // A legitimate response can take longer than the two-second polling interval.
+  // Reopening the same batch must load it, without periodic aborts or stale data.
+  const slowRecords = `**/api/v1/imports/${first.id}/records*`;
+  await page.route(slowRecords, async (route) => {
+    await new Promise((resolve) => setTimeout(resolve, 2500));
+    await route.continue();
+  });
+  await page.getByRole('row').filter({ hasText: accounts.prefix })
+    .getByRole('button', { name: 'valid.csv', exact: true }).click();
+  await expect(card).toContainText(first.id);
+  await expect(card).toContainText('001.2300', { timeout: 10000 });
+  await page.unroute(slowRecords);
   await createSource(page, 'one_c', 'ONE_C');
   const second = await upload(page, 'onec.xml');
   expect(second.id).not.toBe(first.id);

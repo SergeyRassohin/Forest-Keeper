@@ -1,12 +1,15 @@
 import json
 import os
 from datetime import UTC, datetime, timedelta
+from io import BytesIO
 from pathlib import Path
 from unittest.mock import patch
 from uuid import UUID, uuid4
 
 import pytest
 from fastapi.testclient import TestClient
+from openpyxl import Workbook
+from openpyxl.worksheet.formula import ArrayFormula, DataTableFormula
 from redis import Redis
 from rq import Queue, SimpleWorker
 from rq.job import Job
@@ -17,7 +20,7 @@ from sqlalchemy.orm import Session
 from app.auth.dependencies import COOKIE_NAME
 from app.auth.models import AuditEvent
 from app.common.database import make_engine
-from app.imports.jobs import execute_import, job_id, recover_imports
+from app.imports.jobs import enqueue_batch, execute_import, job_id, recover_imports
 from app.imports.models import ImportBatch, ImportStatus, RawRecord, SourceSystem
 from app.imports.parsers import parse_records
 from app.imports.storage import LocalStorage, file_checksum
@@ -489,3 +492,211 @@ def test_changed_original_never_completes(client, auth_env, source):
     assert current(client, batch_id)["status"] == "FAILED"
     assert current(client, batch_id)["records_loaded"] == 0
     engine.dispose()
+
+
+def test_broken_multiline_csv_does_not_store_field_fragments(client, auth_env, source):
+    payload = (
+        'id,name\n1,Before\n2,"' + "x" * 1_000_001 + '\n3,phantom\ntail"\n4,After\n'
+    ).encode()
+    batch_id = UUID(upload(client, source, payload=payload).json()["id"])
+    execute_import(batch_id, auth_env)
+    result = current(client, batch_id)
+    assert result["status"] == "FAILED"
+    assert result["records_loaded"] == 1 and result["records_failed"] == 1
+    raw = client.get(f"/api/v1/imports/{batch_id}/records").json()
+    assert [item["raw_payload"] for item in raw] == [{"id": "1", "name": "Before"}]
+    error = client.get(f"/api/v1/imports/{batch_id}/errors").json()[0]
+    assert error["code"] == "INVALID_CSV_STRUCTURE"
+    assert error["source_position"]["line_start"] == 3
+    engine = make_engine(auth_env)
+    with Session(engine) as session:
+        original = session.get(ImportBatch, batch_id)
+        assert (
+            LocalStorage(auth_env.import_storage_root).path(original.storage_uri).read_bytes()
+            == payload
+        )
+    engine.dispose()
+
+
+@pytest.mark.parametrize("kind", ["duration", "array", "data_table"])
+def test_typed_xlsx_finishes_and_preserves_all_records(client, auth_env, source, kind):
+    value = {
+        "duration": timedelta(hours=25, minutes=30),
+        "array": ArrayFormula(ref="B3", text="=SUM(1,2)"),
+        "data_table": DataTableFormula(ref="B3", r1="B2"),
+    }[kind]
+    workbook = Workbook()
+    sheet = workbook.active
+    sheet.append(["id", "value"])
+    sheet.append(["001", "Before"])
+    sheet.append(["002", value])
+    sheet.append(["003", "After"])
+    stream = BytesIO()
+    workbook.save(stream)
+    batch_id = UUID(upload(client, source, "typed.xlsx", stream.getvalue()).json()["id"])
+    execute_import(batch_id, auth_env)
+    result = current(client, batch_id)
+    assert result["status"] == "COMPLETED"
+    assert result["records_loaded"] == 3 and result["records_failed"] == 0
+    rows = client.get(f"/api/v1/imports/{batch_id}/records").json()
+    assert {item["source_record_key"] for item in rows} == {"001", "002", "003"}
+    value = next(
+        item["raw_payload"]["value"] for item in rows if item["source_record_key"] == "002"
+    )
+    if kind == "duration":
+        assert value == {"excel_type": "timedelta", "days": 1, "seconds": 5400, "microseconds": 0}
+    else:
+        assert value["attributes"]["ref"] == "B3"
+        if kind == "array":
+            assert value["text"] == "=SUM(1,2)"
+
+
+@pytest.mark.parametrize(
+    "target", [status for status in ImportStatus if status != ImportStatus.NEW]
+)
+def test_delayed_enqueue_does_not_overwrite_fresh_state_or_republish(
+    client, auth_env, source, target
+):
+    from app.imports.service import transition
+
+    with patch("app.imports.routes.enqueue_batch"):
+        batch_id = UUID(upload(client, source).json()["id"])
+    engine = make_engine(auth_env)
+    connection = Redis.from_url(auth_env.redis_url.get_secret_value())
+    queue = Queue(auth_env.import_queue_name, connection=connection)
+    try:
+        with Session(engine) as delayed:
+            cached = delayed.get(ImportBatch, batch_id)
+            assert cached.status == ImportStatus.NEW
+            with Session(engine) as other:
+                batch = other.get(ImportBatch, batch_id)
+                transition(other, batch, ImportStatus.QUEUED)
+                if target != ImportStatus.QUEUED:
+                    transition(other, batch, ImportStatus.PROCESSING)
+                    if target != ImportStatus.PROCESSING:
+                        transition(other, batch, target)
+                other.commit()
+                events = other.scalar(
+                    select(func.count())
+                    .select_from(AuditEvent)
+                    .where(AuditEvent.object_id == batch_id)
+                )
+            before = queue.count
+            enqueue_batch(batch_id, delayed, connection, auth_env)
+            assert cached.status == target
+            assert queue.count == before
+            assert Job.fetch_many([job_id(batch_id)], connection=connection)[0] is None
+            assert (
+                delayed.scalar(
+                    select(func.count())
+                    .select_from(AuditEvent)
+                    .where(AuditEvent.object_id == batch_id)
+                )
+                == events
+            )
+    finally:
+        connection.close()
+        engine.dispose()
+
+
+def test_delayed_upload_after_recovery_and_real_rq_completion_is_noop(
+    client, auth_env, source, monkeypatch
+):
+    with patch("app.imports.routes.enqueue_batch"):
+        batch_id = UUID(upload(client, source).json()["id"])
+    monkeypatch.setenv("FK_DATABASE_URL", auth_env.database_url.get_secret_value())
+    monkeypatch.setenv("FK_REDIS_URL", auth_env.redis_url.get_secret_value())
+    monkeypatch.setenv("FK_IMPORT_STORAGE_ROOT", str(auth_env.import_storage_root))
+    engine = make_engine(auth_env)
+    connection = Redis.from_url(auth_env.redis_url.get_secret_value())
+    queue = Queue(auth_env.import_queue_name, connection=connection)
+    own_queue = Queue(auth_env.import_queue_name + "-delayed", connection=connection)
+    try:
+        with Session(engine) as delayed:
+            cached = delayed.get(ImportBatch, batch_id)
+            assert cached.status == "NEW"
+            with Session(engine) as other:
+                other.get(ImportBatch, batch_id).updated_at = datetime.now(UTC) - timedelta(
+                    minutes=5
+                )
+                other.commit()
+            assert recover_imports(auth_env, connection) >= 1
+            job = Job.fetch(job_id(batch_id), connection=connection)
+            queue.remove(job.id)
+            own_queue.enqueue_job(job)
+            SimpleWorker([own_queue], connection=connection).work(
+                burst=True, logging_level="WARNING"
+            )
+            assert current(client, batch_id)["status"] == "COMPLETED"
+            before = client.get(f"/api/v1/imports/{batch_id}/records").json()
+            before_queue = queue.count
+            assert cached.status == "NEW"  # Original request has not refreshed its ORM state.
+            enqueue_batch(batch_id, delayed, connection, auth_env)
+            job.refresh()
+            assert job.is_finished and queue.count == before_queue
+            assert current(client, batch_id)["status"] == "COMPLETED"
+            assert client.get(f"/api/v1/imports/{batch_id}/records").json() == before
+    finally:
+        own_queue.delete(delete_jobs=True)
+        connection.close()
+        engine.dispose()
+
+
+def test_initial_enqueue_defers_to_shared_worker_lock(client, auth_env, source):
+    from sqlalchemy import text
+
+    from app.imports.jobs import batch_lock_key
+
+    with patch("app.imports.routes.enqueue_batch"):
+        batch_id = UUID(upload(client, source).json()["id"])
+    engine = make_engine(auth_env)
+    connection = Redis.from_url(auth_env.redis_url.get_secret_value())
+    try:
+        with engine.begin() as locked, Session(engine) as session:
+            locked.execute(
+                text("SELECT pg_advisory_xact_lock(:key)"), {"key": batch_lock_key(batch_id)}
+            )
+            enqueue_batch(batch_id, session, connection, auth_env)
+            assert current(client, batch_id)["status"] == "NEW"
+            assert Job.fetch_many([job_id(batch_id)], connection=connection)[0] is None
+        with Session(engine) as session:
+            enqueue_batch(batch_id, session, connection, auth_env)
+        assert current(client, batch_id)["status"] == "QUEUED"
+        assert Job.fetch(job_id(batch_id), connection=connection)
+    finally:
+        connection.close()
+        engine.dispose()
+
+
+def test_concurrent_initial_enqueue_publishes_only_once(client, auth_env, source):
+    from concurrent.futures import ThreadPoolExecutor
+
+    with patch("app.imports.routes.enqueue_batch"):
+        batch_id = UUID(upload(client, source).json()["id"])
+    engine = make_engine(auth_env)
+    connection = Redis.from_url(auth_env.redis_url.get_secret_value())
+    queue = Queue(auth_env.import_queue_name, connection=connection)
+    try:
+        before = queue.count
+
+        def enqueue(_):
+            with Session(engine) as session:
+                enqueue_batch(batch_id, session, connection, auth_env)
+
+        with ThreadPoolExecutor(2) as pool:
+            list(pool.map(enqueue, range(2)))
+        assert queue.count == before + 1
+        with Session(engine) as session:
+            assert (
+                session.scalar(
+                    select(func.count())
+                    .select_from(AuditEvent)
+                    .where(
+                        AuditEvent.object_id == batch_id, AuditEvent.event_type == "IMPORT_QUEUED"
+                    )
+                )
+                == 1
+            )
+    finally:
+        connection.close()
+        engine.dispose()

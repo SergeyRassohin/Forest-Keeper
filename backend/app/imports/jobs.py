@@ -75,12 +75,29 @@ def rq_failure(job: Job, connection: Redis, *args: Any, **kwargs: Any) -> None:
 
 
 def enqueue_batch(batch_id: UUID, session: Session, redis: Redis, settings: Settings) -> None:
-    batch = session.get(ImportBatch, batch_id)
+    # A delayed upload may resume after recovery/worker already handled its NEW.
+    # Serialize with both and replace any cached ORM state before transitioning.
+    if not session.scalar(
+        text("SELECT pg_try_advisory_xact_lock(:key)"), {"key": batch_lock_key(batch_id)}
+    ):
+        session.rollback()
+        return
+    batch = session.scalar(
+        select(ImportBatch)
+        .where(ImportBatch.id == batch_id)
+        .with_for_update()
+        .execution_options(populate_existing=True)
+    )
     if batch is None:
+        session.rollback()
         raise ValueError("Import batch does not exist")
-    transition(session, batch, ImportStatus.QUEUED)
+    publish = batch.status == ImportStatus.NEW
+    if publish:
+        transition(session, batch, ImportStatus.QUEUED)
     session.commit()
-    publish_job(batch_id, redis, settings)
+    # Release the worker lock before a published job can start.
+    if publish:
+        publish_job(batch_id, redis, settings)
     session.expire_all()
 
 
@@ -153,7 +170,7 @@ def execute_import(batch_id: UUID, settings: Settings) -> None:
                             {
                                 "id": uuid4(),
                                 "import_batch_id": batch_id,
-                                "source_position": {"file": True},
+                                "source_position": error.position or {"file": True},
                                 "position_key": "file",
                                 "code": error.code,
                                 "message": error.message,
