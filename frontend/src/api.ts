@@ -49,11 +49,16 @@ export async function currentUser(signal: AbortSignal): Promise<User | null> {
 }
 
 export async function signIn(login: string, password: string): Promise<User> {
-  const response = await fetch('/api/v1/auth/login', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ login, password }),
-  });
+  let response: Response;
+  try {
+    response = await fetch('/api/v1/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ login, password }),
+    });
+  } catch {
+    throw new Error('Не удалось подключиться к серверу. Повторите попытку.');
+  }
   if (!response.ok) {
     if (response.status === 429)
       throw new Error('Слишком много попыток. Попробуйте позже.');

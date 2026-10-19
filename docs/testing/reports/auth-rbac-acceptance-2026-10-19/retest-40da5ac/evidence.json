@@ -1,0 +1,92 @@
+{
+  "runtime_sha": "40da5aca6bec33c11ec417c975fec26cdc05c9eb",
+  "baseline_full_acceptance_sha": "41faa11a8b7ee9d5959ca6a3fd29d9079bb7fb74",
+  "reviewer": "Independent agent /root/independent_review; did not author runtime fix",
+  "independent_browser_probes": {
+    "WEB-02": {
+      "status": "PASS",
+      "evidence": "Real Chromium aborted login fetch: understandable Russian connection error, password empty, no session cookie and login form remains; original Failed to fetch defect closed."
+    },
+    "HTTP-ERRORS": {
+      "status": "PASS",
+      "evidence": "Real wrong-password401 retains localized message; browser503 fulfillment retains temporary-unavailability message; both clear password and deny session. Actual PG/Redis outages remain independently verified on unchanged backend at original SHA."
+    },
+    "ORIGIN-COOKIE": {
+      "status": "PASS",
+      "evidence": "Missing/null/foreign login and cookie-logout Origin403; real allowed-Origin browser login200 JSON only user, protected cookie flags and no JS storage; valid session in Authorization401."
+    },
+    "SESSION-UI": {
+      "status": "PASS",
+      "evidence": "Reload persists login; actual DB expiry of owned session returns dashboard UI to login."
+    },
+    "LOGOUT-REPLAY": {
+      "status": "PASS",
+      "evidence": "Real UI logout204 removes cookie; replay401."
+    }
+  },
+  "backend_changed": false,
+  "nginx_changed": false,
+  "frontend_image_id": "sha256:aae9fa02994aeae19b737cc458012b2fd8ed09eaf21b0ff8ab74403405876862",
+  "frontend_dist_matches_container": [
+    {
+      "path": "index.html",
+      "sha256": "53e8aea4eb876b6300b20d964fa8a523c1d803006854f3302491f27cc25537f4"
+    },
+    {
+      "path": "assets/index-CiV9obTq.css",
+      "sha256": "febd63d72ad41361c122d909a7adba320ca96fc28fb477a083c03078d9c7c93c"
+    },
+    {
+      "path": "assets/index-Buntmobz.js",
+      "sha256": "cf3c45c85ca9b61631c86f3fbd2782382fccf1adb4c9425b3a896c8a2af72329"
+    }
+  ],
+  "gates_exit_codes": {
+    "check": 0,
+    "check-sast": 0,
+    "check-secrets": 0,
+    "test-security-gates": 0,
+    "check-dependencies": 0,
+    "check-integration": 0
+  },
+  "test_counts": {
+    "backend_unit_passed": 8,
+    "backend_integration_passed": 222,
+    "frontend_passed": 9,
+    "browser_passed": 6,
+    "total_passed": 245,
+    "failed": 0,
+    "skipped": 0
+  },
+  "cleanup": {
+    "synthetic_owned_user_deleted": true,
+    "private_credentials_file_removed": true,
+    "audit_preserved": true
+  },
+  "ci": [
+    {
+      "conclusion": "success",
+      "databaseId": 39253684850,
+      "event": "pull_request",
+      "headSha": "40da5aca6bec33c11ec417c975fec26cdc05c9eb",
+      "status": "completed",
+      "url": "https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39253684850"
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 39253637438,
+      "event": "push",
+      "headSha": "40da5aca6bec33c11ec417c975fec26cdc05c9eb",
+      "status": "completed",
+      "url": "https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39253637438"
+    }
+  ],
+  "checked_at_utc": "2026-10-19T12:42:15.190914+00:00",
+  "final_acceptance": {
+    "PASS": 35,
+    "FAIL": 0,
+    "BLOCKED": 0,
+    "NOT_RUN": 0,
+    "closed_finding": "WEB-02"
+  }
+}
