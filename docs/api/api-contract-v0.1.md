@@ -106,6 +106,8 @@ API — это договорённость между браузерным ин
 
 Изменение настроек источника.
 
+Этап2: source_type принимает FILE (CSV/XLSX/generic XML) или ONE_C (тот же файловый источник с тестовым 1С XML профилем). Создание требует source.manage; чтение — source.view. Созданный источник имеет status ACTIVE и authority_scope={} по умолчанию. PATCH меняет только name/authority_scope; code/source_type/status не являются произвольными editable полями. Уникальный code уже существует →409. Поле authority_scope на этом этапе хранит metadata без определения истинности значений.
+
 ---
 
 ## 5. Импорт файлов
@@ -119,15 +121,26 @@ API — это договорённость между браузерным ин
 - `source_id`
 - файл
 
+Тело `multipart/form-data`: поля `source_id` (UUID) и `file`; остальные поля не нужны. Обязательны cookie, разрешённый Origin и permission import.create. Лимит файла —100000000байт по умолчанию. Неподдерживаемое расширение→415, небезопасное имя→422, превышение размера→413, неактивный источник→409. Небезопасный/повреждённый файл с допустимым расширением сохраняется как оригинал, но worker завершает пакет FAILED с безопасной ошибкой.
+
 Ответ:
 
 ```json
 {
   "import_batch_id": "uuid",
-  "status": "NEW",
-  "file_name": "materials.xlsx"
+  "status": "QUEUED",
+  "file_name": "materials.xlsx",
+  "duplicate": false
 }
 ```
+
+Новая загрузка возвращает201 и ImportView; разбор выполняется через RQ. Ответ дополнительно содержит id/import_batch_id, source_system_id/source_name, original_filename/file_name, format, file_hash (SHA-256), uploaded_by/uploaded_at, records_total/records_loaded/records_failed, error_text и retry_of_id. Storage URI и серверный filesystem path не выдаются. При недоступной очереди принятый пакет может уже иметь FAILED;201 подтверждает сохранение оригинала/пакета, а не завершение импорта.
+
+Идентичные байты для того же source_id возвращают200 с `duplicate=true` и тем же первичным ImportBatch; новое имя не перезаписывает первое, новая задача и RawRecord не создаются. У другого источника тот же файл создаёт отдельный пакет. Конкурентные дубликаты защищены уникальным индексом PostgreSQL.
+
+### GET /api/v1/imports
+
+Список ImportView от новых к старым; import.view. Общие параметры страниц списка источников/импортов/records/errors: limit1–100 (default50), offset0–1000000. UI использует страницы50.
 
 ### GET /api/v1/imports/{import_batch_id}
 
@@ -148,6 +161,18 @@ API — это договорённость между браузерным ин
 ### GET /api/v1/imports/{import_batch_id}/errors
 
 Ошибки разбора файла.
+
+Ответ — массив `{id, source_position, code, message}`; сообщения не содержат исходный payload, credentials или filesystem internals. Требуется import.view. Ошибка отдельной строки/объекта оставляет другие записи; результат COMPLETED_WITH_ERRORS. Нечитаемый документ или пакет без пригодных записей при ошибках — FAILED.
+
+### GET /api/v1/imports/{import_batch_id}/records
+
+Минимальный просмотр RawRecord, import.view: массив `{id, import_batch_id, source_record_key, source_object_type, raw_payload, source_position, created_at}`. Записи неизменяемы; source_position указывает строки CSV, sheet/row XLSX или номер XML-объекта. Исходный пакет связывает их с источником и оригинальным файлом. Сервер возвращает страницы в стабильном порядке created_at/id; это не обещание сортировки по исходному номеру строки.
+
+### POST /api/v1/imports/{import_batch_id}/retry
+
+Permission import.retry, cookie и разрешённый Origin. Для FAILED/COMPLETED_WITH_ERRORS создаёт201 новый ImportBatch (retry_of_id), ссылающийся на тот же неизменяемый оригинал. Старый статус/RawRecord/errors не меняются. Активный повтор того же пакета или повтор успешного пакета→409. Повторный upload остаётся duplicate первичного пакета; повторную обработку нужно запросить явно.
+
+Все endpoints источников/импорта проверяют permission backend и возвращают no-store. Форматы, лимиты парсеров, базовый профиль 1С и восстановление очереди: [Import subsystem](../development/import.md).
 
 ---
 

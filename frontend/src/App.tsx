@@ -9,6 +9,7 @@ import {
   type User,
 } from './api';
 import { UserAdmin } from './UserAdmin';
+import { Imports } from './Imports';
 
 const labels = {
   api: 'API',
@@ -127,6 +128,7 @@ export function App() {
   const [error, setError] = useState('');
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
+  const [page, setPage] = useState('dashboard');
   const expire = useCallback(() => setUser(null), []);
 
   useEffect(() => {
@@ -256,7 +258,14 @@ export function App() {
               {error}
             </p>
           )}
-          {user.permissions.includes('dashboard.view') ? (
+          <nav className="shell" aria-label="Разделы приложения">
+            <button onClick={() => setPage('dashboard')}>Состояние сервера</button>
+            {user.permissions.includes('import.view') &&
+              <button onClick={() => setPage('imports')}>Импорт данных</button>}
+          </nav>
+          {page === 'imports' && user.permissions.includes('import.view') ? (
+            <Imports user={user} onSessionExpired={expire} />
+          ) : user.permissions.includes('dashboard.view') ? (
             <HealthDashboard onSessionExpired={expire} />
           ) : (
             <main className="shell">
@@ -264,7 +273,7 @@ export function App() {
               <p>Обратитесь к администратору для назначения роли.</p>
             </main>
           )}
-          {user.permissions.includes('user.view') && <UserAdmin />}
+          {page === 'dashboard' && user.permissions.includes('user.view') && <UserAdmin />}
         </>
       )}
       <footer className="shell">Исходные данные сохраняются. Окончательное решение принимает человек.</footer>

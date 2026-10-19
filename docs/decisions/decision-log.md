@@ -89,6 +89,12 @@ The logical Decision Registry schema is fixed by docs/data-model/data-model-v0.2
 
 The MVP client is the web browser; application services run on the server. Local authentication uses a server-side session and Secure/HttpOnly/SameSite=Strict cookie only. Login returns user information without the session identifier in JSON. Bearer authentication and a separate API-client login flow are outside the agreed MVP scope and have been removed. Login and state-changing cookie requests require an explicitly allowed Origin, including rejection of absent and `null` Origin. Future non-browser authentication needs a separate explicit decision.
 
+### 2026-10-19 — Stage 2 file import contract refinements
+
+Issue #7 authorizes a file-only import subsystem. The canonical SourceSystem specifies source_type as an Enum without a complete value set; the Stage 2 API refines it to FILE and ONE_C (the existing API example), with no source write-back. CSV/XLSX/XML are file formats, not new lifecycle states. The ONE_C adapter initially accepts the documented synthetic XML export profile; production export compatibility must be checked against pilot samples.
+
+Duplicate identity is `(SourceSystem, SHA-256 of saved bytes)`. A repeated upload returns HTTP200 and the existing primary ImportBatch, without enqueueing another job. Retry is explicit, permission import.retry, and creates a new ImportBatch with retry_of_id and the same original; historical batches/raw/audit remain. New uploads return201 after accepting the original and batch, with asynchronous processing status. Add paginated GET imports and GET imports/{id}/records to meet browser raw/provenance visibility. Parser/storage resource bounds and operational recovery are specified in docs/development/import.md and do not change canonical ImportBatch transitions.
+
 ## Open decisions
 - Exact first pilot domain.
 - Thresholds for automatic entity matching versus human review.

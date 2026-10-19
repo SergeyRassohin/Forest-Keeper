@@ -26,4 +26,5 @@ playwright-report/
 test-results/
 .env
 deploy/local/
+backend/var/
 *.tsbuildinfo

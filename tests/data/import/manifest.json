@@ -1,0 +1,78 @@
+{
+  "valid.csv": {
+    "records": 2,
+    "errors": 0,
+    "status": "COMPLETED",
+    "first_position": {
+      "line_start": 2,
+      "line_end": 2
+    }
+  },
+  "duplicate.csv": {
+    "duplicate_of": "valid.csv",
+    "records": 2,
+    "errors": 0,
+    "status": "COMPLETED"
+  },
+  "partial.csv": {
+    "records": 2,
+    "errors": 2,
+    "status": "COMPLETED_WITH_ERRORS"
+  },
+  "valid.xlsx": {
+    "records": 2,
+    "errors": 0,
+    "status": "COMPLETED",
+    "first_position": {
+      "sheet": "Data",
+      "row": 2
+    }
+  },
+  "valid.xml": {
+    "records": 2,
+    "errors": 0,
+    "status": "COMPLETED",
+    "first_position": {
+      "object": 1,
+      "tag": "record"
+    }
+  },
+  "partial.xml": {
+    "records": 2,
+    "errors": 1,
+    "status": "COMPLETED_WITH_ERRORS"
+  },
+  "onec.xml": {
+    "records": 2,
+    "errors": 0,
+    "status": "COMPLETED",
+    "source_type": "ONE_C",
+    "first_position": {
+      "object": 1,
+      "tag": "Объект"
+    }
+  },
+  "xxe.xml": {
+    "records": 0,
+    "errors": 1,
+    "status": "FAILED"
+  },
+  "entities.xml": {
+    "records": 0,
+    "errors": 1,
+    "status": "FAILED"
+  },
+  "corrupt.xlsx": {
+    "records": 0,
+    "errors": 1,
+    "status": "FAILED"
+  },
+  "unsafe.xlsx": {
+    "records": 0,
+    "errors": 1,
+    "status": "FAILED"
+  },
+  "unsupported.txt": {
+    "http_status": 415
+  }
+}

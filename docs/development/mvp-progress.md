@@ -38,11 +38,19 @@
 
 Security-critical изменения требуют независимой проверки по AGENTS.md перед принятием. Этап 1 не включает MFA/SSO, recovery, изменение пользователей через UI и бизнес-object scopes. Новые auth-таблицы являются техническим расширением User и не вводят новые бизнес-статусы.
 
-Импорт, canonical/matching/conflicts, Human Review, Decision Registry, AI/similarity, правила, полный бизнес-аудит, лицензирование и Update Service ещё не реализованы. Модели не скачивались. Продуктовый E2E импорта/решений и capacity/performance acceptance всего MVP предстоят.
+Canonical/matching/conflicts, Human Review, Decision Registry, AI/similarity, правила, полный бизнес-аудит, лицензирование и Update Service ещё не реализованы. Импорт добавлен в этапе 2 ниже. Модели не скачивались. Продуктовый E2E решений и capacity/performance acceptance всего MVP предстоят.
 
 ## Следующая итерация
 
-После принятия Authentication + RBAC — этап 2: SourceSystem, ImportBatch, RawRecord, сохранение оригинального файла/checksum/provenance и background import XLSX/CSV/XML.
+Этап1 принят после полного независимого прогона [issue #5](https://github.com/SergeyRassohin/Forest-Keeper/issues/5), исправления WEB-02 и merge PR #6. Все35пунктов сценария PASS,245тестов и CI main прошли. Обновление CI Actions/runner принято через PR #4.
+
+## Итерация 3 — этап 2
+
+По [issue #7](https://github.com/SergeyRassohin/Forest-Keeper/issues/7) реализуются SourceSystem, ImportBatch, неизменяемый RawRecord, локальное persistent хранилище оригиналов, SHA-256 и фоновые jobs RQ. Добавлены защищённые source/import API, страницы ошибок/исходных записей, duplicate policy и явный retry новым пакетом, браузерный раздел «Импорт данных».
+
+Форматы: UTF-8 CSV, первый worksheet XLSX, generic XML и документированный синтетический профиль1С XML. Синтетические fixtures/manifest, parser/storage/lifecycle/RBAC/failure tests и browser E2E входят в проверку. Capacity profile: два набора100000×30атрибутов, по30000381байт; обработаны примерно за22сек каждый, metadata p95≈0.204сек при10сессиях на облачном стенде. Подробности и технические ограничения: [Import subsystem](import.md). Полный итоговый отчёт/CI привязываются к коммиту PR этапа2; этап не объявляется принятым только по наличию реализации.
+
+После приёмки этапа2 следующий этап3 — нормализация и canonical model. В текущей реализации они не включены.
 
 Для последующего импорта нужно согласовать первый pilot domain и формат реальной выгрузки 1С. Пороги matching остаются открытым решением; до его принятия нельзя молча вводить автоматическое объединение по fuzzy/embedding score.
 

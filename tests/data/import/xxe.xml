@@ -1,0 +1,1 @@
+<!DOCTYPE records [<!ENTITY external SYSTEM "https://example.invalid/external">]><records><record><name>&external;</name></record></records>

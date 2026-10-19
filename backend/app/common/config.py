@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from pydantic import Field, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -14,3 +16,8 @@ class Settings(BaseSettings):
     login_account_limit: int = Field(default=10, ge=1)
     login_ip_limit: int = Field(default=60, ge=1)
     auth_rate_prefix: str = "fk:auth:login:"
+    import_storage_root: Path = Path("var/imports")
+    import_max_bytes: int = Field(default=100_000_000, ge=1024, le=1_000_000_000)
+    import_max_expanded_bytes: int = Field(default=512_000_000, ge=1024)
+    import_job_timeout: int = Field(default=900, ge=30, le=7200)
+    import_queue_name: str = "forest-keeper"
