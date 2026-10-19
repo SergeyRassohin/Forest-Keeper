@@ -19,7 +19,7 @@ from sqlalchemy.exc import DBAPIError
 from sqlalchemy.orm import Session
 from sqlalchemy.schema import CreateSchema, DropSchema
 
-from app.auth.dependencies import cache, require_permission
+from app.auth.dependencies import COOKIE_NAME, cache, require_permission
 from app.auth.models import AuditEvent, AuthSession, Role, User, UserRole
 from app.auth.security import hash_password, token_digest
 from app.common.config import Settings
@@ -155,8 +155,10 @@ def test_each_permission_through_authenticated_backend(client, role_tokens, perm
         methods=["POST"],
         dependencies=[Depends(require_permission(permission))],
     )
+    client.cookies.set(COOKIE_NAME, role_tokens[str(role)])
     response = client.post(
-        "/test/permission", headers={"Authorization": "Bearer " + role_tokens[str(role)]}
+        "/test/permission",
+        headers=ORIGIN,
     )
     expected = 200 if role in MATRIX[permission] else 403
     assert response.status_code == expected
@@ -169,7 +171,10 @@ def enter(client, account):
         headers=ORIGIN,
     )
     assert response.status_code == 200
-    return response.json()["access_token"]
+    assert set(response.json()) == {"user"}
+    cookie = client.cookies.get(COOKIE_NAME)
+    assert cookie and cookie not in response.text
+    return cookie
 
 
 def test_login_cookie_token_storage_and_identity(client, account, auth_env):
@@ -207,9 +212,9 @@ def account_payload(account):
 def test_invalid_credentials_are_generic(client, account, auth_env):
     body = account_payload(account)
     body["password"] = secrets.token_urlsafe(20)
-    wrong = client.post("/api/v1/auth/login", json=body)
+    wrong = client.post("/api/v1/auth/login", json=body, headers=ORIGIN)
     body["login"] = uuid4().hex
-    missing = client.post("/api/v1/auth/login", json=body)
+    missing = client.post("/api/v1/auth/login", json=body, headers=ORIGIN)
     assert wrong.status_code == missing.status_code == 401
     assert wrong.json() == missing.json()
     engine = make_engine(auth_env)
@@ -239,17 +244,18 @@ def test_account_status_invalidates_login_and_existing_session(client, account, 
         session.commit()
     engine.dispose()
     assert client.get("/api/v1/auth/me").status_code == 401
-    assert client.post("/api/v1/auth/login", json=account_payload(account)).status_code == 401
+    assert (
+        client.post("/api/v1/auth/login", json=account_payload(account), headers=ORIGIN).status_code
+        == 401
+    )
 
 
-def test_logout_revokes_both_cookie_and_bearer(client, account):
+def test_logout_revokes_cookie_session(client, account):
     token = enter(client, account)
     assert client.post("/api/v1/auth/logout", headers=ORIGIN).status_code == 204
     assert client.get("/api/v1/auth/me").status_code == 401
-    assert (
-        client.get("/api/v1/auth/me", headers={"Authorization": "Bearer " + token}).status_code
-        == 401
-    )
+    client.cookies.set(COOKIE_NAME, token)
+    assert client.get("/api/v1/auth/me").status_code == 401
 
 
 def test_expired_session_is_rejected(client, account, auth_env):
@@ -284,12 +290,66 @@ def test_csrf_and_invalid_authorization_do_not_fall_back_to_cookie(client, accou
     )
 
 
+@pytest.mark.parametrize("origin", [None, "null", "https://evil.invalid"])
+def test_login_requires_allowed_origin_before_creating_session(client, account, auth_env, origin):
+    from sqlalchemy import func
+
+    engine = make_engine(auth_env)
+    with Session(engine) as session:
+        before = session.scalar(select(func.count()).select_from(AuthSession))
+    headers = {} if origin is None else {"Origin": origin}
+    response = client.post("/api/v1/auth/login", json=account_payload(account), headers=headers)
+    assert response.status_code == 403
+    assert response.json()["error"]["code"] == "ORIGIN_NOT_ALLOWED"
+    assert "set-cookie" not in response.headers
+    with Session(engine) as session:
+        assert session.scalar(select(func.count()).select_from(AuthSession)) == before
+    engine.dispose()
+
+
+def test_authorization_header_cannot_use_or_bypass_cookie_session(client, account):
+    token = enter(client, account)
+    assert (
+        "www-authenticate"
+        not in client.get("/api/v1/auth/me", headers={"Authorization": "Bearer " + token}).headers
+    )
+    for authorization in ("Bearer " + token, "Basic invalid", ""):
+        headers = {"Authorization": authorization}
+        assert client.get("/api/v1/auth/me", headers=headers).status_code == 401
+        assert client.post("/api/v1/auth/logout", headers=headers).status_code == 401
+    # The header did not revoke or replace the cookie session.
+    assert client.get("/api/v1/auth/me").status_code == 200
+    client.cookies.clear()
+    assert (
+        client.get("/api/v1/auth/me", headers={"Authorization": "Bearer " + token}).status_code
+        == 401
+    )
+
+
+@pytest.mark.parametrize("origin", [None, "null", "https://evil.invalid"])
+def test_admin_cookie_mutation_requires_origin(client, role_tokens, auth_env, password, origin):
+    client.cookies.set(COOKIE_NAME, role_tokens[Role.ADMIN])
+    name = "csrf_" + uuid4().hex
+    response = client.post(
+        "/api/v1/users",
+        headers={} if origin is None else {"Origin": origin},
+        json={"login": name, "full_name": "Forbidden", "password": password, "roles": []},
+    )
+    assert response.status_code == 403
+    engine = make_engine(auth_env)
+    with Session(engine) as session:
+        assert session.scalar(select(User).where(User.login == name)) is None
+    engine.dispose()
+
+
 def test_admin_only_management_and_no_hash_leaks(client, role_tokens, password):
     for role in (Role.VIEWER, Role.REVIEWER, Role.DATA_OWNER):
-        headers = {"Authorization": "Bearer " + role_tokens[role]}
+        client.cookies.set(COOKIE_NAME, role_tokens[role])
+        headers = ORIGIN
         assert client.get("/api/v1/users", headers=headers).status_code == 403
         assert client.get("/api/v1/version", headers=headers).status_code == 403
-    headers = {"Authorization": "Bearer " + role_tokens[Role.ADMIN]}
+    client.cookies.set(COOKIE_NAME, role_tokens[Role.ADMIN])
+    headers = ORIGIN
     response = client.post(
         "/api/v1/users",
         headers=headers,
@@ -307,12 +367,15 @@ def test_admin_only_management_and_no_hash_leaks(client, role_tokens, password):
 
 
 def test_password_validation_never_echoes_input(client, role_tokens):
+    client.cookies.set(COOKIE_NAME, role_tokens[Role.ADMIN])
     password = secrets.token_urlsafe(150)
-    response = client.post("/api/v1/auth/login", json={"login": "invalid", "password": password})
+    response = client.post(
+        "/api/v1/auth/login", json={"login": "invalid", "password": password}, headers=ORIGIN
+    )
     assert response.status_code == 422 and password not in response.text
     response = client.post(
         "/api/v1/users",
-        headers={"Authorization": "Bearer " + role_tokens[Role.ADMIN]},
+        headers=ORIGIN,
         json={
             "login": "invalid",
             "full_name": "Invalid",
@@ -345,9 +408,9 @@ def test_login_rate_limit_is_enforced(auth_env, account):
     )
     with TestClient(create_app(settings=settings), base_url="https://localhost:8443") as client:
         body = {"login": account["login"], "password": "incorrect"}
-        assert client.post("/api/v1/auth/login", json=body).status_code == 401
-        assert client.post("/api/v1/auth/login", json=body).status_code == 401
-        response = client.post("/api/v1/auth/login", json=body)
+        assert client.post("/api/v1/auth/login", json=body, headers=ORIGIN).status_code == 401
+        assert client.post("/api/v1/auth/login", json=body, headers=ORIGIN).status_code == 401
+        response = client.post("/api/v1/auth/login", json=body, headers=ORIGIN)
         assert response.status_code == 429
         assert response.headers["retry-after"] == "73"
 
@@ -358,7 +421,10 @@ def test_redis_failure_does_not_bypass_login_limit(client, account):
             raise RedisError("unavailable")
 
     client.app.dependency_overrides[cache] = lambda: Unavailable()
-    assert client.post("/api/v1/auth/login", json=account_payload(account)).status_code == 503
+    assert (
+        client.post("/api/v1/auth/login", json=account_payload(account), headers=ORIGIN).status_code
+        == 503
+    )
 
 
 def test_audit_cannot_be_rewritten(client, account, auth_env):
@@ -413,9 +479,10 @@ def test_stale_admin_session_requires_reauthentication(client, role_tokens, auth
         record.created_at = datetime.now(UTC) - timedelta(minutes=6)
         session.commit()
     try:
+        client.cookies.set(COOKIE_NAME, token)
         response = client.post(
             "/api/v1/users",
-            headers={"Authorization": "Bearer " + token},
+            headers=ORIGIN,
             json={
                 "login": "denied_" + uuid4().hex,
                 "full_name": "Denied",

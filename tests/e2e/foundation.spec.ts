@@ -22,7 +22,14 @@ async function enter(page: Page, account: Account) {
   ).toBeVisible();
   await page.getByLabel('Логин', { exact: true }).fill(account.login);
   await page.getByLabel('Пароль', { exact: true }).fill(account.password);
+  const loginResponse = page.waitForResponse(
+    (response) => response.url().endsWith('/api/v1/auth/login') &&
+      response.request().method() === 'POST',
+  );
   await page.getByRole('button', { name: 'Войти', exact: true }).click();
+  const response = await loginResponse;
+  expect(response.status()).toBe(200);
+  expect(Object.keys(await response.json())).toEqual(['user']);
   await expect(page.getByText('Сервер готов', { exact: true })).toBeVisible();
 }
 
@@ -79,7 +86,7 @@ test('ADMIN creates a reviewer without inheriting business permissions', async (
   ).toContainText('REVIEWER');
 });
 
-test('logout revokes the session, including its bearer token', async ({
+test('logout revokes the cookie session and rejects its replay', async ({
   page,
 }) => {
   await enter(page, accounts.REVIEWER);
@@ -92,8 +99,33 @@ test('logout revokes the session, including its bearer token', async ({
   await expect(
     page.getByRole('heading', { name: 'Вход в Forest Keeper' }),
   ).toBeVisible();
-  const response = await page.request.get('/api/v1/auth/me', {
-    headers: { Authorization: 'Bearer ' + cookie.value },
-  });
+  expect((await page.context().cookies()).some(
+    (item) => item.name === '__Host-fk_session',
+  )).toBe(false);
+  await page.context().addCookies([cookie]);
+  const response = await page.request.get('/api/v1/auth/me');
   expect(response.status()).toBe(401);
+});
+
+test('login requires an allowed Origin and does not issue a bearer token', async ({
+  request,
+  baseURL,
+}) => {
+  const forbidden: Record<string, string>[] = [
+    {}, { Origin: 'null' }, { Origin: 'https://evil.invalid' },
+  ];
+  for (const headers of forbidden) {
+    const response = await request.post('/api/v1/auth/login', {
+      data: accounts.VIEWER,
+      headers,
+    });
+    expect(response.status()).toBe(403);
+    expect(response.headers()['set-cookie']).toBeUndefined();
+  }
+  const response = await request.post('/api/v1/auth/login', {
+    data: accounts.VIEWER,
+    headers: { Origin: new URL(baseURL!).origin },
+  });
+  expect(response.status()).toBe(200);
+  expect(Object.keys(await response.json())).toEqual(['user']);
 });

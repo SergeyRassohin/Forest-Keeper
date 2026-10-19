@@ -60,7 +60,7 @@ export async function signIn(login: string, password: string): Promise<User> {
     if (response.status === 401) throw new Error('Неверный логин или пароль.');
     throw new Error('Вход временно недоступен. Повторите попытку.');
   }
-  // API clients can use access_token. The browser persists only the HttpOnly cookie.
+  // The session is stored only in the HttpOnly cookie managed by the browser.
   const body: { user: User } = await response.json();
   return body.user;
 }

@@ -37,25 +37,18 @@ Config = Annotated[Settings, Depends(config)]
 Cache = Annotated[Redis, Depends(cache)]
 
 
-def check_origin(request: Request, settings: Settings, *, required: bool = False) -> None:
+def check_origin(request: Request, settings: Settings) -> None:
     origin = request.headers.get("origin")
-    if (required and origin is None) or (
-        origin is not None and origin not in settings.allowed_origins
-    ):
+    if origin is None or origin not in settings.allowed_origins:
         raise ApiError(403, "ORIGIN_NOT_ALLOWED", "Запрос с этого сайта запрещён")
 
 
 def current_user(request: Request, session: Db, settings: Config) -> User:
-    authorization = request.headers.get("authorization")
-    token: str | None = None
-    if authorization is not None:
-        scheme, _, value = authorization.partition(" ")
-        if scheme.lower() == "bearer" and value and len(value) <= 256:
-            token = value
-    else:
-        token = request.cookies.get(COOKIE_NAME)
-        if token and request.method not in {"GET", "HEAD", "OPTIONS"}:
-            check_origin(request, settings, required=True)
+    if "authorization" in request.headers:
+        raise ApiError(401, "AUTH_REQUIRED", "Необходимо войти в систему")
+    token = request.cookies.get(COOKIE_NAME)
+    if token and request.method not in {"GET", "HEAD", "OPTIONS"}:
+        check_origin(request, settings)
     if not token or len(token) > 256:
         raise ApiError(401, "AUTH_REQUIRED", "Необходимо войти в систему")
     record = session.get(AuthSession, token_digest(token))

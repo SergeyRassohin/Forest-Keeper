@@ -51,6 +51,4 @@ class UserView(BaseModel):
 
 
 class LoginResponse(BaseModel):
-    access_token: str = Field(repr=False)
-    token_type: str = "bearer"
     user: UserView

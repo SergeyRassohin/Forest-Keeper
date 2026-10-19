@@ -44,8 +44,6 @@ def create_app(settings: Settings | None = None, checker: HealthChecker | None =
     @app.exception_handler(ApiError)
     async def api_error(request: Request, error: ApiError) -> JSONResponse:
         headers = {"Cache-Control": "no-store"}
-        if error.status == 401:
-            headers["WWW-Authenticate"] = "Bearer"
         if error.status == 429:
             headers["Retry-After"] = str(request.app.state.settings.login_window_seconds)
         return JSONResponse(error.body(), status_code=error.status, headers=headers)

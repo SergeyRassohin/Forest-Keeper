@@ -17,9 +17,9 @@ docker compose exec backend python -m app.auth.bootstrap --login admin --full-na
 ## Сессии и защита
 
 - Пароли: Argon2id, 64 MiB, time cost 3, parallelism 1; длина при создании 12–128 символов. Логины ASCII нормализуются в нижний регистр; пароль не нормализуется.
-- Сессия: случайный 256-bit opaque token; в PostgreSQL хранится только SHA-256. По умолчанию срок 60 минут, без sliding expiration/refresh. Выход отзывает текущую сессию, включая bearer-доступ. BLOCKED/DISABLED и изменения ролей проверяются по БД на каждом запросе.
-- Браузер: `__Host-fk_session`, Secure, HttpOnly, SameSite=Strict, Path=/, без Domain. JS не сохраняет access_token в localStorage/sessionStorage. Браузер использует HTTPS; API-клиент может явно передать `Authorization: Bearer ...`.
-- CSRF: login проверяет Origin, если он передан. Изменяющие cookie-запросы требуют разрешённый Origin; explicit Bearer не использует ambient cookie. Некорректный Authorization не подменяется cookie. CORS для сторонних сайтов не включён.
+- Сессия: случайный 256-bit opaque token; в PostgreSQL хранится только SHA-256. По умолчанию срок 60 минут, без sliding expiration/refresh. Выход отзывает текущую сессию; повторное предъявление старой cookie запрещено. BLOCKED/DISABLED и изменения ролей проверяются по БД на каждом запросе.
+- Браузер: `__Host-fk_session`, Secure, HttpOnly, SameSite=Strict, Path=/, без Domain. Браузер использует HTTPS. Идентификатор сессии передаётся только через Set-Cookie и не возвращается в JSON; JS не получает его и не сохраняет в localStorage/sessionStorage. Единственный клиент MVP — браузер; отдельного bearer-входа нет, Authorization на защищённых маршрутах отклоняется с 401.
+- CSRF: login и изменяющие запросы с session cookie требуют Origin из FK_ALLOWED_ORIGINS; отсутствующий, null и сторонний Origin запрещены с 403. Авторизация в заголовке не позволяет обойти cookie/Origin-проверку. CORS для сторонних сайтов не включён.
 - Redis ограничивает login по аккаунту и peer IP: 10/60 попыток за 60 секунд по умолчанию. Недоступность Redis запрещает вход (503). За HTTPS proxy peer IP соответствует proxy, пока отдельно не настроен trusted forwarding; X-Forwarded-For не принимается от произвольного клиента.
 - Auth/user ответы имеют Cache-Control: no-store; validation errors не отражают введённые пароли/токены. Gateway задаёт CSP и запрет встраивания в frame.
 - Создание пользователя требует user.manage + role.assign и сессию не старше 5 минут. После этого срока нужно выйти и войти снова.
@@ -29,7 +29,7 @@ docker compose exec backend python -m app.auth.bootstrap --login admin --full-na
 
 ## API
 
-- POST /api/v1/auth/login → access_token, token_type и user; устанавливает cookie.
+- POST /api/v1/auth/login → только `{ "user": ... }`; устанавливает HttpOnly cookie при разрешённом Origin.
 - GET /api/v1/auth/me → user с актуальными roles и permissions.
 - POST /api/v1/auth/logout → 204; отзывает текущую сессию.
 - GET /api/v1/dashboard → готовность компонентов, требует dashboard.view.
@@ -40,6 +40,8 @@ docker compose exec backend python -m app.auth.bootstrap --login admin --full-na
 401: отсутствующая/недействительная сессия. 403: отсутствующий permission, запрещённый Origin или необходимость повторного входа. 429: ограничение login. Ошибки соответствуют API Contract. Session table и password_hash — технические расширения User, не новые бизнес-состояния.
 
 ## Проверки и границы
+
+Сценарий независимой приёмки с шагами, ожидаемыми результатами и шаблоном отчёта: [Authentication + RBAC review v0.1](../testing/auth-rbac-review-v0.1.md). Наличие сценария не означает, что ревью выполнено.
 
 Запуск: scripts/check.sh, check-sast.sh, check-secrets.sh, check-dependencies.sh, test-security-gates.sh, затем check-integration.sh с работающим Compose.
 

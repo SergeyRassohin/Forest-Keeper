@@ -102,7 +102,7 @@ def login(
         max_age=settings.session_minutes * 60,
         path="/",
     )
-    return LoginResponse(access_token=token, user=UserView.of(user))
+    return LoginResponse(user=UserView.of(user))
 
 
 @router.get("/auth/me", response_model=UserView)
