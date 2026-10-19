@@ -1,0 +1,177 @@
+{
+  "source": "docs/security/access-control-matrix-v0.1.xlsx",
+  "sha256": "1d3fcff5fda90e830845f87c9032bcc91b7877ef53f4c79cd06e9a1c2176470e",
+  "permissions": {
+    "dashboard.view": [
+      "VIEWER",
+      "REVIEWER",
+      "DATA_OWNER",
+      "ADMIN"
+    ],
+    "source.view": [
+      "VIEWER",
+      "REVIEWER",
+      "DATA_OWNER",
+      "ADMIN"
+    ],
+    "source.manage": [
+      "DATA_OWNER",
+      "ADMIN"
+    ],
+    "import.create": [
+      "DATA_OWNER",
+      "ADMIN"
+    ],
+    "import.view": [
+      "VIEWER",
+      "REVIEWER",
+      "DATA_OWNER",
+      "ADMIN"
+    ],
+    "import.retry": [
+      "DATA_OWNER",
+      "ADMIN"
+    ],
+    "analysis.run": [
+      "REVIEWER",
+      "DATA_OWNER",
+      "ADMIN"
+    ],
+    "analysis.view": [
+      "VIEWER",
+      "REVIEWER",
+      "DATA_OWNER",
+      "ADMIN"
+    ],
+    "match.view": [
+      "VIEWER",
+      "REVIEWER",
+      "DATA_OWNER",
+      "ADMIN"
+    ],
+    "match.review": [
+      "REVIEWER",
+      "DATA_OWNER"
+    ],
+    "conflict.view": [
+      "VIEWER",
+      "REVIEWER",
+      "DATA_OWNER",
+      "ADMIN"
+    ],
+    "conflict.review.start": [
+      "REVIEWER",
+      "DATA_OWNER"
+    ],
+    "conflict.comment": [
+      "REVIEWER",
+      "DATA_OWNER"
+    ],
+    "decision.create": [
+      "REVIEWER",
+      "DATA_OWNER"
+    ],
+    "decision.insufficient_data": [
+      "REVIEWER",
+      "DATA_OWNER"
+    ],
+    "decision.view": [
+      "VIEWER",
+      "REVIEWER",
+      "DATA_OWNER",
+      "ADMIN"
+    ],
+    "decision.supersede": [
+      "REVIEWER",
+      "DATA_OWNER"
+    ],
+    "recommendation.view": [
+      "VIEWER",
+      "REVIEWER",
+      "DATA_OWNER",
+      "ADMIN"
+    ],
+    "recommendation.accept_as_decision": [
+      "REVIEWER",
+      "DATA_OWNER"
+    ],
+    "rule.view": [
+      "VIEWER",
+      "REVIEWER",
+      "DATA_OWNER",
+      "ADMIN"
+    ],
+    "rule.edit_draft": [
+      "DATA_OWNER",
+      "ADMIN"
+    ],
+    "rule.activate": [
+      "DATA_OWNER"
+    ],
+    "rule.deactivate": [
+      "DATA_OWNER"
+    ],
+    "rule_suggestion.view": [
+      "VIEWER",
+      "REVIEWER",
+      "DATA_OWNER",
+      "ADMIN"
+    ],
+    "rule_suggestion.decide": [
+      "DATA_OWNER"
+    ],
+    "template.view": [
+      "VIEWER",
+      "REVIEWER",
+      "DATA_OWNER",
+      "ADMIN"
+    ],
+    "template.edit_draft": [
+      "DATA_OWNER",
+      "ADMIN"
+    ],
+    "template.activate": [
+      "DATA_OWNER"
+    ],
+    "audit.view": [
+      "REVIEWER",
+      "DATA_OWNER",
+      "ADMIN"
+    ],
+    "audit.export": [
+      "DATA_OWNER",
+      "ADMIN"
+    ],
+    "user.view": [
+      "ADMIN"
+    ],
+    "user.manage": [
+      "ADMIN"
+    ],
+    "role.assign": [
+      "ADMIN"
+    ],
+    "role.manage": [
+      "ADMIN"
+    ],
+    "license.view": [
+      "DATA_OWNER",
+      "ADMIN"
+    ],
+    "license.manage": [
+      "ADMIN"
+    ],
+    "update.view": [
+      "ADMIN"
+    ],
+    "update.manage": [
+      "ADMIN"
+    ],
+    "data.export": [
+      "VIEWER",
+      "REVIEWER",
+      "DATA_OWNER",
+      "ADMIN"
+    ]
+  }
+}

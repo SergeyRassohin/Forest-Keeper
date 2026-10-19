@@ -1,6 +1,6 @@
 # Локальная разработка MVP
 
-Реализован этап 0: запускаемый каркас. Бизнес-сценарий импорта и Human Review пока не реализован. Python 3.13, FastAPI/Pydantic v2, SQLAlchemy 2, Alembic, PostgreSQL 17 + pgvector, Redis 7.4/RQ, React/TypeScript/Vite. Зависимости зафиксированы в `backend/uv.lock` и `frontend/package-lock.json`.
+Реализованы этап 0 (каркас) и этап 1 ([Authentication + RBAC](authentication.md)). Бизнес-сценарий импорта и Human Review пока не реализован. Python 3.13, FastAPI/Pydantic v2, SQLAlchemy 2, Alembic, PostgreSQL 17 + pgvector, Redis 7.4/RQ, React/TypeScript/Vite. Зависимости зафиксированы в `backend/uv.lock` и `frontend/package-lock.json`.
 
 ## Запуск
 
@@ -70,7 +70,7 @@ source .env
 set +a
 cd backend
 uv run --frozen alembic upgrade head
-uv run --frozen uvicorn app.main:app --reload
+FK_ALLOWED_ORIGINS='["https://localhost:5173"]' uv run --frozen uvicorn app.main:app --reload
 ```
 
-Во втором терминале — `cd frontend && npm run dev`; Vite проксирует `/api` на loopback backend. Это внутренний HTTP-режим разработки; браузерный smoke-тест полного контура использует HTTPS gateway из Compose.
+Во втором терминале — `cd frontend && FK_VITE_HTTPS=1 npm run dev`; Vite использует локальный сертификат и проксирует /api на loopback backend. HTTPS нужен для session cookie. Браузерный smoke-тест полного контура использует HTTPS gateway из Compose.

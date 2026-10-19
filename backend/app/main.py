@@ -1,11 +1,16 @@
-from collections.abc import AsyncIterator
+from collections.abc import AsyncIterator, Awaitable, Callable
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, Response
+from fastapi import Depends, FastAPI, Request, Response
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
 from redis import Redis
 
+from app.auth.dependencies import require_permission
+from app.auth.routes import router as auth_router
 from app.common.config import Settings
 from app.common.database import make_engine
+from app.common.errors import ApiError
 from app.common.health import HealthChecker, HealthResponse
 
 
@@ -24,6 +29,9 @@ def create_app(settings: Settings | None = None, checker: HealthChecker | None =
             socket_timeout=config.health_timeout_seconds,
         )
         app.state.health_checker = HealthChecker(engine, redis, config.health_timeout_seconds)
+        app.state.engine = engine
+        app.state.redis = redis
+        app.state.settings = config
         try:
             yield
         finally:
@@ -31,6 +39,32 @@ def create_app(settings: Settings | None = None, checker: HealthChecker | None =
             engine.dispose()
 
     app = FastAPI(title="Forest Keeper API", version="0.1.0", lifespan=lifespan)
+    app.include_router(auth_router)
+
+    @app.exception_handler(ApiError)
+    async def api_error(request: Request, error: ApiError) -> JSONResponse:
+        headers = {"Cache-Control": "no-store"}
+        if error.status == 429:
+            headers["Retry-After"] = str(request.app.state.settings.login_window_seconds)
+        return JSONResponse(error.body(), status_code=error.status, headers=headers)
+
+    @app.exception_handler(RequestValidationError)
+    async def validation_error(request: Request, error: RequestValidationError) -> JSONResponse:
+        # Pydantic's default response can echo password/token input. Never expose it.
+        return JSONResponse(
+            ApiError(422, "INVALID_REQUEST", "Проверьте введённые данные").body(),
+            status_code=422,
+            headers={"Cache-Control": "no-store"},
+        )
+
+    @app.middleware("http")
+    async def private_response(
+        request: Request, call_next: Callable[[Request], Awaitable[Response]]
+    ) -> Response:
+        response = await call_next(request)
+        if request.url.path.startswith(("/api/v1/auth", "/api/v1/users")):
+            response.headers["Cache-Control"] = "no-store"
+        return response
 
     @app.get("/api/v1/health", response_model=HealthResponse)
     async def health(response: Response) -> HealthResponse:
@@ -41,9 +75,17 @@ def create_app(settings: Settings | None = None, checker: HealthChecker | None =
         response.headers["Cache-Control"] = "no-store"
         return result
 
-    @app.get("/api/v1/version")
+    @app.get(
+        "/api/v1/dashboard",
+        response_model=HealthResponse,
+        dependencies=[Depends(require_permission("dashboard.view"))],
+    )
+    async def dashboard(response: Response) -> HealthResponse:
+        return await health(response)
+
+    @app.get("/api/v1/version", dependencies=[Depends(require_permission("update.view"))])
     def version() -> dict[str, str]:
-        return {"name": "Forest Keeper", "version": "0.1.0", "stage": "foundation"}
+        return {"name": "Forest Keeper", "version": "0.1.0", "stage": "authentication"}
 
     return app
 

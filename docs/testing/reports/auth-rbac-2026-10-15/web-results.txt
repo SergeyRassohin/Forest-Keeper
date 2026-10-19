@@ -1,0 +1,4 @@
+WEB-01 HEADERS PASS: HTTPS certificate verified with local CA; UI HTTP200; CSP frame-ancestors none; X-Frame-Options DENY; X-Content-Type-Options nosniff.
+WEB-01 CORS PASS: evil.invalid preflight HTTP405; unauthenticated GET HTTP401; neither has Access-Control-Allow-Origin.
+WEB-01 IFRAME PASS: cross-origin browser embedding rejected; Chromium emitted framing-policy refusal; child frame URL chrome-error://chromewebdata/. No TLS validation globally disabled; exact local certificate public key pinned for browser probe.
+AUDIT-02 STATIC: backend uvicorn --no-access-log; SQLAlchemy echo not enabled; Alembic has no parameter logging configuration; nginx uses inherited standard access/error logs, no request bodies or cookie/Authorization headers configured. Runtime credential scan delegated to primary tester.

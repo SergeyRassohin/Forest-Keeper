@@ -85,6 +85,10 @@ The logical Decision Registry schema is fixed by docs/data-model/data-model-v0.2
 ### MVP engineering NFR baseline
 `docs/requirements/functional-nonfunctional-v0.3.md` is the mandatory engineering acceptance baseline for MVP development. Its performance/capacity values are development targets, not contractual customer SLA. Production SLA, RPO/RTO and pilot-scale limits are established after benchmark/pilot evidence.
 
+### 2026-10-19 — MVP browser session authentication
+
+The MVP client is the web browser; application services run on the server. Local authentication uses a server-side session and Secure/HttpOnly/SameSite=Strict cookie only. Login returns user information without the session identifier in JSON. Bearer authentication and a separate API-client login flow are outside the agreed MVP scope and have been removed. Login and state-changing cookie requests require an explicitly allowed Origin, including rejection of absent and `null` Origin. Future non-browser authentication needs a separate explicit decision.
+
 ## Open decisions
 - Exact first pilot domain.
 - Thresholds for automatic entity matching versus human review.

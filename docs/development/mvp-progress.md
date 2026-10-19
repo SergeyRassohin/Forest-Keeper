@@ -28,11 +28,21 @@
 
 В ревизии по замечаниям убран глобальный `statement_timeout=500` из engine: этот предел применяется только к health-транзакции через `SET LOCAL`. Alembic сохраняет обычную политику PostgreSQL; регрессионный тест выполняет операции дольше 500 мс до и после health, проверяя отсутствие утечки настройки в пул.
 
-Это завершённый этап 0, а не готовый продуктовый MVP. Нет auth/RBAC, импорта, canonical/matching/conflicts, Human Review, Decision Registry, AI/similarity, правил, бизнес-аудита, лицензирования и Update Service. Модели не скачивались. Главный двухитерационный продуктовый E2E, RBAC-тесты и capacity/performance acceptance всего MVP пока не выполнялись.
+Этап 0 принят и объединён в main через [PR #2](https://github.com/SergeyRassohin/Forest-Keeper/pull/2). Проверки GitHub Actions прошли перед merge.
+
+## Итерация 2 — этап 1
+
+Реализованы [Authentication + RBAC](authentication.md): User/UserRole, Argon2id, отзываемые opaque-сессии, Secure/HttpOnly cookie, браузерный вход без выдачи идентификатора сессии в JSON, login/me/logout, фиксированные permissions по XLSX и создание пользователей через административный экран. Добавлены миграция 0002_auth, audit auth/role events, CSRF/Origin и Redis login limits. У ADMIN нет неявных бизнес-полномочий.
+
+Локальная проверка после удаления bearer-входа 19.10.2026: 230 backend-тестов (8 unit, 222 integration/API, включая 195 комбинаций permission/role), 9 frontend-тестов и 5 HTTPS browser-тестов. Проверены bootstrap только в пустой БД, запрещённые запросы, блокировка/expiry/revocation, отсутствие credentials в JSON и ответах об ошибках, обязательный Origin, отказ Authorization и неизменяемость audit. Независимый агент повторно проверил diff и 9 целевых регрессий. [Отчёт](../testing/reports/auth-rbac-cookie-2026-10-19.md). SAST, SCA, Gitleaks и отрицательные security-fixtures входят в обязательные проверки. CI оценивается для актуального коммита ветки Authentication + RBAC.
+
+Security-critical изменения требуют независимой проверки по AGENTS.md перед принятием. Этап 1 не включает MFA/SSO, recovery, изменение пользователей через UI и бизнес-object scopes. Новые auth-таблицы являются техническим расширением User и не вводят новые бизнес-статусы.
+
+Импорт, canonical/matching/conflicts, Human Review, Decision Registry, AI/similarity, правила, полный бизнес-аудит, лицензирование и Update Service ещё не реализованы. Модели не скачивались. Продуктовый E2E импорта/решений и capacity/performance acceptance всего MVP предстоят.
 
 ## Следующая итерация
 
-Этап 1: User/UserRole, локальный login, безопасный password hash, session/access token, backend RBAC и клиентская авторизация. Права брать из XLSX-матрицы, а не из имён ролей; ADMIN не получает право бизнес-решения автоматически. Security-critical изменения требуют независимой проверки по AGENTS.md.
+После принятия Authentication + RBAC — этап 2: SourceSystem, ImportBatch, RawRecord, сохранение оригинального файла/checksum/provenance и background import XLSX/CSV/XML.
 
 Для последующего импорта нужно согласовать первый pilot domain и формат реальной выгрузки 1С. Пороги matching остаются открытым решением; до его принятия нельзя молча вводить автоматическое объединение по fuzzy/embedding score.
 

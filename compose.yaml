@@ -5,6 +5,11 @@ x-backend: &backend
   environment:
     FK_DATABASE_URL: postgresql+psycopg://forest_keeper:${FK_POSTGRES_PASSWORD:?Run scripts/dev-init.sh}@postgres:5432/forest_keeper
     FK_REDIS_URL: redis://redis:6379/0
+    FK_ALLOWED_ORIGINS: '${FK_ALLOWED_ORIGINS:-["https://localhost:8443"]}'
+    FK_SESSION_MINUTES: ${FK_SESSION_MINUTES:-60}
+    FK_LOGIN_WINDOW_SECONDS: ${FK_LOGIN_WINDOW_SECONDS:-60}
+    FK_LOGIN_ACCOUNT_LIMIT: ${FK_LOGIN_ACCOUNT_LIMIT:-10}
+    FK_LOGIN_IP_LIMIT: ${FK_LOGIN_IP_LIMIT:-60}
 
 services:
   postgres:
