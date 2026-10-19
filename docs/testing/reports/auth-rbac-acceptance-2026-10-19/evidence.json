@@ -1,0 +1,392 @@
+{
+  "head_sha": "41faa11a8b7ee9d5959ca6a3fd29d9079bb7fb74",
+  "independent_reviewer": "Codex agent /root/independent_review; reviewer did not implement runtime changes",
+  "date_utc": "2026-10-19T12:35:54.441949+00:00",
+  "scenario_results": {
+    "BOOT-01": {
+      "status": "PASS",
+      "evidence": "Real bootstrap subprocess on empty disposable DB: one ADMIN, Argon2id, actor NULL and target User UUID."
+    },
+    "BOOT-02": {
+      "status": "PASS",
+      "evidence": "Repeat refused unchanged; two concurrent subprocesses on empty isolated schema returned [0,1], exactly one account; schema removed."
+    },
+    "AUTH-01": {
+      "status": "PASS",
+      "evidence": "HTTPS login/me and case-folded login HTTP200, identical user; login JSON only user, cookie omitted, sessions distinct."
+    },
+    "AUTH-02": {
+      "status": "PASS",
+      "evidence": "Wrong/unknown login identical INVALID_CREDENTIALS401, no Set-Cookie and no session insertion."
+    },
+    "AUTH-03": {
+      "status": "PASS",
+      "evidence": "BLOCKED and DISABLED both deny valid password with same generic401; own fixture restored ACTIVE."
+    },
+    "AUTH-04": {
+      "status": "PASS",
+      "evidence": "Malformed JSON, extra field, empty values and password129 all422, no echoed input/traceback, session count unchanged."
+    },
+    "AUTH-05": {
+      "status": "PASS",
+      "evidence": "Four protected GETs and valid anonymous POST users401; public health200, no credentials."
+    },
+    "AUTH-06": {
+      "status": "PASS",
+      "evidence": "Success/error auth/user no-store, no password_hash, no WWW-Authenticate Bearer; OpenAPI LoginResponse only user."
+    },
+    "SESSION-03": {
+      "status": "PASS",
+      "evidence": "Random/modified/257-char cookies401; valid session in Bearer, Basic and empty Authorization401 with and without cookie."
+    },
+    "SESSION-05": {
+      "status": "PASS",
+      "evidence": "Existing sessions immediately rejected after BLOCKED and DISABLED, fixture restored."
+    },
+    "CSRF-01": {
+      "status": "PASS",
+      "evidence": "Admin cookie logout/users missing or foreign Origin403; session remains live; User count unchanged."
+    },
+    "CSRF-02": {
+      "status": "PASS",
+      "evidence": "Login missing/null/foreign Origin403 without Set-Cookie or inserted session; exact allowed Origin200."
+    },
+    "CSRF-03": {
+      "status": "PASS",
+      "evidence": "Authorization never authenticates; cookie mutations missing/null Origin403 without changes (SESSION-03/CSRF-01 real probes)."
+    },
+    "RBAC-02": {
+      "status": "PASS",
+      "evidence": "Independent ZIP/XML XLSX reader, catalogue SHA and all39 entries agree; 195 cookie-authenticated test-only dependency requests agree, unknown permission403."
+    },
+    "RBAC-03": {
+      "status": "PASS",
+      "evidence": "Real ADMIN and ADMIN+REVIEWER me permissions exactly match XLSX union; ADMIN lacks business permissions and rule.activate."
+    },
+    "RBAC-01": {
+      "status": "PASS",
+      "evidence": "All25 direct HTTPS operation/role combinations match table, including no-role; denied POSTs preserve User count."
+    },
+    "RBAC-04": {
+      "status": "PASS",
+      "evidence": "Deleting own DATA_OWNER role changes live me to no permissions and dashboard403; fixture restored."
+    },
+    "USER-01": {
+      "status": "PASS",
+      "evidence": "ADMIN201 creates REVIEWER; new account logs in with correct hash and cannot administer."
+    },
+    "USER-02": {
+      "status": "PASS",
+      "evidence": "Repeated role deduplicated; exact and uppercase duplicate logins409, no duplicate account."
+    },
+    "USER-03": {
+      "status": "PASS",
+      "evidence": "SUPER_ADMIN/status/password_hash/extra fields, passwords11/129 all422, no partial account or echoed secret."
+    },
+    "USER-04": {
+      "status": "PASS",
+      "evidence": "Admin session aged6min gives REAUTH_REQUIRED403 without insertion; real new login restores201."
+    },
+    "STORE-01": {
+      "status": "PASS",
+      "evidence": "All stored password hashes Argon2id64MiB/t3/p1; each captured session found by SHA256 only; independent logins distinct."
+    },
+    "AUDIT-01": {
+      "status": "PASS",
+      "evidence": "All5 required events observed; login/logout actor=target; denied actorNULL known/unknown targets; create/roles actorADMIN and assigned roles payload correct."
+    },
+    "AUDIT-03": {
+      "status": "PASS",
+      "evidence": "Actual runtime DB-role UPDATE and DELETE rejected by append-only trigger in separate transactions; rollback preserves event."
+    },
+    "FAIL-01": {
+      "status": "PASS",
+      "evidence": "Exact account limit2/window73:401,401,429 Retry-After73; after actual74s next request401, no manual key expiry."
+    },
+    "FAIL-02": {
+      "status": "PASS",
+      "evidence": "Three distinct logins and three forged XFF addresses share peer limit2:401,401,429; gateway default clients share proxy peerIP as documented."
+    },
+    "FAIL-03": {
+      "status": "PASS",
+      "evidence": "Stopped dedicated Redis container: loginAUTH_UNAVAILABLE503, no cookie/session insertion; restarted service, health200 and login200."
+    },
+    "FAIL-04": {
+      "status": "PASS",
+      "evidence": "Stopped dedicated PostgreSQL: health503 and protected me500 generic without credentials/traceback; restarted DB, health200 and same session me200."
+    },
+    "SESSION-01": {
+      "status": "PASS",
+      "evidence": "Actual Chromium cookie Secure/HttpOnly/Strict/Path=/ host localhost; document.cookie cannot read it; localStorage/sessionStorage empty; login JSON only user. API probe additionally checks no Domain attribute."
+    },
+    "SESSION-02": {
+      "status": "PASS",
+      "evidence": "Browser reload preserves login; UI logout204 removes cookie, reload shows login; replay of captured old cookie401."
+    },
+    "SESSION-04": {
+      "status": "PASS",
+      "evidence": "Actual DB expires owned session; API401 and dashboard retry returns UI to login. Separately aborted /auth/me displays connection error, not anonymous login."
+    },
+    "WEB-02": {
+      "status": "FAIL",
+      "evidence": "Incorrect password401 clears field; real login fetch abort shows native English Failed to fetch instead of an understandable Russian transport-error message. Password cleared and login not granted."
+    },
+    "USER-05": {
+      "status": "PASS",
+      "evidence": "ADMIN panel creates REVIEWER through UI201 and clears password; VIEWER and new REVIEWER have no panel; direct reviewer users request403."
+    },
+    "WEB-01": {
+      "status": "PASS",
+      "evidence": "Verified HTTPS gateway CSP self/frame-ancestors none and XFrameOptions DENY; evil-origin preflight405/anonymousGET401 no ACAO; Chromium cross-origin iframe blocked by policy."
+    },
+    "AUDIT-02": {
+      "status": "PASS",
+      "evidence": "42 unique synthetic credential/session/DB-secret values compared in-process against62 AuditEvents and114813bytes runtime logs backend/frontend/PostgreSQL/Redis:0 matches. Role payload contains only assigned roles."
+    }
+  },
+  "environment": {
+    "backend_app_tree_sha256": "f08fe135281083b087c394225d9c6434967acee0a779ecca3b28ddd266c6c40e",
+    "backend_container_matches": true,
+    "nginx_matches": true,
+    "frontend_dist_matching_files": 3,
+    "images": {
+      "backend": "sha256:046169eac9b0026e7e39256e14912ae6070059974c3e29332cc43d1febf42645",
+      "frontend": "sha256:37adeda62a600873b25a612dbbd4e5e7f5ed9b89012d4b5b6aa9fcb0fd2918ed",
+      "postgres": "sha256:151aa1c2e849e7828ed8aef2183ae15f692cbe887d2f28921d8b44b26e154d7e",
+      "redis": "sha256:f84b0c4678011602b9b98c227a4dcd5468bf8b088b02fdd4165cb7758bad8058"
+    },
+    "versions": {
+      "python": "Python 3.13.16",
+      "uv": "uv 0.12.23 (x86_64-unknown-linux-gnu)",
+      "node": "v24.19.0",
+      "npm": "11.9.0",
+      "docker": "Docker version 28.4.0, build d8eb465",
+      "compose": "Docker Compose version v2.40.3",
+      "chromium": "Chromium 154.0.8037.57 built on Debian GNU/Linux 13 (trixie)"
+    }
+  },
+  "ci": {
+    "conclusion": "success",
+    "event": "push",
+    "headSha": "41faa11a8b7ee9d5959ca6a3fd29d9079bb7fb74",
+    "jobs": [
+      {
+        "completedAt": "2026-10-19T12:15:48Z",
+        "conclusion": "success",
+        "databaseId": 118052306353,
+        "name": "validate",
+        "startedAt": "2026-10-19T12:13:11Z",
+        "status": "completed",
+        "steps": [
+          {
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Secret scan (Git history and tracked working tree)",
+            "number": 3,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run astral-sh/setup-uv@v6",
+            "number": 4,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run actions/setup-node@v4",
+            "number": 5,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run uv sync --frozen",
+            "number": 6,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run npm ci",
+            "number": 7,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run npx playwright install --with-deps chromium",
+            "number": 8,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run bash scripts/check.sh",
+            "number": 9,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Security SAST (Python and TypeScript)",
+            "number": 10,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Verify security gates reject unsafe fixtures",
+            "number": 11,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run bash scripts/check-dependencies.sh",
+            "number": 12,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run bash scripts/dev-init.sh",
+            "number": 13,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run docker compose up --build --wait --wait-timeout 180",
+            "number": 14,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run bash scripts/check-integration.sh",
+            "number": 15,
+            "status": "completed"
+          },
+          {
+            "conclusion": "skipped",
+            "name": "Logs on failure",
+            "number": 16,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Stop services",
+            "number": 17,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Post Run actions/setup-node@v4",
+            "number": 32,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Post Run astral-sh/setup-uv@v6",
+            "number": 33,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4",
+            "number": 34,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 35,
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39250342464/job/118052306353"
+      }
+    ],
+    "startedAt": "2026-10-19T12:13:09Z",
+    "updatedAt": "2026-10-19T12:15:49Z",
+    "url": "https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39250342464"
+  },
+  "gates": {
+    "check": {
+      "exit_code": 0,
+      "backend_passed": 8,
+      "frontend_passed": 9,
+      "backend_deselected": 222
+    },
+    "check-sast": {
+      "exit_code": 0,
+      "bandit_findings": 0,
+      "bandit_loc": 656,
+      "eslint_security_findings": 0
+    },
+    "check-secrets": {
+      "exit_code": 0,
+      "git_commits": 78,
+      "findings": 0
+    },
+    "test-security-gates": {
+      "exit_code": 0,
+      "rejected_fixtures": 3
+    },
+    "check-dependencies": {
+      "exit_code": 0,
+      "pip_audit_vulnerabilities": 0,
+      "npm_audit_vulnerabilities": 0
+    },
+    "check-integration": {
+      "exit_code": 0,
+      "backend_passed": 222,
+      "browser_passed": 5,
+      "backend_deselected": 8
+    }
+  },
+  "final_probes": {
+    "cache_success_error": {
+      "status_codes": [
+        200,
+        201,
+        409,
+        422
+      ],
+      "no_store": true,
+      "secret_matches": 0
+    },
+    "actual_gateway_ip_xff": {
+      "status_codes": [
+        401,
+        401,
+        429
+      ],
+      "ip_limit": 2,
+      "distinct_accounts": 3,
+      "forged_xff_addresses": 3
+    },
+    "audit_and_runtime_log_scan": {
+      "status": "PASS",
+      "credentials_compared": 42,
+      "audit_events": 62,
+      "audit_secret_matches": 0,
+      "runtime_log_secret_matches": 0,
+      "services": [
+        "backend",
+        "frontend",
+        "postgres",
+        "redis"
+      ],
+      "runtime_log_bytes": 114813,
+      "audit_snapshot_sha256": "00e0587ebb5f1d231d6019409ee639711b2a44b3c0205f5563ad98321fcf9a95"
+    },
+    "cleanup": {
+      "owned_users_deleted": 11,
+      "owned_sessions_remaining": 0,
+      "audit_rows_preserved": 62,
+      "unrelated_users_touched": 0
+    }
+  }
+}
