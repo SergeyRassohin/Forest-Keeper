@@ -1,0 +1,3 @@
+Security gate rejected fixture: B602
+Security gate rejected fixture: security/detect-eval-with-expression
+Security gate rejected fixture: github-pat

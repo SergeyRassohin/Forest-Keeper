@@ -46,9 +46,9 @@ Canonical/matching/conflicts, Human Review, Decision Registry, AI/similarity, п
 
 ## Итерация 3 — этап 2
 
-По [issue #7](https://github.com/SergeyRassohin/Forest-Keeper/issues/7) реализуются SourceSystem, ImportBatch, неизменяемый RawRecord, локальное persistent хранилище оригиналов, SHA-256 и фоновые jobs RQ. Добавлены защищённые source/import API, страницы ошибок/исходных записей, duplicate policy и явный retry новым пакетом, браузерный раздел «Импорт данных».
+По [issue #7](https://github.com/SergeyRassohin/Forest-Keeper/issues/7) реализованы SourceSystem, ImportBatch, неизменяемый RawRecord, локальное persistent хранилище оригиналов, SHA-256 и фоновые jobs RQ. Добавлены защищённые source/import API, страницы ошибок/исходных записей, duplicate policy и явный retry новым пакетом, браузерный раздел «Импорт данных».
 
-Форматы: UTF-8 CSV, первый worksheet XLSX, generic XML и документированный синтетический профиль1С XML. Синтетические fixtures/manifest, parser/storage/lifecycle/RBAC/failure tests и browser E2E входят в проверку. Capacity profile: два набора100000×30атрибутов, по30000381байт; обработаны примерно за22сек каждый, metadata p95≈0.204сек при10сессиях на облачном стенде. Подробности и технические ограничения: [Import subsystem](import.md). Полный итоговый отчёт/CI привязываются к коммиту PR этапа2; этап не объявляется принятым только по наличию реализации.
+Форматы: UTF-8 CSV, первый worksheet XLSX, generic XML и документированный синтетический профиль 1С XML. Локально прошли 375 backend-тестов (74 unit / 301 integration), 11 frontend и 7 browser E2E, все security gates. Независимое ревью завершено без открытых замечаний. Capacity profile: два набора 100000×30 атрибутов, по 30000381 байт; обработаны за 19.911 и 21.638 сек, metadata p95=0.2475 сек при 10 сессиях. [PR #8](https://github.com/SergeyRassohin/Forest-Keeper/pull/8), [отчёт и exact-SHA CI](../testing/reports/stage2-import-acceptance-2026-10-19.md), [Import subsystem](import.md). Этап подготовлен к ревью, принятие/merge выполняются отдельно.
 
 После приёмки этапа2 следующий этап3 — нормализация и canonical model. В текущей реализации они не включены.
 

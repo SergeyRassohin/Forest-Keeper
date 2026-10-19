@@ -1,0 +1,49 @@
+{
+  "runtime_sha": "6380d5cea126be96ee2a5b2f207dbae4c7c243c0",
+  "local_tests": {
+    "backend_unit": 74,
+    "backend_integration": 301,
+    "frontend": 11,
+    "browser": 7,
+    "total": 393
+  },
+  "capacity": {
+    "datasets": [
+      {
+        "records": 100000,
+        "attributes": 30,
+        "bytes": 30000381,
+        "upload_worker_seconds": 19.911
+      },
+      {
+        "records": 100000,
+        "attributes": 30,
+        "bytes": 30000381,
+        "upload_worker_seconds": 21.638
+      }
+    ],
+    "sessions": 10,
+    "requests": 100,
+    "metadata_p95_seconds": 0.2475,
+    "passed": true
+  },
+  "persistence_before_equals_after": true,
+  "persistence": {
+    "batch_id": "35ab8132-d504-4e15-98c1-7ee83237fc50",
+    "original_sha256": "1f83bc1216b9689ef8da3e334fe8819f6b7188673df17165b8b52151a36c5942",
+    "raw_and_provenance_sha256": "a6e61b0288a75c287e4326cc73f0234f65ed72ca6d2892e8c159b651237be087",
+    "records": 2,
+    "status": "COMPLETED"
+  },
+  "isolated_migration_down_up_repeat_passed": true,
+  "log_sha256": {
+    "quality.log": "79eb9671c2c793ac0e0219b8eacce9b0f09de6b547905303a859e6c5c12f13d3",
+    "sast.log": "09279773ce1e17c1bb5632b9921552aadf04de810303f36cf3f684719a5b66a1",
+    "sca.log": "5e62b74fe972c64b1d60d3f7fdb6638799f5715d6a474c82dadfb71f716f55b3",
+    "negative-gates.log": "d81657ee8c5ed6c7781ab7c1e3f562de0c9fdef65c7ce49d6abd905a9d1637f5",
+    "integration-browser.log": "9e0281bbb336f0262dafd7fecb7e487643cd165606cd0811123c91ce5c27f66c",
+    "capacity.log": "03f94f5bbee004036ea93467ed35ca9b389da455c88f1a1ef2b8f54fce210969",
+    "migration.log": "c9d50d1c4891b8a85cc1da228dd471483c1a6fb1cab28587428f12159270d08a",
+    "gitleaks.log": "80ef56fae0b058f188ba6daf508bc717a80f9ce479ca5658ebd4e6e71f8684c8"
+  }
+}
