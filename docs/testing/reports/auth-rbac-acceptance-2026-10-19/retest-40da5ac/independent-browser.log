@@ -1,0 +1,5 @@
+WEB-02 PASS: Real Chromium aborted login fetch: understandable Russian connection error, password empty, no session cookie and login form remains; original Failed to fetch defect closed.
+HTTP-ERRORS PASS: Real wrong-password401 retains localized message; browser503 fulfillment retains temporary-unavailability message; both clear password and deny session. Actual PG/Redis outages remain independently verified on unchanged backend at original SHA.
+ORIGIN-COOKIE PASS: Missing/null/foreign login and cookie-logout Origin403; real allowed-Origin browser login200 JSON only user, protected cookie flags and no JS storage; valid session in Authorization401.
+SESSION-UI PASS: Reload persists login; actual DB expiry of owned session returns dashboard UI to login.
+LOGOUT-REPLAY PASS: Real UI logout204 removes cookie; replay401.

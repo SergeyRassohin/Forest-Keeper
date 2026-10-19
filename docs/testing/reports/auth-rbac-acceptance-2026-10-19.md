@@ -1,110 +1,120 @@
 # Независимая приёмка Authentication + RBAC — 19.10.2026
 
-Связанные [issue #5](https://github.com/SergeyRassohin/Forest-Keeper/issues/5) и [PR #3](https://github.com/SergeyRassohin/Forest-Keeper/pull/3). **Первичный результат: 34 PASS, 1 FAIL; этап пока не принят.** Обязательный WEB-02 требует исправления и независимой повторной проверки. BLOCKED/NOT RUN нет.
+Связанные [issue #5](https://github.com/SergeyRassohin/Forest-Keeper/issues/5) и [PR #3](https://github.com/SergeyRassohin/Forest-Keeper/pull/3). **Итог: 35 PASS, 0 FAIL, 0 BLOCKED, 0 NOT RUN.** Дефект WEB-02 найден в первичном прогоне и закрыт после исправления и независимой повторной проверки.
 
-## Версия и независимость
+## Версии и независимость
 
-- Проверен чистый `main`: `41faa11a8b7ee9d5959ca6a3fd29d9079bb7fb74`.
-- Base PR: `2772fc6ee9e303bd4dad5b5fd3f17c8d5770eb9b`; merged feature HEAD: `ea19abe2a77f8329e5a37076764f776ec7556d76`.
-- Проверяющий: отдельный агент Codex `/root/independent_review`, не писавший проверяемую реализацию. В этом прогоне самостоятельно прочитал issue, актуальный сценарий, authentication/security/API/testing/local-development docs и XLSX, проверил runtime diff, миграцию, gateway, frontend и тесты; самостоятельно запустил все gates и дополнительные probes.
-- Дата выполнения: 2026-10-19 UTC. Часы в сырых gate logs — UTC; даты пользователя — Europe/Moscow.
-- Основание: AGENTS.md «Security-critical changes require independent verification». Этот отчёт не продолжает и не переиспользует старый bearer-прогон 15 октября.
+- Полный исходный acceptance: чистый `main` **41faa11a8b7ee9d5959ca6a3fd29d9079bb7fb74**, результат 34 PASS / 1 FAIL.
+- Исправление и итоговый runtime SHA: **40da5aca6bec33c11ec417c975fec26cdc05c9eb**, branch `fix/auth-acceptance-web02`.
+- Base PR #3: `2772fc6ee9e303bd4dad5b5fd3f17c8d5770eb9b`; merged feature HEAD: `ea19abe2a77f8329e5a37076764f776ec7556d76`.
+- Проверяющий: отдельный агент Codex `/root/independent_review`, не писавший ни исходную реализацию, ни runtime-исправление WEB-02. Самостоятельно прочитал issue, актуальный сценарий, authentication/security/API/testing/local-development docs и XLSX; проверил код, миграцию, gateway, frontend, тесты; лично запустил gates и acceptance probes обоих прогонов.
+- Дата: 2026-10-19 UTC; логи используют UTC, пользовательский timezone — Europe/Moscow.
+- Основание: AGENTS.md «Security-critical changes require independent verification». Старые отчёты 15 октября о bearer-flow не использованы как доказательство актуального контракта.
 
 ## Среда и изоляция
 
-Cloud Linux; Python3.13.16, uv0.12.23, Node24.19.0/npm11.9.0, Docker28.4.0/Compose2.40.3, Chromium154.0.8037.57. PostgreSQL17+pgvector и Redis7.4 взяты из штатных образов. Полные версии, immutable image IDs и checksums находятся в [evidence.json](auth-rbac-acceptance-2026-10-19/evidence.json).
+Cloud Linux; Python 3.13.16, uv 0.12.23, Node 24.19.0 / npm 11.9.0, Docker 28.4.0 / Compose 2.40.3, Chromium 154.0.8037.57; PostgreSQL 17 + pgvector и Redis 7.4. Версии, image IDs и checksums: [исходные evidence](auth-rbac-acceptance-2026-10-19/evidence.json), [retest evidence](auth-rbac-acceptance-2026-10-19/retest-40da5ac/evidence.json).
 
-Frozen `uv sync --frozen`, `npm ci`, dev-init, proxy-aware BuildKit build и Compose startup выполнены заново. Контрольная версия схемы `0002_auth`; публичный health200 с api/database/redis=ok. Runtime backend app tree SHA-256 `f08fe135281083b087c394225d9c6434967acee0a779ecca3b28ddd266c6c40e` совпал с checkout; nginx config и все3 frontend/dist файла побайтно совпали с контейнерами.
+Заново выполнены frozen `uv sync --frozen`, `npm ci`, dev-init, proxy-aware BuildKit build и Compose startup. Schema revision `0002_auth`; health 200 с api/database/redis=ok. Backend app tree SHA-256 `f08fe135281083b087c394225d9c6434967acee0a779ecca3b28ddd266c6c40e` совпал с checkout; nginx и все три frontend/dist файла побайтно совпали с исходным контейнером. После исправления все три новых frontend/dist файла также побайтно сверены с пересобранным контейнером.
 
-Штатные integration/browser gates используют свои временные схемы, Redis keys и e2e-пользователей в локальной development-среде. Дополнительный полный acceptance выполнен на отдельном Compose project `fk-acceptance-20261019`: собственные PG/Redis/backend/frontend, отдельный PostgreSQL volume, loopback ports15432/16379/18000/18443. Общие сервисы не останавливались. Origin `https://localhost:18443`; базовые account/IP limits10000 нужны для полного прогона, отдельные limit-сценарии используют2/73 и IP2. Созданы уникальные синтетические ADMIN, VIEWER, REVIEWER, DATA_OWNER, ADMIN+REVIEWER и пользователь без ролей с разными случайными паролями.
+Полный дополнительный acceptance выполнен на отдельном project `fk-acceptance-20261019`: собственные PG/Redis/backend/frontend, отдельный PostgreSQL volume, loopback ports 15432/16379/18000/18443. Общие сервисы не останавливались. Origin `https://localhost:18443`; для основного прогона account/IP limits=10000, для специальных случаев account=2/window=73 и IP=2. Созданы собственные синтетические ADMIN, VIEWER, REVIEWER, DATA_OWNER, ADMIN+REVIEWER и no-role с разными случайными паролями.
 
-HTTPS API проверяет сертификат с локальным CA. Дополнительный Chromium использует pin точного SPKI локального сертификата; глобальное отключение проверки TLS не применялось. Штатный browser gate использует документированную настройку Playwright для локального самоподписанного сертификата. Внешний TLS и проверки сертификатов при установке/сборке не отключались.
+Штатные integration gates используют собственные временные schemas/Redis keys/e2e accounts в local development-среде. Дополнительный retest использовал отдельного уникального synthetic VIEWER на текущем HTTPS UI `https://localhost:8443`; изменялась только его собственная session expiry. Все fixtures затем очищены, аудит сохранён.
 
-## Обязательные gates и CI
+HTTPS API проверяет сертификат локальным CA. Дополнительный Chromium использует pin точного SPKI локального сертификата без глобального отключения TLS validation. Штатный browser gate использует документированную настройку Playwright для локального самоподписанного сертификата. TLS при установке/сборке не отключался.
 
-| Проверка | Результат | Evidence |
+## Gates и CI
+
+Все шесть gates **лично выполнены заново на обоих SHA**. Команды: `bash scripts/check.sh`, `bash scripts/check-sast.sh`, `bash scripts/check-secrets.sh`, `bash scripts/test-security-gates.sh`, `bash scripts/check-dependencies.sh`, `FK_BROWSER_EXECUTABLE_PATH=/usr/bin/chromium bash scripts/check-integration.sh`.
+
+| Gate | 41faa11, исходный полный прогон | 40da5ac, независимый retest |
 | --- | --- | --- |
-| scripts/check.sh | exit0; backend8passed, frontend9passed; lint/format/mypy/build/TS checks PASS | [log](auth-rbac-acceptance-2026-10-19/check.log) |
-| scripts/check-sast.sh | exit0; Bandit656LOC,0findings/0skips; ESLint security0findings | [log](auth-rbac-acceptance-2026-10-19/check-sast.log) |
-| scripts/check-secrets.sh | exit0;78commits+tracked snapshot,0leaks | [log](auth-rbac-acceptance-2026-10-19/check-secrets.log) |
-| scripts/test-security-gates.sh | exit0;3negativefixtures отвергнуты B602/security-eval/github-pat | [log](auth-rbac-acceptance-2026-10-19/test-security-gates.log) |
-| scripts/check-dependencies.sh | exit0; pip-audit/npm audit0vulnerabilities | [log](auth-rbac-acceptance-2026-10-19/check-dependencies.log) |
-| scripts/check-integration.sh | exit0; backend222passed+browser5passed | [log](auth-rbac-acceptance-2026-10-19/check-integration.log) |
+| check | exit 0; backend 8 + frontend 9; lint/format/mypy/build/TS PASS | [exit 0, те же 17 tests](auth-rbac-acceptance-2026-10-19/retest-40da5ac/check.log) |
+| check-sast | exit 0; Bandit 656 LOC, 0 findings/skips; ESLint security 0 findings | [exit 0, 0 findings](auth-rbac-acceptance-2026-10-19/retest-40da5ac/check-sast.log) |
+| check-secrets | exit 0; 78 commits + tracked snapshot, 0 leaks | [exit 0; 79 commits + tracked snapshot, 0 leaks](auth-rbac-acceptance-2026-10-19/retest-40da5ac/check-secrets.log) |
+| test-security-gates | exit 0; три negative fixtures отвергнуты | [exit 0; B602 / security-eval / github-pat](auth-rbac-acceptance-2026-10-19/retest-40da5ac/test-security-gates.log) |
+| check-dependencies | exit 0; pip-audit / npm audit: 0 vulnerabilities | [exit 0; 0 vulnerabilities](auth-rbac-acceptance-2026-10-19/retest-40da5ac/check-dependencies.log) |
+| check-integration | exit 0; backend 222 + browser 5 passed | [exit 0; backend 222 + browser 6 passed](auth-rbac-acceptance-2026-10-19/retest-40da5ac/check-integration.log) |
 
-Всего штатных тестов **244 passed, 0 failed, 0 skipped**: backend230, frontend9, Chromium5. Deselected222 при unit и8 при integration — разделение одной коллекции, не skipped; все230 backend cases выполнены. В каждом pytest-проходе есть один Starlette/httpx deprecation warning; это не пропущенный тест и не suppressed finding. Собственный acceptance дополнительно выполнил195 комбинаций39permissions×5ролей и25 прямых operation×role requests, реальные browser/DB/failure probes. Их не прибавляем к244 как будто это штатные testcases.
+Исходный прогон: **244 passed, 0 failed, 0 skipped**. Итоговый retest: **245 passed, 0 failed, 0 skipped** — backend 230, frontend 9, Chromium 6. Deselected 222 при unit и 8 при integration разделяют одну коллекцию: все 230 backend cases выполнены. В каждом pytest-проходе есть один Starlette/httpx deprecation warning; тесты и findings не подавлялись. Дополнительные 195 независимых permission×role и 25 operation×role запросов, browser/DB/failure probes не прибавляются к штатному числу tests.
 
-Самостоятельно подтверждён GitHub Actions **SUCCESS** для того же полного SHA: [run39250342464](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39250342464), push/main, validate job success. CI не заменяет независимый сценарий.
+Самостоятельно подтверждён GitHub Actions SUCCESS на exact SHA:
 
-## Результаты каждого ID
+- Исходный `41faa11`: [run 39250342464](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39250342464), push/main, validate SUCCESS.
+- Итоговый `40da5aca6bec33c11ec417c975fec26cdc05c9eb`: [run 39253637438](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39253637438), push, validate SUCCESS.
 
-| ID | Статус | Фактическое доказательство |
+CI не заменяет независимый сценарий. Исходные логи сохранены рядом с [историческим evidence.json](auth-rbac-acceptance-2026-10-19/evidence.json); новые логи и результаты находятся в `retest-40da5ac/`.
+
+## Результаты каждого обязательного ID
+
+Таблица показывает итоговый статус. Все 35 ID лично исполнены при первоначальном полном прогоне; после исправления повторены WEB-02 и затронутые auth/UI scenarios, все gates и exact-SHA CI. Backend, migration, nginx, role matrix и их runtime-код между SHA не менялись, поэтому исходные реальные bootstrap/failure/storage доказательства сохраняют силу; полный разрушительный прогон всех 35 ID заново не выдаётся за выполненный.
+
+| ID | Итог | Фактическое доказательство |
 | --- | --- | --- |
-| AUTH-01 | PASS | HTTPS login/me and case-folded login HTTP200, identical user; login JSON only user, cookie omitted, sessions distinct. |
-| AUTH-02 | PASS | Wrong/unknown login identical INVALID_CREDENTIALS401, no Set-Cookie and no session insertion. |
-| AUTH-03 | PASS | BLOCKED and DISABLED both deny valid password with same generic401; own fixture restored ACTIVE. |
-| AUTH-04 | PASS | Malformed JSON, extra field, empty values and password129 all422, no echoed input/traceback, session count unchanged. |
-| AUTH-05 | PASS | Four protected GETs and valid anonymous POST users401; public health200, no credentials. |
-| AUTH-06 | PASS | Success/error auth/user no-store, no password_hash, no WWW-Authenticate Bearer; OpenAPI LoginResponse only user. |
-| SESSION-01 | PASS | Actual Chromium cookie Secure/HttpOnly/Strict/Path=/ host localhost; document.cookie cannot read it; localStorage/sessionStorage empty; login JSON only user. API probe additionally checks no Domain attribute. |
-| SESSION-02 | PASS | Browser reload preserves login; UI logout204 removes cookie, reload shows login; replay of captured old cookie401. |
-| SESSION-03 | PASS | Random/modified/257-char cookies401; valid session in Bearer, Basic and empty Authorization401 with and without cookie. |
-| SESSION-04 | PASS | Actual DB expires owned session; API401 and dashboard retry returns UI to login. Separately aborted /auth/me displays connection error, not anonymous login. |
-| SESSION-05 | PASS | Existing sessions immediately rejected after BLOCKED and DISABLED, fixture restored. |
-| CSRF-01 | PASS | Admin cookie logout/users missing or foreign Origin403; session remains live; User count unchanged. |
-| CSRF-02 | PASS | Login missing/null/foreign Origin403 without Set-Cookie or inserted session; exact allowed Origin200. |
-| CSRF-03 | PASS | Authorization never authenticates; cookie mutations missing/null Origin403 without changes (SESSION-03/CSRF-01 real probes). |
-| WEB-01 | PASS | Verified HTTPS gateway CSP self/frame-ancestors none and XFrameOptions DENY; evil-origin preflight405/anonymousGET401 no ACAO; Chromium cross-origin iframe blocked by policy. |
-| WEB-02 | FAIL | Incorrect password401 clears field; real login fetch abort shows native English Failed to fetch instead of an understandable Russian transport-error message. Password cleared and login not granted. |
-| RBAC-01 | PASS | All25 direct HTTPS operation/role combinations match table, including no-role; denied POSTs preserve User count. |
-| RBAC-02 | PASS | Independent ZIP/XML XLSX reader, catalogue SHA and all39 entries agree; 195 cookie-authenticated test-only dependency requests agree, unknown permission403. |
-| RBAC-03 | PASS | Real ADMIN and ADMIN+REVIEWER me permissions exactly match XLSX union; ADMIN lacks business permissions and rule.activate. |
-| RBAC-04 | PASS | Deleting own DATA_OWNER role changes live me to no permissions and dashboard403; fixture restored. |
-| USER-01 | PASS | ADMIN201 creates REVIEWER; new account logs in with correct hash and cannot administer. |
-| USER-02 | PASS | Repeated role deduplicated; exact and uppercase duplicate logins409, no duplicate account. |
-| USER-03 | PASS | SUPER_ADMIN/status/password_hash/extra fields, passwords11/129 all422, no partial account or echoed secret. |
-| USER-04 | PASS | Admin session aged6min gives REAUTH_REQUIRED403 without insertion; real new login restores201. |
-| USER-05 | PASS | ADMIN panel creates REVIEWER through UI201 and clears password; VIEWER and new REVIEWER have no panel; direct reviewer users request403. |
-| BOOT-01 | PASS | Real bootstrap subprocess on empty disposable DB: one ADMIN, Argon2id, actor NULL and target User UUID. |
-| BOOT-02 | PASS | Repeat refused unchanged; two concurrent subprocesses on empty isolated schema returned [0,1], exactly one account; schema removed. |
-| STORE-01 | PASS | All stored password hashes Argon2id64MiB/t3/p1; each captured session found by SHA256 only; independent logins distinct. |
-| AUDIT-01 | PASS | All5 required events observed; login/logout actor=target; denied actorNULL known/unknown targets; create/roles actorADMIN and assigned roles payload correct. |
-| AUDIT-02 | PASS | 42 unique synthetic credential/session/DB-secret values compared in-process against62 AuditEvents and114813bytes runtime logs backend/frontend/PostgreSQL/Redis:0 matches. Role payload contains only assigned roles. |
-| AUDIT-03 | PASS | Actual runtime DB-role UPDATE and DELETE rejected by append-only trigger in separate transactions; rollback preserves event. |
-| FAIL-01 | PASS | Exact account limit2/window73:401,401,429 Retry-After73; after actual74s next request401, no manual key expiry. |
-| FAIL-02 | PASS | Three distinct logins and three forged XFF addresses share peer limit2:401,401,429; gateway default clients share proxy peerIP as documented. |
-| FAIL-03 | PASS | Stopped dedicated Redis container: loginAUTH_UNAVAILABLE503, no cookie/session insertion; restarted service, health200 and login200. |
-| FAIL-04 | PASS | Stopped dedicated PostgreSQL: health503 and protected me500 generic without credentials/traceback; restarted DB, health200 and same session me200. |
+| AUTH-01 | PASS | HTTPS login/me и логин в другом регистре: 200, тот же User; JSON только user, cookie отсутствует в JSON, новые сессии различаются. |
+| AUTH-02 | PASS | Неверный пароль и неизвестный login: одинаковый INVALID_CREDENTIALS 401; нет Set-Cookie и новых AuthSession. |
+| AUTH-03 | PASS | BLOCKED и DISABLED запрещают верный пароль с тем же общим 401; собственный аккаунт восстановлен. |
+| AUTH-04 | PASS | Malformed JSON, extra fields, пустые поля и пароль длиной 129: 422 без отражения секретов/traceback; сессии не созданы. |
+| AUTH-05 | PASS | Четыре защищённых GET и валидный анонимный POST users: 401; публичный health: 200 без credentials. |
+| AUTH-06 | PASS | Auth/user success/error: no-store, нет password_hash и Bearer challenge; OpenAPI LoginResponse содержит только user. Дополнительно проверены users 200/201/409/422. |
+| SESSION-01 | PASS | Chromium: Secure, HttpOnly, Strict, Path=/, без Domain; document.cookie не видит сессию, local/session storage пусты. Повторено на 40da5ac. |
+| SESSION-02 | PASS | Reload сохраняет вход; UI logout 204 удаляет cookie; reload показывает вход, replay старой cookie: 401. Повторено на 40da5ac. |
+| SESSION-03 | PASS | Случайная/изменённая/257-символьная cookie: 401. Bearer с действующей сессией, Basic и пустой Authorization: 401 с cookie и без неё; header-flow повторно отвергнут на 40da5ac. |
+| SESSION-04 | PASS | Реальное истечение expires_at собственной сессии: API 401, UI снова предлагает вход; отдельный отказ auth/me показывает сетевую ошибку. DB-expiry UI повторён на 40da5ac. |
+| SESSION-05 | PASS | Изменение собственного аккаунта на BLOCKED/DISABLED немедленно запрещает существующую сессию. |
+| CSRF-01 | PASS | ADMIN cookie: logout/users без Origin и со сторонним Origin — ORIGIN_NOT_ALLOWED 403; сессия жива, User count прежний. Logout повторён на 40da5ac. |
+| CSRF-02 | PASS | Login без Origin, с null/foreign: 403 без cookie/новой сессии; allowed Origin: 200. Повторено на 40da5ac. |
+| CSRF-03 | PASS | Authorization не авторизует; cookie mutation без allowed Origin и с null: 403 без изменений. Повторено на 40da5ac. |
+| WEB-01 | PASS | Реальные CSP self/frame-ancestors none и X-Frame-Options DENY; foreign CORS отсутствует; Chromium блокирует iframe другого origin. |
+| WEB-02 | PASS | На 41faa11 был FAIL: Failed to fetch. На 40da5ac независимый Chromium abort login показывает «Не удалось подключиться к серверу. Повторите попытку.»; пароль пуст, сессии нет. Wrong-password и HTTP 503 также перепроверены. |
+| RBAC-01 | PASS | Все 25 прямых HTTPS operation×role запросов совпадают с таблицей, включая no-role; запрещённые POST не создают User. |
+| RBAC-02 | PASS | Независимый ZIP/XML reader XLSX: SHA и все 39 permissions совпали; 195 authenticated dependency requests соответствуют XLSX, неизвестный permission: 403. |
+| RBAC-03 | PASS | Реальные ADMIN и ADMIN+REVIEWER имеют точное объединение XLSX-прав; ADMIN один не получает business permissions и rule.activate. |
+| RBAC-04 | PASS | Удаление собственной DATA_OWNER role сразу убирает permissions и даёт dashboard 403; роль восстановлена. |
+| USER-01 | PASS | ADMIN создаёт REVIEWER: 201; новый пользователь входит с правильным хешем пароля, users ему запрещён. |
+| USER-02 | PASS | Повторные роли дедуплицированы; дубликаты login, включая uppercase: 409 без второго аккаунта. |
+| USER-03 | PASS | SUPER_ADMIN/status/password_hash/extra и пароли длиной 11/129: 422 без частично созданного User и отражения секретов. |
+| USER-04 | PASS | ADMIN session старше 6 минут: REAUTH_REQUIRED 403 без вставки; новый login восстанавливает создание: 201. |
+| USER-05 | PASS | UI ADMIN создаёт REVIEWER: 201, password field очищается; у VIEWER/REVIEWER нет панели, прямой users: 403. Штатный browser case повторён на 40da5ac. |
+| BOOT-01 | PASS | Настоящий bootstrap subprocess на пустой disposable DB: один ADMIN, Argon2id, ADMIN_BOOTSTRAPPED actor NULL, target User UUID. |
+| BOOT-02 | PASS | Повторный bootstrap отказал, password hash прежний; два одновременных subprocess на пустой отдельной schema: exit codes [0,1], ровно один User; schema удалена. |
+| STORE-01 | PASS | Все пароли Argon2id с m=65536,t=3,p=1; сохранённые сессии находятся только по SHA-256, не по raw cookie; разные входы дают разные значения. |
+| AUDIT-01 | PASS | Все пять требуемых event types наблюдались; login/logout actor=target, denied actor NULL с известным/неизвестным target; create/roles actor ADMIN, payload содержит роли. |
+| AUDIT-02 | PASS | 42 уникальных синтетических секрета сопоставлены внутри процесса с 62 AuditEvents и 114813 bytes логов backend/frontend/PG/Redis: 0 совпадений. |
+| AUDIT-03 | PASS | UPDATE и DELETE под runtime DB role отклонены append-only trigger в отдельных транзакциях; rollback сохранил event без изменений. |
+| FAIL-01 | PASS | Точный account limit=2/window=73: 401,401,429 и Retry-After=73; после реальных 74 секунд снова 401, без ручного истечения Redis keys. |
+| FAIL-02 | PASS | Три разных логина и три forged XFF при IP limit=2: 401,401,429; подтверждено TestClient и настоящим HTTPS nginx→uvicorn путём. |
+| FAIL-03 | PASS | Остановлен отдельный Redis container: login AUTH_UNAVAILABLE 503, без cookie/новой сессии; после запуска health/login 200. |
+| FAIL-04 | PASS | Остановлен отдельный PostgreSQL container: health 503, protected me 500 с общим ответом без credentials/traceback; после запуска health 200 и прежняя сессия me 200. |
 
-Workbook SHA-256 `1d3fcff5fda90e830845f87c9032bcc91b7877ef53f4c79cd06e9a1c2176470e`. Независимый ZIP/XML reader прочитал роли из XLSX header; runtime catalogue не использовался как источник ожидаемых результатов. Test-only routes существовали лишь в локальном TestClient app и не добавлялись в продукт. Они подтверждают policy/dependency для будущих permissions, не будущие business endpoints/object scope.
+Workbook SHA-256 `1d3fcff5fda90e830845f87c9032bcc91b7877ef53f4c79cd06e9a1c2176470e`. Независимый ZIP/XML reader читал роли из header XLSX, не из runtime-каталога. Test-only routes подключались лишь к локальному TestClient app, не к продукту; они подтверждают policy/dependency будущих permissions, не будущие business endpoints/object scope.
 
-FAIL-02 также перепроверен реальным HTTPS nginx→uvicorn путём: backend временно настроен на IP limit2/account1000 с новым Redis prefix;3разных логина и3поддельных X-Forwarded-For дали401/401/429. Конфигурация возвращена. FAIL-01 выждал реальные74сек после окна73, без EXPIRE/удаления ключей. FAIL-03/04 останавливали настоящие отдельные контейнеры, не mocks/только refusedport. Восстановление PostgreSQL подтвердило работоспособность той же существовавшей сессии.
+FAIL-02 перепроверен реальным HTTPS nginx→uvicorn: IP=2/account=1000, новый Redis prefix; три разных login и три forged X-Forwarded-For дали 401/401/429. Конфигурация возвращена. FAIL-01 ждал реальные 74 секунды после окна 73 без ручного изменения TTL. FAIL-03/04 останавливали настоящие отдельные контейнеры; восстановление PostgreSQL подтвердило ту же сессию. Backend-код этих проверок не менялся в WEB-02 fix.
 
-## Найденный дефект WEB-02
+## Дефект WEB-02 и закрытие
 
-**Severity: low, UX; блокирует формальную приёмку этого сценария до исправления.** Секреты не раскрываются, несанкционированного входа нет.
+**История: FAIL на 41faa11 → исправление 40da5ac → независимый PASS. Severity low (UX), приёмка блокировалась до исправления.** Секреты не раскрывались, несанкционированного входа не было.
 
-В [frontend/src/api.ts](../../../frontend/src/api.ts#L52) rejected fetch не преобразуется в понятную ошибку, а [App.tsx](../../../frontend/src/App.tsx#L161) показывает native Error.message. В русскоязычном UI получается `Failed to fetch`.
+В исходном коде rejected fetch в `frontend/src/api.ts:52` не преобразовывался в понятную ошибку; `App.tsx:161` показывал native Error.message. В русскоязычном UI появлялся `Failed to fetch`.
 
-Воспроизведение на проверенном SHA:
+Воспроизведение: открыть форму в чистом Chromium context; перехватить только `**/api/v1/auth/login` через `page.route(..., route => route.abort("failed"))`, не ломая auth/me; ввести synthetic credentials и нажать «Войти». На исходном SHA alert был `Failed to fetch`, пароль очищался, форма оставалась, доступа не было.
 
-1. Открыть форму входа в Chromium с чистым context.
-2. Перехватить **только** `**/api/v1/auth/login` через Playwright `page.route(..., route => route.abort("failed"))`; API /auth/me оставить рабочим.
-3. Ввести синтетические валидные credentials и нажать «Войти».
-4. Фактически alert содержит `Failed to fetch`; пароль очищен, форма входа остаётся, доступа нет.
-5. Ожидается понятное русскоязычное сообщение о временной сетевой недоступности/возможности повторить вход, с сохранением очистки пароля и отсутствия авторизации.
+В `40da5ac` fetch rejection преобразуется в «Не удалось подключиться к серверу. Повторите попытку.». Отдельный проверяющий прочитал diff и повторил этот сценарий на пересобранном реальном UI: точный русский alert, пустой пароль, нет session cookie, форма входа остаётся. Новый штатный browser regression также независимо выполнен. Все три frontend/dist файла сверены с контейнером.
 
-Повторная проверка после исправления пока **NOT RUN**, новый runtime SHA пока не предоставлен. Статус относится только к pending retest дефекта; все35 обязательных ID уже исполнены, среди них WEB-02=FAIL. Не считать исправление завершённым лишь по новому unit-тесту. Требуются независимый browser retest WEB-02, затронутые auth/UI проверки и обязательные gates/CI на новом SHA.
+Дополнительно независимо повторены реальные wrong-password 401, missing/null/foreign Origin для login и cookie logout, запрет Authorization, успешный cookie-only login и reload, DB expiry→UI login, logout/replay. Browser fulfillment HTTP 503 проверил сообщение «Вход временно недоступен. Повторите попытку.» и очистку пароля. Это retest UI-обработки outage; он не выдаётся за повторную остановку Redis/PG, которая выполнена в полном исходном прогоне на неизменившемся backend. [Sanitized retest transcript](auth-rbac-acceptance-2026-10-19/retest-40da5ac/independent-browser.log).
 
-## Безопасность evidence и очистка
+Новых findings нет. Обязательных BLOCKED/NOT RUN и незакрытых acceptance/security findings нет.
 
-Ни raw password, ни session cookie/token, ни DB password, ни HAR, ни приватный Compose config в Git не добавлены. Сверка62AuditEvents и114813bytes логов backend/frontend/PostgreSQL/Redis по42уникальным синтетическим секретам дала0совпадений; проверяющий сравнивал значения внутри процесса, без вывода. Аудит role assignments содержит только роли; audit snapshot SHA-256 `00e0587ebb5f1d231d6019409ee639711b2a44b3c0205f5563ad98321fcf9a95`.
+## Evidence и очистка
 
-Удалены11собственных accounts и их sessions; чужие accounts не затронуты, AuditEvent62строки сохранены без изменения. Bootstrap race schema удалена. Собственные rate keys находились только в disposableRedis. Штатный e2e helper очистил свои fixtures. Disposable project останавливается без удаления audit volume; private credential files удаляются после завершения итоговых проверок/отчёта.
+В Git не добавлены raw passwords, session cookies/tokens, DB passwords, HAR или private Compose config. Сверка 62 AuditEvents и 114813 bytes логов backend/frontend/PostgreSQL/Redis по 42 уникальным synthetic secrets дала 0 совпадений; сравнение выполнялось внутри процесса. Audit snapshot SHA-256 `00e0587ebb5f1d231d6019409ee639711b2a44b3c0205f5563ad98321fcf9a95`.
 
-Ошибки первоначальной подготовки harness не объявлены дефектами продукта: OpenAPI запрошен на gateway вместо внутреннего backend; Docker tmpfs очищался при stop/start PostgreSQL; Playwright response.headers() скрывал Set-Cookie вместо allHeaders(). После исправления harness прогоны соответствующих сценариев выполнены заново; итоговые PASS относятся к повторённым реальным проверкам. WEB-02, напротив, воспроизведён как дефект продукта и оставлен FAIL.
+Первоначальные 11 собственных accounts и sessions удалены, 62 audit rows сохранены неизменными. Race schema удалена. Disposable project остановлен без удаления audit volume; private credentials/config удалены. При retest отдельный synthetic VIEWER и его sessions также удалены, его audit сохранён; private JSON удалён. Штатный e2e helper очистил свои fixtures. Чужие accounts и пользовательские volumes не затронуты.
+
+Первоначальные ошибки harness исправлялись и не выдавались за product findings: OpenAPI запрашивался на gateway вместо internal backend; Docker tmpfs очищался при PostgreSQL stop/start; Playwright headers() скрывал Set-Cookie вместо allHeaders(). После исправления harness затронутые сценарии заново успешно выполнены. WEB-02 был отдельным воспроизведённым product defect; его FAIL и последующее закрытие сохранены в истории отчёта. Старые gate logs при обновлении получили только удаление лишних пустых строк в EOF.
 
 ## Вывод
 
-На `41faa11a8b7ee9d5959ca6a3fd29d9079bb7fb74` основная защита Authentication/RBAC подтверждена, все gates и CI зелёные. **Формально Этап1 пока не принимается: исправить WEB-02 и независимо повторить проверку на новом SHA.** Остальные34обязательных ID имеют PASS; BLOCKED/NOT RUN среди обязательных ID нет.
+**Независимая приёмка реализованного Этапа 1 на runtime SHA `40da5aca6bec33c11ec417c975fec26cdc05c9eb` завершена: 35 PASS, 0 FAIL/BLOCKED/NOT RUN; все gates и exact-SHA CI зелёные.** Отчёт и retest evidence готовы к сохранению в Git; первоначальная версия 41faa11 отдельно зафиксирована как 34 PASS / 1 FAIL и не объявляется принятой задним числом.
 
-Границы неизменны: нет MFA/SSO/password recovery, редактирования пользователей/ролей в UI, business object scope и будущих business endpoints. Recent authentication не заменяет MFA. Промышленный пилот требует отдельного pentest/усиленной административной аутентификации; Этап2 в этой задаче не начат.
+Границы: нет MFA/SSO/password recovery, редактирования ролей/статуса через UI, business object scope и будущих business endpoints. Recent authentication не заменяет MFA. Перед промышленным пилотом остаются отдельный pentest и усиленная административная аутентификация. Этап 2 в этой задаче не начат.

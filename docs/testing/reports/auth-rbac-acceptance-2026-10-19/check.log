@@ -53,4 +53,3 @@ dist/assets/index-CD2pv-ka.js   230.07 kB │ gzip: 72.19 kB
 
 > forest-keeper-web@0.1.0 typecheck:e2e
 > tsc -p ../tests/e2e/tsconfig.json
-

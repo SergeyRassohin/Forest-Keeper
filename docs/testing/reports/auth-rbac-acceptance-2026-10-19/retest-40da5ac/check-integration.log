@@ -1,0 +1,39 @@
+{"status":"ok","components":{"api":"ok","database":"ok","redis":"ok"}}============================= test session starts ==============================
+platform linux -- Python 3.13.16, pytest-9.1.1, pluggy-1.6.0
+rootdir: /workspace/Forest-Keeper/backend
+configfile: pyproject.toml
+testpaths: tests
+plugins: anyio-4.15.1, platformdirs-4.13.0
+collected 230 items / 8 deselected / 222 selected
+
+tests/test_auth.py ..................................................... [ 23%]
+........................................................................ [ 56%]
+........................................................................ [ 88%]
+......................                                                   [ 98%]
+tests/test_infrastructure.py ...                                         [100%]
+
+=============================== warnings summary ===============================
+.venv/lib/python3.13/site-packages/fastapi/testclient.py:1
+  /workspace/Forest-Keeper/backend/.venv/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================ 222 passed, 8 deselected, 1 warning in 16.38s =================
+0002_auth (head)
+
+> forest-keeper-web@0.1.0 test:e2e
+> playwright test
+
+
+Running 6 tests using 1 worker
+
+(node:2837052) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 ../tests/e2e/foundation.spec.ts:36:5 › web client signs in and reads actual dependency readiness (941ms)
+  ✓  2 ../tests/e2e/foundation.spec.ts:54:5 › invalid password is rejected and cleared (661ms)
+  ✓  3 ../tests/e2e/foundation.spec.ts:65:5 › network failure during login shows a clear error and clears the password (479ms)
+  ✓  4 ../tests/e2e/foundation.spec.ts:87:5 › ADMIN creates a reviewer without inheriting business permissions (1.1s)
+  ✓  5 ../tests/e2e/foundation.spec.ts:111:5 › logout revokes the cookie session and rejects its replay (805ms)
+  ✓  6 ../tests/e2e/foundation.spec.ts:132:5 › login requires an allowed Origin and does not issue a bearer token (209ms)
+
+  6 passed (5.1s)
