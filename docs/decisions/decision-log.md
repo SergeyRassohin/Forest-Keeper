@@ -160,3 +160,17 @@ Existing documentation references to "Gold Reference" are a transitional interna
 - Thresholds for automatic entity matching versus human review.
 - Exact public/private portal boundary.
 - Production deployment topology for first pilot.
+
+
+### 2026-10-21 — Desktop Client excluded from product scope
+
+Forest Keeper will **not** develop or maintain a native Desktop Client as part of the current product direction.
+
+Decision:
+- Web Client is the sole supported end-user interface direction;
+- Desktop Client is not merely deferred or deprioritized; it is removed from roadmap/scope;
+- no desktop-specific installer, device-trust client, update channel or parallel UI contract should be designed;
+- backend/API may remain cleanly separated from frontend as good architecture, but this must not be interpreted as a commitment to a future native client;
+- any future return of a Desktop Client requires a new explicit product decision based on a concrete customer/security need.
+
+Rationale: a native client currently adds installation, update, compatibility and support cost without delivering product capability that the Web Client cannot provide for the intended Forest Keeper workflows.
