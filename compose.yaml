@@ -76,6 +76,12 @@ services:
     command: ["python", "-m", "app.worker"]
     volumes:
       - import_files:/var/lib/forest-keeper/imports
+    healthcheck:
+      test: ["CMD", "python", "-m", "app.worker_health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
     depends_on:
       backend:
         condition: service_healthy

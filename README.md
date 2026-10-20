@@ -1,10 +1,19 @@
 # Forest Keeper
 
+**On-premise data quality, entity resolution and decision intelligence platform.**
+
+Forest Keeper принимает данные из корпоративных источников, сохраняет неизменяемый raw-слой и provenance, выявляет дубли и конфликты, помогает человеку принимать объяснимые решения и использует подтверждённые решения как корпоративную память для следующих похожих случаев.
+
+Проект ориентирован на работу внутри закрытого контура заказчика: исходные данные не должны покидать его инфраструктуру. Локальный AI используется как заменяемый помощник, а не как источник истины.
+
+> **Статус:** MVP в активной разработке. Этапы 0 (foundation) и 1 (Authentication + RBAC) приняты; следующий этап — Sources & Import.
+
 Этот репозиторий — единый инженерный источник истины по проекту Forest Keeper.
 
 ## Разработка MVP
 
 Запускаемый каркас и команды проверки: [локальная разработка](docs/development/local-development.md).
+Отдельная конфигурация сервера и worker readiness: [production-профиль](docs/deployment/production-profile.md).
 Этап 0 добавляет backend, Web Client, PostgreSQL/pgvector, Redis/RQ и HTTPS-контур разработки.
 Этап 1 добавляет [локальный вход, пользователей и RBAC](docs/development/authentication.md).
 Этап 2 добавляет [источники и импорт CSV/XLSX/XML](docs/development/import.md) через браузер с сохранением оригиналов, raw-записей и provenance.

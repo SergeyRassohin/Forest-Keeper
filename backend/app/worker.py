@@ -3,6 +3,7 @@ from rq import Queue, Worker
 
 from app.common.config import Settings
 from app.imports.jobs import recover_imports
+from app.worker_health import WORKER_TTL_SECONDS, worker_identity
 
 
 def main() -> None:
@@ -11,7 +12,10 @@ def main() -> None:
     try:
         recover_imports(settings, connection)
         Worker(
-            [Queue(settings.import_queue_name, connection=connection)], connection=connection
+            [Queue(settings.import_queue_name, connection=connection)],
+            connection=connection,
+            name=worker_identity(),
+            worker_ttl=WORKER_TTL_SECONDS,
         ).work()
     finally:
         connection.close()

@@ -1,0 +1,7 @@
+# Metadata only. Never put passwords or database URLs in this file.
+FK_BACKEND_IMAGE=your-local-registry/forest-keeper-backend:reviewed-version
+FK_FRONTEND_IMAGE=your-local-registry/forest-keeper-web:reviewed-version
+FK_PROD_SECRETS_DIR=/opt/forest-keeper/secrets
+FK_ALLOWED_ORIGINS=["https://forest-keeper.example.org"]
+FK_BIND_ADDRESS=127.0.0.1
+FK_HTTPS_PORT=8443
