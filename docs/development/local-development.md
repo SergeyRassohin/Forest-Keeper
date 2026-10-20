@@ -83,10 +83,12 @@ Security gates запускаются отдельно от lint/type checks. `c
 
 Unit-проверки явно исключают integration; integration без `FK_TEST_INTEGRATION=1` пропускается. Обязательный продуктовый E2E из плана MVP будет добавлен вместе с соответствующими этапами; `tests/e2e/foundation.spec.ts` проверяет только каркас.
 
-Повторная проверка после перезапуска:
+Повторная проверка после перезапуска (сначала дождитесь завершения обработок; worker должен снять RQ-регистрацию до остановки Redis):
 
 ```bash
-docker compose restart postgres redis backend worker frontend
+docker compose stop -t 30 worker
+docker compose restart postgres redis backend frontend
+docker compose up -d --wait --wait-timeout 180 worker
 bash scripts/check-integration.sh
 ```
 

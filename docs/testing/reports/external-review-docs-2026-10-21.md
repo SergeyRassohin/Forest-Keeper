@@ -42,6 +42,7 @@ This is artifact verification, **not an inference benchmark**. llama.cpp / sente
 | Total automated tests | **550 PASS** |
 | Lint / format / mypy / TypeScript / frontend build | PASS |
 | Docker backend/frontend build and startup | PASS on the existing test environment |
+| Disposable production profile after ordered-restart fix | PASS locally: two concurrent 100 MB uploads, stale-worker detection, restart/storage/secret checks |
 | SAST / negative security fixtures | PASS |
 | New downloader/link checker Bandit | PASS; B310 scheme warnings explicitly audited against URL validation at call sites |
 | Gitleaks history + staged tree | PASS, no leaks |
@@ -56,7 +57,7 @@ The public-data E2E uses the actual Web Client → API → RQ worker → Postgre
 
 ## Restart persistence
 
-The existing development stack was restarted without deleting volumes. Health returned ok. Before/after read-only snapshots agree exactly:
+The existing development stack was restarted without deleting volumes; the documented ordered restart was also retested with identical snapshot hashes. Health returned ok. Before/after read-only snapshots agree exactly:
 
 | Data | Count | SHA-256 of ordered snapshot, unchanged after restart |
 | --- | ---: | --- |
@@ -64,10 +65,16 @@ The existing development stack was restarted without deleting volumes. Health re
 | Public raw records | 120 | b6132232c9d185d43033bb54e9f6efc845eeac2feb5ac318778072774ea22333 |
 | Normalized values | 480 | e78e1628577417c8108ccbec790a6b92168fc219f6458692671433d1e72c200c |
 
-These are import/normalization facts, not business Decisions. No schema migration is introduced. Full fresh-machine setup by a person unfamiliar with the project, Firefox/Edge checks, production smoke, independent review and final-SHA CI are not claimed as local completed checks here. Existing stage acceptance evidence remains historical evidence for those stages.
+These are import/normalization facts, not business Decisions. No schema migration is introduced. Full fresh-machine setup by a person unfamiliar with the project, Firefox/Edge checks, independent review and final-SHA CI are not claimed as local completed checks here. The production smoke passed locally after the ordered-restart follow-up. Existing stage acceptance evidence remains historical evidence for those stages.
 
 ## Architecture / Product Intent Gate
 
 Raw/provenance and source read-only boundaries are unchanged. Canonical normalization does not establish truth or merge identities. The extra profile is immutable release configuration in a clearly demo domain. Fuzzy matches remain for authorized manual review; ADMIN gains no business authority. AI is neither memory nor an autonomous writer. Forest Codex history/versioning/impact/stale rules remain required for future stages. Backend remains a modular monolith with a browser UI. Stage 5/11 are not implemented prematurely.
 
 Remaining blockers and independent review are visible in [review readiness](../../deployment/review-readiness.md). The PR is reviewable; a green CI result alone does not establish the full product path.
+
+## CI follow-up: ordered restart
+
+On `76944a8`, the [push workflow](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39516753153) passed, but the concurrent [PR workflow](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39516756886) exposed a pre-existing shutdown race in the production restart test: Redis could persist the old worker hostname lease before RQ recorded worker death, then the restarted worker reported active worker already exists. No business records were lost. The supported restart procedure and production check now stop an idle worker while Redis is still available, restart dependencies, then start the worker. Documentation makes this ordering explicit, including full down/up. Automatic recovery after abrupt simultaneous Redis/worker interruption remains a known operational limitation, not a claimed new runtime fix. Final CI must be evaluated on the follow-up SHA.
+
+The documented ordered restart was re-run on the public example: the same 2 imports, 120 raw records and 480 values retained the snapshot hashes above. The complete disposable production check passed locally after the fix, including stale-worker detection and two concurrent 100 MB uploads. No worker runtime/authorization logic was changed.
