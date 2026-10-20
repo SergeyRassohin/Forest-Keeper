@@ -1,0 +1,235 @@
+{
+  "id": "b81f07aa-f0c7-5edc-b355-b6c4d1b24521",
+  "code": "synthetic-capacity",
+  "version": "1",
+  "engine_version": "fk-normalization/1",
+  "synthetic": true,
+  "domain": "synthetic-capacity",
+  "entity_type": "Material",
+  "display_attribute": "id",
+  "bindings": [
+    {
+      "formats": [
+        "CSV"
+      ],
+      "source_types": [
+        "FILE"
+      ],
+      "object_types": [
+        "record"
+      ],
+      "fields": [
+        {
+          "attribute_code": "id",
+          "path": [
+            "id"
+          ],
+          "kind": "string"
+        },
+        {
+          "attribute_code": "attribute_01",
+          "path": [
+            "attribute_01"
+          ],
+          "kind": "string"
+        },
+        {
+          "attribute_code": "attribute_02",
+          "path": [
+            "attribute_02"
+          ],
+          "kind": "string"
+        },
+        {
+          "attribute_code": "attribute_03",
+          "path": [
+            "attribute_03"
+          ],
+          "kind": "string"
+        },
+        {
+          "attribute_code": "attribute_04",
+          "path": [
+            "attribute_04"
+          ],
+          "kind": "string"
+        },
+        {
+          "attribute_code": "attribute_05",
+          "path": [
+            "attribute_05"
+          ],
+          "kind": "string"
+        },
+        {
+          "attribute_code": "attribute_06",
+          "path": [
+            "attribute_06"
+          ],
+          "kind": "string"
+        },
+        {
+          "attribute_code": "attribute_07",
+          "path": [
+            "attribute_07"
+          ],
+          "kind": "string"
+        },
+        {
+          "attribute_code": "attribute_08",
+          "path": [
+            "attribute_08"
+          ],
+          "kind": "string"
+        },
+        {
+          "attribute_code": "attribute_09",
+          "path": [
+            "attribute_09"
+          ],
+          "kind": "string"
+        },
+        {
+          "attribute_code": "attribute_10",
+          "path": [
+            "attribute_10"
+          ],
+          "kind": "string"
+        },
+        {
+          "attribute_code": "attribute_11",
+          "path": [
+            "attribute_11"
+          ],
+          "kind": "string"
+        },
+        {
+          "attribute_code": "attribute_12",
+          "path": [
+            "attribute_12"
+          ],
+          "kind": "string"
+        },
+        {
+          "attribute_code": "attribute_13",
+          "path": [
+            "attribute_13"
+          ],
+          "kind": "string"
+        },
+        {
+          "attribute_code": "attribute_14",
+          "path": [
+            "attribute_14"
+          ],
+          "kind": "string"
+        },
+        {
+          "attribute_code": "attribute_15",
+          "path": [
+            "attribute_15"
+          ],
+          "kind": "string"
+        },
+        {
+          "attribute_code": "attribute_16",
+          "path": [
+            "attribute_16"
+          ],
+          "kind": "string"
+        },
+        {
+          "attribute_code": "attribute_17",
+          "path": [
+            "attribute_17"
+          ],
+          "kind": "string"
+        },
+        {
+          "attribute_code": "attribute_18",
+          "path": [
+            "attribute_18"
+          ],
+          "kind": "string"
+        },
+        {
+          "attribute_code": "attribute_19",
+          "path": [
+            "attribute_19"
+          ],
+          "kind": "string"
+        },
+        {
+          "attribute_code": "attribute_20",
+          "path": [
+            "attribute_20"
+          ],
+          "kind": "string"
+        },
+        {
+          "attribute_code": "attribute_21",
+          "path": [
+            "attribute_21"
+          ],
+          "kind": "string"
+        },
+        {
+          "attribute_code": "attribute_22",
+          "path": [
+            "attribute_22"
+          ],
+          "kind": "string"
+        },
+        {
+          "attribute_code": "attribute_23",
+          "path": [
+            "attribute_23"
+          ],
+          "kind": "string"
+        },
+        {
+          "attribute_code": "attribute_24",
+          "path": [
+            "attribute_24"
+          ],
+          "kind": "string"
+        },
+        {
+          "attribute_code": "attribute_25",
+          "path": [
+            "attribute_25"
+          ],
+          "kind": "string"
+        },
+        {
+          "attribute_code": "attribute_26",
+          "path": [
+            "attribute_26"
+          ],
+          "kind": "string"
+        },
+        {
+          "attribute_code": "attribute_27",
+          "path": [
+            "attribute_27"
+          ],
+          "kind": "string"
+        },
+        {
+          "attribute_code": "attribute_28",
+          "path": [
+            "attribute_28"
+          ],
+          "kind": "string"
+        },
+        {
+          "attribute_code": "attribute_29",
+          "path": [
+            "attribute_29"
+          ],
+          "kind": "string"
+        }
+      ]
+    }
+  ]
+}

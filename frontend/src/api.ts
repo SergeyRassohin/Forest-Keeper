@@ -75,3 +75,17 @@ export async function signOut(): Promise<void> {
   if (!response.ok && response.status !== 401)
     throw new Error('Не удалось выйти. Повторите попытку.');
 }
+
+export async function requestJson<T>(path: string, options?: RequestInit): Promise<T> {
+  const response = await fetch('/api/v1' + path, { cache: 'no-store', ...options });
+  if (response.status === 401) throw new SessionExpired();
+  if (!response.ok) {
+    let message = 'Не удалось выполнить запрос. Повторите попытку.';
+    try {
+      const body = await response.json();
+      if (typeof body?.error?.message === 'string') message = body.error.message;
+    } catch { /* Gateway errors need the same readable fallback. */ }
+    throw new Error(message);
+  }
+  return response.json() as Promise<T>;
+}

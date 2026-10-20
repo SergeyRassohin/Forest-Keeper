@@ -44,3 +44,6 @@ th, td { padding: .6rem; text-align: left; vertical-align: top; border-bottom: 1
 .imports pre { white-space: pre-wrap; overflow-wrap: anywhere; min-width: 12rem; max-width: 42rem; }
 .checksum { overflow-wrap: anywhere; font-family: monospace; }
 .imports dd { margin-bottom: .5rem; }
+.normalization-record { margin-top: 1rem; padding: .8rem; border: 1px solid #c7d7cc; border-radius: .5rem; }
+.normalization-record summary { cursor: pointer; font-weight: 600; }
+.normalization pre { white-space: pre-wrap; overflow-wrap: anywhere; max-width: 38rem; }

@@ -95,6 +95,12 @@ Issue #7 authorizes a file-only import subsystem. The canonical SourceSystem spe
 
 Duplicate identity is `(SourceSystem, SHA-256 of saved bytes)`. A repeated upload returns HTTP200 and the existing primary ImportBatch, without enqueueing another job. Retry is explicit, permission import.retry, and creates a new ImportBatch with retry_of_id and the same original; historical batches/raw/audit remain. New uploads return201 after accepting the original and batch, with asynchronous processing status. Add paginated GET imports and GET imports/{id}/records to meet browser raw/provenance visibility. Parser/storage resource bounds and operational recovery are specified in docs/development/import.md and do not change canonical ImportBatch transitions.
 
+### 2026-10-20 — Stage 3 normalization representation (issue #12)
+
+Use the existing AnalysisRun and its canonical lifecycle for normalization only. Matching/conflicts are not executed or reported as computed. Existing analysis.run / analysis.view permissions apply. During Stage 3, template_id identifies an immutable, versioned application mapping profile; it does not introduce CustomerTemplate activation or a new persistent business mapping entity. Store the complete validated mapping snapshot, SHA-256 and engine/rules version with each run. Profiles are release configuration, not executable expressions or user-uploaded code. The supplied Material and capacity profiles are explicitly synthetic; the real first pilot domain remains open.
+
+A pre-match CanonicalEntity represents exactly one RawRecord under one mapping/rules fingerprint. It establishes no cross-source identity. Same raw/fingerprint reuses append-only EntityValue/entity facts via deterministic identifiers; explicit reruns create new AnalysisRun history and technical run/output associations. A different fingerprint creates new representation facts and preserves all previous results. No new business status enum is introduced: canonical docs list CanonicalEntity.status without defining its values/lifecycle, so Stage 3 reserves it as NULL, with no manual transitions. Later matching/lifecycle work needs an explicit compatible change; do not silently treat these representations as matched entities.
+
 ## Open decisions
 - Exact first pilot domain.
 - Thresholds for automatic entity matching versus human review.

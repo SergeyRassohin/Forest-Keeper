@@ -180,44 +180,25 @@ Permission import.retry, cookie и разрешённый Origin. Для FAILED/
 
 ---
 
-## 6. Запуск анализа
+## 6. Запуск анализа / нормализация (Этап 3)
 
-### POST /api/v1/analysis
-
-Запустить нормализацию, сопоставление и поиск конфликтов по выбранным пакетам или источникам.
-
-Запрос:
+`POST /api/v1/analysis` использует существующий permission `analysis.run`, cookie и разрешённый Origin. В Этапе 3 выполняется **только нормализация**: matching/conflicts не запускаются. Неизвестные данные не угадываются и normalized не объявляется истиной.
 
 ```json
-{
-  "import_batch_ids": ["uuid-1", "uuid-2"],
-  "template_id": "uuid"
-}
+{"import_batch_ids": ["uuid-1", "uuid-2"], "template_id": "mapping-profile-uuid"}
 ```
 
-Ответ:
+От 1 до 20 разных ImportBatch со статусом COMPLETED/COMPLETED_WITH_ERRORS. `template_id` выбирается из GET `/api/v1/analysis/profiles`; пока это UUID декларативного app-config profile, не workflow CustomerTemplate. Поставляемые profiles синтетические. Snapshot mapping, version, engine/rules version и SHA-256 сохраняются с запуском.
 
-```json
-{
-  "analysis_id": "uuid",
-  "status": "PROCESSING"
-}
-```
+Новый запуск возвращает201 и AnalysisView: id/analysis_id, status, import_batch_ids, template_id, mapping_hash, mapping_snapshot, actor_id, records_processed, values_processed, quality_counts, created_at, completed_at, error_text. Статус после приёма обычно QUEUED;201 не означает успешное завершение. Если точно такой scope/profile уже активен, возвращается200 и его id. Повтор после terminal status создаёт новый AnalysisRun, история сохраняется; semantic facts не дублируются для того же raw/fingerprint. При отказе публикации очередь получает FAILED с безопасным code. Structural validation→422; неизвестный import→404, незавершённый/FAILED import→409.
 
-### GET /api/v1/analysis/{analysis_id}
+`GET /api/v1/analysis/profiles`, `GET /api/v1/analysis?import_batch_id=uuid`, `GET /api/v1/analysis/{analysis_id}` и `GET /api/v1/analysis/{analysis_id}/records` требуют существующий `analysis.view`. Списки: limit1–100 (default50), offset0–1000000. Порядок запусков created_at/id desc; порядок записей raw_record_id. Новые маршруты возвращают no-store; unauthenticated→401, permission denied→403. Read endpoints не выполняют нормализацию и не меняют состояния.
 
-Статус анализа.
+Records response: raw_record_id, source_record_key, source_position, raw_payload, source{id,name,code}, import_batch{id,original_filename,file_hash}, entity{id,domain,entity_type,display_name,status}, values, mapping_details. Каждый value содержит id, attribute_code, raw_record_id, raw_value, normalized_value, unit, quality_status, normalization_rule и точную rule_definition из сохранённого snapshot. Entity nullable для неподдержанного object type. `status` CanonicalEntity зарезервирован NULL, не является lifecycle состоянием. Записи разных источников остаются разными entity.
 
-Ответ:
+Normalized decimal/quantity сериализуется строкой без binary-float арифметики, дата — YYYY-MM-DD. Quality: VALID/WARNING/INVALID/UNKNOWN. `normalization_rule` ссылается на mapping fingerprint/field, содержит presence/reason/conversion evidence. Пропущенное поле, JSON null и пустая строка различаются по presence. Unknown fields не становятся вымышленными canonical attributes: они перечислены в mapping_details как UNKNOWN, с неизменяемым raw_payload рядом. `quality_counts` считает сохранённые EntityValue; непокрытые mapping поля/объекты диагностируются отдельно в record details.
 
-```json
-{
-  "id": "uuid",
-  "status": "COMPLETED",
-  "matches_found": 320,
-  "conflicts_found": 47
-}
-```
+До COMPLETED результаты частичные; FAILED сохраняет уже записанные chunks и code NORMALIZATION_INTERRUPTED без внутренних путей/raw. Retry — новый POST с теми же imports/profile, никаких reset FAILED→PROCESSING. Recovery и гарантии checkpoints описаны в [normalization subsystem](../development/normalization.md). Поля matches_found/conflicts_found относятся к будущим этапам и сейчас не выдаются как вычисленные результаты.
 
 ---
 
