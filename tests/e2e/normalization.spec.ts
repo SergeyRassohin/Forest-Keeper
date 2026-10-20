@@ -17,7 +17,7 @@ async function prepare(page: Page, kind: 'csv' | 'onec') {
   if (!(await source.evaluate((element) => (element as HTMLDetailsElement).open))) await source.locator('summary').click();
   await page.getByLabel('Название источника', { exact: true }).fill('Нормализация ' + kind + ' ' + accounts.prefix);
   await page.getByLabel('Код источника', { exact: true }).fill(accounts.prefix + '_norm_' + kind);
-  await page.getByLabel('Тип источника', { exact: true }).selectOption(kind === 'csv' ? 'FILE' : 'ONE_C');
+  await page.getByRole('combobox', { name: 'Тип источника', exact: true }).selectOption(kind === 'csv' ? 'FILE' : 'ONE_C');
   await page.getByRole('button', { name: 'Создать источник', exact: true }).click();
   await expect(page.getByRole('status').filter({ hasText: 'Источник создан' })).toBeVisible();
   const file = kind === 'csv' ? 'material.csv' : 'onec.xml';
