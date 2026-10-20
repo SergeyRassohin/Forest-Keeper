@@ -13,6 +13,7 @@ from app.common.database import make_engine
 from app.common.errors import ApiError
 from app.common.health import HealthChecker, HealthResponse
 from app.imports.routes import router as import_router
+from app.normalization.routes import router as normalization_router
 
 
 def create_app(settings: Settings | None = None, checker: HealthChecker | None = None) -> FastAPI:
@@ -42,6 +43,7 @@ def create_app(settings: Settings | None = None, checker: HealthChecker | None =
     app = FastAPI(title="Forest Keeper API", version="0.1.0", lifespan=lifespan)
     app.include_router(auth_router)
     app.include_router(import_router)
+    app.include_router(normalization_router)
 
     @app.exception_handler(ApiError)
     async def api_error(request: Request, error: ApiError) -> JSONResponse:
@@ -65,7 +67,13 @@ def create_app(settings: Settings | None = None, checker: HealthChecker | None =
     ) -> Response:
         response = await call_next(request)
         if request.url.path.startswith(
-            ("/api/v1/auth", "/api/v1/users", "/api/v1/sources", "/api/v1/imports")
+            (
+                "/api/v1/auth",
+                "/api/v1/users",
+                "/api/v1/sources",
+                "/api/v1/imports",
+                "/api/v1/analysis",
+            )
         ):
             response.headers["Cache-Control"] = "no-store"
         return response
@@ -89,7 +97,7 @@ def create_app(settings: Settings | None = None, checker: HealthChecker | None =
 
     @app.get("/api/v1/version", dependencies=[Depends(require_permission("update.view"))])
     def version() -> dict[str, str]:
-        return {"name": "Forest Keeper", "version": "0.1.0", "stage": "import"}
+        return {"name": "Forest Keeper", "version": "0.1.0", "stage": "normalization"}
 
     return app
 

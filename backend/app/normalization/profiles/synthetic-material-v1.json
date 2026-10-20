@@ -1,0 +1,236 @@
+{
+  "id": "8f8a9f36-0727-5a8c-92bd-1e64598b7811",
+  "code": "synthetic-material",
+  "version": "1",
+  "engine_version": "fk-normalization/1",
+  "synthetic": true,
+  "domain": "synthetic-material",
+  "entity_type": "Material",
+  "display_attribute": "name",
+  "bindings": [
+    {
+      "formats": [
+        "CSV",
+        "XLSX"
+      ],
+      "source_types": [
+        "FILE"
+      ],
+      "object_types": [
+        "record"
+      ],
+      "fields": [
+        {
+          "attribute_code": "code",
+          "path": [
+            "id"
+          ],
+          "kind": "string",
+          "required": true
+        },
+        {
+          "attribute_code": "name",
+          "path": [
+            "name"
+          ],
+          "kind": "string",
+          "case": "upper"
+        },
+        {
+          "attribute_code": "mass",
+          "path": [
+            "mass"
+          ],
+          "kind": "quantity",
+          "unit": "kg",
+          "unit_aliases": {
+            "kg": "1",
+            "кг": "1",
+            "g": "0.001",
+            "г": "0.001"
+          }
+        },
+        {
+          "attribute_code": "price",
+          "path": [
+            "price"
+          ],
+          "kind": "decimal"
+        },
+        {
+          "attribute_code": "manufactured_on",
+          "path": [
+            "date"
+          ],
+          "kind": "date",
+          "date_formats": [
+            "%Y-%m-%d",
+            "%d.%m.%Y"
+          ],
+          "allow_midnight_datetime": true
+        }
+      ]
+    },
+    {
+      "formats": [
+        "XML"
+      ],
+      "source_types": [
+        "FILE"
+      ],
+      "object_types": [
+        "record"
+      ],
+      "fields": [
+        {
+          "attribute_code": "code",
+          "path": [
+            "children",
+            {
+              "tag": "id"
+            },
+            "text"
+          ],
+          "kind": "string",
+          "required": true
+        },
+        {
+          "attribute_code": "name",
+          "path": [
+            "children",
+            {
+              "tag": "name"
+            },
+            "text"
+          ],
+          "kind": "string",
+          "case": "upper"
+        },
+        {
+          "attribute_code": "mass",
+          "path": [
+            "children",
+            {
+              "tag": "mass"
+            },
+            "text"
+          ],
+          "kind": "quantity",
+          "unit": "kg",
+          "unit_aliases": {
+            "kg": "1",
+            "кг": "1",
+            "g": "0.001",
+            "г": "0.001"
+          }
+        },
+        {
+          "attribute_code": "price",
+          "path": [
+            "children",
+            {
+              "tag": "price"
+            },
+            "text"
+          ],
+          "kind": "decimal"
+        },
+        {
+          "attribute_code": "manufactured_on",
+          "path": [
+            "children",
+            {
+              "tag": "date"
+            },
+            "text"
+          ],
+          "kind": "date",
+          "date_formats": [
+            "%Y-%m-%d",
+            "%d.%m.%Y"
+          ],
+          "allow_midnight_datetime": true
+        }
+      ]
+    },
+    {
+      "formats": [
+        "XML"
+      ],
+      "source_types": [
+        "ONE_C"
+      ],
+      "object_types": [
+        "Справочник.Номенклатура"
+      ],
+      "fields": [
+        {
+          "attribute_code": "code",
+          "path": [
+            "attributes",
+            "Ид"
+          ],
+          "kind": "string",
+          "required": true
+        },
+        {
+          "attribute_code": "name",
+          "path": [
+            "children",
+            {
+              "tag": "Наименование"
+            },
+            "text"
+          ],
+          "kind": "string",
+          "case": "upper"
+        },
+        {
+          "attribute_code": "mass",
+          "path": [
+            "children",
+            {
+              "tag": "Масса"
+            },
+            "text"
+          ],
+          "kind": "quantity",
+          "unit": "kg",
+          "unit_aliases": {
+            "kg": "1",
+            "кг": "1",
+            "g": "0.001",
+            "г": "0.001"
+          }
+        },
+        {
+          "attribute_code": "price",
+          "path": [
+            "children",
+            {
+              "tag": "Цена"
+            },
+            "text"
+          ],
+          "kind": "decimal"
+        },
+        {
+          "attribute_code": "manufactured_on",
+          "path": [
+            "children",
+            {
+              "tag": "Дата"
+            },
+            "text"
+          ],
+          "kind": "date",
+          "date_formats": [
+            "%Y-%m-%d",
+            "%d.%m.%Y"
+          ],
+          "allow_midnight_datetime": true
+        }
+      ]
+    }
+  ]
+}

@@ -98,7 +98,10 @@ class ImportBatch(Base):
 
 class RawRecord(Base):
     __tablename__ = "raw_records"
-    __table_args__ = (UniqueConstraint("import_batch_id", "position_key"),)
+    __table_args__ = (
+        UniqueConstraint("import_batch_id", "position_key"),
+        Index("ix_raw_import_id", "import_batch_id", "id"),
+    )
 
     id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid4)
     import_batch_id: Mapped[UUID] = mapped_column(ForeignKey("import_batches.id"), index=True)

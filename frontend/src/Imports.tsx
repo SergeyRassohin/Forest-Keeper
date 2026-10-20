@@ -1,5 +1,6 @@
 import { useEffect, useState, type FormEvent } from 'react';
-import { SessionExpired, type User } from './api';
+import { requestJson as api, SessionExpired, type User } from './api';
+import { Normalization } from './Normalization';
 
 interface Source {
   id: string; name: string; code: string; source_type: string; status: string;
@@ -22,19 +23,6 @@ const labels = new Map(Object.entries({
   COMPLETED: 'Завершён', COMPLETED_WITH_ERRORS: 'Завершён с ошибками', FAILED: 'Ошибка импорта',
 }));
 
-async function api<T>(path: string, options?: RequestInit): Promise<T> {
-  const response = await fetch('/api/v1' + path, { cache: 'no-store', ...options });
-  if (response.status === 401) throw new SessionExpired();
-  if (!response.ok) {
-    let message = 'Не удалось выполнить запрос. Повторите попытку.';
-    try {
-      const body = await response.json();
-      if (typeof body?.error?.message === 'string') message = body.error.message;
-    } catch { /* Gateway errors need the same readable fallback. */ }
-    throw new Error(message);
-  }
-  return response.json() as Promise<T>;
-}
 
 export function Imports({ user, onSessionExpired }: { user: User; onSessionExpired: () => void }) {
   const [sources, setSources] = useState<Source[]>([]);
@@ -212,6 +200,7 @@ export function Imports({ user, onSessionExpired }: { user: User; onSessionExpir
       {errors.length === 0 ? <p>Ошибок на этой странице нет.</p> : <ul>{errors.map((item) => <li key={item.id}>{item.message} · {JSON.stringify(item.source_position)}</li>)}</ul>}
       <button disabled={errorOffset === 0} onClick={() => setErrorOffset(Math.max(0, errorOffset - 50))}>Предыдущие ошибки</button>
       <button disabled={errors.length < 50} onClick={() => setErrorOffset(errorOffset + 50)}>Следующие ошибки</button>
+      {user.permissions.includes('analysis.view') && <Normalization key={batch.id} batchId={batch.id} importReady={['COMPLETED', 'COMPLETED_WITH_ERRORS'].includes(batch.status)} user={user} onSessionExpired={onSessionExpired} />}
       <h3>Исходные записи</h3>
       <div className="table-scroll"><table><thead><tr><th>Ключ / тип</th><th>Позиция в источнике</th><th>Исходные значения</th></tr></thead>
         <tbody>{records.map((record) => <tr key={record.id}><td>{record.source_record_key ?? '—'} / {record.source_object_type}</td><td><pre>{JSON.stringify(record.source_position, null, 2)}</pre></td><td><pre>{JSON.stringify(record.raw_payload, null, 2)}</pre></td></tr>)}</tbody></table></div>
