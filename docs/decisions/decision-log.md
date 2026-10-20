@@ -101,6 +101,29 @@ Use the existing AnalysisRun and its canonical lifecycle for normalization only.
 
 A pre-match CanonicalEntity represents exactly one RawRecord under one mapping/rules fingerprint. It establishes no cross-source identity. Same raw/fingerprint reuses append-only EntityValue/entity facts via deterministic identifiers; explicit reruns create new AnalysisRun history and technical run/output associations. A different fingerprint creates new representation facts and preserves all previous results. No new business status enum is introduced: canonical docs list CanonicalEntity.status without defining its values/lifecycle, so Stage 3 reserves it as NULL, with no manual transitions. Later matching/lifecycle work needs an explicit compatible change; do not silently treat these representations as matched entities.
 
+### 2026-10-20 — Stage-gate architecture check and evolving Gold Reference
+
+Every MVP stage transition must include an explicit **architecture/intent gate** before the next stage is accepted or started. The check is not limited to green tests: implementation must be compared with the product intent, architecture, canonical data model, lifecycles, trust boundaries, human-in-the-loop rules and the current Decision Log. Any drift must be corrected or explicitly accepted as a new decision before proceeding.
+
+Forest Keeper's "Gold Reference" is a **versioned, configurable customer reference/baseline**, not an immutable universal truth and not the same thing as the transient canonical representation. It may evolve during operation as a result of explicitly confirmed human decisions and later formalized customer rules/templates. The system must never silently mutate this reference from AI output, similarity, or one-off observations.
+
+Any Gold Reference change must be:
+- explicitly approved by an authorized human under the applicable RBAC/workflow;
+- versioned and immutable as historical versions;
+- fully auditable: actor, time, reason, previous version, new version, affected domain/entity/attributes/rules and provenance/decision references where applicable;
+- reversible only by creating/activating another explicit version, not by rewriting history;
+- accompanied by an impact calculation identifying which existing assessments, matches, conflicts, recommendations, decisions-derived criteria or other dependent results may no longer be valid under the new reference.
+
+Before activation, the UI must clearly warn the user that changing the Gold Reference can change evaluation criteria and therefore may require re-evaluation of previously processed data. The warning must present the impact scope when it can be calculated.
+
+After activation, dependent derived results must not silently continue to appear current. They must either be re-evaluated under the new Gold Reference or be explicitly marked **stale / based on previous reference version** until re-evaluation. Historical results remain reproducible against the exact Gold Reference/rule/template version that produced them.
+
+The architectural principle is therefore:
+
+`human decision → structured confirmed history → optional proposal to formalize → human approval → new Gold Reference/rule/template version → impact analysis → explicit re-evaluation/stale marking`.
+
+This rule applies to future CustomerTemplate/Rule/RuleSuggestion implementation and must be checked at every stage gate so intermediate stages do not accidentally hard-code the Gold Reference as immutable truth.
+
 ## Open decisions
 - Exact first pilot domain.
 - Thresholds for automatic entity matching versus human review.
