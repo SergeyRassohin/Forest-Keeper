@@ -40,17 +40,13 @@ Web Client используется для:
 - просмотра рекомендаций и истории похожих решений;
 - администрирования в пределах выданных ролей.
 
-### Desktop Client — опциональный будущий вариант
+### Граница клиентского интерфейса
 
-Desktop Client не входит в обязательный состав MVP.
+Web Client — единственное поддерживаемое направление. Desktop Client исключён из scope и roadmap решением от 21 октября 2026. Backend/API отделён от frontend как архитектурная граница; это не обещание второго клиента.
 
-Он может быть добавлен для заказчиков, которым требуется:
-- контролируемая установка только на разрешённые рабочие станции;
-- усиленная привязка к устройству;
-- клиентские сертификаты;
-- дополнительные локальные механизмы защиты.
+## Статус реализации
 
-Desktop Client при появлении должен использовать тот же серверный API и не иметь прямого доступа к БД или внутренним сервисам.
+Компоненты и потоки ниже — целевая архитектура MVP. В main реализованы этапы 0–3: вход, импорт и нормализация. Matching находится в отдельном PR; Conflict/Decision/recommendation/AI runtime пока отсутствуют. Актуальная [матрица готовности](../deployment/review-readiness.md) отделяет архитектурные требования от доступных функций.
 
 ## 3. Серверный контур
 
@@ -165,9 +161,6 @@ AI не имеет production credentials и не пишет напрямую в
 ### Web Client ↔ Server
 HTTPS + JSON DTO.
 
-### Desktop Client ↔ Server
-При появлении desktop-клиента используется тот же HTTPS/API-контракт. Дополнительные механизмы доверия к устройству не меняют бизнес-API.
-
 ### Внутренние API
 По умолчанию JSON через HTTP/REST или внутренние вызовы модулей для монолита MVP.
 
@@ -229,7 +222,6 @@ Update Service поддерживает:
 ```mermaid
 flowchart LR
     BROWSER[Web Client / Browser] -->|HTTPS| GW[FK Gateway]
-    DESKTOP[Optional Desktop Client] -.->|HTTPS / optional mTLS| GW
     USER[User identity] --> AUTH[Auth/RBAC]
     GW --> AUTH
     AUTH --> API[FK API]
@@ -245,7 +237,7 @@ flowchart LR
 ## 12. Ключевые ограничения MVP
 
 - Web Client is the primary client;
-- Desktop Client is optional and not required for MVP;
+- Desktop Client excluded from product scope;
 - source systems read-only;
 - no autonomous production write;
 - human final decision;

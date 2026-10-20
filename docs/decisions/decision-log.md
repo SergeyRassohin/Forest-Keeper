@@ -50,8 +50,8 @@ MVP local LLM baseline is `Qwen/Qwen3-8B-GGUF`, artifact `Qwen3-8B-Q4_K_M.gguf`,
 ### Client access
 **Web Client is the primary client for MVP and the default Forest Keeper user interface.**
 It runs in the browser and communicates with FK Server only through HTTPS/API Gateway.
-Desktop Client is optional and may be introduced later for customers with special device-trust or information-security requirements.
-Backend/API remains client-independent so both clients can use the same business contract.
+Superseded by the explicit 2026-10-21 Web-only decision below: Desktop Client is excluded from the current product direction.
+Backend/API remains separated from frontend without committing to a second client.
 Neither client has direct access to PostgreSQL or internal services.
 
 ### Installation model
@@ -174,3 +174,13 @@ Decision:
 - any future return of a Desktop Client requires a new explicit product decision based on a concrete customer/security need.
 
 Rationale: a native client currently adds installation, update, compatibility and support cost without delivering product capability that the Web Client cannot provide for the intended Forest Keeper workflows.
+
+### 2026-10-21 — External review contract and matching policy
+
+User-confirmed review target: Saturday **2026-10-24**, Europe/Moscow. The required product path remains two file sources → normalization → matching → conflict → human Decision → persistence/restart → similar confirmed Decision retrieval → evidence-backed recommendation. Documentation must distinguish implemented main behavior from this target. Missing modules remain explicit blockers for issue #18.
+
+Public datasets with verified provenance and usage terms may be used for review. The USGS earthquake snapshot is a technical demonstration, not selection of the first industrial pilot domain, not a claim of independent source systems, and not an Entity Resolution gold benchmark.
+
+Fuzzy/weighted matching does not automatically confirm identity. Ambiguous similarity remains POSSIBLE_MATCH for authorized human review. Automatic confirmation is permitted only by an explicitly agreed, unambiguous exact-key rule without contradictory strong signals. No numeric production threshold is implied by this decision. Matching review and the later Conflict Decision remain distinct persisted actions.
+
+The Qwen repositories, pinned revisions, quantization and 1024-dimensional embedding baseline are unchanged. Checked upstream artifact checksums replace packaging placeholders. A versioned artifact lock and acquisition/verification command prepare model files; they do not claim inference readiness, offline package signature verification or integration with Decision Registry. AI runtime/model-info/smoke tests remain acceptance blockers until implemented.

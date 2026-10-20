@@ -1,0 +1,117 @@
+{
+  "id": "88e6428e-3348-594e-9106-6ae333d15ade",
+  "code": "public-earthquake",
+  "version": "1",
+  "engine_version": "fk-normalization/1",
+  "synthetic": false,
+  "domain": "demo-earthquake",
+  "entity_type": "EarthquakeEvent",
+  "display_attribute": "name",
+  "bindings": [
+    {
+      "formats": [
+        "CSV",
+        "XLSX"
+      ],
+      "source_types": [
+        "FILE"
+      ],
+      "object_types": [
+        "record"
+      ],
+      "fields": [
+        {
+          "attribute_code": "code",
+          "path": [
+            "id"
+          ],
+          "kind": "string",
+          "required": true,
+          "case": "lower"
+        },
+        {
+          "attribute_code": "name",
+          "path": [
+            "name"
+          ],
+          "kind": "string",
+          "case": "upper"
+        },
+        {
+          "attribute_code": "magnitude",
+          "path": [
+            "magnitude"
+          ],
+          "kind": "decimal"
+        },
+        {
+          "attribute_code": "occurred_at",
+          "path": [
+            "occurred_at"
+          ],
+          "kind": "string"
+        }
+      ]
+    },
+    {
+      "formats": [
+        "XML"
+      ],
+      "source_types": [
+        "FILE"
+      ],
+      "object_types": [
+        "record"
+      ],
+      "fields": [
+        {
+          "attribute_code": "code",
+          "path": [
+            "children",
+            {
+              "tag": "id"
+            },
+            "text"
+          ],
+          "kind": "string",
+          "required": true,
+          "case": "lower"
+        },
+        {
+          "attribute_code": "name",
+          "path": [
+            "children",
+            {
+              "tag": "name"
+            },
+            "text"
+          ],
+          "kind": "string",
+          "case": "upper"
+        },
+        {
+          "attribute_code": "magnitude",
+          "path": [
+            "children",
+            {
+              "tag": "magnitude"
+            },
+            "text"
+          ],
+          "kind": "decimal"
+        },
+        {
+          "attribute_code": "occurred_at",
+          "path": [
+            "children",
+            {
+              "tag": "occurred_at"
+            },
+            "text"
+          ],
+          "kind": "string"
+        }
+      ]
+    }
+  ]
+}

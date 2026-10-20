@@ -1,6 +1,6 @@
 # Локальная разработка MVP
 
-Реализованы этап 0 (каркас) и этап 1 ([Authentication + RBAC](authentication.md)). Бизнес-сценарий импорта и Human Review пока не реализован. Python 3.13, FastAPI/Pydantic v2, SQLAlchemy 2, Alembic, PostgreSQL 17 + pgvector, Redis 7.4/RQ, React/TypeScript/Vite. Зависимости зафиксированы в `backend/uv.lock` и `frontend/package-lock.json`.
+Реализованы и приняты этапы 0–3: каркас, [Authentication + RBAC](authentication.md), [импорт](import.md) и [нормализация](normalization.md). Matching в отдельном PR; Conflict/Human Review, Decision Registry и AI-рекомендации в main отсутствуют. Python 3.13, FastAPI/Pydantic v2, SQLAlchemy 2, Alembic, PostgreSQL 17 + pgvector, Redis 7.4/RQ, React/TypeScript/Vite. Зависимости зафиксированы в `backend/uv.lock` и `frontend/package-lock.json`.
 
 ## Критерий готовности к внешней проверке
 
@@ -34,11 +34,19 @@ docker compose up --build -d --wait --wait-timeout 180
 curl --fail --retry 15 --retry-connrefused --retry-delay 1 --cacert deploy/local/tls/dev.crt https://localhost:8443/api/v1/health
 ```
 
-Web Client доступен по `https://localhost:8443`. Локальный самоподписанный сертификат создаётся на 30 дней; браузеру нужно доверить этот сертификат. Скрипт не перезаписывает существующие `.env` и сертификаты. Для обновления истёкшего локального сертификата переместите оба файла из `deploy/local/tls/` и повторите инициализацию. Не используйте эти настройки как production deployment: корпоративный TLS, аутентификация и лицензирование появятся в следующих этапах.
+Web Client доступен по `https://localhost:8443`. Локальный самоподписанный сертификат создаётся на 30 дней; браузеру нужно доверить этот сертификат. Скрипт не перезаписывает существующие `.env` и сертификаты. Для обновления истёкшего локального сертификата переместите оба файла из `deploy/local/tls/` и повторите инициализацию. Не используйте эти настройки как production deployment: локальная аутентификация уже реализована; корпоративный TLS требует отдельной настройки, лицензирование ещё отсутствует.
 
 Compose сначала ждёт PostgreSQL/Redis, применяет миграцию, затем запускает API, RQ worker и Web Client. API и порты инфраструктуры доступны только через loopback. Данные сохраняются в named volumes; обычный `docker compose down` их не удаляет. Не используйте `down -v`, если данные нужно сохранить.
 
-`GET /api/v1/health` возвращает 200 только при доступности PostgreSQL с текущей миграцией и pgvector, а также Redis; при недоступности — 503. Web Client показывает реальные состояния. `GET /api/v1/version` возвращает версию и текущий этап реализации. Health не проверяет готовность ещё не реализованных бизнес-модулей или AI.
+`GET /api/v1/health` возвращает 200 только при доступности PostgreSQL с текущей миграцией и pgvector, а также Redis; при недоступности — 503. Web Client показывает реальные состояния. `GET /api/v1/version` возвращает версию и текущий этап реализации только авторизованному пользователю с update.view (например ADMIN). Без cookie ожидается 401. Health не проверяет готовность ещё не реализованных бизнес-модулей или AI.
+
+Для первого входа после запуска:
+
+```bash
+docker compose exec backend python -m app.auth.bootstrap --login admin --full-name "Администратор"
+```
+
+Пароль задаётся в скрытом приглашении (12–128 символов). Bootstrap доступен только при пустой таблице пользователей; стандартного пароля нет. Затем создайте пользователей с нужными ролями через Web Client. Полный [маршрут внешнего проверяющего](../deployment/external-review-quickstart.md) содержит ожидаемые результаты и примеры.
 
 SQL-таймаут 500 мс задаётся через `SET LOCAL` только внутри транзакции health. Он не остаётся на pooled connection после завершения транзакции. Общий engine и Alembic используют обычную политику таймаутов PostgreSQL; миграции не ограничены этим health-таймаутом.
 
@@ -63,6 +71,8 @@ bash scripts/check-integration.sh
 
 На Linux для Playwright могут понадобиться системные библиотеки: `npx playwright install --with-deps chromium`. Проверка интеграции предполагает, что Compose уже запущен; она использует локальный `.env`, проверяет health, vector SQL, исполнение задания реальным RQ worker и открытие Web Client в Chromium. Не запускайте её против production.
 
+`check.sh` также проверяет локальные Markdown targets и failure paths downloader (повреждение файла, неверный hash, размер и конкурентный partial). Для этих тестов uv получает закреплённый PyYAML 6.0.3; веса не скачиваются.
+
 Security gates запускаются отдельно от lint/type checks. `check-sast.sh` выполняет Bandit для backend/app и миграций и ESLint security для frontend/src; любая находка или ошибка инструмента блокирует проверку. `check-dependencies.sh` выполняет SCA через pip-audit и npm audit. `check-secrets.sh` использует официальный Gitleaks v8.24.2 image, закреплённый по SHA-256 digest, и проверяет доступную историю всех Git refs плюс текущие tracked-файлы. На чистой машине Docker скачает image из `ghcr.io`. Для полного сканирования истории нужен полный checkout (в CI задан `fetch-depth: 0`). Перед локальным сканированием добавьте новые исходники в индекс; `.env`, TLS private keys и dependency caches должны оставаться вне Git. Найденные секреты маскируются в выводе; baseline и исключения для подавления находок не добавлены.
 
 `test-security-gates.sh` создаёт временные синтетические примеры вне репозитория и проверяет отклонение shell injection, динамического eval и тестового PAT. Небезопасные примеры не исполняются. Скрипт проверяет именно код возврата находки и соответствующее правило, поэтому ошибка запуска scanner не считается успешным тестом. Скрипт очистит временные файлы после завершения.
@@ -80,7 +90,7 @@ docker compose restart postgres redis backend worker frontend
 bash scripts/check-integration.sh
 ```
 
-Дождитесь ответа health 200 после перезапуска зависимостей. Миграция `0001_foundation` включает pgvector; она не создаёт бизнес-таблиц. Alembic downgrade до base убирает запись версии, но сохраняет расширение для защиты зависимых объектов. Повторный upgrade восстанавливает готовность.
+Дождитесь ответа health 200 после перезапуска зависимостей. Актуальный head — `0004_normalization`; миграции 0002–0004 создают auth/import/normalization таблицы. Миграция `0001_foundation` включает pgvector. Alembic downgrade до base убирает запись версии, но сохраняет расширение для защиты зависимых объектов. Повторный upgrade восстанавливает готовность.
 
 ## Разработка без пересборки контейнеров
 
@@ -98,3 +108,13 @@ FK_ALLOWED_ORIGINS='["https://localhost:5173"]' uv run --frozen uvicorn app.main
 ```
 
 Во втором терминале — `cd frontend && FK_VITE_HTTPS=1 npm run dev`; Vite использует локальный сертификат и проксирует /api на loopback backend. HTTPS нужен для session cookie. Браузерный smoke-тест полного контура использует HTTPS gateway из Compose.
+
+## Документация, ссылки и модели
+
+```bash
+python3 scripts/check-doc-links.py
+python3 scripts/check-doc-links.py --external --report work/link-check.json
+uv run --script scripts/models.py check-upstream
+```
+
+Первая проверка локальная, вторая требует Интернет и сохраняет HTTP-результаты; model check сверяет pinned metadata/контрольные суммы, не запускает inference. Для полного получения весов и проверки локальных SHA-256 используйте [инструкцию Qwen](../ai/model-downloads.md). Модели не нужны для этапов 0–3.

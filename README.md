@@ -1,29 +1,43 @@
 # Forest Keeper
 
-**On-premise data quality, entity resolution and decision intelligence platform.**
+Forest Keeper помогает сравнить данные из разных корпоративных систем и разобрать расхождения. Например, одна и та же деталь может иметь разные названия, единицы измерения или значения в 1С и Excel. Продукт сохраняет исходные записи, показывает основания сравнения и оставляет спорное решение человеку.
 
-Forest Keeper принимает данные из корпоративных источников, сохраняет неизменяемый raw-слой и provenance, выявляет дубли и конфликты, помогает человеку принимать объяснимые решения и использует подтверждённые решения как корпоративную память для следующих похожих случаев.
+Целевой результат: подтверждённое решение сохраняется в истории и помогает предложить решение следующего похожего случая. Это направление продукта; доступность функций текущей версии указана ниже.
 
-Проект ориентирован на работу внутри закрытого контура заказчика: исходные данные не должны покидать его инфраструктуру. Локальный AI используется как заменяемый помощник, а не как источник истины.
+Forest Keeper разворачивается внутри инфраструктуры заказчика. Основной интерфейс — браузер. Прототип читает выгрузки и записывает результаты только в собственное хранилище; изменения обратно в 1С/ERP не отправляются. Нормализация не устанавливает «истинное» значение. Локальная Qwen объясняет переданный контекст; память продукта — структурированные решения, правила и аудит.
 
-> **Статус:** MVP в активной разработке. Этапы 0–2 приняты; этап 3 (нормализация) реализован в [PR #13](https://github.com/SergeyRassohin/Forest-Keeper/pull/13) и ожидает объединения.
+## Внешнему проверяющему: начните здесь
 
-Этот репозиторий — единый инженерный источник истины по проекту Forest Keeper.
+**[Пошаговая инструкция установки и проверки](docs/deployment/external-review-quickstart.md)** объясняет подготовку машины, первый вход, загрузку примеров и ожидаемые результаты. Знание архитектуры Forest Keeper не требуется.
 
-## Внешняя проверка MVP
+Контрольная дата внешней проверки — **24 октября 2026**. Это цель, а не заявление о готовности полного MVP.
 
-Для независимого технического review начните с [пошагового External Reviewer Quick Start](docs/deployment/external-review-quickstart.md). Архитектурные границы и критерии серверного развёртывания описаны в [External MVP Evaluation & Server Setup](docs/deployment/server-installation-v0.1.md).
+## Что доступно в текущем main
 
-Целевой acceptance-сценарий: сторонний специалист без помощи авторов проекта клонирует репозиторий, разворачивает приложение, загружает собственный CSV/XLSX/XML, получает анализ, подтверждает или исправляет решение и убеждается, что история сохраняется после перезапуска. AI-контур считается готовым только когда pinned Qwen-модели можно получить и проверить по документированному bootstrap-пути без ручного угадывания версий и каталогов.
+| Возможность | Статус |
+| --- | --- |
+| Вход, роли, создание пользователей | Реализовано, этап 1 принят |
+| CSV/XLSX/XML: импорт, оригинал, исходные записи и происхождение | Реализовано, этап 2 принят |
+| Нормализация по объявленному профилю, качество значений, история правил | Реализовано, этап 3 принят |
+| Matching: совпадение / требует проверки / не совпадает | В отдельном незавершённом [PR #15](https://github.com/SergeyRassohin/Forest-Keeper/pull/15); в main отсутствует |
+| Конфликты, Human Review с сохранением Decision | Не реализовано в main |
+| Поиск прошлого Decision, рекомендации, AI inference | Не реализовано в main |
+| Получение и проверка pinned Qwen artifacts | [Команды и точные ссылки](docs/ai/model-downloads.md); это подготовка файлов, без запуска AI |
+| Корпоративный установщик, лицензирование, Update Service | Последующие этапы |
 
-## Разработка MVP
+Этап 3 принят через [PR #13](https://github.com/SergeyRassohin/Forest-Keeper/pull/13), merge `6a494534a49960b79fdf64e5e2b8436c32011688`; [CI merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39452965438). Следующий этап — 4. Полный путь «свой файл → конфликт → Decision → похожий случай → рекомендация» пока **заблокирован отсутствующими модулями**, см. [критерии готовности](docs/deployment/review-readiness.md). Зелёный health означает готовность инфраструктуры, а не наличие всех бизнес-функций.
 
-Запускаемый каркас и команды проверки: [локальная разработка](docs/development/local-development.md).
-Отдельная конфигурация сервера и worker readiness: [production-профиль](docs/deployment/production-profile.md).
-Этап 0 добавляет backend, Web Client, PostgreSQL/pgvector, Redis/RQ и HTTPS-контур разработки.
-Этап 1 добавляет [локальный вход, пользователей и RBAC](docs/development/authentication.md).
-Этап 2 добавляет [источники и импорт CSV/XLSX/XML](docs/development/import.md) через браузер с сохранением оригиналов, raw-записей и provenance.
-Этап 3 добавляет [нормализацию и canonical representation](docs/development/normalization.md) с сохранением raw и истории правил. Matching, Human Review и рекомендации относятся к следующим этапам.
+## Что можно проверить сейчас
+
+1. Развернуть приложение, создать администратора и войти через браузер.
+2. Создать два источника и загрузить CSV/XLSX/XML.
+3. Проверить исходные записи, позиции, SHA-256 файла и нормализацию.
+4. Перезапустить систему и убедиться, что пакеты и результаты сохранились.
+5. Проверить импорт своего файла с учётом [поддерживаемых форматов](docs/development/import.md). Для нормализации нужен профиль именно его полей; произвольные колонки автоматически не интерпретируются.
+
+Есть [пример на открытых данных USGS](tests/data/external-review/README.md) и отдельный профиль для него. Примеры демонстрируют обработку, а не качество промышленного Entity Resolution. Первый промышленный pilot domain остаётся отдельным решением.
+
+Дополнительно: [разработка и тесты](docs/development/local-development.md), [развёртывание на сервере](docs/deployment/server-installation-v0.1.md), [состояние этапов](docs/development/mvp-progress.md), [архитектура](docs/architecture/architecture-v0.2.md).
 
 ## Как работать
 
@@ -33,27 +47,27 @@ Forest Keeper принимает данные из корпоративных и
 
 Правило: важная договорённость считается частью проекта только после фиксации в GitHub.
 
-## Что читать сначала
+## Инженерные документы
 
-1. `AGENTS.md`
-2. `docs/project-context.md`
-3. `docs/decisions/decision-log.md`
-4. `docs/architecture/architecture-v0.2.md`
-5. `docs/data-model/data-model-v0.2.md`
-6. `docs/api/api-contract-v0.1.md`
-7. `docs/architecture/technical-stack-and-module-map-v0.1.md`
-8. `docs/development/mvp-development-plan-v0.1.md`
-9. `docs/development/object-lifecycles-v0.1.md`
-10. `docs/security/access-control-matrix-v0.1.xlsx`
-11. `docs/requirements/functional-nonfunctional-v0.3.md`
-12. `docs/workflows/workflows-v0.2.md`
-13. `docs/security/security-v0.1.md`
-14. `docs/testing/testing-strategy-v0.1.md`
-15. `docs/ai/local-model-v0.1.md`
-16. `models/model-manifest.yaml`
-17. `docs/licensing/licensing-v0.1.md`
-18. `docs/deployment/server-installation-v0.1.md`
-19. `docs/deployment/update-model-v0.1.md`
+1. [Правила разработки](AGENTS.md)
+2. [Контекст продукта](docs/project-context.md)
+3. [Журнал решений](docs/decisions/decision-log.md)
+4. [Product Roadmap — направление продукта](docs/product-roadmap-v0.1.md)
+5. [План реализации MVP](docs/development/mvp-development-plan-v0.1.md)
+6. [Архитектура](docs/architecture/architecture-v0.2.md)
+7. [Каноническая модель данных](docs/data-model/data-model-v0.2.md)
+8. [API-контракт](docs/api/api-contract-v0.1.md)
+9. [Стек и модули](docs/architecture/technical-stack-and-module-map-v0.1.md)
+10. [Жизненные циклы](docs/development/object-lifecycles-v0.1.md)
+11. [Матрица доступа](docs/security/access-control-matrix-v0.1.xlsx)
+12. [Функциональные и нефункциональные требования](docs/requirements/functional-nonfunctional-v0.3.md)
+13. [Рабочие процессы](docs/workflows/workflows-v0.2.md)
+14. [Безопасность](docs/security/security-v0.1.md)
+15. [Стратегия тестирования](docs/testing/testing-strategy-v0.1.md)
+16. [AI baseline](docs/ai/local-model-v0.1.md)
+17. [Model manifest](models/model-manifest.yaml)
+18. [Лицензирование](docs/licensing/licensing-v0.1.md)
+19. [Обновления](docs/deployment/update-model-v0.1.md)
 
 ## Структура
 

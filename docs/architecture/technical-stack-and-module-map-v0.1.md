@@ -1,6 +1,6 @@
 # Forest Keeper — Technical Stack & Module Map v0.1
 
-Статус: обязательная техническая база для MVP.
+Статус: обязательная техническая база для MVP. Это целевая карта модулей, не перечень уже реализованных функций. Текущий main: этапы 0–3; [статус и блокеры](../deployment/review-readiness.md).
 
 ## 1. Архитектурный стиль
 
@@ -215,7 +215,7 @@ Backend общается с LLM через интерфейс `LLMProvider`.
 ### MVP
 - локальные пользователи FK;
 - пароль хранится только как secure hash;
-- access token / session;
+- server-side session with Secure/HttpOnly/SameSite=Strict cookie only; bearer login is outside MVP by the 2026-10-19 decision;
 - RBAC.
 
 Роли минимум:

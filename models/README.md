@@ -6,6 +6,18 @@
 
 `model-manifest.yaml` определяет допустимые для MVP модели, upstream revision, формат, quantization, embedding dimension и правила offline-пакета.
 
+## Получение и проверка
+
+[Проверенные ссылки и пошаговая инструкция](../docs/ai/model-downloads.md) фиксируют обе Qwen revisions и expected hashes. Из корня:
+
+```bash
+uv run --script scripts/models.py check-upstream
+uv run --script scripts/models.py download
+uv run --script scripts/models.py verify
+```
+
+`artifacts.lock.json` содержит полный набор tokenizer/config/weights и их SHA-256. Это подготовка файлов, не запуск AI. Поддерживаемый inference runtime/model-info остаётся блокером внешней AI-проверки.
+
 ## Do not commit
 
 Не добавлять в Git:
@@ -14,7 +26,7 @@
 - Hugging Face cache
 - model snapshots
 - offline model bundles
-- временные checksum-файлы, созданные до утверждения release package
+- временные checksum-файлы и подписанные bundles; утверждённый `artifacts.lock.json` с проверенными hashes хранится в Git
 
 Весовые файлы поставляются через отдельный model/offline artifact pipeline.
 

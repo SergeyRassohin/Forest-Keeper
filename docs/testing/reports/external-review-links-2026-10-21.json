@@ -1,0 +1,289 @@
+{
+  "checked_at": "2026-10-20T23:33:35.833041+00:00",
+  "scope": "All local Markdown targets; 47 active public URLs including all pinned Qwen downloads. Historical external links, fragments, localhost and reserved negative-test hosts excluded.",
+  "missing_local_targets": [],
+  "external": [
+    {
+      "url": "https://docs.astral.sh/uv/getting-started/installation/",
+      "status": 200,
+      "destination": "https://docs.astral.sh/uv/getting-started/installation/",
+      "ok": true
+    },
+    {
+      "url": "https://docs.docker.com/compose/install/",
+      "status": 200,
+      "destination": "https://docs.docker.com/compose/install/",
+      "ok": true
+    },
+    {
+      "url": "https://docs.docker.com/desktop/",
+      "status": 200,
+      "destination": "https://docs.docker.com/desktop/",
+      "ok": true
+    },
+    {
+      "url": "https://docs.docker.com/engine/install/",
+      "status": 200,
+      "destination": "https://docs.docker.com/engine/install/",
+      "ok": true
+    },
+    {
+      "url": "https://docs.docker.com/engine/install/linux-postinstall/",
+      "status": 200,
+      "destination": "https://docs.docker.com/engine/install/linux-postinstall/",
+      "ok": true
+    },
+    {
+      "url": "https://earthquake.usgs.gov/fdsnws/event/1/",
+      "status": 200,
+      "destination": "https://earthquake.usgs.gov/fdsnws/event/1/",
+      "ok": true
+    },
+    {
+      "url": "https://earthquake.usgs.gov/fdsnws/event/1/query?format=csv&starttime=2025-01-01&endtime=2025-01-02&minmagnitude=4&orderby=time-asc",
+      "status": 200,
+      "destination": "https://earthquake.usgs.gov/fdsnws/event/1/query",
+      "ok": true
+    },
+    {
+      "url": "https://forest-keeper-data.sergey-rassohin0511.chatgpt.site",
+      "status": 200,
+      "destination": "https://forest-keeper-data.sergey-rassohin0511.chatgpt.site",
+      "ok": true
+    },
+    {
+      "url": "https://git-scm.com/downloads",
+      "status": 200,
+      "destination": "https://git-scm.com/downloads/",
+      "ok": true
+    },
+    {
+      "url": "https://github.com/QwenLM/Qwen3",
+      "status": 200,
+      "destination": "https://github.com/QwenLM/Qwen3",
+      "ok": true
+    },
+    {
+      "url": "https://github.com/QwenLM/Qwen3-Embedding",
+      "status": 200,
+      "destination": "https://github.com/QwenLM/Qwen3-Embedding",
+      "ok": true
+    },
+    {
+      "url": "https://github.com/SergeyRassohin/Forest-Keeper.git",
+      "status": 200,
+      "destination": "https://github.com/SergeyRassohin/Forest-Keeper",
+      "ok": true
+    },
+    {
+      "url": "https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39415262127",
+      "status": 200,
+      "destination": "https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39415262127",
+      "ok": true
+    },
+    {
+      "url": "https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39452965438",
+      "status": 200,
+      "destination": "https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39452965438",
+      "ok": true
+    },
+    {
+      "url": "https://github.com/SergeyRassohin/Forest-Keeper/issues/12",
+      "status": 200,
+      "destination": "https://github.com/SergeyRassohin/Forest-Keeper/issues/12",
+      "ok": true
+    },
+    {
+      "url": "https://github.com/SergeyRassohin/Forest-Keeper/issues/18",
+      "status": 200,
+      "destination": "https://github.com/SergeyRassohin/Forest-Keeper/issues/18",
+      "ok": true
+    },
+    {
+      "url": "https://github.com/SergeyRassohin/Forest-Keeper/issues/5",
+      "status": 200,
+      "destination": "https://github.com/SergeyRassohin/Forest-Keeper/issues/5",
+      "ok": true
+    },
+    {
+      "url": "https://github.com/SergeyRassohin/Forest-Keeper/issues/7",
+      "status": 200,
+      "destination": "https://github.com/SergeyRassohin/Forest-Keeper/issues/7",
+      "ok": true
+    },
+    {
+      "url": "https://github.com/SergeyRassohin/Forest-Keeper/issues/9",
+      "status": 200,
+      "destination": "https://github.com/SergeyRassohin/Forest-Keeper/issues/9",
+      "ok": true
+    },
+    {
+      "url": "https://github.com/SergeyRassohin/Forest-Keeper/pull/13",
+      "status": 200,
+      "destination": "https://github.com/SergeyRassohin/Forest-Keeper/pull/13",
+      "ok": true
+    },
+    {
+      "url": "https://github.com/SergeyRassohin/Forest-Keeper/pull/15",
+      "status": 200,
+      "destination": "https://github.com/SergeyRassohin/Forest-Keeper/pull/15",
+      "ok": true
+    },
+    {
+      "url": "https://github.com/SergeyRassohin/Forest-Keeper/pull/2",
+      "status": 200,
+      "destination": "https://github.com/SergeyRassohin/Forest-Keeper/pull/2",
+      "ok": true
+    },
+    {
+      "url": "https://github.com/SergeyRassohin/Forest-Keeper/pull/3",
+      "status": 200,
+      "destination": "https://github.com/SergeyRassohin/Forest-Keeper/pull/3",
+      "ok": true
+    },
+    {
+      "url": "https://github.com/SergeyRassohin/Forest-Keeper/pull/8",
+      "status": 200,
+      "destination": "https://github.com/SergeyRassohin/Forest-Keeper/pull/8",
+      "ok": true
+    },
+    {
+      "url": "https://github.com/ggml-org/llama.cpp",
+      "status": 200,
+      "destination": "https://github.com/ggml-org/llama.cpp",
+      "ok": true
+    },
+    {
+      "url": "https://huggingface.co/Qwen/Qwen3-8B-GGUF",
+      "status": 200,
+      "destination": "https://huggingface.co/Qwen/Qwen3-8B-GGUF",
+      "ok": true
+    },
+    {
+      "url": "https://huggingface.co/Qwen/Qwen3-8B-GGUF/blob/7c41481f57cb95916b40956ab2f0b139b296d974/LICENSE",
+      "status": 200,
+      "destination": "https://huggingface.co/Qwen/Qwen3-8B-GGUF/blob/7c41481f57cb95916b40956ab2f0b139b296d974/LICENSE",
+      "ok": true
+    },
+    {
+      "url": "https://huggingface.co/Qwen/Qwen3-8B-GGUF/blob/7c41481f57cb95916b40956ab2f0b139b296d974/README.md",
+      "status": 200,
+      "destination": "https://huggingface.co/Qwen/Qwen3-8B-GGUF/blob/7c41481f57cb95916b40956ab2f0b139b296d974/README.md",
+      "ok": true
+    },
+    {
+      "url": "https://huggingface.co/Qwen/Qwen3-8B-GGUF/resolve/7c41481f57cb95916b40956ab2f0b139b296d974/LICENSE",
+      "status": 200,
+      "destination": "https://huggingface.co/api/resolve-cache/models/Qwen/Qwen3-8B-GGUF/7c41481f57cb95916b40956ab2f0b139b296d974/LICENSE",
+      "ok": true
+    },
+    {
+      "url": "https://huggingface.co/Qwen/Qwen3-8B-GGUF/resolve/7c41481f57cb95916b40956ab2f0b139b296d974/Qwen3-8B-Q4_K_M.gguf",
+      "status": 200,
+      "destination": "https://us.aws.cdn.hf.co/xet-bridge-us/6815b8d70e2525074c399975/a56061d03bd2055a8236c8a80ec2440a550a53eaecf935fb2ddf37c93995667c",
+      "ok": true
+    },
+    {
+      "url": "https://huggingface.co/Qwen/Qwen3-8B-GGUF/resolve/7c41481f57cb95916b40956ab2f0b139b296d974/README.md",
+      "status": 200,
+      "destination": "https://huggingface.co/api/resolve-cache/models/Qwen/Qwen3-8B-GGUF/7c41481f57cb95916b40956ab2f0b139b296d974/README.md",
+      "ok": true
+    },
+    {
+      "url": "https://huggingface.co/Qwen/Qwen3-8B-GGUF/tree/7c41481f57cb95916b40956ab2f0b139b296d974",
+      "status": 200,
+      "destination": "https://huggingface.co/Qwen/Qwen3-8B-GGUF/tree/7c41481f57cb95916b40956ab2f0b139b296d974",
+      "ok": true
+    },
+    {
+      "url": "https://huggingface.co/Qwen/Qwen3-Embedding-0.6B",
+      "status": 200,
+      "destination": "https://huggingface.co/Qwen/Qwen3-Embedding-0.6B",
+      "ok": true
+    },
+    {
+      "url": "https://huggingface.co/Qwen/Qwen3-Embedding-0.6B/blob/97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3/README.md",
+      "status": 200,
+      "destination": "https://huggingface.co/Qwen/Qwen3-Embedding-0.6B/blob/97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3/README.md",
+      "ok": true
+    },
+    {
+      "url": "https://huggingface.co/Qwen/Qwen3-Embedding-0.6B/resolve/97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3/1_Pooling/config.json",
+      "status": 200,
+      "destination": "https://huggingface.co/api/resolve-cache/models/Qwen/Qwen3-Embedding-0.6B/97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3/1_Pooling%2Fconfig.json",
+      "ok": true
+    },
+    {
+      "url": "https://huggingface.co/Qwen/Qwen3-Embedding-0.6B/resolve/97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3/README.md",
+      "status": 200,
+      "destination": "https://huggingface.co/api/resolve-cache/models/Qwen/Qwen3-Embedding-0.6B/97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3/README.md",
+      "ok": true
+    },
+    {
+      "url": "https://huggingface.co/Qwen/Qwen3-Embedding-0.6B/resolve/97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3/config.json",
+      "status": 200,
+      "destination": "https://huggingface.co/api/resolve-cache/models/Qwen/Qwen3-Embedding-0.6B/97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3/config.json",
+      "ok": true
+    },
+    {
+      "url": "https://huggingface.co/Qwen/Qwen3-Embedding-0.6B/resolve/97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3/config_sentence_transformers.json",
+      "status": 200,
+      "destination": "https://huggingface.co/api/resolve-cache/models/Qwen/Qwen3-Embedding-0.6B/97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3/config_sentence_transformers.json",
+      "ok": true
+    },
+    {
+      "url": "https://huggingface.co/Qwen/Qwen3-Embedding-0.6B/resolve/97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3/generation_config.json",
+      "status": 200,
+      "destination": "https://huggingface.co/api/resolve-cache/models/Qwen/Qwen3-Embedding-0.6B/97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3/generation_config.json",
+      "ok": true
+    },
+    {
+      "url": "https://huggingface.co/Qwen/Qwen3-Embedding-0.6B/resolve/97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3/merges.txt",
+      "status": 200,
+      "destination": "https://huggingface.co/api/resolve-cache/models/Qwen/Qwen3-Embedding-0.6B/97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3/merges.txt",
+      "ok": true
+    },
+    {
+      "url": "https://huggingface.co/Qwen/Qwen3-Embedding-0.6B/resolve/97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3/model.safetensors",
+      "status": 200,
+      "destination": "https://us.aws.cdn.hf.co/xet-bridge-us/683f05dc98de733bf4c59f3d/f26bc1cc8f0165387549ed9f0c32730b050c188d06acd72375c2bb7c2ab1381d",
+      "ok": true
+    },
+    {
+      "url": "https://huggingface.co/Qwen/Qwen3-Embedding-0.6B/resolve/97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3/modules.json",
+      "status": 200,
+      "destination": "https://huggingface.co/api/resolve-cache/models/Qwen/Qwen3-Embedding-0.6B/97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3/modules.json",
+      "ok": true
+    },
+    {
+      "url": "https://huggingface.co/Qwen/Qwen3-Embedding-0.6B/resolve/97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3/tokenizer.json",
+      "status": 200,
+      "destination": "https://us.aws.cdn.hf.co/xet-bridge-us/683f05dc98de733bf4c59f3d/7f7828f2f177a8fecc364286be9c2c09ea5c1890f3c6f6b4c0ef6aa5f57d44c5",
+      "ok": true
+    },
+    {
+      "url": "https://huggingface.co/Qwen/Qwen3-Embedding-0.6B/resolve/97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3/tokenizer_config.json",
+      "status": 200,
+      "destination": "https://huggingface.co/api/resolve-cache/models/Qwen/Qwen3-Embedding-0.6B/97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3/tokenizer_config.json",
+      "ok": true
+    },
+    {
+      "url": "https://huggingface.co/Qwen/Qwen3-Embedding-0.6B/resolve/97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3/vocab.json",
+      "status": 200,
+      "destination": "https://huggingface.co/api/resolve-cache/models/Qwen/Qwen3-Embedding-0.6B/97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3/vocab.json",
+      "ok": true
+    },
+    {
+      "url": "https://huggingface.co/Qwen/Qwen3-Embedding-0.6B/tree/97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3",
+      "status": 200,
+      "destination": "https://huggingface.co/Qwen/Qwen3-Embedding-0.6B/tree/97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3",
+      "ok": true
+    },
+    {
+      "url": "https://www.usgs.gov/information-policies-and-instructions/copyrights-and-credits",
+      "status": 200,
+      "destination": "https://www.usgs.gov/information-policies-and-instructions/copyrights-and-credits",
+      "ok": true
+    }
+  ]
+}
