@@ -164,6 +164,26 @@ finally:
 """,
                 ],
             )
+            execute(
+                "backend",
+                [
+                    "python",
+                    "-c",
+                    "from app.common.config import Settings; "
+                    "p = Settings().import_storage_root / 'hardening-marker'; "
+                    "p.write_bytes(b'raw-original')",
+                ],
+            )
+            execute(
+                "worker",
+                [
+                    "python",
+                    "-c",
+                    "from app.common.config import Settings; "
+                    "p = Settings().import_storage_root / 'hardening-marker'; "
+                    "assert p.read_bytes() == b'raw-original'",
+                ],
+            )
             # Freeze only our own synthetic worker. Age its technical heartbeat
             # rather than waiting 150 seconds; Docker must report unhealthy.
             run(["docker", "kill", "--signal=STOP", worker["ID"]])
@@ -219,6 +239,16 @@ finally:
                 == "42"
             )
             assert execute("redis", ["redis-cli", "GET", "hardening:marker"]).stdout.strip() == "42"
+            execute(
+                "worker",
+                [
+                    "python",
+                    "-c",
+                    "from app.common.config import Settings; "
+                    "p = Settings().import_storage_root / 'hardening-marker'; "
+                    "assert p.read_bytes() == b'raw-original'",
+                ],
+            )
             logs = run([*compose, "logs", "--no-color"]).stdout
             assert password not in logs and dsn not in logs
             print(

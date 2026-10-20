@@ -16,7 +16,8 @@ Forest Keeper принимает данные из корпоративных и
 Отдельная конфигурация сервера и worker readiness: [production-профиль](docs/deployment/production-profile.md).
 Этап 0 добавляет backend, Web Client, PostgreSQL/pgvector, Redis/RQ и HTTPS-контур разработки.
 Этап 1 добавляет [локальный вход, пользователей и RBAC](docs/development/authentication.md).
-Импорт, Human Review и рекомендации пока не реализованы.
+Этап 2 добавляет [источники и импорт CSV/XLSX/XML](docs/development/import.md) через браузер с сохранением оригиналов, raw-записей и provenance.
+Нормализация, matching, Human Review и рекомендации относятся к следующим этапам.
 
 ## Как работать
 

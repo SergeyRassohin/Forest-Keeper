@@ -33,3 +33,14 @@ input:focus-visible { outline: 3px solid #62a588; outline-offset: 2px; }
 .role-choice { display: flex; align-items: center; gap: 8px; }
 fieldset { border: 1px solid #dbe3db; border-radius: 8px; display: grid; gap: 10px; }
 @media (max-width: 600px) { .shell { padding: 0 20px; } main { padding: 32px 0; } .panel { padding: 20px; } .panel-heading { align-items: start; flex-direction: column; } .components { grid-template-columns: 1fr; } }
+
+nav { display: flex; gap: 1rem; padding-block: 1rem; }
+.imports .panel { margin-block: 1rem; }
+.imports form { display: grid; gap: 1rem; max-width: 38rem; }
+.imports select { padding: .65rem; font: inherit; width: 100%; }
+.table-scroll { overflow: auto; max-width: 100%; }
+table { border-collapse: collapse; width: 100%; }
+th, td { padding: .6rem; text-align: left; vertical-align: top; border-bottom: 1px solid #d7e1dc; }
+.imports pre { white-space: pre-wrap; overflow-wrap: anywhere; min-width: 12rem; max-width: 42rem; }
+.checksum { overflow-wrap: anywhere; font-family: monospace; }
+.imports dd { margin-bottom: .5rem; }

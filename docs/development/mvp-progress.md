@@ -38,11 +38,21 @@
 
 Security-critical изменения требуют независимой проверки по AGENTS.md перед принятием. Этап 1 не включает MFA/SSO, recovery, изменение пользователей через UI и бизнес-object scopes. Новые auth-таблицы являются техническим расширением User и не вводят новые бизнес-статусы.
 
-Импорт, canonical/matching/conflicts, Human Review, Decision Registry, AI/similarity, правила, полный бизнес-аудит, лицензирование и Update Service ещё не реализованы. Модели не скачивались. Продуктовый E2E импорта/решений и capacity/performance acceptance всего MVP предстоят.
+Canonical/matching/conflicts, Human Review, Decision Registry, AI/similarity, правила, полный бизнес-аудит, лицензирование и Update Service ещё не реализованы. Импорт добавлен в этапе 2 ниже. Модели не скачивались. Продуктовый E2E решений и capacity/performance acceptance всего MVP предстоят.
 
 ## Следующая итерация
 
-После принятия Authentication + RBAC — этап 2: SourceSystem, ImportBatch, RawRecord, сохранение оригинального файла/checksum/provenance и background import XLSX/CSV/XML.
+Этап1 принят после полного независимого прогона [issue #5](https://github.com/SergeyRassohin/Forest-Keeper/issues/5), исправления WEB-02 и merge PR #6. Все35пунктов сценария PASS,245тестов и CI main прошли. Обновление CI Actions/runner принято через PR #4.
+
+## Итерация 3 — этап 2
+
+По [issue #7](https://github.com/SergeyRassohin/Forest-Keeper/issues/7) реализованы SourceSystem, ImportBatch, неизменяемый RawRecord, локальное persistent хранилище оригиналов, SHA-256 и фоновые jobs RQ. Добавлены защищённые source/import API, страницы ошибок/исходных записей, duplicate policy и явный retry новым пакетом, браузерный раздел «Импорт данных».
+
+Форматы: UTF-8 CSV, первый worksheet XLSX, generic XML и документированный синтетический профиль 1С XML. Дополнительное ревью выявило четыре дефекта: CSV после потери границы записи, XLSX duration/специальные формулы, поздний enqueue и отмена медленных browser requests. Исправлены в `64afea2`, добавлены регрессии. Актуальный прогон: **393 backend (80 unit / 313 integration), 13 frontend и 7 browser — всего 413 PASS**, все security gates; независимый retest четырёх исправлений без открытых замечаний.
+
+Capacity на исправленном runtime: два набора 100000×30 атрибутов, по 30000381 байт; обработаны за 20.818 и 20.174 сек, metadata p95=0.2263 сек при 10 сессиях. [PR #8](https://github.com/SergeyRassohin/Forest-Keeper/pull/8), [актуальный отчёт и exact-SHA CI](../testing/reports/stage2-import-review-fixes-2026-10-19.md), [Import subsystem](import.md). Первоначальные проверки `6380d5c` сохранены в [историческом отчёте](../testing/reports/stage2-import-acceptance-2026-10-19.md). Этап подготовлен к повторному ревью, принятие/merge выполняются отдельно.
+
+После приёмки этапа2 следующий этап3 — нормализация и canonical model. В текущей реализации они не включены.
 
 Для последующего импорта нужно согласовать первый pilot domain и формат реальной выгрузки 1С. Пороги matching остаются открытым решением; до его принятия нельзя молча вводить автоматическое объединение по fuzzy/embedding score.
 

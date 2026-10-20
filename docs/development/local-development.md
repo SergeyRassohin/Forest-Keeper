@@ -62,6 +62,8 @@ bash scripts/check-integration.sh
 
 ## Разработка без пересборки контейнеров
 
+Этап2 добавляет persistent volume `import_files`, общий для backend и worker; обычный restart сохраняет оригиналы и PostgreSQL history. Не удаляйте volumes при обновлении. На хосте файлы пишутся в игнорируемый backend/var/imports (или FK_IMPORT_STORAGE_ROOT). Для обработки host-загрузок запускайте worker с тем же filesystem path и DB/Redis environment: `uv run --frozen python -m app.worker` из backend. Docker worker не видит произвольный host-каталог без общего mount. Форматы, лимиты, retry/recovery и отдельный capacity profile: [Import subsystem](import.md).
+
 Поднимите PostgreSQL/Redis через `docker compose up -d postgres redis`, установите зависимости, экспортируйте переменные из локального `.env`, затем:
 
 ```bash

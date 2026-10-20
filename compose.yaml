@@ -10,6 +10,8 @@ x-backend: &backend
     FK_LOGIN_WINDOW_SECONDS: ${FK_LOGIN_WINDOW_SECONDS:-60}
     FK_LOGIN_ACCOUNT_LIMIT: ${FK_LOGIN_ACCOUNT_LIMIT:-10}
     FK_LOGIN_IP_LIMIT: ${FK_LOGIN_IP_LIMIT:-60}
+    FK_IMPORT_STORAGE_ROOT: /var/lib/forest-keeper/imports
+    FK_IMPORT_MAX_BYTES: ${FK_IMPORT_MAX_BYTES:-100000000}
 
 services:
   postgres:
@@ -55,6 +57,8 @@ services:
     restart: unless-stopped
     ports:
       - "127.0.0.1:8000:8000"
+    volumes:
+      - import_files:/var/lib/forest-keeper/imports
     depends_on:
       migrate:
         condition: service_completed_successfully
@@ -70,6 +74,8 @@ services:
     <<: *backend
     restart: unless-stopped
     command: ["python", "-m", "app.worker"]
+    volumes:
+      - import_files:/var/lib/forest-keeper/imports
     healthcheck:
       test: ["CMD", "python", "-m", "app.worker_health"]
       interval: 10s
@@ -94,3 +100,4 @@ services:
 volumes:
   postgres_data:
   redis_data:
+  import_files:

@@ -1,0 +1,47 @@
+{
+  "runtime_sha": "64afea23b150273085d3b6544be18da144028b4b",
+  "reviewed_before_sha": "ddcebca33eb83a5aad9a3cd33f4499f9c93a146f",
+  "local_tests": {
+    "backend_unit": 80,
+    "backend_integration": 313,
+    "frontend": 13,
+    "browser": 7,
+    "total": 413
+  },
+  "independent_retest": {
+    "parser_unit": 72,
+    "focused_db_rq": 12,
+    "frontend_imports": 4,
+    "open_findings": 0
+  },
+  "capacity": {
+    "datasets": [
+      {
+        "records": 100000,
+        "attributes": 30,
+        "bytes": 30000381,
+        "upload_worker_seconds": 20.818
+      },
+      {
+        "records": 100000,
+        "attributes": 30,
+        "bytes": 30000381,
+        "upload_worker_seconds": 20.174
+      }
+    ],
+    "sessions": 10,
+    "requests": 100,
+    "metadata_p95_seconds": 0.2263,
+    "passed": true
+  },
+  "log_sha256": {
+    "capacity.log": "9e04dfa8f33cc8e1facc878caed80133020a6a49cfeb04eb95f62a452cdbe1b1",
+    "gitleaks.log": "14424e885d049577a453269ef0e78b3f2aed20dd998643737ebf8fdf4a0bf6cc",
+    "independent-enqueue.log": "d2bb7016c07ac911ad10988eaae697ec2b51f0bacc520a88377619fc41f811b7",
+    "integration-browser.log": "63e13702ed6c1e26112e60d6d6743f8d99d40a1d7590b9aec005098668018f13",
+    "negative-gates.log": "d81657ee8c5ed6c7781ab7c1e3f562de0c9fdef65c7ce49d6abd905a9d1637f5",
+    "quality.log": "7e066f51b415737f9cfc4db814a6164da2d07a2c654ef6f21274bb89235d47f9",
+    "sast.log": "6e4f312fdc60ebb21c5cc83d59bda6fc9e325acb8c3447f302f1a39bb7f49061",
+    "sca.log": "5e62b74fe972c64b1d60d3f7fdb6638799f5715d6a474c82dadfb71f716f55b3"
+  }
+}

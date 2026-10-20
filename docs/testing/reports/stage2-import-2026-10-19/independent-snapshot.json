@@ -1,0 +1,27 @@
+{
+  "checked_at_utc": "2026-10-19T19:53:47.969039+00:00",
+  "base_head": "4efa434a4ee794d127bdd3b4e82f5afb19be16d3",
+  "branch": "feat/stage2-import",
+  "uncommitted_snapshot": true,
+  "files_sha256": {
+    "backend/app/imports/storage.py": "6d5477be173c32484057d4988ea53188a879b626d4fd8052e3f4c68ad857854a",
+    "backend/app/imports/parsers.py": "c8921c233ee3849a0c710b207c54b8055b2906afdf64aa6dccac896b593b93c8",
+    "backend/app/imports/jobs.py": "515b7c0a1cdf7503456e1481a4d267f4e89f78e85e68c8e18ed8329d67838701",
+    "backend/app/imports/routes.py": "60a66d05731c17506177920a676c260ab1235838da8e52b3cbd3621a52101fed",
+    "backend/app/imports/models.py": "b4d25bee520386ead978212e8ea266536e2631300bef50ce2501f5dee5553ca2",
+    "backend/app/imports/schemas.py": "47fe13b2409d9ca5a680ed06c474332f3f77e1c3b7dd8d96d9631ae155e4db78",
+    "backend/app/imports/service.py": "2bd96b5a37bae47b4978697f2edda34e4141b024128a357185f700223e7ef08a",
+    "backend/migrations/versions/0003_imports.py": "5e49f59e828e3a6cdd4f1d97d7734837db00a9e62e133e73d6b71065df283cae",
+    "backend/app/main.py": "9e688925ec3061fc18116256fabf447b839812e7b0f06028e6986630b89d821e",
+    "backend/app/worker.py": "1c22b48cfc9d04d3082461cc4742fef8f9c5d576263caec540ba9792f9aeb304",
+    "compose.yaml": "8cbdcaa51f8408174d2f09df3fd99f9178e91c9ade61cdf752cc1e563e01d8e2",
+    "frontend/nginx.conf": "a9854dafe8e090760c1e2fe913872c3d7d447d9a76f3a62da175e438d30282ed",
+    "frontend/src/Imports.tsx": "8c28f979a817fc92a85593b9305c52ddec182e0ea17ca22cd3f3fb10fa5d4702"
+  },
+  "open_findings": 0,
+  "independent_test_counts": {
+    "parser_unit_passed": 66,
+    "targeted_rbac_immutability_passed": 56,
+    "targeted_deselected": 19
+  }
+}

@@ -1,0 +1,24 @@
+/workspace/Forest-Keeper/backend/.venv/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+  from starlette.testclient import TestClient as TestClient  # noqa
+{"event": "IMPORT_COMPLETED", "import_batch_id": "adb87574-93a7-47ed-a88a-480ae50b5003", "job_id": "import-adb8757493a747eda88a480ae50b5003"}
+{"event": "IMPORT_COMPLETED", "import_batch_id": "0a114f40-0896-485c-a29a-f9fad5c34ce9", "job_id": "import-0a114f400896485ca29af9fad5c34ce9"}
+{
+  "datasets": [
+    {
+      "records": 100000,
+      "attributes": 30,
+      "bytes": 30000381,
+      "upload_worker_seconds": 20.818
+    },
+    {
+      "records": 100000,
+      "attributes": 30,
+      "bytes": 30000381,
+      "upload_worker_seconds": 20.174
+    }
+  ],
+  "sessions": 10,
+  "requests": 100,
+  "metadata_p95_seconds": 0.2263,
+  "passed": true
+}

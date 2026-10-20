@@ -3,8 +3,8 @@
 Изменения по [задаче №9](https://github.com/SergeyRassohin/Forest-Keeper/issues/9).
 `compose.yaml` остаётся окружением разработки. `compose.production.yaml` — самостоятельная
 конфигурация усиления защиты; не объединяйте эти файлы через несколько `-f`.
-Она покрывает текущий main (этапы 0–1, миграция 0002), а не объявляет весь MVP готовым
-к промышленной эксплуатации. Новые этапы требуют отдельной проверки своих mounts и настроек.
+Она покрывает этапы 0–2 (миграция 0003), включая общий том оригиналов импорта,
+но не объявляет весь MVP готовым к промышленной эксплуатации. Новые этапы требуют проверки своих mounts и настроек.
 
 ## Состояние worker
 
@@ -62,7 +62,8 @@ docker compose --env-file /opt/forest-keeper/production.env -f compose.productio
 Для прямого доступа настройте bind address, TLS, firewall и внешний origin совместно.
 PostgreSQL, Redis и API не публикуют порты хоста. Nginx production config включён в образ,
 TLS файлы доступны только nginx. Внутренний nginx healthcheck проверяет HTTPS без проверки
-доверия сертификату; внешний smoke отдельно проверяет сертификат с доверенным CA.
+доверия сертификату; loopback probe явно отключает proxy только для этого локального запроса.
+Внешний smoke отдельно проверяет сертификат с доверенным CA.
 
 ## Запись и ресурсы
 
@@ -71,7 +72,8 @@ TLS файлы доступны только nginx. Внутренний nginx h
 
 | Сервис | CPU / RAM / PID | Разрешённая запись и причина |
 | --- | --- | --- |
-| backend, worker, migrate | 1 / 1 GiB / 128 | `/tmp` tmpfs 64 MiB для временных файлов |
+| backend, worker | 1 / 1 GiB / 128 | `/tmp` tmpfs 64 MiB; общий named volume оригиналов импорта |
+| migrate | 1 / 1 GiB / 128 | `/tmp` tmpfs 64 MiB для временных файлов |
 | PostgreSQL | 2 / 1 GiB / 256 | named volume PGDATA для БД; tmpfs socket directory 16 MiB и `/tmp` 32 MiB |
 | Redis | 1 / 256 MiB / 64 | named volume `/data` для AOF; `/tmp` tmpfs 16 MiB |
 | nginx | 0.5 / 128 MiB / 64 | `/tmp` tmpfs 32 MiB для PID и временных buffers; один worker |
@@ -100,3 +102,13 @@ python scripts/check-production.py --backend-image forest-keeper-backend --front
 В `finally` удаляет только свои контейнеры/volumes. Тестовые файлы имеют mode 0444 внутри
 приватного каталога 0700 для разных container UID; это fixture, а не инструкция для реальных секретов.
 Этот smoke включён в CI вместе с обычными тестами, SAST/SCA и secret scanner.
+
+## Оригиналы Stage 2
+
+Backend и worker используют общий named volume `import_files` по адресу
+`FK_IMPORT_STORAGE_ROOT=/var/lib/forest-keeper/imports`. Это исключение для записи
+нужно для сохранения загрузок и чтения тех же байтов worker. Образ готовит каталог
+для UID/GID 10001; rootfs остаётся read-only. Сохраняйте и резервируйте том вместе
+с PostgreSQL. Production smoke проверяет доступ из обоих сервисов и сохранность
+байтов после restart. Nginx принимает до 101 MiB и передаёт upload без buffering,
+как dev gateway; backend сохраняет собственный лимит и проверки загрузки.

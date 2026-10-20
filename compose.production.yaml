@@ -17,6 +17,7 @@ x-app: &app
     FK_SECRETS_DIR: /run/secrets
     FK_REDIS_URL: redis://redis:6379/0
     FK_ALLOWED_ORIGINS: ${FK_ALLOWED_ORIGINS:?Set the external HTTPS origin as a JSON array}
+    FK_IMPORT_STORAGE_ROOT: /var/lib/forest-keeper/imports
     PYTHONDONTWRITEBYTECODE: "1"
   secrets:
     - source: database_url
@@ -80,6 +81,8 @@ services:
   backend:
     <<: *app
     restart: unless-stopped
+    volumes:
+      - import_files:/var/lib/forest-keeper/imports
     depends_on:
       migrate:
         condition: service_completed_successfully
@@ -95,6 +98,8 @@ services:
     <<: *app
     restart: unless-stopped
     command: [python, -m, app.worker]
+    volumes:
+      - import_files:/var/lib/forest-keeper/imports
     depends_on:
       backend:
         condition: service_healthy
@@ -128,7 +133,7 @@ services:
       - source: tls_key
         target: /etc/nginx/tls/server.key
     healthcheck:
-      test: [CMD, wget, --quiet, --no-check-certificate, --spider, "https://127.0.0.1:8443/api/v1/health"]
+      test: [CMD, wget, -Y, "off", --quiet, --no-check-certificate, --spider, "https://127.0.0.1:8443/api/v1/health"]
       interval: 5s
       timeout: 3s
       retries: 15
@@ -149,3 +154,4 @@ secrets:
 volumes:
   postgres_data:
   redis_data:
+  import_files:
