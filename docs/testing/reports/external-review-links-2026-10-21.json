@@ -1,6 +1,6 @@
 {
-  "checked_at": "2026-10-20T23:33:35.833041+00:00",
-  "scope": "All local Markdown targets; 47 active public URLs including all pinned Qwen downloads. Historical external links, fragments, localhost and reserved negative-test hosts excluded.",
+  "checked_at": "2026-10-20T23:41:41.399885+00:00",
+  "scope": "All local Markdown targets; 48 active public URLs including all pinned Qwen downloads and PR #19. Historical external links, fragments, localhost and reserved negative-test hosts excluded.",
   "missing_local_targets": [],
   "external": [
     {
@@ -127,6 +127,12 @@
       "url": "https://github.com/SergeyRassohin/Forest-Keeper/pull/15",
       "status": 200,
       "destination": "https://github.com/SergeyRassohin/Forest-Keeper/pull/15",
+      "ok": true
+    },
+    {
+      "url": "https://github.com/SergeyRassohin/Forest-Keeper/pull/19",
+      "status": 200,
+      "destination": "https://github.com/SergeyRassohin/Forest-Keeper/pull/19",
       "ok": true
     },
     {

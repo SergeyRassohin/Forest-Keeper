@@ -45,13 +45,13 @@ Python, uv и Node.js на хосте для базовой проверки н�
 ## 3. Получение проекта
 
 ```bash
-git clone https://github.com/SergeyRassohin/Forest-Keeper.git
+git clone --branch docs/external-review-readiness https://github.com/SergeyRassohin/Forest-Keeper.git
 cd Forest-Keeper
 git rev-parse HEAD
 git status --short
 ```
 
-Сохраните SHA из `git rev-parse HEAD` в отчёт. По умолчанию проверяется main. Для проверки отдельного PR нужен его явно согласованный commit; результаты другой ветки не доказывают готовность main. Все дальнейшие команды выполняются из каталога Forest-Keeper.
+Сохраните SHA из `git rev-parse HEAD` в отчёт. Эта команда получает review-кандидат [PR #19](https://github.com/SergeyRassohin/Forest-Keeper/pull/19), включая исправленную инструкцию, открытые примеры и downloader. Пока PR не объединён, обычный clone main этих добавлений не содержит. После merge для проверки основной версии можно убрать `--branch docs/external-review-readiness`. Зафиксируйте фактически проверенный SHA; результаты другой ветки не доказывают готовность main. Все дальнейшие команды выполняются из каталога Forest-Keeper.
 
 ## 4. Инициализация и запуск
 

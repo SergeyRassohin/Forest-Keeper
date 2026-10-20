@@ -8,7 +8,7 @@ Documentation/tooling is prepared for review. **Full MVP acceptance remains BLOC
 
 ## Changes
 
-- README explains the product, current functions and the full target separately. Product Roadmap is linked.
+- README explains the product, current functions and the full target separately. Product Roadmap is linked. The clone command explicitly selects the review candidate branch while PR #19 is unmerged.
 - Quick Start includes supported host setup, first ADMIN bootstrap, user roles, HTTPS, remote SSH access, expected migrate Exited(0), protected version endpoint, import, normalization, restart and a feedback template.
 - Stage 3 status is synchronized with merged PR #13 and successful merge CI. Desktop Client is excluded consistently in AGENTS/current architecture/client-access; historical reports remain unchanged.
 - MVP Plan enum/auth drift is corrected against canonical v0.2 and the Decision Log.
@@ -47,7 +47,7 @@ This is artifact verification, **not an inference benchmark**. llama.cpp / sente
 | Gitleaks history + staged tree | PASS, no leaks |
 | pip-audit / npm audit after certifi fix | PASS, no known vulnerabilities |
 | Local Markdown targets | PASS, zero missing targets |
-| Active external links / exact model download URLs | **47 PASS**, [machine-readable report](external-review-links-2026-10-21.json) |
+| Active external links / exact model download URLs | **48 PASS**, [machine-readable report](external-review-links-2026-10-21.json) |
 | Full model download and offline checksum verification | PASS, 14 files |
 
 External-link scope excludes historical report/session external URLs, fragments, localhost, and reserved negative-test hosts such as evil.invalid. This is an HTTP availability/redirect check, not an audit of every upstream page's content; model identity, size and checksums are verified separately. No temporary CDN signed URL is stored in the report.
