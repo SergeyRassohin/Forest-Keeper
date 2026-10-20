@@ -43,3 +43,5 @@ Use a monorepo. Current canonical layout is defined in `docs/architecture/techni
 
 ## Interface direction
 The main screen is a control panel for the state of the enterprise information environment, not a task tracker. It should emphasize Data Health, monitored entities, conflicts, rule violations/anomalies, cases requiring human attention, domain/system state and recent significant events.
+
+**Web Client is the only supported end-user client direction. Desktop Client is out of scope and should not be planned, documented as a future feature, or implemented without a new explicit product decision.**
