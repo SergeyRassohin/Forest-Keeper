@@ -32,6 +32,7 @@ Roadmap фиксирует продуктовые уровни зрелости,
 10. Любой future write-back отделён технически и организационно от анализа.
 11. Любой значимый derived result должен быть воспроизводим по версиям входных данных, правил, Forest Codex и алгоритмов.
 12. Продукт должен работать в закрытом контуре без обязательного Интернета.
+13. **Desktop Client is explicitly excluded from the product direction.** Forest Keeper uses the Web Client as the only supported end-user client unless a future explicit product decision reverses this.
 
 ---
 
@@ -561,6 +562,7 @@ Data Health-first control panel.
 - десятки коннекторов до доказанного pilot domain;
 - микросервисы ради диаграммы;
 - mobile app;
+- Desktop Client / native desktop application;
 - autonomous write-back;
 - красивый AI-chat вместо Decision Registry;
 - silent self-learning;
