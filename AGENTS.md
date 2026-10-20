@@ -48,6 +48,12 @@ Prototype boundaries:
 
 When documents conflict, prefer the newest explicit decision in docs/decisions/decision-log.md and flag the conflict rather than silently guessing.
 
+## Mandatory stage gate
+At the boundary between MVP stages, do not rely on test status alone. Before a stage is accepted and before work on the next stage begins, verify the implementation against product intent, architecture, canonical model, lifecycles, security/trust boundaries, human-in-the-loop constraints and the current Decision Log. Record and resolve any drift.
+
+Treat the customer Gold Reference/baseline as versioned and configurable, not as immutable truth. It may change only through explicit authorized human approval. Every change must be logged/versioned, historical versions preserved, impact on dependent evaluations calculated where possible, and the user warned that criteria/results may change. Results based on an older Gold Reference must be re-evaluated or clearly marked stale; never silently reinterpret history under the newest version.
+
+
 ## Additional mandatory architecture context
 - Web Client is the primary client for MVP and the default user interface.
 - Desktop Client is optional and may be added later for customers with special device-trust or information-security requirements.
