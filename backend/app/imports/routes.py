@@ -24,7 +24,7 @@ from app.imports.schemas import (
     SourceView,
 )
 from app.imports.service import audit_import
-from app.imports.storage import LocalStorage, checked_filename
+from app.imports.storage import LocalStorage, checked_filename, raise_storage_error
 
 router = APIRouter(prefix="/api/v1", tags=["imports"])
 SourceReader = Annotated[User, Depends(require_permission("source.view"))]
@@ -214,6 +214,8 @@ async def upload_import(
             max_fields=1,
             max_part_size=1024,
         ).parse()
+    except OSError as error:
+        raise_storage_error(error)
     except (MultiPartException, MultipartParseError):
         raise ApiError(
             413 if too_large else 422,
@@ -232,14 +234,17 @@ async def upload_import(
         source = source_or_404(session, source_id)
         if source.status != "ACTIVE":
             raise ApiError(409, "SOURCE_INACTIVE", "Источник не активен")
-        storage = LocalStorage(settings.import_storage_root)
         batch_id = uuid4()
-        uri, checksum = await run_in_threadpool(
-            storage.save,
-            batch_id,
-            file.file,
-            settings.import_max_bytes,
-        )
+        try:
+            storage = LocalStorage(settings.import_storage_root)
+            uri, checksum = await run_in_threadpool(
+                storage.save,
+                batch_id,
+                file.file,
+                settings.import_max_bytes,
+            )
+        except OSError as error:
+            raise_storage_error(error)
         batch = ImportBatch(
             id=batch_id,
             source_system_id=source.id,

@@ -1,3 +1,4 @@
+import errno
 import json
 import os
 from datetime import UTC, datetime, timedelta
@@ -227,6 +228,47 @@ def test_oversized_uploads_including_chunked(auth_env, source, role_tokens):
             content=iter([b"x" * 70000]),
         )
         assert response.status_code == 413
+
+
+@pytest.mark.parametrize("stage", ["multipart", "original"])
+@pytest.mark.parametrize("number", [errno.ENOSPC, errno.EDQUOT])
+def test_storage_exhaustion_is_safe_and_releases_uploads(
+    client, auth_env, source, monkeypatch, stage, number
+):
+    from starlette import formparsers
+
+    before = set(auth_env.import_storage_root.iterdir())
+    temporary_files = []
+    original_factory = formparsers.SpooledTemporaryFile
+
+    def exhausted(*args, **kwargs):
+        raise OSError(number, "private-path-and-source-marker")
+
+    def capturing_temporary(*args, **kwargs):
+        temporary = original_factory(*args, **kwargs)
+        temporary_files.append(temporary)
+        if stage == "multipart":
+            temporary.write = exhausted
+        return temporary
+
+    with monkeypatch.context() as changes:
+        changes.setattr(formparsers, "SpooledTemporaryFile", capturing_temporary)
+        if stage == "original":
+            changes.setattr("app.imports.storage.os.fsync", exhausted)
+        response = upload(client, source)
+    assert response.status_code == 507
+    assert response.json()["error"]["code"] == "STORAGE_FULL"
+    assert "private-path-and-source-marker" not in response.text
+    assert set(auth_env.import_storage_root.iterdir()) == before
+    assert temporary_files and all(temporary.closed for temporary in temporary_files)
+    engine = make_engine(auth_env)
+    with Session(engine) as session:
+        assert not session.scalar(
+            select(ImportBatch.id).where(ImportBatch.source_system_id == UUID(source))
+        )
+    engine.dispose()
+    # No phantom batch or checksum deduplication blocks recovery after capacity returns.
+    assert upload(client, source).status_code == 201
 
 
 def test_raw_and_original_metadata_immutable(client, auth_env, source):

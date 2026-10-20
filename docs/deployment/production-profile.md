@@ -72,7 +72,8 @@ TLS файлы доступны только nginx. Внутренний nginx h
 
 | Сервис | CPU / RAM / PID | Разрешённая запись и причина |
 | --- | --- | --- |
-| backend, worker | 1 / 1 GiB / 128 | `/tmp` tmpfs 64 MiB; общий named volume оригиналов импорта |
+| backend | 1 / 1 GiB / 128 | `/tmp` tmpfs 64 MiB; `import_files` для оригиналов; `upload_tmp` для multipart spooling |
+| worker | 1 / 1 GiB / 128 | `/tmp` tmpfs 64 MiB; общий named volume оригиналов импорта |
 | migrate | 1 / 1 GiB / 128 | `/tmp` tmpfs 64 MiB для временных файлов |
 | PostgreSQL | 2 / 1 GiB / 256 | named volume PGDATA для БД; tmpfs socket directory 16 MiB и `/tmp` 32 MiB |
 | Redis | 1 / 256 MiB / 64 | named volume `/data` для AOF; `/tmp` tmpfs 16 MiB |
@@ -95,6 +96,9 @@ python scripts/check-production.py --backend-image forest-keeper-backend --front
 
 Скрипт создаёт собственный случайный Compose project, синтетические секреты и TLS,
 проверяет HTTPS, реальное RQ задание, non-root/read-only и ресурсные лимиты.
+Две одновременные HTTPS-загрузки ровно по 100000000 байт проверяют multipart, сохранение
+оригиналов, точные SHA-256 и освобождение временных файлов; worker в это время остановлен,
+поскольку тест загрузки не должен обрабатывать миллионы синтетических записей.
 Останавливает только свой worker через SIGSTOP, искусственно старит технический heartbeat,
 проверяет probe и фактический Docker `unhealthy`, затем stop/start и возврат `healthy`.
 Проверяет сохранность тестовых значений PostgreSQL/Redis после restart и отсутствие
@@ -112,3 +116,22 @@ Backend и worker используют общий named volume `import_files` п
 с PostgreSQL. Production smoke проверяет доступ из обоих сервисов и сохранность
 байтов после restart. Nginx принимает до 101 MiB и передаёт upload без buffering,
 как dev gateway; backend сохраняет собственный лимит и проверки загрузки.
+
+## Временные загрузки
+
+Multipart parser сначала полностью принимает файл во временное хранилище. Backend
+использует отдельный дисковый named volume `upload_tmp` по адресу
+`/var/lib/forest-keeper/upload-tmp`, UID/GID 10001, mode 0700, с `TMPDIR` только у backend.
+Том создаётся отдельно от уже существующих оригиналов, поэтому обновление не требует
+удаления или повторной инициализации `import_files`. Worker и migrate его не получают;
+read-only rootfs и 64 MiB tmpfs `/tmp` сохранены. Dev flow не меняется.
+
+Большие файлы больше не конкурируют за 64 MiB RAM-диска. При планировании свободного
+диска учитывайте все параллельные uploads и временное одновременное хранение spool и
+оригинала (до примерно 200 MB на запрос при лимите 100 MB), а также сохранённые оригиналы
+и данные БД. Docker named volume не задаёт квоту диска; мониторинг свободного места
+и ограничение входящей нагрузки остаются настройками сервера. Временные файлы закрываются
+после запроса, при ошибке или disconnect; при завершении процесса ОС освобождает их.
+Они не являются backup-данными. ENOSPC/EDQUOT при приёме/сохранении возвращает HTTP 507
+`STORAGE_FULL` с безопасным сообщением вместо HTTP 500; неуспешный оригинал удаляется,
+ImportBatch не создаётся. После освобождения места загрузку можно повторить.

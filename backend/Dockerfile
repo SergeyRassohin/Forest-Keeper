@@ -13,8 +13,9 @@ COPY migrations ./migrations
 RUN --mount=type=secret,id=network_ca \
     if [ -f /run/secrets/network_ca ]; then export SSL_CERT_FILE=/run/secrets/network_ca; fi; \
     uv sync --frozen --no-dev && useradd --uid 10001 --create-home fk && chmod -R a+rX /app \
-    && mkdir -p /var/lib/forest-keeper/imports \
-    && chown fk:fk /var/lib/forest-keeper/imports && chmod 700 /var/lib/forest-keeper/imports
+    && mkdir -p /var/lib/forest-keeper/imports /var/lib/forest-keeper/upload-tmp \
+    && chown fk:fk /var/lib/forest-keeper/imports /var/lib/forest-keeper/upload-tmp \
+    && chmod 700 /var/lib/forest-keeper/imports /var/lib/forest-keeper/upload-tmp
 USER fk
 ENV PATH="/app/.venv/bin:$PATH"
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--no-access-log"]

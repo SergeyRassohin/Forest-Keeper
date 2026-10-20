@@ -1,11 +1,20 @@
+import errno
 import hashlib
 import os
 import re
 from pathlib import Path
-from typing import BinaryIO
+from typing import BinaryIO, NoReturn
 from uuid import UUID
 
 from app.common.errors import ApiError
+
+
+def raise_storage_error(error: OSError) -> NoReturn:
+    if error.errno in {errno.ENOSPC, errno.EDQUOT}:
+        raise ApiError(
+            507, "STORAGE_FULL", "Недостаточно места для загрузки. Обратитесь к администратору."
+        ) from None
+    raise error
 
 
 def checked_filename(filename: str | None) -> tuple[str, str]:
