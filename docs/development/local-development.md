@@ -2,6 +2,28 @@
 
 Реализованы этап 0 (каркас) и этап 1 ([Authentication + RBAC](authentication.md)). Бизнес-сценарий импорта и Human Review пока не реализован. Python 3.13, FastAPI/Pydantic v2, SQLAlchemy 2, Alembic, PostgreSQL 17 + pgvector, Redis 7.4/RQ, React/TypeScript/Vite. Зависимости зафиксированы в `backend/uv.lock` и `frontend/package-lock.json`.
 
+## Критерий готовности к внешней проверке
+
+Помимо unit/integration checks, MVP должен проходить отдельный пользовательский acceptance-сценарий сторонним специалистом, который не участвовал в разработке:
+
+```text
+fresh clone
+→ documented setup
+→ Web Client
+→ upload own CSV/XLSX/XML
+→ analysis
+→ human confirmation/correction
+→ persisted Decision
+→ restart without volume deletion
+→ preserved history
+```
+
+После реализации AI-контура сценарий расширяется проверкой retrieval похожего подтверждённого Decision через pgvector и объяснением/рекомендацией, которая ссылается только на реально сохранённые evidence.
+
+Подробная инструкция: [External MVP Evaluation & Server Setup](../deployment/server-installation-v0.1.md).
+
+Этот acceptance-сценарий является продуктовым gate: прохождение отдельных API/unit tests не заменяет его.
+
 ## Запуск
 
 Нужны Docker с Compose v2, Bash и OpenSSL. Из корня репозитория:
