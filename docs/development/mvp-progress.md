@@ -38,7 +38,7 @@
 
 Security-critical изменения требуют независимой проверки по AGENTS.md перед принятием. Этап 1 не включает MFA/SSO, recovery, изменение пользователей через UI и бизнес-object scopes. Новые auth-таблицы являются техническим расширением User и не вводят новые бизнес-статусы.
 
-Canonical/matching/conflicts, Human Review, Decision Registry, AI/similarity, правила, полный бизнес-аудит, лицензирование и Update Service ещё не реализованы. Импорт добавлен в этапе 2 ниже. Модели не скачивались. Продуктовый E2E решений и capacity/performance acceptance всего MVP предстоят.
+На момент завершения этапа 1 canonical/matching/conflicts, Human Review, Decision Registry, AI/similarity, правила, полный бизнес-аудит, лицензирование и Update Service ещё не реализованы. Импорт добавлен в этапе 2 ниже. Модели не скачивались. Продуктовый E2E решений и capacity/performance acceptance всего MVP предстоят.
 
 ## Следующая итерация
 
@@ -54,7 +54,7 @@ Capacity на исправленном runtime: два набора 100000×30 �
 
 Этап 2 объединён в main через PR #8, merge commit `52de120`; [CI merge commit](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39415262127) прошёл. Вместе с hardening PR #10 проверены 408 backend (95 unit / 313 integration), 13 frontend и 7 browser — всего 428 PASS; production smoke включает общий том оригиналов. [Отчёт синхронизации](../testing/reports/stage2-main-sync-2026-10-20.md).
 
-Этап 3 — нормализация и canonical model — реализован по [issue #12](https://github.com/SergeyRassohin/Forest-Keeper/issues/12) в [PR #13](https://github.com/SergeyRassohin/Forest-Keeper/pull/13): [описание](normalization.md), [acceptance report](../testing/reports/stage3-normalization-acceptance-2026-10-20.md). Проверены 543 теста (163 backend unit, 355 integration, 17 frontend, 8 browser); независимый retest — 106 backend и один browser, без открытых замечаний. Подробности проверок и нагрузки приведены в отчёте; финальный коммит и CI — в описании PR. Этап 3 не объединён и не объявлен принятым: для этого нужен зелёный CI merge commit в main. Matching не включён.
+Этап 3 — нормализация и canonical model — реализован по [issue #12](https://github.com/SergeyRassohin/Forest-Keeper/issues/12) в [PR #13](https://github.com/SergeyRassohin/Forest-Keeper/pull/13): [описание](normalization.md), [acceptance report](../testing/reports/stage3-normalization-acceptance-2026-10-20.md). Проверены 543 теста (163 backend unit, 355 integration, 17 frontend, 8 browser); независимый retest — 106 backend и один browser, без открытых замечаний. Подробности проверок и нагрузки приведены в отчёте; финальный коммит и CI — в описании PR. Этап 3 принят: merge `6a494534a49960b79fdf64e5e2b8436c32011688`, [зелёный main CI](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39452965438), issue #12 закрыт. [Architecture / Product Intent Gate](../testing/reports/stage4-entry-gate-2026-10-20.md) по новым требованиям пройден перед этапом 4. Matching не включён.
 
 Для последующего импорта нужно согласовать первый pilot domain и формат реальной выгрузки 1С. Пороги matching остаются открытым решением; до его принятия нельзя молча вводить автоматическое объединение по fuzzy/embedding score.
 

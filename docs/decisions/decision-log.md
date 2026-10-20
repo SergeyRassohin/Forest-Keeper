@@ -140,6 +140,14 @@ Requirements:
 
 A rollback is not a claim that the reverted-to version was always correct. It is a new explicit human-approved state transition preserving the full history of intervening versions.
 
+### 2026-10-20 — Stage 4 matching execution and conservative identity policy
+
+Stage4 uses technical MatchingRun infrastructure with the existing AnalysisRun NEW→QUEUED→PROCESSING→COMPLETED/FAILED lifecycle; completed normalization AnalysisRun origins/results remain unchanged. Each execution freezes two completed normalization run IDs, their mapping/engine lineage, matching profile snapshot/hash/engine and explicit threshold policy. MatchCandidate keeps exactly the canonical fields and POSSIBLE_MATCH→MATCHED/NOT_MATCHED lifecycle; a technical run/pair association enforces unordered uniqueness inside an execution. Explicit reruns create new candidate history; duplicate delivery never overwrites manual review. confirmed_by is a human only, and match.review is the existing REVIEWER/DATA_OWNER permission; ADMIN alone cannot confirm.
+
+The synthetic Material profile uses an explicit composite code+name identity rule. Repeated keys, conflicting strong signals and missing/invalid identity inputs cannot auto-match. Rule/fuzzy scores remain POSSIBLE_MATCH without an accepted production threshold; no fuzzy/weighted runtime auto-match threshold is introduced. Declared strong-key disagreement can reject a candidate. Offline threshold sweeps are evidence for a later explicit decision, not production defaults. No physical entity merge or Stage5 Conflict is introduced.
+
+Blocking uses declared identifiers/composite identity and name prefix/tokens, bounded buckets and candidate degree on both sides, with deterministic ordering and explicit incomplete-coverage diagnostics. Omitted pairs are never declared NOT_MATCHED. Profiles/engine/input versions remain historically addressable; read views indicate previous-profile results when the current profile hash differs. Gold Reference is explicitly unconfigured, not a synthetic immutable customer baseline; its future version dependency can be added without rewriting historical evidence. Full approved Gold activation/rollback/impact workflow remains Stage11–12.
+
 ## Open decisions
 - Exact first pilot domain.
 - Thresholds for automatic entity matching versus human review.
