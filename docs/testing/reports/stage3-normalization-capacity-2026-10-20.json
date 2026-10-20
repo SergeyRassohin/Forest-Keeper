@@ -1,0 +1,96 @@
+{
+  "commit": "c685ed71558374fde4adfe9fde525849b56ce94a",
+  "dirty": false,
+  "environment": {
+    "python": "3.13.16",
+    "os": "Linux-6.18.55-x86_64-with-glibc2.41",
+    "execution": "host Python, isolated PostgreSQL schema/Redis queue; SimpleWorker",
+    "cpu_quota_cores": 4,
+    "memory_limit_gib": 32,
+    "postgres": "pgvector/pgvector:pg17",
+    "redis": "redis:7.4-alpine",
+    "shared_resources": true
+  },
+  "profiles": [
+    {
+      "source_datasets": 2,
+      "records_per_dataset": 100,
+      "attributes_per_record": 30,
+      "bytes_per_dataset": [
+        30381,
+        30381
+      ],
+      "import_seconds": 0.434,
+      "normalization_seconds": 0.549,
+      "records": 200,
+      "values": 6000,
+      "quality_counts": {
+        "VALID": 6000
+      },
+      "metadata_sessions": 10,
+      "metadata_p95_seconds": 0.3112,
+      "process_peak_rss_mib": 161.25,
+      "passed": true
+    },
+    {
+      "source_datasets": 2,
+      "records_per_dataset": 1000,
+      "attributes_per_record": 30,
+      "bytes_per_dataset": [
+        300381,
+        300381
+      ],
+      "import_seconds": 0.837,
+      "normalization_seconds": 5.396,
+      "records": 2000,
+      "values": 60000,
+      "quality_counts": {
+        "VALID": 60000
+      },
+      "metadata_sessions": 10,
+      "metadata_p95_seconds": 0.2989,
+      "process_peak_rss_mib": 177.22,
+      "passed": true
+    },
+    {
+      "source_datasets": 2,
+      "records_per_dataset": 10000,
+      "attributes_per_record": 30,
+      "bytes_per_dataset": [
+        3000381,
+        3000381
+      ],
+      "import_seconds": 5.445,
+      "normalization_seconds": 49.199,
+      "records": 20000,
+      "values": 600000,
+      "quality_counts": {
+        "VALID": 600000
+      },
+      "metadata_sessions": 10,
+      "metadata_p95_seconds": 0.258,
+      "process_peak_rss_mib": 188.23,
+      "passed": true
+    },
+    {
+      "source_datasets": 2,
+      "records_per_dataset": 100000,
+      "attributes_per_record": 30,
+      "bytes_per_dataset": [
+        30000381,
+        30000381
+      ],
+      "import_seconds": 60.353,
+      "normalization_seconds": 519.759,
+      "records": 200000,
+      "values": 6000000,
+      "quality_counts": {
+        "VALID": 6000000
+      },
+      "metadata_sessions": 10,
+      "metadata_p95_seconds": 0.2145,
+      "process_peak_rss_mib": 243.41,
+      "passed": true
+    }
+  ]
+}

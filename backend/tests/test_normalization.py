@@ -168,7 +168,7 @@ def test_exact_analysis_lifecycle(source, target):
     from unittest.mock import Mock
     from uuid import uuid4
 
-    from app.normalization.jobs import TRANSITIONS, transition
+    from app.normalization.jobs import transition
     from app.normalization.models import AnalysisRun, AnalysisStatus
 
     run = AnalysisRun(
@@ -179,7 +179,15 @@ def test_exact_analysis_lifecycle(source, target):
         actor_id=uuid4(),
         import_batch_ids=[],
     )
-    if AnalysisStatus(target) in TRANSITIONS.get(AnalysisStatus(source), set()):
+    # Expected edges come from Object Lifecycles v0.1, independently of the implementation.
+    allowed = {
+        ("NEW", "QUEUED"),
+        ("QUEUED", "PROCESSING"),
+        ("QUEUED", "FAILED"),
+        ("PROCESSING", "COMPLETED"),
+        ("PROCESSING", "FAILED"),
+    }
+    if (source, target) in allowed:
         session = Mock()
         transition(session, run, AnalysisStatus(target))
         assert run.status == target
