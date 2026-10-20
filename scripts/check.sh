@@ -5,6 +5,8 @@ cd "$(dirname "${BASH_SOURCE[0]}")/.."
   cd backend
   uv run --frozen ruff check .
   uv run --frozen ruff format --check .
+  uv run --frozen ruff check ../scripts/check-production.py
+  uv run --frozen ruff format --check ../scripts/check-production.py
   uv run --frozen mypy app
   uv run --frozen pytest -m 'not integration'
 )

@@ -40,6 +40,8 @@ jobs:
       - run: bash scripts/dev-init.sh
       - run: docker compose up --build --wait --wait-timeout 180
       - run: bash scripts/check-integration.sh
+      - name: Disposable production configuration and worker readiness checks
+        run: python scripts/check-production.py --backend-image forest-keeper-backend --frontend-image forest-keeper-frontend
       - name: Logs on failure
         if: failure()
         run: docker compose logs --no-color --tail 100
