@@ -124,6 +124,22 @@ The architectural principle is therefore:
 
 This rule applies to future CustomerTemplate/Rule/RuleSuggestion implementation and must be checked at every stage gate so intermediate stages do not accidentally hard-code the Gold Reference as immutable truth.
 
+### 2026-10-20 — Gold Reference history and rollback
+
+Gold Reference / CustomerTemplate / formalized Rule state must be stored as **append-only version history**. Human decisions can be mistaken, situational or later reconsidered; therefore an approved change must never overwrite the previous reference in place.
+
+Requirements:
+- every Gold Reference version is immutable after activation;
+- each version stores parent/previous-version reference, author/approver, activation time, reason, structured diff, linked supporting Decisions/RuleSuggestions where applicable, and affected scope;
+- one version is marked active for a given applicable scope; historical versions remain addressable and auditable;
+- rollback is implemented by creating/activating a new version whose content is based on a previous historical version; do not delete or rewrite the intervening history;
+- rollback requires the same authorization, audit and impact-analysis rules as any other Gold Reference change;
+- activation/rollback must signal that evaluation criteria may change and must calculate/mark dependent derived results for re-evaluation or stale status;
+- historical Decisions and derived results retain the exact Gold Reference/rule/template version that was active when they were created;
+- the system must be able to reconstruct the sequence of Gold Reference versions and explain why each transition occurred.
+
+A rollback is not a claim that the reverted-to version was always correct. It is a new explicit human-approved state transition preserving the full history of intervening versions.
+
 ## Open decisions
 - Exact first pilot domain.
 - Thresholds for automatic entity matching versus human review.
