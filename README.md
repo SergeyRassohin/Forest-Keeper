@@ -13,6 +13,7 @@ Forest Keeper принимает данные из корпоративных и
 ## Разработка MVP
 
 Запускаемый каркас и команды проверки: [локальная разработка](docs/development/local-development.md).
+Отдельная конфигурация сервера и worker readiness: [production-профиль](docs/deployment/production-profile.md).
 Этап 0 добавляет backend, Web Client, PostgreSQL/pgvector, Redis/RQ и HTTPS-контур разработки.
 Этап 1 добавляет [локальный вход, пользователей и RBAC](docs/development/authentication.md).
 Импорт, Human Review и рекомендации пока не реализованы.

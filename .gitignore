@@ -26,4 +26,5 @@ playwright-report/
 test-results/
 .env
 deploy/local/
+deploy/production/secrets/
 *.tsbuildinfo

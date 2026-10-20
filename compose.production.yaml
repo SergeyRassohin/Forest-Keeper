@@ -1,0 +1,151 @@
+# Standalone production-oriented configuration. Never merge with dev compose.
+name: forest-keeper-production
+
+x-app: &app
+  image: ${FK_BACKEND_IMAGE:?Provide a reviewed backend image tag or digest}
+  pull_policy: never
+  user: "10001:10001"
+  read_only: true
+  tmpfs:
+    - /tmp:size=64m,mode=1777
+  cap_drop: [ALL]
+  security_opt: [no-new-privileges:true]
+  cpus: 1
+  mem_limit: 1g
+  pids_limit: 128
+  environment:
+    FK_SECRETS_DIR: /run/secrets
+    FK_REDIS_URL: redis://redis:6379/0
+    FK_ALLOWED_ORIGINS: ${FK_ALLOWED_ORIGINS:?Set the external HTTPS origin as a JSON array}
+    PYTHONDONTWRITEBYTECODE: "1"
+  secrets:
+    - source: database_url
+      target: fk_database_url
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg17
+    user: "999:999"
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp:size=32m,mode=1777
+      - /var/run/postgresql:size=16m,uid=999,gid=999,mode=0770
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    cpus: 2
+    mem_limit: 1g
+    pids_limit: 256
+    environment:
+      POSTGRES_DB: forest_keeper
+      POSTGRES_USER: forest_keeper
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+    secrets: [postgres_password]
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U forest_keeper -d forest_keeper"]
+      interval: 2s
+      timeout: 2s
+      retries: 30
+
+  redis:
+    image: redis:7.4-alpine
+    user: "999:1000"
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m,mode=1777
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    cpus: 1
+    mem_limit: 256m
+    pids_limit: 64
+    command: [redis-server, --appendonly, "yes"]
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: [CMD, redis-cli, ping]
+      interval: 2s
+      timeout: 2s
+      retries: 30
+
+  migrate:
+    <<: *app
+    command: [alembic, upgrade, head]
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  backend:
+    <<: *app
+    restart: unless-stopped
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/v1/health', timeout=2)"]
+      interval: 5s
+      timeout: 3s
+      retries: 15
+
+  worker:
+    <<: *app
+    restart: unless-stopped
+    command: [python, -m, app.worker]
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: [CMD, python, -m, app.worker_health]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  frontend:
+    image: ${FK_FRONTEND_IMAGE:?Provide a reviewed frontend image tag or digest}
+    pull_policy: never
+    user: "101:101"
+    restart: unless-stopped
+    entrypoint: [nginx]
+    command: [-c, /etc/nginx/production.conf, -g, "daemon off;"]
+    read_only: true
+    tmpfs:
+      - /tmp:size=32m,mode=1777
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    cpus: 0.5
+    mem_limit: 128m
+    pids_limit: 64
+    ports:
+      - "${FK_BIND_ADDRESS:-127.0.0.1}:${FK_HTTPS_PORT:-8443}:8443"
+    secrets:
+      - source: tls_certificate
+        target: /etc/nginx/tls/server.crt
+      - source: tls_key
+        target: /etc/nginx/tls/server.key
+    healthcheck:
+      test: [CMD, wget, --quiet, --no-check-certificate, --spider, "https://127.0.0.1:8443/api/v1/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 15
+    depends_on:
+      backend:
+        condition: service_healthy
+
+secrets:
+  database_url:
+    file: ${FK_PROD_SECRETS_DIR:?Provide a protected secrets directory}/fk_database_url
+  postgres_password:
+    file: ${FK_PROD_SECRETS_DIR:?Provide a protected secrets directory}/postgres_password
+  tls_certificate:
+    file: ${FK_PROD_SECRETS_DIR:?Provide a protected secrets directory}/server.crt
+  tls_key:
+    file: ${FK_PROD_SECRETS_DIR:?Provide a protected secrets directory}/server.key
+
+volumes:
+  postgres_data:
+  redis_data:
