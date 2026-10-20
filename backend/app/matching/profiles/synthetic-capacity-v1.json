@@ -1,0 +1,33 @@
+{
+  "version": "1",
+  "engine_version": "fk-matching/1",
+  "synthetic": true,
+  "entity_type": "Material",
+  "threshold_policy": "EXACT_RULES_ONLY_NO_FUZZY_AUTO",
+  "threshold_decision": "OPEN",
+  "strong_negative_keys": [
+    "id"
+  ],
+  "identifier_attribute": "id",
+  "name_attribute": "attribute_01",
+  "identity_rules": [
+    [
+      "id"
+    ]
+  ],
+  "id": "8bc89755-d692-59ef-910d-a9c7f544a294",
+  "code": "synthetic-capacity",
+  "domain": "synthetic-capacity",
+  "signals": [
+    {
+      "attribute_code": "id",
+      "algorithm": "exact",
+      "weight": "0.8"
+    },
+    {
+      "attribute_code": "attribute_01",
+      "algorithm": "token_sort_ratio",
+      "weight": "0.2"
+    }
+  ]
+}

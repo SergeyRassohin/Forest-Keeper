@@ -1,0 +1,46 @@
+{
+  "version": "1",
+  "engine_version": "fk-matching/1",
+  "synthetic": true,
+  "entity_type": "Material",
+  "threshold_policy": "EXACT_RULES_ONLY_NO_FUZZY_AUTO",
+  "threshold_decision": "OPEN",
+  "strong_negative_keys": [
+    "code"
+  ],
+  "identifier_attribute": "code",
+  "name_attribute": "name",
+  "identity_rules": [
+    [
+      "code",
+      "name"
+    ]
+  ],
+  "id": "f4b8fe83-5d9e-51d3-98c0-4bd0fb821486",
+  "code": "synthetic-material",
+  "domain": "synthetic-material",
+  "signals": [
+    {
+      "attribute_code": "code",
+      "algorithm": "exact",
+      "weight": "0.5"
+    },
+    {
+      "attribute_code": "name",
+      "algorithm": "token_sort_ratio",
+      "weight": "0.35"
+    },
+    {
+      "attribute_code": "mass",
+      "algorithm": "decimal_tolerance",
+      "weight": "0.1",
+      "tolerance": "0.001",
+      "unit": "kg"
+    },
+    {
+      "attribute_code": "manufactured_on",
+      "algorithm": "exact",
+      "weight": "0.05"
+    }
+  ]
+}

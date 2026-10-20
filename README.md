@@ -6,7 +6,7 @@ Forest Keeper принимает данные из корпоративных и
 
 Проект ориентирован на работу внутри закрытого контура заказчика: исходные данные не должны покидать его инфраструктуру. Локальный AI используется как заменяемый помощник, а не как источник истины.
 
-> **Статус:** MVP в активной разработке. Этапы 0–2 приняты; этап 3 (нормализация) принят через [PR #13](https://github.com/SergeyRassohin/Forest-Keeper/pull/13). Следующий этап — Matching / Entity Resolution.
+> **Статус:** MVP в активной разработке. Этапы 0–2 приняты; этап 3 (нормализация) принят через [PR #13](https://github.com/SergeyRassohin/Forest-Keeper/pull/13). Этап 4 — Matching / Entity Resolution — реализуется по [issue #14](https://github.com/SergeyRassohin/Forest-Keeper/issues/14).
 
 Этот репозиторий — единый инженерный источник истины по проекту Forest Keeper.
 
@@ -17,7 +17,7 @@ Forest Keeper принимает данные из корпоративных и
 Этап 0 добавляет backend, Web Client, PostgreSQL/pgvector, Redis/RQ и HTTPS-контур разработки.
 Этап 1 добавляет [локальный вход, пользователей и RBAC](docs/development/authentication.md).
 Этап 2 добавляет [источники и импорт CSV/XLSX/XML](docs/development/import.md) через браузер с сохранением оригиналов, raw-записей и provenance.
-Этап 3 добавляет [нормализацию и canonical representation](docs/development/normalization.md) с сохранением raw и истории правил. Matching, Human Review и рекомендации относятся к следующим этапам.
+Этап 3 добавляет [нормализацию и canonical representation](docs/development/normalization.md) с сохранением raw и истории правил. Этап 4 добавляет [сопоставление и объяснимые кандидаты](docs/development/matching.md). Conflict Engine, Human Review конфликтов и рекомендации относятся к следующим этапам.
 
 ## Как работать
 

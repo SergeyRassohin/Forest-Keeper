@@ -10,6 +10,7 @@ import {
 } from './api';
 import { UserAdmin } from './UserAdmin';
 import { Imports } from './Imports';
+import { Matching } from './Matching';
 
 const labels = {
   api: 'API',
@@ -104,14 +105,14 @@ export function HealthDashboard({
           </div>
         </section>
         <section className="next" aria-labelledby="next-title">
-          <h2 id="next-title">Исходные и нормализованные данные</h2>
+          <h2 id="next-title">Импорт, нормализация и сопоставление</h2>
           <p>
             В разделе «Импорт данных» можно загрузить CSV, XLSX и XML,
             посмотреть исходные записи и результат нормализации с его правилом и происхождением.
           </p>
           <p>
-            Следующий этап — сопоставление записей.
-            Сопоставление, разбор конфликтов и рекомендации будут добавлены позже.
+            В разделе «Сопоставление» видны пары записей, оценки и объяснения.
+            Разбор конфликтов и рекомендации относятся к следующим этапам.
           </p>
         </section>
       </main>
@@ -262,8 +263,9 @@ export function App() {
             <button onClick={() => setPage('dashboard')}>Состояние сервера</button>
             {user.permissions.includes('import.view') &&
               <button onClick={() => setPage('imports')}>Импорт данных</button>}
+            {user.permissions.includes('match.view') && <button onClick={() => setPage('matching')}>Сопоставление</button>}
           </nav>
-          {page === 'imports' && user.permissions.includes('import.view') ? (
+          {page === 'matching' && user.permissions.includes('match.view') ? (<Matching user={user} onSessionExpired={expire} />) : page === 'imports' && user.permissions.includes('import.view') ? (
             <Imports user={user} onSessionExpired={expire} />
           ) : user.permissions.includes('dashboard.view') ? (
             <HealthDashboard onSessionExpired={expire} />

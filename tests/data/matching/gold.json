@@ -1,0 +1,81 @@
+{
+  "scope": "synthetic test ground truth, not customer Gold Reference",
+  "all_other_pairs": "NOT_MATCH",
+  "cases": [
+    {
+      "a": "A01",
+      "b": "B01",
+      "truth": "MATCH"
+    },
+    {
+      "a": "A02",
+      "b": "B02",
+      "truth": "MATCH"
+    },
+    {
+      "a": "A03",
+      "b": "B03",
+      "truth": "MATCH"
+    },
+    {
+      "a": "A04",
+      "b": "B04",
+      "truth": "MATCH"
+    },
+    {
+      "a": "A05",
+      "b": "B05",
+      "truth": "REVIEW"
+    },
+    {
+      "a": "A06",
+      "b": "B06",
+      "truth": "NOT_MATCH"
+    },
+    {
+      "a": "A07",
+      "b": "B07",
+      "truth": "NOT_MATCH"
+    },
+    {
+      "a": "A08",
+      "b": "B08",
+      "truth": "NOT_MATCH"
+    },
+    {
+      "a": "A09",
+      "b": "B09",
+      "truth": "MATCH"
+    },
+    {
+      "a": "A10",
+      "b": "B10",
+      "truth": "REVIEW"
+    },
+    {
+      "a": "A11",
+      "b": "B11",
+      "truth": "NOT_MATCH"
+    },
+    {
+      "a": "A12",
+      "b": "B12",
+      "truth": "REVIEW"
+    },
+    {
+      "a": "A13",
+      "b": "B13",
+      "truth": "REVIEW"
+    },
+    {
+      "a": "A12",
+      "b": "B13",
+      "truth": "REVIEW"
+    },
+    {
+      "a": "A13",
+      "b": "B12",
+      "truth": "REVIEW"
+    }
+  ]
+}
