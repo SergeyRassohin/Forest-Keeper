@@ -140,6 +140,21 @@ Requirements:
 
 A rollback is not a claim that the reverted-to version was always correct. It is a new explicit human-approved state transition preserving the full history of intervening versions.
 
+### 2026-10-21 — User-facing name: Forest Codex
+
+The user-facing product term for the versioned customer reference/baseline previously described as "Gold Reference" is **Forest Codex**.
+
+Definition:
+- **Forest Codex** is the versioned customer-approved set of reference values, rules, criteria, mappings and evaluation settings used by Forest Keeper to interpret and assess data.
+- Example UI label: `Forest Codex v5`.
+- Historical versions remain immutable and auditable.
+- A result must retain the exact Forest Codex version used for its evaluation.
+- If a result was evaluated under an older Codex than the currently active one, the UI must indicate that fact and, where impact analysis shows relevance, mark the result stale or require re-evaluation.
+- Forest Codex is not AI, not the matching/scoring engine, not source truth, and not an immutable universal truth.
+- The term must not be confused with OpenAI Codex; in product/UI context, "Forest Codex" always means the customer reference baseline.
+
+Existing documentation references to "Gold Reference" are a transitional internal alias and should be migrated to "Forest Codex" in user-facing and newly edited documentation. Historical documents may retain the older term where changing them would rewrite history.
+
 ## Open decisions
 - Exact first pilot domain.
 - Thresholds for automatic entity matching versus human review.
