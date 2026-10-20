@@ -13,7 +13,7 @@ x-app: &app
   cpus: 1
   mem_limit: 1g
   pids_limit: 128
-  environment:
+  environment: &app-environment
     FK_SECRETS_DIR: /run/secrets
     FK_REDIS_URL: redis://redis:6379/0
     FK_ALLOWED_ORIGINS: ${FK_ALLOWED_ORIGINS:?Set the external HTTPS origin as a JSON array}
@@ -81,8 +81,12 @@ services:
   backend:
     <<: *app
     restart: unless-stopped
+    environment:
+      <<: *app-environment
+      TMPDIR: /var/lib/forest-keeper/upload-tmp
     volumes:
       - import_files:/var/lib/forest-keeper/imports
+      - upload_tmp:/var/lib/forest-keeper/upload-tmp
     depends_on:
       migrate:
         condition: service_completed_successfully
@@ -155,3 +159,4 @@ volumes:
   postgres_data:
   redis_data:
   import_files:
+  upload_tmp:

@@ -1,6 +1,9 @@
 """Disposable production-profile smoke; only synthetic secrets and own volumes."""
 
 import argparse
+import concurrent.futures
+import hashlib
+import http.client
 import json
 import os
 import secrets
@@ -8,6 +11,7 @@ import socket
 import ssl
 import subprocess
 import tempfile
+import threading
 import time
 import urllib.error
 import urllib.request
@@ -28,6 +32,7 @@ def main():
         folder = Path(directory)
         password = secrets.token_hex(24)
         dsn = f"postgresql+psycopg://forest_keeper:{password}@postgres:5432/forest_keeper"
+        sensitive_values = [password, dsn]
         # Docker Compose binds file secrets without remapping UID/mode. The test
         # files are readable by container UIDs; their host ancestor is private 0700.
         for name, value in [("postgres_password", password), ("fk_database_url", dsn)]:
@@ -80,6 +85,20 @@ def main():
                 # Never propagate a command's arbitrary diagnostic with credentials.
                 raise RuntimeError("Deployment check command failed: " + command[0])
             return result
+
+        def request_json(path, data=None, cookie=None):
+            headers = {"Origin": f"https://localhost:{port}"}
+            if cookie:
+                headers["Cookie"] = cookie
+            payload = None
+            if data is not None:
+                payload = json.dumps(data).encode()
+                headers["Content-Type"] = "application/json"
+            request = urllib.request.Request(
+                f"https://localhost:{port}/api/v1" + path, data=payload, headers=headers
+            )
+            with urllib.request.urlopen(request, context=context, timeout=30) as response:
+                return json.load(response), response.headers.get("Set-Cookie", "").split(";", 1)[0]
 
         def execute(service, command, *, check=True):
             return run([*compose, "exec", "-T", service, *command], check=check)
@@ -139,6 +158,130 @@ def main():
                 execute("backend", ["touch", "/app/should-not-write"], check=False).returncode != 0
             )
             execute("backend", ["touch", "/tmp/temporary-check"])
+            # Authenticate normally against this disposable database. Credentials
+            # are supplied only on stdin / HTTPS, never command arguments or logs.
+            account_password = secrets.token_urlsafe(32)
+            sensitive_values.append(account_password)
+            bootstrap = subprocess.run(
+                [
+                    *compose,
+                    "exec",
+                    "-T",
+                    "backend",
+                    "python",
+                    "-m",
+                    "app.auth.bootstrap",
+                    "--login",
+                    "upload-check",
+                    "--full-name",
+                    "Upload smoke",
+                    "--password-stdin",
+                ],
+                input=account_password + "\n",
+                env=environment,
+                cwd=ROOT,
+                text=True,
+                capture_output=True,
+            )
+            assert bootstrap.returncode == 0, "Synthetic account bootstrap failed"
+            _, cookie = request_json(
+                "/auth/login", {"login": "upload-check", "password": account_password}
+            )
+            assert cookie.startswith("__Host-fk_session=")
+            sensitive_values.extend([cookie, cookie.partition("=")[2]])
+            source, _ = request_json(
+                "/sources",
+                {"code": "large-upload", "name": "Upload smoke", "source_type": "FILE"},
+                cookie,
+            )
+            # Two exact-limit files must spill to disk at the same time. Stop only
+            # our worker while uploading: validating transport does not require
+            # importing millions of synthetic rows into PostgreSQL.
+            run([*compose, "stop", "-t", "10", "worker"])
+            upload_barrier = threading.Barrier(2, timeout=30)
+
+            def large_upload(index):
+                size = 100_000_000
+                boundary = "upload-" + uuid4().hex
+                prefix = (
+                    f'--{boundary}\r\nContent-Disposition: form-data; name="source_id"\r\n\r\n'
+                    f"{source['id']}\r\n--{boundary}\r\nContent-Disposition: form-data; "
+                    f'name="file"; filename="large-{index}.csv"\r\n'
+                    "Content-Type: text/csv\r\n\r\n"
+                ).encode()
+                suffix = f"\r\n--{boundary}--\r\n".encode()
+                connection = http.client.HTTPSConnection(
+                    "localhost", port, context=context, timeout=60
+                )
+                checksum = hashlib.sha256()
+                try:
+                    connection.putrequest("POST", "/api/v1/imports")
+                    connection.putheader(
+                        "Content-Type", "multipart/form-data; boundary=" + boundary
+                    )
+                    connection.putheader("Content-Length", str(len(prefix) + size + len(suffix)))
+                    connection.putheader("Origin", f"https://localhost:{port}")
+                    connection.putheader("Cookie", cookie)
+                    connection.endheaders()
+                    connection.send(prefix)
+                    # Distinct valid CSVs, without allocating a whole file in RAM.
+                    header = f"value\n{index}\n".encode()
+                    connection.send(header)
+                    checksum.update(header)
+                    remaining = size - len(header)
+                    synchronized = False
+                    chunk = b"x\n" * (512 * 1024)
+                    while remaining:
+                        part = chunk[: min(remaining, len(chunk))]
+                        connection.send(part)
+                        checksum.update(part)
+                        remaining -= len(part)
+                        if not synchronized and remaining < 30_000_000:
+                            upload_barrier.wait()
+                            synchronized = True
+                    connection.send(suffix)
+                    response = connection.getresponse()
+                    result = json.load(response)
+                    assert response.status == 201 and result["status"] == "QUEUED"
+                    assert result["file_hash"] == checksum.hexdigest()
+                    return result["id"]
+                finally:
+                    connection.close()
+
+            with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:
+                batches = list(pool.map(large_upload, [1, 2]))
+            execute(
+                "backend",
+                [
+                    "python",
+                    "-c",
+                    "import os, tempfile; from pathlib import Path; "
+                    "assert tempfile.gettempdir() == os.environ['TMPDIR']; "
+                    "assert list(Path(tempfile.gettempdir()).iterdir()) == []",
+                ],
+            )
+            # Remove only the two unprocessed synthetic queue deliveries; retain
+            # their original files/metadata until our own project is torn down.
+            execute(
+                "backend",
+                [
+                    "python",
+                    "-c",
+                    "from redis import Redis; from rq import Queue; "
+                    "from rq.job import Job; from app.common.config import Settings; "
+                    "s=Settings(); r=Redis.from_url(s.redis_url.get_secret_value()); "
+                    "q=Queue(s.import_queue_name, connection=r); "
+                    "[(q.remove(j), Job.fetch(j, connection=r).delete()) for j in "
+                    + repr(["import-" + batch.replace("-", "") for batch in batches])
+                    + "]; r.close()",
+                ],
+            )
+            run([*compose, "up", "-d", "--wait", "--wait-timeout", "60", "worker"])
+            wait_healthy(name)
+            print(
+                "PASS: two concurrent 100 MB HTTPS uploads, exact checksums, "
+                "temporary files released"
+            )
             execute(
                 "backend",
                 [
@@ -250,7 +393,7 @@ finally:
                 ],
             )
             logs = run([*compose, "logs", "--no-color"]).stdout
-            assert password not in logs and dsn not in logs
+            assert all(value not in logs for value in sensitive_values)
             print(
                 "PASS: production config, HTTPS health, file secrets, non-root/read-only/resources"
             )
@@ -264,7 +407,7 @@ finally:
             )
         except Exception:
             logs = run([*compose, "logs", "--no-color", "--tail", "25"], check=False).stdout
-            for value in [password, dsn]:
+            for value in sensitive_values:
                 logs = logs.replace(value, "REDACTED")
             print(logs)
             raise
