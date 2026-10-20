@@ -12,7 +12,7 @@ Forest Keeper принимает данные из корпоративных и
 
 ## Внешняя проверка MVP
 
-Для независимого технического review используйте [External MVP Evaluation & Server Setup](docs/deployment/server-installation-v0.1.md).
+Для независимого технического review начните с [пошагового External Reviewer Quick Start](docs/deployment/external-review-quickstart.md). Архитектурные границы и критерии серверного развёртывания описаны в [External MVP Evaluation & Server Setup](docs/deployment/server-installation-v0.1.md).
 
 Целевой acceptance-сценарий: сторонний специалист без помощи авторов проекта клонирует репозиторий, разворачивает приложение, загружает собственный CSV/XLSX/XML, получает анализ, подтверждает или исправляет решение и убеждается, что история сохраняется после перезапуска. AI-контур считается готовым только когда pinned Qwen-модели можно получить и проверить по документированному bootstrap-пути без ручного угадывания версий и каталогов.
 
