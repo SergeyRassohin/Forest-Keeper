@@ -375,3 +375,24 @@ def test_migration_from_stage4_repeat_roundtrip_preserves_history(client, auth_e
     execute_conflict(UUID(run["id"]), auth_env)
     assert completed(client, run)["conflicts_generated"] == 2
     engine.dispose()
+
+
+def test_absent_csv_schema_column_does_not_create_missing_conflict(client, auth_env):
+    normal = []
+    for payload in [
+        b"id,name,price,date\nSCHEMA,Schema Bolt,1,2026-01-01\n",
+        b"id,name,mass,price,date\nSCHEMA,Schema Bolt,1 kg,2,2026-01-01\n",
+    ]:
+        batch = imported(client, auth_env, "material.csv", payload)
+        analysis = normalization_start(client, batch)
+        execute_run(UUID(analysis["id"]), auth_env)
+        normal.append(analysis["id"])
+    matching = matching_start(client, normal)
+    execute_matching(UUID(matching["id"]), auth_env)
+    run = start(client, matching)
+    execute_conflict(UUID(run["id"]), auth_env)
+    result = completed(client, run)
+    assert result["conflicts_generated"] == 1
+    assert [(row["attribute_code"], row["conflict_type"]) for row in rows(client, matching)] == [
+        ("price", "VALUE_MISMATCH")
+    ]

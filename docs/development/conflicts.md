@@ -30,7 +30,7 @@ NEW→QUEUED→PROCESSING→COMPLETED/FAILED, не вводя новый биз�
   нормализации. Tolerance = 0 зафиксирован конфигурацией. Matching tolerance не является
   бизнес-допуском атрибута. Новые допуски потребуют новой версии конфигурации.
 - MISSING: одна сторона PRESENT, другая явно missing/null/empty. Эти причины различимы
-  в evidence. SCHEMA_UNMAPPED, INVALID_OR_UNKNOWN и WARNING не подменяются отсутствием.
+  в evidence. В CSV/XLSX отсутствие колонки определяется по сохранённым header keys raw record; это SCHEMA_UNMAPPED, а не пустая ячейка. INVALID_OR_UNKNOWN и WARNING не подменяются отсутствием.
   При обоих отсутствующих значениях межсистемный конфликт не выдумывается.
 - DUPLICATE: в замороженном MATCHED graph более одной записи одного источника
   подтверждены как идентичные одной записи второго. Сохраняются concrete peer raw IDs.

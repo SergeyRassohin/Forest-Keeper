@@ -5,8 +5,16 @@
   "absolute_tolerance": "0",
   "severity": "LOW",
   "severity_reason": "NEUTRAL_TECHNICAL_DEFAULT_NO_BUSINESS_POLICY",
-  "missing": ["missing", "null", "empty"],
+  "missing": [
+    "missing",
+    "null",
+    "empty"
+  ],
   "duplicate": "MULTIPLE_MATCHED_RECORDS_SAME_SOURCE",
-  "disabled_types": ["RULE_VIOLATION", "ANOMALY"],
-  "forest_codex_version": null
+  "disabled_types": [
+    "RULE_VIOLATION",
+    "ANOMALY"
+  ],
+  "forest_codex_version": null,
+  "schema_presence": "CSV_XLSX_HEADER_OR_EXPLICIT_MAPPING"
 }

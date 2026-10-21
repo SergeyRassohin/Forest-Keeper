@@ -17,7 +17,7 @@ def conflict_id(candidate_id: UUID, attribute: str, kind: str, dependencies: str
 
 
 def presence(value: dict[str, Any] | None) -> str:
-    if value is None:
+    if value is None or value.get("source_schema_contains_field") is False:
         return "SCHEMA_UNMAPPED"
     code = value["normalization_rule"].get("presence")
     if code in CONFIG["missing"]:

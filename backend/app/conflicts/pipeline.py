@@ -17,13 +17,17 @@ from app.normalization.profiles import Profile
 
 
 def load_values(
-    session: Session, entities: list[UUID], runs: list[AnalysisRun]
+    session: Session, entities: list[UUID], runs: list[AnalysisRun], schemas: dict[UUID, set[str]]
 ) -> dict[str, dict[str, Any]]:
     profiles = {run.mapping_hash: Profile.model_validate(run.mapping_snapshot) for run in runs}
     result: dict[str, dict[str, Any]] = defaultdict(dict)
-    for value, file_format, source_type, object_type in session.execute(
+    for value, file_format, source_type, object_type, raw_id in session.execute(
         select(
-            EntityValue, ImportBatch.format, SourceSystem.source_type, RawRecord.source_object_type
+            EntityValue,
+            ImportBatch.format,
+            SourceSystem.source_type,
+            RawRecord.source_object_type,
+            RawRecord.id,
         )
         .join(RawRecord, RawRecord.id == EntityValue.raw_record_id)
         .join(ImportBatch, ImportBatch.id == RawRecord.import_batch_id)
@@ -49,6 +53,11 @@ def load_values(
             "quality_status": value.quality_status,
             "normalization_rule": value.normalization_rule,
             "kind": field.kind,
+            "source_schema_contains_field": (
+                field.path[0] in schemas[raw_id]
+                if file_format in {"CSV", "XLSX"} and isinstance(field.path[0], str)
+                else None
+            ),
         }
     return result
 
@@ -76,19 +85,20 @@ def process_chunk(session: Session, run: ConflictRun) -> bool:
     entities = [
         UUID(item["entity_id"]) for candidate in candidates for item in candidate.evidence["inputs"]
     ]
-    values = load_values(session, entities, runs)
     raw_ids = [
         UUID(item["raw_record_id"])
         for candidate in candidates
         for item in candidate.evidence["inputs"]
     ]
     provenance = {}
+    schemas = {}
     for raw, batch, source in session.execute(
         select(RawRecord, ImportBatch, SourceSystem)
         .join(ImportBatch, ImportBatch.id == RawRecord.import_batch_id)
         .join(SourceSystem, SourceSystem.id == ImportBatch.source_system_id)
         .where(RawRecord.id.in_(raw_ids))
     ):
+        schemas[raw.id] = set(raw.raw_payload)
         provenance[str(raw.id)] = {
             "raw_record_id": str(raw.id),
             "source_id": str(source.id),
@@ -99,6 +109,7 @@ def process_chunk(session: Session, run: ConflictRun) -> bool:
             "source_record_key": raw.source_record_key,
             "source_position": raw.source_position,
         }
+    values = load_values(session, entities, runs, schemas)
     peers: dict[UUID, set[UUID]] = defaultdict(set)
     for a, b in session.execute(
         select(MatchCandidate.raw_record_a_id, MatchCandidate.raw_record_b_id)

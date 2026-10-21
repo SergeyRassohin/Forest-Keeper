@@ -95,3 +95,10 @@ def test_config_identity_no_truth_and_disabled_generation():
     }
     assert set(ConflictStatus) == {"OPEN", "IN_REVIEW", "RESOLVED", "INSUFFICIENT_DATA"}
     assert set(Severity) == {"LOW", "MEDIUM", "HIGH", "CRITICAL"}
+
+
+def test_missing_source_schema_is_not_an_empty_cell():
+    missing = observation(None, quality="UNKNOWN", state="missing")
+    missing["source_schema_contains_field"] = False
+    assert presence(missing) == "SCHEMA_UNMAPPED"
+    assert compare(observation(), missing) is None
