@@ -28,8 +28,8 @@ test('detects explains and persists conflicts from two browser imports without b
   await signIn(page, 'ADMIN');
   const ids = [await input(page, 'a'), await input(page, 'b')];
   await page.getByRole('button', { name: 'Сопоставление', exact: true }).click();
-  await page.getByLabel('Нормализация источника A', { exact: true }).selectOption(ids[0]);
-  await page.getByLabel('Нормализация источника B', { exact: true }).selectOption(ids[1]);
+  await page.getByRole('combobox', { name: 'Нормализация источника A', exact: true }).selectOption(ids[0]);
+  await page.getByRole('combobox', { name: 'Нормализация источника B', exact: true }).selectOption(ids[1]);
   const started = page.waitForResponse((response) => response.url().endsWith('/api/v1/matching-runs') && response.request().method() === 'POST');
   await page.getByRole('button', { name: 'Запустить сопоставление', exact: true }).click();
   const matching = await (await started).json();
@@ -54,14 +54,14 @@ test('detects explains and persists conflicts from two browser imports without b
   const before = await (await page.request.get('/api/v1/conflicts/' + mismatch.id)).json();
   await page.reload();
   await page.getByRole('button', { name: 'Конфликты', exact: true }).click();
-  await page.getByLabel('Сопоставление для конфликтов', { exact: true }).selectOption(matching.id);
+  await page.getByRole('combobox', { name: 'Сопоставление для конфликтов', exact: true }).selectOption(matching.id);
   await page.getByRole('button', { name: mismatch.id, exact: true }).click();
   await expect(page.getByRole('region', { name: 'Карточка конфликта' })).toContainText(mismatch.id);
   expect(await (await page.request.get('/api/v1/conflicts/' + mismatch.id)).json()).toEqual(before);
   await page.getByRole('button', { name: 'Выйти', exact: true }).click();
   await signIn(page, 'VIEWER');
   await page.getByRole('button', { name: 'Конфликты', exact: true }).click();
-  await page.getByLabel('Сопоставление для конфликтов', { exact: true }).selectOption(matching.id);
+  await page.getByRole('combobox', { name: 'Сопоставление для конфликтов', exact: true }).selectOption(matching.id);
   await page.getByRole('button', { name: mismatch.id, exact: true }).click();
   await expect(page.getByRole('region', { name: 'Карточка конфликта' })).toContainText(mismatch.id);
   await expect(page.getByRole('button', { name: 'Проверить конфликты' })).toHaveCount(0);
