@@ -1,0 +1,27 @@
+{
+  "passed": true,
+  "before": {
+    "conflict_ids": [
+      "05460002-608e-5a01-aead-ab0cdd253ada",
+      "a3da2e91-46ae-5b25-8ff8-32cc2e37cf46"
+    ],
+    "conflicts": "22cff223208a79e0a07672457efe0ff3fcba62fdce71787e048d8efd0f4063a7",
+    "raw": "2a80a0456ac2daefad744e86c2ed2ec217a412d03a587fbd84c6689ae6660d8a",
+    "normalization": "910eea5ca1ad82a41734fa3b36810b774563c4ae25098f92aa0688d6069c6111",
+    "matching": "704eb2ab945462a99eb7c204d5faa2bfb8886b23ff4a65c7f1321ded9be7a68c",
+    "originals": "24e7a4add569f3b22a5db75eda0b509a3cca97c4f2edebb214cb425866a22156"
+  },
+  "after": {
+    "conflict_ids": [
+      "05460002-608e-5a01-aead-ab0cdd253ada",
+      "a3da2e91-46ae-5b25-8ff8-32cc2e37cf46"
+    ],
+    "conflicts": "22cff223208a79e0a07672457efe0ff3fcba62fdce71787e048d8efd0f4063a7",
+    "raw": "2a80a0456ac2daefad744e86c2ed2ec217a412d03a587fbd84c6689ae6660d8a",
+    "normalization": "910eea5ca1ad82a41734fa3b36810b774563c4ae25098f92aa0688d6069c6111",
+    "matching": "704eb2ab945462a99eb7c204d5faa2bfb8886b23ff4a65c7f1321ded9be7a68c",
+    "originals": "24e7a4add569f3b22a5db75eda0b509a3cca97c4f2edebb214cb425866a22156"
+  },
+  "https_cards_identical": true,
+  "scope": "development Compose persistent volumes; browser-created Conflict and Stage2-4 lineage"
+}
