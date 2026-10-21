@@ -1,6 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { randomUUID } from 'node:crypto';
 const accounts = JSON.parse(readFileSync(resolve(process.cwd(), '../deploy/local/e2e.json'), 'utf8'));
 async function signIn(page: Page, role: 'ADMIN' | 'REVIEWER' | 'VIEWER') {
   await page.goto('/'); await page.getByLabel('Логин', { exact: true }).fill(accounts[role].login); await page.getByLabel('Пароль', { exact: true }).fill(accounts[role].password); await page.getByRole('button', { name: 'Войти', exact: true }).click();
@@ -10,7 +11,7 @@ async function input(page: Page, side: 'a' | 'b') {
   const source = page.locator('details').filter({ hasText: 'Добавить источник' });
   if (!(await source.evaluate((element) => (element as HTMLDetailsElement).open))) await source.locator('summary').click();
   await page.getByLabel('Название источника', { exact: true }).fill('Conflicts ' + side + ' ' + accounts.prefix);
-  await page.getByLabel('Код источника', { exact: true }).fill(accounts.prefix + '_conflict_' + side);
+  await page.getByLabel('Код источника', { exact: true }).fill(accounts.prefix + '_conflict_' + side + '_' + randomUUID().slice(0, 8));
   await page.getByRole('combobox', { name: 'Тип источника', exact: true }).selectOption(side === 'a' ? 'FILE' : 'ONE_C');
   await page.getByRole('button', { name: 'Создать источник', exact: true }).click(); await expect(page.getByRole('status').filter({ hasText: 'Источник создан' })).toBeVisible();
   await page.getByLabel('Исходный файл', { exact: true }).setInputFiles(resolve(process.cwd(), '../tests/data/conflicts/source-' + side + (side === 'a' ? '.csv' : '.xml')));
@@ -61,7 +62,10 @@ test('detects explains and persists conflicts from two browser imports without b
   await page.getByRole('button', { name: mismatch.id, exact: true }).click();
   await expect(page.getByRole('region', { name: 'Карточка конфликта' })).toContainText(mismatch.id);
   expect(await (await page.request.get('/api/v1/conflicts/' + mismatch.id)).json()).toEqual(before);
+  const signedOut = page.waitForResponse((response) => response.url().endsWith('/api/v1/auth/logout') && response.request().method() === 'POST');
   await page.getByRole('button', { name: 'Выйти', exact: true }).click();
+  expect((await signedOut).ok()).toBeTruthy();
+  await expect(page.getByLabel('Логин', { exact: true })).toBeVisible();
   await signIn(page, 'VIEWER');
   await page.getByRole('button', { name: 'Конфликты', exact: true }).click();
   await page.getByRole('combobox', { name: 'Сопоставление для конфликтов', exact: true }).selectOption(matching.id);
