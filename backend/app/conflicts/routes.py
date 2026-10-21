@@ -23,6 +23,7 @@ from app.conflicts.models import (
 from app.matching.models import MatchCandidate, MatchingPair
 from app.matching.routes import run_or_404
 from app.matching.routes import view as matching_view
+from app.normalization.models import AnalysisRun
 
 router = APIRouter(prefix="/api/v1", tags=["conflicts"])
 Reader = Annotated[User, Depends(require_permission("conflict.view"))]
@@ -197,10 +198,25 @@ def detail(conflict_id: UUID, session: Db, actor: Reader) -> dict[str, Any]:
     if conflict is None:
         raise ApiError(404, "CONFLICT_NOT_FOUND", "Конфликт не найден")
     matching = run_or_404(conflict.matching_run_id, session)
+    # Both immutable inputs, including human-readable versions, are available for
+    # historical conflicts without rewriting their persisted Basis or snapshots.
+    context = conflict.basis["normalization_context"]["normalization"]
+    origins = {
+        str(run.id): run
+        for run in session.scalars(
+            select(AnalysisRun).where(
+                AnalysisRun.id.in_([UUID(item["analysis_id"]) for item in context])
+            )
+        )
+    }
     return {
         **summary(conflict),
         "values_snapshot": conflict.values_snapshot,
         "basis": conflict.basis,
+        "normalization_origins": [
+            {**item, "profile_version": origins[item["analysis_id"]].mapping_snapshot["version"]}
+            for item in context
+        ],
         "based_on_previous_profile": matching_view(matching)["based_on_previous_profile"]
         or conflict.basis["config_hash"] != CONFIG_HASH,
         "human_decision": "NOT_TAKEN",

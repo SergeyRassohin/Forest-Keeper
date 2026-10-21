@@ -49,6 +49,9 @@ test('detects explains and persists conflicts from two browser imports without b
   await expect(detail).toContainText('12.5 kg'); await expect(detail).toContainText('12.4 kg');
   await expect(detail).toContainText('Conflicts a ' + accounts.prefix); await expect(detail).toContainText('Conflicts b ' + accounts.prefix);
   await expect(detail).toContainText('SHA-256'); await expect(detail).toContainText('fk-conflicts/1');
+  const origins = detail.getByRole('region', { name: 'Источники нормализации', exact: true });
+  for (const id of ids) await expect(origins).toContainText(id);
+  await expect(origins).toContainText('v1'); await expect(origins).toContainText('fk-normalization/1');
   await expect(detail).toContainText('Решение человека ещё не принято');
   await expect(detail.getByRole('button', { name: /Исправить|Выбрать|Принять/ })).toHaveCount(0);
   const before = await (await page.request.get('/api/v1/conflicts/' + mismatch.id)).json();

@@ -6,17 +6,19 @@ from uuid import UUID, uuid4
 
 import pytest
 from fastapi.testclient import TestClient
-from sqlalchemy import select, text
+from sqlalchemy import func, select, text
 from sqlalchemy.exc import DBAPIError
 from sqlalchemy.orm import Session
 
 from app.auth.dependencies import COOKIE_NAME
+from app.auth.models import AuditEvent
 from app.common.database import make_engine
 from app.conflicts.jobs import execute_conflict
-from app.conflicts.models import Conflict, ConflictRun
+from app.conflicts.models import Conflict, ConflictOutput, ConflictRun
 from app.main import create_app
 from app.matching.jobs import execute_matching
 from app.normalization.jobs import execute_run
+from app.normalization.models import AnalysisRecord, AnalysisRun
 from tests.test_auth import ORIGIN
 from tests.test_auth import password as password
 from tests.test_auth import role_tokens as role_tokens
@@ -110,6 +112,112 @@ def test_real_path_no_false_conflicts_provenance_and_rerun(client, auth_env):
     execute_conflict(UUID(retry["id"]), auth_env)
     assert rows(client, matching) == records
     assert completed(client, retry)["conflicts_generated"] == 2
+
+
+def test_both_normalization_origins_and_source_filter(client, auth_env):
+    matching = inputs(client, auth_env)
+    run = start(client, matching)
+    execute_conflict(UUID(run["id"]), auth_env)
+    records = rows(client, matching)
+    expected_ids = {row["id"] for row in records}
+    engine = make_engine(auth_env)
+    try:
+        with Session(engine) as session:
+            for row in records:
+                detail = client.get("/api/v1/conflicts/" + row["id"]).json()
+                origins = detail["normalization_origins"]
+                context = detail["basis"]["normalization_context"]["normalization"]
+                assert {item["analysis_id"] for item in origins} == set(
+                    matching["input_analysis_ids"]
+                )
+                assert row["analysis_run_id"] in matching["input_analysis_ids"]
+                assert len(origins) == len(context) == 2
+                for side in detail["values_snapshot"]:
+                    origin = next(
+                        item for item in origins if item["source_id"] == side["source_id"]
+                    )
+                    analysis = session.get(AnalysisRun, UUID(origin["analysis_id"]))
+                    assert origin["mapping_hash"] == analysis.mapping_hash
+                    assert origin["profile_id"] == str(analysis.template_id)
+                    assert origin["profile_version"] == analysis.mapping_snapshot["version"]
+                    assert origin["engine_version"] == analysis.mapping_snapshot["engine_version"]
+                    association = session.get(
+                        AnalysisRecord, (analysis.id, UUID(side["raw_record_id"]))
+                    )
+                    assert str(association.entity_id) == side["entity_id"]
+                    frozen = next(
+                        item for item in context if item["analysis_id"] == str(analysis.id)
+                    )
+                    assert frozen["mapping_hash"] == origin["mapping_hash"]
+                    filtered = client.get(
+                        "/api/v1/conflicts", params={"source_id": side["source_id"]}
+                    )
+                    assert filtered.status_code == 200
+                    assert {item["id"] for item in filtered.json()} == expected_ids
+                    combined = client.get(
+                        "/api/v1/conflicts",
+                        params={
+                            "source_id": side["source_id"],
+                            "conflict_type": row["conflict_type"],
+                        },
+                    )
+                    assert [item["id"] for item in combined.json()] == [row["id"]]
+            assert client.get("/api/v1/conflicts", params={"source_id": str(uuid4())}).json() == []
+    finally:
+        engine.dispose()
+
+
+def test_rerun_counters_count_outputs_without_new_rows_or_creation_audits(client, auth_env):
+    matching = inputs(client, auth_env)
+    engine = make_engine(auth_env)
+
+    def facts():
+        with Session(engine) as session:
+            count = session.scalar(
+                select(func.count())
+                .select_from(Conflict)
+                .where(Conflict.matching_run_id == UUID(matching["id"]))
+            )
+            audits = session.scalar(
+                select(func.count())
+                .select_from(AuditEvent)
+                .where(
+                    AuditEvent.event_type == "CONFLICT_CREATED",
+                    AuditEvent.object_type == "Conflict",
+                    AuditEvent.object_id.in_(
+                        select(Conflict.id).where(Conflict.matching_run_id == UUID(matching["id"]))
+                    ),
+                )
+            )
+            return count, audits
+
+    try:
+        assert facts() == (0, 0)
+        executions = []
+        for _ in range(2):
+            run = start(client, matching)
+            execute_conflict(UUID(run["id"]), auth_env)
+            result = completed(client, run)
+            assert result["conflicts_generated"] == 2
+            assert result["status_counts"] == {"MISSING": 1, "VALUE_MISMATCH": 1}
+            assert facts() == (2, 2)
+            with Session(engine) as session:
+                outputs = set(
+                    session.scalars(
+                        select(ConflictOutput.conflict_id).where(
+                            ConflictOutput.run_id == UUID(run["id"])
+                        )
+                    )
+                )
+                assert len(outputs) == sum(result["status_counts"].values()) == 2
+            executions.append((run["id"], outputs))
+            execute_conflict(UUID(run["id"]), auth_env)
+            assert completed(client, run) == result
+            assert facts() == (2, 2)
+        assert executions[0][0] != executions[1][0]
+        assert executions[0][1] == executions[1][1]
+    finally:
+        engine.dispose()
 
 
 def test_manual_duplicate_identities_and_frozen_inputs(client, auth_env):

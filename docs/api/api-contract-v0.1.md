@@ -220,6 +220,10 @@ MatchingRun должен быть COMPLETED. 201 создаёт асинхрон
 Detail: status NEW/QUEUED/PROCESSING/COMPLETED/FAILED, matching_run_id, profile_hash/snapshot,
 records_processed, attributes_evaluated, conflicts_generated, status_counts (type breakdown),
 created_at/completed_at/error_text. FAILED/partial не выдаётся за completed.
+`conflicts_generated` считает outputs этого execution, включая повторно использованные
+immutable Conflict, а не newly inserted rows. `status_counts` — те же outputs по conflict type,
+не по lifecycle status. Rerun может иметь ненулевые counters без новых Conflict/creation Audit;
+duplicate delivery завершённого запуска ничего не добавляет.
 
 ### GET /api/v1/conflicts
 
@@ -229,6 +233,9 @@ created_at/completed_at/error_text. FAILED/partial не выдаётся за co
 Pagination: limit1–100/default50, offset0–1000000; порядок detected_at DESC, id DESC.
 Недопустимые enum/UUID/pagination →422 INVALID_REQUEST. Без роли →403; без сессии →401.
 Ответ не содержит values_snapshot/Basis. Source context: source_id/name/record key.
+`source_id` проверяется в любой стороне values_snapshot (JSONB array containment);
+неизвестный источник возвращает пустой массив. Фильтры комбинируются через AND.
+Одиночный `analysis_run_id` — первый normalization input matching, не полный набор origins.
 
 ```json
 [{
@@ -249,6 +256,10 @@ Presence различает PRESENT/MISSING/NULL/EMPTY/SCHEMA_UNMAPPED/INVALID_O
 Большое/структурированное raw отмечается raw_value_omitted, исходная ссылка сохраняется.
 Basis: deterministic reason, authority NOT_DEFINED, matching evidence и profile snapshot/hash,
 normalization context, engine/config snapshot/hash, human_decision NOT_TAKEN.
+`basis.normalization_context.normalization` сохраняет оба `analysis_id`, `source_id`,
+`profile_id`, `mapping_hash` и `engine_version`. Дополнительный `normalization_origins`
+повторяет этот frozen context и добавляет `profile_version` из immutable AnalysisRun snapshot
+каждой стороны. Это полный lineage; `analysis_run_id` не означает единственный источник.
 `based_on_previous_profile` явно обозначает dependency drift; Forest Codex пока не настроен.
 Неизвестный ID →404 CONFLICT_NOT_FOUND. Все ответы private/no-store.
 
