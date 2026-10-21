@@ -120,7 +120,7 @@ MVP считается успешным, если можно воспроизв�
 - UserRole;
 - локальный login;
 - secure password hashing;
-- session/access token;
+- серверная session с Secure/HttpOnly/SameSite=Strict cookie; bearer login вне MVP по решению 2026-10-19;
 - RBAC middleware/dependency;
 - роли VIEWER / REVIEWER / DATA_OWNER / ADMIN;
 - `POST /api/v1/auth/login`;
@@ -239,7 +239,8 @@ FK умеет разделить:
 - типы:
   - VALUE_MISMATCH;
   - DUPLICATE;
-  - FORMAT;
+  - RULE_VIOLATION;
+  - ANOMALY;
   - MISSING;
 - severity;
 - status;
@@ -432,7 +433,7 @@ AI является заменяемым помощником, а не точк�
 - активный шаблон клиента;
 - ручное изменение правил;
 - origin:
-  - FK_DEFAULT;
+  - FK_BASELINE;
   - CUSTOMER;
   - LEARNED_PROPOSAL.
 

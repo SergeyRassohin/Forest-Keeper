@@ -56,7 +56,7 @@ Treat the customer Gold Reference/baseline as versioned and configurable, not as
 
 ## Additional mandatory architecture context
 - Web Client is the primary client for MVP and the default user interface.
-- Desktop Client is optional and may be added later for customers with special device-trust or information-security requirements.
+- Web Client is the sole supported end-user interface. Desktop Client is excluded from scope/roadmap by the explicit 2026-10-21 decision; any return requires a new product decision.
 - Backend/API must remain independent from client type.
 - Adaptive behavior is a core FK feature: vendor baseline template → customer configuration → confirmed human decisions → similar-case retrieval → explainable AI recommendation → optional proposal to formalize a new rule → human approval.
 - Never implement "self-learning" as silent automatic rule mutation.

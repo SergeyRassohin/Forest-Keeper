@@ -29,3 +29,6 @@ deploy/local/
 backend/var/
 deploy/production/secrets/
 *.tsbuildinfo
+
+# Intermediate task files
+work/

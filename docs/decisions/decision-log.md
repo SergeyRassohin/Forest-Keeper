@@ -50,8 +50,8 @@ MVP local LLM baseline is `Qwen/Qwen3-8B-GGUF`, artifact `Qwen3-8B-Q4_K_M.gguf`,
 ### Client access
 **Web Client is the primary client for MVP and the default Forest Keeper user interface.**
 It runs in the browser and communicates with FK Server only through HTTPS/API Gateway.
-Desktop Client is optional and may be introduced later for customers with special device-trust or information-security requirements.
-Backend/API remains client-independent so both clients can use the same business contract.
+Superseded by the explicit 2026-10-21 Web-only decision below: Desktop Client is excluded from the current product direction.
+Backend/API remains separated from frontend without committing to a second client.
 Neither client has direct access to PostgreSQL or internal services.
 
 ### Installation model
@@ -148,8 +148,47 @@ The synthetic Material profile uses an explicit composite code+name identity rul
 
 Blocking uses declared identifiers/composite identity and name prefix/tokens, bounded buckets and candidate degree on both sides, with deterministic ordering and explicit incomplete-coverage diagnostics. Omitted pairs are never declared NOT_MATCHED. Profiles/engine/input versions remain historically addressable; read views indicate previous-profile results when the current profile hash differs. Gold Reference is explicitly unconfigured, not a synthetic immutable customer baseline; its future version dependency can be added without rewriting historical evidence. Full approved Gold activation/rollback/impact workflow remains Stage11–12.
 
+### 2026-10-21 — User-facing name: Forest Codex
+
+The user-facing product term for the versioned customer reference/baseline previously described as "Gold Reference" is **Forest Codex**.
+
+Definition:
+- **Forest Codex** is the versioned customer-approved set of reference values, rules, criteria, mappings and evaluation settings used by Forest Keeper to interpret and assess data.
+- Example UI label: `Forest Codex v5`.
+- Historical versions remain immutable and auditable.
+- A result must retain the exact Forest Codex version used for its evaluation.
+- If a result was evaluated under an older Codex than the currently active one, the UI must indicate that fact and, where impact analysis shows relevance, mark the result stale or require re-evaluation.
+- Forest Codex is not AI, not the matching/scoring engine, not source truth, and not an immutable universal truth.
+- The term must not be confused with OpenAI Codex; in product/UI context, "Forest Codex" always means the customer reference baseline.
+
+Existing documentation references to "Gold Reference" are a transitional internal alias and should be migrated to "Forest Codex" in user-facing and newly edited documentation. Historical documents may retain the older term where changing them would rewrite history.
+
 ## Open decisions
 - Exact first pilot domain.
 - Thresholds for automatic entity matching versus human review.
 - Exact public/private portal boundary.
 - Production deployment topology for first pilot.
+
+
+### 2026-10-21 — Desktop Client excluded from product scope
+
+Forest Keeper will **not** develop or maintain a native Desktop Client as part of the current product direction.
+
+Decision:
+- Web Client is the sole supported end-user interface direction;
+- Desktop Client is not merely deferred or deprioritized; it is removed from roadmap/scope;
+- no desktop-specific installer, device-trust client, update channel or parallel UI contract should be designed;
+- backend/API may remain cleanly separated from frontend as good architecture, but this must not be interpreted as a commitment to a future native client;
+- any future return of a Desktop Client requires a new explicit product decision based on a concrete customer/security need.
+
+Rationale: a native client currently adds installation, update, compatibility and support cost without delivering product capability that the Web Client cannot provide for the intended Forest Keeper workflows.
+
+### 2026-10-21 — External review contract and matching policy
+
+User-confirmed review target: Saturday **2026-10-24**, Europe/Moscow. The required product path remains two file sources → normalization → matching → conflict → human Decision → persistence/restart → similar confirmed Decision retrieval → evidence-backed recommendation. Documentation must distinguish implemented main behavior from this target. Missing modules remain explicit blockers for issue #18.
+
+Public datasets with verified provenance and usage terms may be used for review. The USGS earthquake snapshot is a technical demonstration, not selection of the first industrial pilot domain, not a claim of independent source systems, and not an Entity Resolution gold benchmark.
+
+Fuzzy/weighted matching does not automatically confirm identity. Ambiguous similarity remains POSSIBLE_MATCH for authorized human review. Automatic confirmation is permitted only by an explicitly agreed, unambiguous exact-key rule without contradictory strong signals. No numeric production threshold is implied by this decision. Matching review and the later Conflict Decision remain distinct persisted actions.
+
+The Qwen repositories, pinned revisions, quantization and 1024-dimensional embedding baseline are unchanged. Checked upstream artifact checksums replace packaging placeholders. A versioned artifact lock and acquisition/verification command prepare model files; they do not claim inference readiness, offline package signature verification or integration with Decision Registry. AI runtime/model-info/smoke tests remain acceptance blockers until implemented.

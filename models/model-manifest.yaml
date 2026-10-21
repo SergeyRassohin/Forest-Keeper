@@ -1,6 +1,7 @@
 schema_version: 1
 bundle_id: forest-keeper-ai-baseline
 bundle_version: "0.1"
+artifact_lock: artifacts.lock.json
 
 policy:
   runtime_network_required: false
@@ -31,7 +32,7 @@ llm:
     structured_output_required: true
   verification:
     upstream_revision_required: true
-    sha256: generated-and-locked-during-packaging
+    sha256: d98cdcbd03e17ce47681435b5150e34c1417f50b5c0019dd560e4882c5745785
 
 embedding:
   purpose:
@@ -47,7 +48,7 @@ embedding:
   vector_store: postgresql-pgvector
   verification:
     upstream_revision_required: true
-    sha256: generated-and-locked-during-packaging
+    sha256: 0437e45c94563b09e13cb7a64478fc406947a93cb34a7e05870fc8dcd48e23fd
 
 offline_bundle:
   suggested_filename: FK_AI_Model_Bundle_0.1.pkg

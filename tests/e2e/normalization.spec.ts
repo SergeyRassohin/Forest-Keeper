@@ -12,16 +12,17 @@ async function signIn(page: Page, role: 'ADMIN' | 'VIEWER') {
   await page.getByRole('button', { name: 'Импорт данных', exact: true }).click();
 }
 
-async function prepare(page: Page, kind: 'csv' | 'onec') {
+async function prepare(page: Page, kind: 'csv' | 'onec' | 'public-csv' | 'public-xml') {
   const source = page.locator('details').filter({ hasText: 'Добавить источник' });
   if (!(await source.evaluate((element) => (element as HTMLDetailsElement).open))) await source.locator('summary').click();
   await page.getByLabel('Название источника', { exact: true }).fill('Нормализация ' + kind + ' ' + accounts.prefix);
   await page.getByLabel('Код источника', { exact: true }).fill(accounts.prefix + '_norm_' + kind);
-  await page.getByRole('combobox', { name: 'Тип источника', exact: true }).selectOption(kind === 'csv' ? 'FILE' : 'ONE_C');
+  await page.getByRole('combobox', { name: 'Тип источника', exact: true }).selectOption(kind === 'onec' ? 'ONE_C' : 'FILE');
   await page.getByRole('button', { name: 'Создать источник', exact: true }).click();
   await expect(page.getByRole('status').filter({ hasText: 'Источник создан' })).toBeVisible();
-  const file = kind === 'csv' ? 'material.csv' : 'onec.xml';
-  await page.getByLabel('Исходный файл', { exact: true }).setInputFiles(resolve(process.cwd(), '../tests/data/normalization', file));
+  const file = kind === 'public-csv' ? 'source-a.csv' : kind === 'public-xml' ? 'source-b.xml' : kind === 'csv' ? 'material.csv' : 'onec.xml';
+  const directory = kind.startsWith('public-') ? 'external-review' : 'normalization';
+  await page.getByLabel('Исходный файл', { exact: true }).setInputFiles(resolve(process.cwd(), '../tests/data', directory, file));
   const upload = page.waitForResponse((response) => response.url().endsWith('/api/v1/imports') && response.request().method() === 'POST');
   await page.getByRole('button', { name: 'Загрузить', exact: true }).click();
   const batch = await (await upload).json();
@@ -75,4 +76,40 @@ test('normalizes two sources without matching and preserves original mass, quali
   const section = page.getByRole('region', { name: 'Нормализация', exact: true });
   await expect(section.getByRole('status')).toContainText('Нормализация завершена');
   await expect(section.getByRole('button', { name: 'Нормализовать пакет' })).toHaveCount(0);
+});
+
+
+test('external reviewer imports public USGS CSV/XML and sees documented normalization and unchanged raw', async ({ page }) => {
+  test.setTimeout(120000);
+  await signIn(page, 'ADMIN');
+  const normalized: unknown[] = [];
+  for (const kind of ['public-csv', 'public-xml'] as const) {
+    const batch = await prepare(page, kind);
+    const rawUrl = `/api/v1/imports/${batch}/records?limit=100`;
+    const before = await (await page.request.get(rawUrl)).json();
+    expect(before).toHaveLength(60);
+    const section = page.getByRole('region', { name: 'Нормализация', exact: true });
+    await section.getByLabel('Профиль нормализации').selectOption({ label: 'public-earthquake v1' });
+    const pending = page.waitForResponse((response) => response.url().endsWith('/api/v1/analysis') && response.request().method() === 'POST');
+    await section.getByRole('button', { name: 'Нормализовать пакет', exact: true }).click();
+    const run = await (await pending).json();
+    await expect(section.getByRole('status')).toContainText('Нормализация завершена · записей 60, значений 240', { timeout: 30000 });
+    const detail = await (await page.request.get(`/api/v1/analysis/${run.id}`)).json();
+    expect(detail.quality_counts.VALID).toBe(240);
+    const records = await (await page.request.get(`/api/v1/analysis/${run.id}/records?limit=100`)).json();
+    expect(records).toHaveLength(60);
+    const event = records.find((record: { values: { attribute_code: string; normalized_value: unknown }[] }) => record.values.some((value) => value.attribute_code === 'code' && value.normalized_value === 'us6000pjr6'));
+    expect(event).toBeTruthy();
+    const values = Object.fromEntries(event.values.map((value: { attribute_code: string; normalized_value: unknown }) => [value.attribute_code, value.normalized_value]));
+    expect(values.code).toBe('us6000pjr6');
+    expect(values.magnitude).toBe('4.2');
+    expect(values.occurred_at).toBe('2025-01-01T00:13:22.650Z');
+    normalized.push(values);
+    const card = section.locator('.normalization-record').first();
+    await card.locator('summary').first().click();
+    await expect(card).toContainText('demo-earthquake / EarthquakeEvent');
+    await expect(card).toContainText('SHA-256 оригинала');
+    expect(await (await page.request.get(rawUrl)).json()).toEqual(before);
+  }
+  expect(normalized[0]).toEqual(normalized[1]);
 });

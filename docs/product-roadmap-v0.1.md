@@ -26,12 +26,13 @@ Roadmap фиксирует продуктовые уровни зрелости,
 4. Если истина не определима безопасно, результат — UNKNOWN / Human Review.
 5. Человек принимает финальное бизнес-решение.
 6. AI/LLM объясняет и рекомендует, но не является system of record.
-7. Корпоративная память находится в Decision Registry, Rules, Customer Template / Gold Reference, mappings и Audit.
-8. Gold Reference версионируется, изменяется только через явное подтверждение человека и имеет историю, rollback и impact analysis.
+7. Корпоративная память находится в Decision Registry, Rules, Customer Template / Forest Codex, mappings и Audit.
+8. Forest Codex версионируется, изменяется только через явное подтверждение человека и имеет историю, rollback и impact analysis.
 9. Source systems в ранних режимах read-only.
 10. Любой future write-back отделён технически и организационно от анализа.
-11. Любой значимый derived result должен быть воспроизводим по версиям входных данных, правил, Gold Reference и алгоритмов.
+11. Любой значимый derived result должен быть воспроизводим по версиям входных данных, правил, Forest Codex и алгоритмов.
 12. Продукт должен работать в закрытом контуре без обязательного Интернета.
+13. **Desktop Client is explicitly excluded from the product direction.** Forest Keeper uses the Web Client as the only supported end-user client unless a future explicit product decision reverses this.
 
 ---
 
@@ -138,11 +139,11 @@ Prototype
 - deterministic fallback;
 - отсутствие production credentials.
 
-**Stage 11 — Rules / Customer Template / Gold Reference**
+**Stage 11 — Rules / Customer Template / Forest Codex**
 - базовый шаблон FK;
 - customer-specific rules;
 - versioning;
-- Gold Reference history;
+- Forest Codex history;
 - activation;
 - impact analysis;
 - stale/re-evaluation framework;
@@ -155,7 +156,7 @@ Prototype
 
 **Stage 13 — Full Audit**
 Полная трасса:
-Source → Import → Raw → Normalization → Match → Conflict → Recommendation → Decision → Rule/Gold Reference version.
+Source → Import → Raw → Normalization → Match → Conflict → Recommendation → Decision → Rule/Forest Codex version.
 
 **Stage 14 — Licensing**
 - offline license;
@@ -210,7 +211,7 @@ Source → Import → Raw → Normalization → Match → Conflict → Recommend
 - fixture anonymization;
 - validation against pilot data.
 
-### 5.3. Gold Reference bootstrap
+### 5.3. Forest Codex bootstrap
 - supplier baseline;
 - customer adaptations;
 - version 1;
@@ -224,7 +225,7 @@ Source → Import → Raw → Normalization → Match → Conflict → Recommend
 - quality issues;
 - stale results;
 - cases requiring review;
-- Gold Reference changes;
+- Forest Codex changes;
 - significant events.
 
 ### 5.5. Pilot operations
@@ -269,14 +270,14 @@ FK:
 - licensing;
 - update;
 - real domain templates;
-- versioned Gold Reference;
+- versioned Forest Codex;
 - Decision Registry;
 - matching/conflicts/recommendations;
 - Data Health;
 - Audit/export;
 - RBAC;
 - customer configuration;
-- rollback Gold Reference;
+- rollback Forest Codex;
 - impact analysis;
 - stale/re-evaluation;
 - локальный AI как заменяемый помощник.
@@ -303,7 +304,7 @@ FK:
 - explainable precedents;
 - выявление противоречивых решений экспертов.
 
-### Gold Reference evolution
+### Forest Codex evolution
 - история версий;
 - visual diff;
 - impact graph;
@@ -337,7 +338,7 @@ FK:
 - почему такой conflict;
 - почему такая recommendation;
 - какие решения повлияли;
-- какая версия Gold Reference применялась.
+- какая версия Forest Codex применялась.
 
 ---
 
@@ -402,7 +403,7 @@ FK работает постоянно, а не только по ручной �
 - trend monitoring;
 - quality drift;
 - source drift;
-- Gold Reference drift impact;
+- Forest Codex drift impact;
 - new conflict detection;
 - regression against historical baseline;
 - alerts;
@@ -454,9 +455,9 @@ Gateway не должен автоматически становиться Publ
 
 ---
 
-## 12. Сквозное направление — Gold Reference
+## 12. Сквозное направление — Forest Codex
 
-Gold Reference должен развиваться вместе с организацией.
+Forest Codex должен развиваться вместе с организацией.
 
 Vendor baseline
 → Customer baseline v1
@@ -464,7 +465,7 @@ Vendor baseline
 → Pattern detected
 → RuleSuggestion
 → Review
-→ Approved new Gold Reference version
+→ Approved new Forest Codex version
 → Impact analysis
 → Re-evaluation / stale marking
 → Possible rollback as another version
@@ -494,7 +495,7 @@ Vendor baseline
 
 Запрещено AI самостоятельно:
 - объявлять истину;
-- менять Gold Reference;
+- менять Forest Codex;
 - активировать Rules;
 - принимать business Decision;
 - писать в production.
@@ -511,7 +512,7 @@ Data Health-first control panel.
 
 ### 1.x
 - impact analysis;
-- Gold Reference history/diff;
+- Forest Codex history/diff;
 - stale/re-evaluate;
 - decision precedents.
 
@@ -561,10 +562,11 @@ Data Health-first control panel.
 - десятки коннекторов до доказанного pilot domain;
 - микросервисы ради диаграммы;
 - mobile app;
+- Desktop Client / native desktop application;
 - autonomous write-back;
 - красивый AI-chat вместо Decision Registry;
 - silent self-learning;
-- hard-coded immutable Gold Reference.
+- hard-coded immutable Forest Codex.
 
 ---
 
@@ -577,7 +579,7 @@ Data Health-first control panel.
 3. Сохраняются ли raw/provenance?
 4. Сохраняется ли human final authority?
 5. Можно ли воспроизвести результат исторически?
-6. Сохраняется ли версия Gold Reference/rules/mappings/algorithms?
+6. Сохраняется ли версия Forest Codex/rules/mappings/algorithms?
 7. Можно ли определить impact их изменения?
 8. Есть ли stale/re-evaluation path?
 9. Не появился ли скрытый write-back?
@@ -600,7 +602,7 @@ Data Health-first control panel.
 5. Stage 8 — Similarity.
 6. Stage 9 — Recommendation.
 7. Stage 10 — Local AI provider.
-8. Stage 11–12 — Rules / Customer Template / evolving Gold Reference.
+8. Stage 11–12 — Rules / Customer Template / evolving Forest Codex.
 9. Stage 13 — complete Audit.
 10. Stage 14–15 — Licensing + Update.
 11. Stage 16 — Final MVP E2E.
@@ -623,3 +625,8 @@ Forest Keeper развивается правильно, если со врем�
 - становится полезнее, но не получает неограниченную власть над данными.
 
 **Forest Keeper должен накапливать организационный опыт, а не накапливать самоуверенность алгоритма.**
+
+
+## Терминология
+
+Пользовательское имя версионируемого клиентского эталона: **Forest Codex**. Пример: `Forest Codex v5`. Он не является AI, движком matching или абсолютной истиной; это утверждённый клиентом версионируемый нормативный контекст.

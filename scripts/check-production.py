@@ -363,7 +363,10 @@ finally:
                 ],
             )
             execute("redis", ["redis-cli", "SET", "hardening:marker", "42"])
-            run([*compose, "restart", "postgres", "redis", "backend", "worker"])
+            # RQ must record a graceful death while Redis is still available.
+            # Restarting both concurrently can persist the old hostname lease in AOF.
+            run([*compose, "stop", "-t", "30", "worker"])
+            run([*compose, "restart", "postgres", "redis", "backend"])
             run([*compose, "up", "-d", "--wait", "--wait-timeout", "180"])
             wait_healthy(name)
             assert (
