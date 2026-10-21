@@ -1,0 +1,65 @@
+{
+  "reviewed_commit": "da5c84b115373562de50bee2696eb9c5af8720aa",
+  "method": "ordered stop worker; restart postgres/redis/backend/frontend; up --wait worker; compare ordered full-row JSON hashes",
+  "before": {
+    "runs": {
+      "count": 1,
+      "sha256": "d0a783c2030e9618d371720209da2d9165107cf65727e772c9d28093a92cdc24"
+    },
+    "candidates": {
+      "count": 102,
+      "sha256": "d8aac42034d39a9d76bbc73ee92b8f8250e314c4d9c47ca1b2498eb08ce88dd2"
+    },
+    "pairs": {
+      "count": 102,
+      "sha256": "de8c9632ec0c5051b80fb97da75d6eb834198a91b10fa03c9bfdfcf786491c81"
+    },
+    "reviews": {
+      "count": 2,
+      "sha256": "391ff8e8df00453722725a87bdec0514a6e236818824ede2f1916ef4e4ca51fa"
+    },
+    "raw": {
+      "count": 162,
+      "sha256": "555fbed264d298acd29a567a80ecb0b3e5e61e3f9ff8fb15709ebc03ee6f4fc0"
+    },
+    "values": {
+      "count": 660,
+      "sha256": "e9379699e0d8594500fb04a4f19e0406eb712b4b1816e288cdf661fc7a87bb9a"
+    },
+    "normalization": {
+      "count": 6,
+      "sha256": "f4008c0e9e801629127d128c359185fbb40802b0e3827c8c9cc5494e5c127c17"
+    }
+  },
+  "after": {
+    "runs": {
+      "count": 1,
+      "sha256": "d0a783c2030e9618d371720209da2d9165107cf65727e772c9d28093a92cdc24"
+    },
+    "candidates": {
+      "count": 102,
+      "sha256": "d8aac42034d39a9d76bbc73ee92b8f8250e314c4d9c47ca1b2498eb08ce88dd2"
+    },
+    "pairs": {
+      "count": 102,
+      "sha256": "de8c9632ec0c5051b80fb97da75d6eb834198a91b10fa03c9bfdfcf786491c81"
+    },
+    "reviews": {
+      "count": 2,
+      "sha256": "391ff8e8df00453722725a87bdec0514a6e236818824ede2f1916ef4e4ca51fa"
+    },
+    "raw": {
+      "count": 162,
+      "sha256": "555fbed264d298acd29a567a80ecb0b3e5e61e3f9ff8fb15709ebc03ee6f4fc0"
+    },
+    "values": {
+      "count": 660,
+      "sha256": "e9379699e0d8594500fb04a4f19e0406eb712b4b1816e288cdf661fc7a87bb9a"
+    },
+    "normalization": {
+      "count": 6,
+      "sha256": "f4008c0e9e801629127d128c359185fbb40802b0e3827c8c9cc5494e5c127c17"
+    }
+  },
+  "unchanged": true
+}

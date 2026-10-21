@@ -7,7 +7,7 @@
 | Clone → setup → первый вход | Реализовано; инструкция исправлена | Отчёт fresh clone на конкретном SHA |
 | Два источника, импорт CSV/XLSX/XML, raw/provenance | Этап 2 принят | Проверка собственного файла и открытого примера |
 | Нормализация и история правил | Этап 3 принят; только явные профили | Подходящий mapping, исходные/нормализованные значения |
-| Matching/evidence | Реализовано в review-ветке; Stage 4 gate ещё не завершён | Принятый этап 4, независимый retest и CI |
+| Matching/evidence | Реализовано; отдельный runtime/security retest PASS, требуется отдельная приёмка/merge | Отдельная приёмка этапа 4, финальный CI и разрешённый merge |
 | Conflict + решение человека | BLOCKED: нет реализации | Этапы 5–7; сохранённый Decision, actor/reason/context |
 | Restart с сохранением Decision | BLOCKED: нет Decision | Проверка того же ID после restart без удаления volumes |
 | Similar Decision/recommendation | BLOCKED: нет retrieval/recommendation | Следующий похожий кейс с реальной ссылкой на прошлый Decision |
@@ -17,7 +17,7 @@
 
 **Итог: полная внешняя приёмка MVP пока BLOCKED.** Можно проводить техническую проверку реализованных этапов, честно отмечая границу. Эта правка документации не закрывает #18.
 
-Stage 4: [текущий отчёт и DoD](../testing/reports/stage4-matching-acceptance-2026-10-21.md). Локальные проверки, gold, 100k capacity и restart выполнены; отдельный independent runtime/security retest ещё ожидается. CI проверяется по точному final HEAD из PR #15. Этапы 5+ не начинаются до отдельной приёмки Stage 4 по порядку #20.
+Stage 4: [текущий отчёт и DoD](../testing/reports/stage4-matching-acceptance-2026-10-21.md). Локальные проверки, gold, 100k capacity и restart выполнены; [Отдельный independent runtime/security retest](../testing/reports/stage4-matching-independent-2026-10-21.md) PASS без блокирующих замечаний, повторены 619 тестов и все четыре capacity профиля. CI проверяется по точному final HEAD из PR #15. Этапы 5+ не начинаются до отдельной приёмки Stage 4 по порядку #20.
 
 ## Согласованные правила
 

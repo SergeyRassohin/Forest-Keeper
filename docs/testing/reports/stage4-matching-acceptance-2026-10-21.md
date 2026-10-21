@@ -103,3 +103,11 @@ The [2026-10-20 entry review](stage4-entry-gate-2026-10-20.md) is an architectur
 **Outcome: BLOCKED for merge/acceptance until the separate runtime/security retest and final-SHA CI are confirmed.** No automatic merge. Stage 5 starts only after separate Stage 4 acceptance, authorized merge and successful main merge CI. Issues #14/#18/#20 remain open.
 
 Known limits: synthetic profiles need a separately agreed industrial key namespace/domain; fuzzy production thresholds remain open; capped search can omit pairs and reports that limitation; embeddings/inference are absent and deterministic matching has no hidden model/network dependency. The supported restart drains work and stops the worker before Redis restarts. Abrupt simultaneous Redis/worker shutdown can retain a stale RQ hostname registration, as documented in the inherited [production restart follow-up](external-review-docs-2026-10-21.md#ci-follow-up-ordered-restart).
+
+## Separate review follow-up, 2026-10-21
+
+A separate Codex review session independently inspected and retested final implementation `da5c84b115373562de50bee2696eb9c5af8720aa`: **619 tests PASS**, security/dependency checks, production smoke, gold, all four capacity profiles and actual browser-result restart persistence PASS, no blocking findings. This resolves the independent runtime/security blocker recorded above; earlier pending statements describe the implementer checkpoint. [Independent report and architecture gate](stage4-matching-independent-2026-10-21.md).
+
+Independent 100k/source: 100,000 candidates, zero false merges, matching 31.294 s, metadata p95 .2152 s at ten sessions, peak process RSS 624.32 MiB. Full evidence is linked in the independent report. Application/tests/profiles/migrations are unchanged by this documentation-only follow-up. Exact final follow-up SHA and CI belong in PR #15; reviewed implementation CI was SUCCESS in both runs.
+
+Technical outcome: **READY TO MERGE after green final follow-up CI**; separate acceptance and authorized merge remain required. No automatic merge and no Stage 5 work. Stage 4 is not yet accepted in main; #14/#18/#20 remain open.
