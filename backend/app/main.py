@@ -13,6 +13,7 @@ from app.common.database import make_engine
 from app.common.errors import ApiError
 from app.common.health import HealthChecker, HealthResponse
 from app.imports.routes import router as import_router
+from app.matching.routes import router as matching_router
 from app.normalization.routes import router as normalization_router
 
 
@@ -44,6 +45,7 @@ def create_app(settings: Settings | None = None, checker: HealthChecker | None =
     app.include_router(auth_router)
     app.include_router(import_router)
     app.include_router(normalization_router)
+    app.include_router(matching_router)
 
     @app.exception_handler(ApiError)
     async def api_error(request: Request, error: ApiError) -> JSONResponse:
@@ -73,6 +75,8 @@ def create_app(settings: Settings | None = None, checker: HealthChecker | None =
                 "/api/v1/sources",
                 "/api/v1/imports",
                 "/api/v1/analysis",
+                "/api/v1/matching",
+                "/api/v1/match-candidates",
             )
         ):
             response.headers["Cache-Control"] = "no-store"
@@ -97,7 +101,7 @@ def create_app(settings: Settings | None = None, checker: HealthChecker | None =
 
     @app.get("/api/v1/version", dependencies=[Depends(require_permission("update.view"))])
     def version() -> dict[str, str]:
-        return {"name": "Forest Keeper", "version": "0.1.0", "stage": "normalization"}
+        return {"name": "Forest Keeper", "version": "0.1.0", "stage": "matching"}
 
     return app
 

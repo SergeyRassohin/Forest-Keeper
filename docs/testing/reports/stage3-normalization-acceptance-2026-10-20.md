@@ -1,6 +1,6 @@
 # Stage 3 normalization — проверка 20.10.2026
 
-Спецификация: [issue #12](https://github.com/SergeyRassohin/Forest-Keeper/issues/12). Реализация и финальный HEAD/CI: [PR #13](https://github.com/SergeyRassohin/Forest-Keeper/pull/13), [checks](https://github.com/SergeyRassohin/Forest-Keeper/pull/13/checks). Merge не выполнен; принятие этапа требует отдельного зелёного CI merge commit в main.
+Спецификация: [issue #12](https://github.com/SergeyRassohin/Forest-Keeper/issues/12). Реализация и финальный HEAD/CI: [PR #13](https://github.com/SergeyRassohin/Forest-Keeper/pull/13), [checks](https://github.com/SergeyRassohin/Forest-Keeper/pull/13/checks). Принят после merge `6a494534a49960b79fdf64e5e2b8436c32011688` и [зелёного main CI](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39452965438); issue #12 закрыт. Измерения ниже относятся к исходным указанным SHA.
 
 Runtime и capacity: `c685ed71558374fde4adfe9fde525849b56ce94a`. Полные проверки и независимый browser retest: `127a45d4fb8769f80209c301a6f3caa878797ec7` (после runtime изменены только selector E2E и CSV fixture). Позднее ожидаемые lifecycle transitions в тесте отделены от production-константы; все 68 unit повторены автором и независимым проверяющим. Runtime не менялся. Финальный SHA и ссылка на соответствующий GitHub Actions run фиксируются в описании PR после коммита отчёта.
 
@@ -55,3 +55,7 @@ Runtime и capacity: `c685ed71558374fde4adfe9fde525849b56ce94a`. Полные п
 - Decimal имеет документированные границы (38 цифр, exponent/adjusted ±18); единицы и форматы дат перечислены явно. XLSX decoded float даёт WARNING; неизвестные/неоднозначные значения не угадываются.
 - Recovery имеет защитное окно 60 секунд; maintenance 30 секунд, idle dequeue до 105 секунд; занятый единственный worker проверяет потерянные задания после текущего job. Повтор FAILED создаёт новый запуск.
 - Производительность нормализации измеряется отдельно от matching/AI/полного MVP. Этап 4 не начат.
+
+## Architecture / Product Intent Gate
+
+Дополнительная проверка новых требований от 20.10.2026 перед этапом 4: [gate](stage4-entry-gate-2026-10-20.md). PASS: продукт остаётся read-only надстройкой, raw/provenance неизменяемы, canonical не объявляется истиной, AI и автоматического изменения критериев нет. Mapping snapshots и engine/hash сохраняются; новые версии не переинтерпретируют историю. Gold Reference/CustomerTemplate ещё не реализованы и не подменяются synthetic normalization profile. Lineage позволяет будущие impact lookup и явный новый run; полный activation/rollback/stale workflow относится к этапам 11–12. Устаревший pre-merge статус документации исправлен без изменения исторических результатов тестирования.

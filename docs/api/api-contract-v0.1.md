@@ -556,3 +556,16 @@ Forest Keeper не должен активировать новое правил
 8. `GET /api/v1/conflicts/{id}/similar-decisions`
 
 Если этот набор работает от начала до конца, Forest Keeper уже умеет выполнить основную идею MVP, а не просто гордо содержать папку `docs`.
+
+## Stage 4 — Matching API
+
+Нормализация `/analysis` сохраняет прежнюю семантику; её completed runs не переоткрываются. Matching не создаёт Conflict.
+
+- `GET /api/v1/matching-profiles` — декларативные profiles UUID/code/version/domain/entity_type/hash, право `match.view`.
+- `POST /api/v1/matching-runs` — `analysis.run`, cookie + Origin; `{analysis_run_ids:[uuid,uuid],profile_id:uuid}`. Два разных completed normalized inputs, каждый одного источника, совместимые domain/entity_type и disjoint ImportBatch scope. Default cross-source; same-source требует явного profile flag. 201 новый run, 200 тот же активный scope/hash. После terminal — новый run/history. Ошибки:422 incompatible input/profile,409 input not ready,404 input missing,503 queue unavailable.
+- `GET /api/v1/matching-runs?limit=50&offset=0` и `GET .../{id}` — `match.view`. DTO: id,status,input_analysis_ids,input_context,profile_id/hash/snapshot,actor_id,records_processed,candidates_generated,status_counts,diagnostics,created_at,completed_at,error_text,based_on_previous_profile,gold_reference_configured. Lifecycle только canonical AnalysisRun. До COMPLETED results partial. Coverage limits всегда доступны отдельно, completed не обещает исследование всех Cartesian pairs. Gold Reference явно unconfigured.
+- `GET /api/v1/matching-runs/{id}/candidates?status=POSSIBLE_MATCH&limit=50&offset=0` — `match.view`, status optional canonical3values. Summary: id,run_id,raw_record_a_id,raw_record_b_id,confidence (Decimal string six places),status,confirmed_by,created_at,reason (исходный engine reason). confirmed_by означает отдельное human review, которое не заменяет historical engine evidence.
+- `GET /api/v1/match-candidates/{id}` — summary + full evidence/signals/blocking/input version context, оба source/raw/normalized/provenance records, frozen run view и nullable manual_review из Audit (audit_event_id,actor_id,reviewed_at,from_status,to_status,reason). Engine reason и human reason разделены.
+- `POST /api/v1/match-candidates/{id}/review` — существующее `match.review`, cookie + Origin; `{status:"MATCHED"|"NOT_MATCHED",reason:nonempty string≤1000}`. Только POSSIBLE_MATCH завершённого run; actor в confirmed_by, audit и atomic counters. Terminal/repeated/concurrent loser→409. ADMIN без REVIEWER/DATA_OWNER→403.
+
+Read pagination limit1..100, offset0..1000000; matching/analysis private responses no-store. No header bearer mode. Политика threshold OPEN, fuzzy не получает автоматический MATCHED. [Подсистема, ограничения, history/currentness и recovery](../development/matching.md).

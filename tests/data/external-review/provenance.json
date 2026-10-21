@@ -1,0 +1,14 @@
+{
+  "source": "USGS Earthquake Catalog",
+  "retrieved_on": "2026-10-21",
+  "url": "https://earthquake.usgs.gov/fdsnws/event/1/query?format=csv&starttime=2025-01-01&endtime=2025-01-02&minmagnitude=4&orderby=time-asc",
+  "usage_terms": "USGS-authored US-government data, public domain; no third-party images or attachments included.",
+  "terms_url": "https://www.usgs.gov/information-policies-and-instructions/copyrights-and-credits",
+  "records": 60,
+  "changes": "CSV projection/rename; XML copy with uppercase IDs and lowercase/space-padded names and IDs. No event value or identity invented. Both files share the same source snapshot. Derived CSV uses LF line endings.",
+  "sha256": {
+    "source-b.xml": "3ed23eaf6dcc6c4af9447bf2fdaa7a748ff5563a051d965ad03a53d0153be5e5",
+    "source-a.csv": "073f6f7e7b12c8eb0af20875ce5dc2dd906990781cdabda272f0962d889d84c9",
+    "usgs-original.csv": "50c1c9cc994ba235fccd03ef727f96032d88c44518ccb01094a2ed2e80f913d2"
+  }
+}

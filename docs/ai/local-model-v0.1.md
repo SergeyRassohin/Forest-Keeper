@@ -1,6 +1,6 @@
 # Forest Keeper — Local AI Model Baseline v0.1
 
-Статус: обязательный baseline для разработки AI-контура MVP.
+Статус: обязательный baseline для разработки AI-контура MVP. AI runtime ещё не реализован в main. [Проверенные ссылки, hashes и команды получения файлов](model-downloads.md); загрузка файлов не означает готовности inference.
 
 ## 1. Назначение
 
@@ -125,7 +125,7 @@ Git contains:
 - `models/model-manifest.yaml`;
 - runtime configuration;
 - prompt/templates;
-- verification/packaging scripts when implemented;
+- artifact acquisition/verification script (`scripts/models.py`); packaging/signature workflow remains future work;
 - license notices required for distribution.
 
 Git does not contain:
@@ -136,7 +136,7 @@ Git does not contain:
 
 ## 8. Online development flow
 
-During development an approved script may download only the model/revision specified in `models/model-manifest.yaml`.
+Use `uv run --script scripts/models.py download` from the repository root. It downloads only the model/revision and artifacts fixed in `models/model-manifest.yaml` and `models/artifacts.lock.json`. Full instructions: [model downloads](model-downloads.md).
 
 A developer must not use `latest` or silently substitute another model.
 
@@ -193,6 +193,6 @@ Changing embedding model or dimension requires a controlled re-embedding migrati
 - https://huggingface.co/Qwen/Qwen3-Embedding-0.6B
 - https://github.com/QwenLM/Qwen3
 - https://github.com/QwenLM/Qwen3-Embedding
-- https://github.com/ggerganov/llama.cpp
+- https://github.com/ggml-org/llama.cpp
 
 Upstream documentation is reference material. Forest Keeper implementation must follow the pinned model manifest and project decisions rather than automatically following upstream `main`.

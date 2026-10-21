@@ -38,9 +38,9 @@
 
 Security-critical изменения требуют независимой проверки по AGENTS.md перед принятием. Этап 1 не включает MFA/SSO, recovery, изменение пользователей через UI и бизнес-object scopes. Новые auth-таблицы являются техническим расширением User и не вводят новые бизнес-статусы.
 
-Canonical/matching/conflicts, Human Review, Decision Registry, AI/similarity, правила, полный бизнес-аудит, лицензирование и Update Service ещё не реализованы. Импорт добавлен в этапе 2 ниже. Модели не скачивались. Продуктовый E2E решений и capacity/performance acceptance всего MVP предстоят.
+На момент этапа 1 бизнес-модули ещё отсутствовали. Актуальный статус: импорт и нормализация приняты в этапах 2–3 ниже; matching, conflicts, Human Review, Decision Registry, AI/similarity, правила, лицензирование и Update Service в main пока отсутствуют. Продуктовый E2E решений и capacity/performance acceptance всего MVP предстоят.
 
-## Следующая итерация
+## Приёмка этапа 1
 
 Этап1 принят после полного независимого прогона [issue #5](https://github.com/SergeyRassohin/Forest-Keeper/issues/5), исправления WEB-02 и merge PR #6. Все35пунктов сценария PASS,245тестов и CI main прошли. Обновление CI Actions/runner принято через PR #4.
 
@@ -54,18 +54,18 @@ Capacity на исправленном runtime: два набора 100000×30 �
 
 Этап 2 объединён в main через PR #8, merge commit `52de120`; [CI merge commit](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39415262127) прошёл. Вместе с hardening PR #10 проверены 408 backend (95 unit / 313 integration), 13 frontend и 7 browser — всего 428 PASS; production smoke включает общий том оригиналов. [Отчёт синхронизации](../testing/reports/stage2-main-sync-2026-10-20.md).
 
-Этап 3 — нормализация и canonical model — реализован по [issue #12](https://github.com/SergeyRassohin/Forest-Keeper/issues/12) в [PR #13](https://github.com/SergeyRassohin/Forest-Keeper/pull/13): [описание](normalization.md), [acceptance report](../testing/reports/stage3-normalization-acceptance-2026-10-20.md). Проверены 543 теста (163 backend unit, 355 integration, 17 frontend, 8 browser); независимый retest — 106 backend и один browser, без открытых замечаний. Подробности проверок и нагрузки приведены в отчёте; финальный коммит и CI — в описании PR. Этап 3 не объединён и не объявлен принятым: для этого нужен зелёный CI merge commit в main. Matching не включён.
+Этап 3 — нормализация и canonical model — реализован по [issue #12](https://github.com/SergeyRassohin/Forest-Keeper/issues/12) в [PR #13](https://github.com/SergeyRassohin/Forest-Keeper/pull/13): [описание](normalization.md), [acceptance report](../testing/reports/stage3-normalization-acceptance-2026-10-20.md). Проверены 543 теста (163 backend unit, 355 integration, 17 frontend, 8 browser); независимый retest — 106 backend и один browser, без открытых замечаний. Подробности проверок и нагрузки приведены в отчёте; финальный коммит и CI — в описании PR. Этап 3 принят и объединён: merge `6a494534a49960b79fdf64e5e2b8436c32011688`; [CI merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39452965438). Исторический acceptance report сохранён без переписывания. Следующий активный этап — 4, [draft PR #15](https://github.com/SergeyRassohin/Forest-Keeper/pull/15); matching ещё отсутствует в main.
 
 Для последующего импорта нужно согласовать первый pilot domain и формат реальной выгрузки 1С. Пороги matching остаются открытым решением; до его принятия нельзя молча вводить автоматическое объединение по fuzzy/embedding score.
 
 ## Известные расхождения спецификаций
 
-План этапа 5 перечисляет `FORMAT` как Conflict type, а каноническая модель v0.2 — `VALUE_MISMATCH`, `MISSING`, `DUPLICATE`, `RULE_VIOLATION`, `ANOMALY`. План этапа 11 использует `FK_DEFAULT`, каноническая модель — `FK_BASELINE`. При реализации использовать канонические enum согласно AGENTS.md и Decision Log; новые enum без явного решения не вводить. На этап 0 эти расхождения не влияют.
+Устранены устаревшие enum в текущем MVP Plan: типы Conflict соответствуют v0.2 (`VALUE_MISMATCH`, `MISSING`, `DUPLICATE`, `RULE_VIOLATION`, `ANOMALY`), origin Rule — `FK_BASELINE`, а не `FK_DEFAULT`. Локальный вход описан как browser cookie session по решению 2026-10-19. Это синхронизация документации; runtime enum не менялись.
 
 
 ## Ближайшая контрольная цель — внешняя проверка
 
-Ближайшая продуктовая цель: подготовить репозиторий и MVP к независимой проверке внешним техническим специалистом к субботе.
+Ближайшая продуктовая цель: подготовить репозиторий и MVP к независимой проверке внешним техническим специалистом к **субботе, 24 октября 2026**.
 
 Критерий готовности:
 
@@ -84,3 +84,15 @@ GitHub читаем и понятен
 Основная реализационная задача: issue #18 — External MVP review readiness.
 
 До прохождения этой проверки новые необязательные возможности не должны вытеснять работу по end-to-end сценарию, setup и документации.
+
+## Документация внешней проверки — 21 октября 2026
+
+Обновлены README, [Quick Start](../deployment/external-review-quickstart.md), серверные инструкции и описание моделей. [Матрица готовности](../deployment/review-readiness.md) перечисляет блокеры полного сценария #18. Зафиксированы открытые данные USGS с происхождением и отдельным демонстрационным normalization profile. Согласовано: fuzzy требует ручной проверки; авто-подтверждение только по согласованным точным ключам без противоречий. Проверка Qwen artifacts не означает наличие AI inference; независимое внешнее ревью этой правки ещё ожидается.
+
+## Этап 4 — кандидат отдельной приёмки, 21 октября 2026
+
+Первый шаг [issue #20](https://github.com/SergeyRassohin/Forest-Keeper/issues/20): существующий [PR #15](https://github.com/SergeyRassohin/Forest-Keeper/pull/15) синхронизирован с current main и PR #19. Runtime `6669d1c357f8bdf503013b31a1138de1269a0771`; текущий final HEAD и его CI указаны в PR. Реализованы [matching](matching.md), три статуса, immutable evidence/provenance, versioned profiles, bounded generation и авторизованный ручной review с причиной. Подтверждение идентичности не заменяет Decision Registry.
+
+Локально **619 тестов PASS** (181 backend unit, 401 integration, 21 frontend, 10 HTTPS browser, 6 artifact tests), обязательные security/dependency gates и production smoke PASS. Gold: precision 1.0, recall 0.8, false merges 0; fuzzy auto-match отключён. Capacity: все профили 100/1k/10k/100k PASS, на 100k/source создано 100000 кандидатов вместо 10 миллиардов пар, matching 54.093 s, metadata p95 0.3648 s при 10 сессиях. После штатного restart неизменны run/evidence, два ручных review, raw и normalization history. [Отчёт, DoD и доказательства](../testing/reports/stage4-matching-acceptance-2026-10-21.md).
+
+**Независимый runtime/security retest: PASS, блокирующих замечаний нет.** Отдельная review-сессия повторила 619 тестов, security/dependencies, production smoke, gold, capacity 100/1k/10k/100k и browser-result restart. На 100k/source: matching 31.294 s, metadata p95 .2152 s / 10 сессий, false merges 0. [Независимый отчёт и architecture gate](../testing/reports/stage4-matching-independent-2026-10-21.md). Технически готово к merge после зелёного CI документационного follow-up; точный HEAD и CI — в PR #15. Автоматический merge запрещён; Stage 4 ещё не принят и отсутствует в main. Stage 5 не начат: по #20 он начинается после отдельной приёмки Stage 4, разрешённого merge и зелёного CI merge commit. Полная внешняя готовность #18 остаётся BLOCKED.
