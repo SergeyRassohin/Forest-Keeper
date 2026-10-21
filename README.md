@@ -12,10 +12,10 @@ Forest Keeper разворачивается внутри инфраструкт
 
 Контрольная дата внешней проверки — **24 октября 2026**. Это цель, а не заявление о готовности полного MVP.
 
+## Схемы и презентация
 
-## Схемы процесса
-
-Актуальная блок-схема бизнес-процесса Forest Keeper и GitHub Actions CI: [workflow overview](docs/architecture/workflow-overview.md).
+- актуальная блок-схема бизнес-процесса Forest Keeper и GitHub Actions CI: [workflow overview](docs/architecture/workflow-overview.md);
+- актуальная презентация продукта и состояния MVP: [presentation v0.1](docs/marketing/presentation-v0.1.md).
 
 ## Что доступно в проверяемой версии
 
@@ -27,12 +27,13 @@ Forest Keeper разворачивается внутри инфраструкт
 | CSV/XLSX/XML: импорт, оригинал, исходные записи и происхождение | Реализовано, этап 2 принят |
 | Нормализация по объявленному профилю, качество значений, история правил | Реализовано, этап 3 принят |
 | Matching: совпадение / требует проверки / не совпадает | Реализовано в main, этап 4 принят; независимый retest и CI merge commit PASS |
-| Конфликты, Human Review с сохранением Decision | Не реализовано в main |
+| Conflict Engine | ТЗ зафиксировано в [issue #21](https://github.com/SergeyRassohin/Forest-Keeper/issues/21); runtime ещё не реализован в main |
+| Human Review с сохранением Decision | Не реализовано в main; этапы 6–7 после Conflict Engine |
 | Поиск прошлого Decision, рекомендации, AI inference | Не реализовано в main |
 | Получение и проверка pinned Qwen artifacts | [Команды и точные ссылки](docs/ai/model-downloads.md); это подготовка файлов, без запуска AI |
 | Корпоративный установщик, лицензирование, Update Service | Последующие этапы |
 
-Этап 3 принят через [PR #13](https://github.com/SergeyRassohin/Forest-Keeper/pull/13), merge `6a494534a49960b79fdf64e5e2b8436c32011688`; [CI merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39452965438). Этап 4 также принят через PR #15; следующий этап — 5 (Conflict Engine), отдельным PR. Полный путь «свой файл → конфликт → Decision → похожий случай → рекомендация» пока **заблокирован отсутствующими модулями**, см. [критерии готовности](docs/deployment/review-readiness.md). Зелёный health означает готовность инфраструктуры, а не наличие всех бизнес-функций.
+Этап 3 принят через [PR #13](https://github.com/SergeyRassohin/Forest-Keeper/pull/13), merge `6a494534a49960b79fdf64e5e2b8436c32011688`; [CI merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39452965438). Этап 4 принят через PR #15. Следующий отдельный этап — **Stage 5 Conflict Engine**, полное ТЗ и критерии приёмки находятся в [issue #21](https://github.com/SergeyRassohin/Forest-Keeper/issues/21). Полный путь «свой файл → конфликт → Decision → похожий случай → рекомендация» пока **заблокирован отсутствующими модулями**, см. [критерии готовности](docs/deployment/review-readiness.md). Зелёный health означает готовность инфраструктуры, а не наличие всех бизнес-функций.
 
 ## Что можно проверить сейчас
 
@@ -76,6 +77,8 @@ Forest Keeper разворачивается внутри инфраструкт
 17. [Model manifest](models/model-manifest.yaml)
 18. [Лицензирование](docs/licensing/licensing-v0.1.md)
 19. [Обновления](docs/deployment/update-model-v0.1.md)
+20. [Блок-схема процесса и CI](docs/architecture/workflow-overview.md)
+21. [Презентация продукта](docs/marketing/presentation-v0.1.md)
 
 ## Структура
 
@@ -88,7 +91,7 @@ Forest Keeper разворачивается внутри инфраструкт
 - `docs/decisions/` — журнал решений
 - `docs/sessions/` — краткие итоги обсуждений
 - `docs/site/` — сайт / Project Portal
-- `docs/marketing/` — позиционирование и материалы
+- `docs/marketing/` — позиционирование, презентация и материалы
 - `docs/development/` — правила разработки, MVP-план и жизненные циклы объектов
 - `docs/api/` — API-контракты
 - `docs/data-model/` — каноническая модель данных; XLSX v0.1 сохранён как исторический черновик
