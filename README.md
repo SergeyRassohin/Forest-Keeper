@@ -14,20 +14,20 @@ Forest Keeper разворачивается внутри инфраструкт
 
 ## Что доступно в проверяемой версии
 
-Проверяемая ветка — `feat/stage4-matching` ([PR #15](https://github.com/SergeyRassohin/Forest-Keeper/pull/15)), основана на main с принятыми этапами 0–3. Ветка включает изменения PR #19. Инструкция содержит команду получения именно этой ветки; изменения попадут в main после отдельной приёмки и merge.
+Проверяемая версия — `main`, в которой приняты этапы 0–4. Matching объединён через [PR #15](https://github.com/SergeyRassohin/Forest-Keeper/pull/15), merge `bea0d55c92540744657feac863084cde131a7f43`; [CI merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39595762080). В main также включены изменения PR #19. Инструкция получает основную ветку; сохраняйте точный SHA проверки.
 
 | Возможность | Статус |
 | --- | --- |
 | Вход, роли, создание пользователей | Реализовано, этап 1 принят |
 | CSV/XLSX/XML: импорт, оригинал, исходные записи и происхождение | Реализовано, этап 2 принят |
 | Нормализация по объявленному профилю, качество значений, история правил | Реализовано, этап 3 принят |
-| Matching: совпадение / требует проверки / не совпадает | Реализовано в PR #15; независимый runtime/security retest PASS. Требуются отдельная приёмка и merge; в main отсутствует |
+| Matching: совпадение / требует проверки / не совпадает | Реализовано в main, этап 4 принят; независимый retest и CI merge commit PASS |
 | Конфликты, Human Review с сохранением Decision | Не реализовано в main |
 | Поиск прошлого Decision, рекомендации, AI inference | Не реализовано в main |
 | Получение и проверка pinned Qwen artifacts | [Команды и точные ссылки](docs/ai/model-downloads.md); это подготовка файлов, без запуска AI |
 | Корпоративный установщик, лицензирование, Update Service | Последующие этапы |
 
-Этап 3 принят через [PR #13](https://github.com/SergeyRassohin/Forest-Keeper/pull/13), merge `6a494534a49960b79fdf64e5e2b8436c32011688`; [CI merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39452965438). Следующий этап — 4. Полный путь «свой файл → конфликт → Decision → похожий случай → рекомендация» пока **заблокирован отсутствующими модулями**, см. [критерии готовности](docs/deployment/review-readiness.md). Зелёный health означает готовность инфраструктуры, а не наличие всех бизнес-функций.
+Этап 3 принят через [PR #13](https://github.com/SergeyRassohin/Forest-Keeper/pull/13), merge `6a494534a49960b79fdf64e5e2b8436c32011688`; [CI merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39452965438). Этап 4 также принят через PR #15; следующий этап — 5 (Conflict Engine), отдельным PR. Полный путь «свой файл → конфликт → Decision → похожий случай → рекомендация» пока **заблокирован отсутствующими модулями**, см. [критерии готовности](docs/deployment/review-readiness.md). Зелёный health означает готовность инфраструктуры, а не наличие всех бизнес-функций.
 
 ## Что можно проверить сейчас
 

@@ -111,3 +111,11 @@ A separate Codex review session independently inspected and retested final imple
 Independent 100k/source: 100,000 candidates, zero false merges, matching 31.294 s, metadata p95 .2152 s at ten sessions, peak process RSS 624.32 MiB. Full evidence is linked in the independent report. Application/tests/profiles/migrations are unchanged by this documentation-only follow-up. Exact final follow-up SHA and CI belong in PR #15; reviewed implementation CI was SUCCESS in both runs.
 
 Technical outcome: **READY TO MERGE after green final follow-up CI**; separate acceptance and authorized merge remain required. No automatic merge and no Stage 5 work. Stage 4 is not yet accepted in main; #14/#18/#20 remain open.
+
+## Main merge gate — Stage 4 accepted, 2026-10-21
+
+The repository owner separately accepted exact HEAD `f44e01e3889c422505e65dc7835e7641d0b2807c` and explicitly authorized merging PR #15 in [the acceptance comment](https://github.com/SergeyRassohin/Forest-Keeper/pull/15#issuecomment-6315152669) and corresponding #14/#20 instructions. PR #15 was merged as **`bea0d55c92540744657feac863084cde131a7f43`**. Its tree `8480d386f49004224fad13d04db7d6b451018454` is identical to the approved HEAD; no application/tests/migrations changed after approval.
+
+[GitHub Actions on this exact main merge commit](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39595762080): **SUCCESS**, including the mandatory tests/security/build/migration/browser and disposable production checks. The architecture/product-intent gate and separate runtime/security review remain PASS. **Stage 4 accepted in main; issue #14 may be closed and step 1 / Stage 4 in #20 is complete.** Earlier pending statements above are historical checkpoints, superseded by this completed merge gate.
+
+Current setup instructions now select main. Known limitations (synthetic profiles/gold, OPEN fuzzy thresholds, capped coverage, abrupt Redis/worker stale-lease limitation and absent embedding/LLM scope) remain unchanged. #18 and #20 stay open. Stage 5 was not started as part of the merge/status update and requires a separate PR.
