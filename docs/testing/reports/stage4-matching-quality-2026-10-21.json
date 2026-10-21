@@ -1,0 +1,85 @@
+{
+  "scope": "synthetic benchmark, not customer Gold Reference; no production threshold selected",
+  "profile_hash": "1cf42015888e90f50277f96071c357901a50e11d6141202868864a4fb3156251",
+  "profile_version": "1",
+  "engine_version": "fk-matching/1",
+  "left_records": 13,
+  "right_records": 13,
+  "candidates": 102,
+  "candidate_reduction_ratio": 0.39644970414201186,
+  "signals_compared": {
+    "exact": 179,
+    "token_sort_ratio": 100,
+    "decimal_tolerance": 85
+  },
+  "runtime_policy": "EXACT_RULES_ONLY_NO_FUZZY_AUTO",
+  "metrics": {
+    "precision": 1.0,
+    "recall": 0.8,
+    "f1": 0.888888888888889,
+    "false_merge_count": 0,
+    "false_merge_rate": 0.0,
+    "unsafe_auto_on_review": 0,
+    "false_non_match_count": 0,
+    "missed_true_matches": 0,
+    "review_rate": 0.14705882352941177
+  },
+  "offline_threshold_sweeps": [
+    {
+      "threshold": "0.7",
+      "offline_only": true,
+      "strong_negative_and_ambiguity_blockers": true,
+      "precision": 0.8333333333333334,
+      "recall": 1.0,
+      "f1": 0.9090909090909091,
+      "false_merge_count": 1,
+      "false_merge_rate": 0.16666666666666666,
+      "unsafe_auto_on_review": 0,
+      "false_non_match_count": 0,
+      "missed_true_matches": 0,
+      "review_rate": 0.12745098039215685
+    },
+    {
+      "threshold": "0.8",
+      "offline_only": true,
+      "strong_negative_and_ambiguity_blockers": true,
+      "precision": 0.8333333333333334,
+      "recall": 1.0,
+      "f1": 0.9090909090909091,
+      "false_merge_count": 1,
+      "false_merge_rate": 0.16666666666666666,
+      "unsafe_auto_on_review": 0,
+      "false_non_match_count": 0,
+      "missed_true_matches": 0,
+      "review_rate": 0.12745098039215685
+    },
+    {
+      "threshold": "0.9",
+      "offline_only": true,
+      "strong_negative_and_ambiguity_blockers": true,
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1": 0.8000000000000002,
+      "false_merge_count": 1,
+      "false_merge_rate": 0.2,
+      "unsafe_auto_on_review": 0,
+      "false_non_match_count": 0,
+      "missed_true_matches": 0,
+      "review_rate": 0.13725490196078433
+    },
+    {
+      "threshold": "0.95",
+      "offline_only": true,
+      "strong_negative_and_ambiguity_blockers": true,
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1": 0.888888888888889,
+      "false_merge_count": 0,
+      "false_merge_rate": 0.0,
+      "unsafe_auto_on_review": 0,
+      "false_non_match_count": 0,
+      "missed_true_matches": 0,
+      "review_rate": 0.14705882352941177
+    }
+  ]
+}

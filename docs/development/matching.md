@@ -42,6 +42,8 @@ MatchCandidate содержит ровно canonical fields. UUID5 зависи�
 
 Gold Reference/CustomerTemplate пока не настроены: input context явно содержит gold_reference_version=NULL. Synthetic gold dataset — тестовые labels, а не эталон клиента. Полный approved activation/rollback/history/impact UI относится к roadmap11–12. Исторические dependency IDs/hashes позволяют будущий impact lookup. При отличии текущего matching или normalization profile от frozen input read API/UI помечают previous-profile result; пользователь запускает явную новую оценку. Новая конфигурация не переинтерпретирует историю и не добавляет persisted STALE в MatchCandidate enum.
 
+Gold Reference в исторических документах и `gold_reference_version` в техническом контексте — прежнее название Forest Codex. Ручной review кандидата сохраняет статус идентичности, пользователя и причину; он не выбирает истинное значение атрибута и не создаёт Decision Registry.
+
 ## Проверка и миграция
 
 Миграция0005 добавляет технические runs/pairs и canonical MatchCandidate, индексы и guards, не делает merge/backfill Stage2/3. Upgrade/repeat и fixture-only downgrade/upgrade проверяются с сохранением raw/EntityValue. Downgrade удаляет matching history и не является безопасным production rollback без backup.
@@ -51,3 +53,5 @@ Gold Reference/CustomerTemplate пока не настроены: input context 
 Из backend: `uv run python -m tests.benchmark_matching_quality` — precision/recall/F1, false merge, unsafe auto on REVIEW, false nonmatch, review rate, candidate reduction и offline threshold sweep. Без порога pilot SLA.
 
 Capacity на disposable PG/Redis: `FK_TEST_INTEGRATION=1 uv run python -m tests.benchmark_matching --records 100 1000 10000 100000`. Existing generator создаёт два набора×30attrs; реальный Import→Normalization→Matching, проверяются физические кандидаты/правильные IDs, caps и отсутствие false merge; 10 sessions измеряют detail и candidate list. SimpleWorker/host memory и время этапов публикуются отдельно от production SLA. Собственные schema/queues/files очищаются.
+
+Текущий [отчёт Stage 4](../testing/reports/stage4-matching-acceptance-2026-10-21.md) содержит результаты gold/capacity/restart, DoD и незавершённый independent review gate. Пример для человека, впервые открывшего продукт: [учебные данные и ожидания](../../tests/data/matching/README.md), [пошаговый запуск](../deployment/external-review-quickstart.md#9-сопоставление-и-ручная-проверка-идентичности). Зелёные локальные проверки не означают, что этап уже принят.

@@ -1,0 +1,171 @@
+{
+  "commit": "6669d1c357f8bdf503013b31a1138de1269a0771",
+  "dirty": false,
+  "environment": {
+    "python": "3.13.16",
+    "os": "Linux-6.18.55-x86_64-with-glibc2.41",
+    "execution": "host Python, isolated PostgreSQL schema/Redis queue; SimpleWorker"
+  },
+  "profiles": [
+    {
+      "source_datasets": 2,
+      "records_per_dataset": 100,
+      "attributes_per_record": 30,
+      "bytes_per_dataset": [
+        30381,
+        30381
+      ],
+      "import_seconds": 0.989,
+      "normalization_seconds": 2.175,
+      "matching_seconds": 0.367,
+      "records": 200,
+      "candidate_pairs_generated": 100,
+      "candidate_reduction_ratio": 0.99,
+      "status_counts": {
+        "MATCHED": 100
+      },
+      "false_merge_count": 0,
+      "records_per_second": 544.27,
+      "coverage_diagnostics": {
+        "left_records": 100,
+        "right_records": 100,
+        "coverage_limited": true,
+        "pairs_omitted_cap": 0,
+        "full_cartesian_pairs": 10000,
+        "oversized_block_hits": 300,
+        "oversized_left_blocks": 3,
+        "oversized_right_blocks": 3,
+        "candidate_reduction_ratio": "0.99"
+      },
+      "normalization_values": 6000,
+      "metadata_endpoints": [
+        "detail",
+        "candidates?limit=50"
+      ],
+      "metadata_sessions": 10,
+      "metadata_p95_seconds": 0.9046,
+      "process_peak_rss_mib": 161.93,
+      "passed": true
+    },
+    {
+      "source_datasets": 2,
+      "records_per_dataset": 1000,
+      "attributes_per_record": 30,
+      "bytes_per_dataset": [
+        300381,
+        300381
+      ],
+      "import_seconds": 3.492,
+      "normalization_seconds": 7.258,
+      "matching_seconds": 0.755,
+      "records": 2000,
+      "candidate_pairs_generated": 1000,
+      "candidate_reduction_ratio": 0.999,
+      "status_counts": {
+        "MATCHED": 1000
+      },
+      "false_merge_count": 0,
+      "records_per_second": 2650.72,
+      "coverage_diagnostics": {
+        "left_records": 1000,
+        "right_records": 1000,
+        "coverage_limited": true,
+        "pairs_omitted_cap": 0,
+        "full_cartesian_pairs": 1000000,
+        "oversized_block_hits": 3000,
+        "oversized_left_blocks": 3,
+        "oversized_right_blocks": 3,
+        "candidate_reduction_ratio": "0.999"
+      },
+      "normalization_values": 60000,
+      "metadata_endpoints": [
+        "detail",
+        "candidates?limit=50"
+      ],
+      "metadata_sessions": 10,
+      "metadata_p95_seconds": 0.5063,
+      "process_peak_rss_mib": 186.94,
+      "passed": true
+    },
+    {
+      "source_datasets": 2,
+      "records_per_dataset": 10000,
+      "attributes_per_record": 30,
+      "bytes_per_dataset": [
+        3000381,
+        3000381
+      ],
+      "import_seconds": 5.734,
+      "normalization_seconds": 58.939,
+      "matching_seconds": 7.38,
+      "records": 20000,
+      "candidate_pairs_generated": 10000,
+      "candidate_reduction_ratio": 0.9999,
+      "status_counts": {
+        "MATCHED": 10000
+      },
+      "false_merge_count": 0,
+      "records_per_second": 2710.17,
+      "coverage_diagnostics": {
+        "left_records": 10000,
+        "right_records": 10000,
+        "coverage_limited": true,
+        "pairs_omitted_cap": 0,
+        "full_cartesian_pairs": 100000000,
+        "oversized_block_hits": 30000,
+        "oversized_left_blocks": 3,
+        "oversized_right_blocks": 3,
+        "candidate_reduction_ratio": "0.9999"
+      },
+      "normalization_values": 600000,
+      "metadata_endpoints": [
+        "detail",
+        "candidates?limit=50"
+      ],
+      "metadata_sessions": 10,
+      "metadata_p95_seconds": 0.3384,
+      "process_peak_rss_mib": 198.9,
+      "passed": true
+    },
+    {
+      "source_datasets": 2,
+      "records_per_dataset": 100000,
+      "attributes_per_record": 30,
+      "bytes_per_dataset": [
+        30000381,
+        30000381
+      ],
+      "import_seconds": 61.74,
+      "normalization_seconds": 517.049,
+      "matching_seconds": 54.093,
+      "records": 200000,
+      "candidate_pairs_generated": 100000,
+      "candidate_reduction_ratio": 0.99999,
+      "status_counts": {
+        "MATCHED": 100000
+      },
+      "false_merge_count": 0,
+      "records_per_second": 3697.32,
+      "coverage_diagnostics": {
+        "left_records": 100000,
+        "right_records": 100000,
+        "coverage_limited": true,
+        "pairs_omitted_cap": 0,
+        "full_cartesian_pairs": 10000000000,
+        "oversized_block_hits": 300000,
+        "oversized_left_blocks": 3,
+        "oversized_right_blocks": 3,
+        "candidate_reduction_ratio": "0.99999"
+      },
+      "normalization_values": 6000000,
+      "metadata_endpoints": [
+        "detail",
+        "candidates?limit=50"
+      ],
+      "metadata_sessions": 10,
+      "metadata_p95_seconds": 0.3648,
+      "process_peak_rss_mib": 624.56,
+      "passed": true
+    }
+  ]
+}

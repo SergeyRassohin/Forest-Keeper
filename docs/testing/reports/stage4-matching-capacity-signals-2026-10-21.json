@@ -1,0 +1,12 @@
+{
+  "run_id": "4a5f4de4-b269-4642-a2b0-23d15110cb08",
+  "records_per_dataset": 100000,
+  "computed_reason_counts": {
+    "EXPLICIT_UNIQUE_IDENTITY_RULE": 100000
+  },
+  "compared_signal_counts": {
+    "exact": 100000,
+    "token_sort_ratio": 100000
+  },
+  "method": "read-only SQL aggregation of persisted evidence during capacity run before fixture cleanup"
+}

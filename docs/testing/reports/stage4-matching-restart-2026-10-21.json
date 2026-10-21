@@ -1,0 +1,72 @@
+{
+  "runtime_commit": "6669d1c357f8bdf503013b31a1138de1269a0771",
+  "method": "ordered JSON snapshots of complete rows, sorted by primary key, SHA-256; no volume deletion",
+  "restart_commands": [
+    "docker compose stop -t 30 worker",
+    "docker compose restart postgres redis backend frontend",
+    "docker compose up -d --wait --wait-timeout 180 worker"
+  ],
+  "equal": true,
+  "before": {
+    "candidates": {
+      "count": 102,
+      "sha256": "85b2ef8a22c8501353aa0d074d9112e7bc36eceb406307dfd4de13d5ec995723"
+    },
+    "entity_values": {
+      "count": 130,
+      "sha256": "f82a69d7c7be461d25b3d761a23c96bc860eb4d7144c4bf3819af197f4d59050"
+    },
+    "manual_reviews": {
+      "count": 2,
+      "sha256": "12aadb84f2d17cc4aa952a4c7b07deeb9686f9cd214f7792d62bd909c1f66002"
+    },
+    "matching_run": {
+      "count": 1,
+      "sha256": "b7c317d12bdb238f7ea9cf516d2b1575102b8ea9b01a87cf2352e3517d9a3ac8"
+    },
+    "matching_run_id": "8cd86591-fa60-439f-9551-8a34f5bd71c5",
+    "normalization_runs": {
+      "count": 2,
+      "sha256": "d3f5a2c6ae09f1d9031664ab4ebcb638d307d0cbcbf1f2a63e727c0414923422"
+    },
+    "pairs": {
+      "count": 102,
+      "sha256": "04048f838deea3d2d27cc5263e57ff3542e9b7b78ba1a85ff8eddd5db2b000e7"
+    },
+    "raw": {
+      "count": 26,
+      "sha256": "c25112f770a2ad9dc80e4757ba2466a63b5657bfcf198da98ec3e2811cbe99e6"
+    }
+  },
+  "after": {
+    "candidates": {
+      "count": 102,
+      "sha256": "85b2ef8a22c8501353aa0d074d9112e7bc36eceb406307dfd4de13d5ec995723"
+    },
+    "entity_values": {
+      "count": 130,
+      "sha256": "f82a69d7c7be461d25b3d761a23c96bc860eb4d7144c4bf3819af197f4d59050"
+    },
+    "manual_reviews": {
+      "count": 2,
+      "sha256": "12aadb84f2d17cc4aa952a4c7b07deeb9686f9cd214f7792d62bd909c1f66002"
+    },
+    "matching_run": {
+      "count": 1,
+      "sha256": "b7c317d12bdb238f7ea9cf516d2b1575102b8ea9b01a87cf2352e3517d9a3ac8"
+    },
+    "matching_run_id": "8cd86591-fa60-439f-9551-8a34f5bd71c5",
+    "normalization_runs": {
+      "count": 2,
+      "sha256": "d3f5a2c6ae09f1d9031664ab4ebcb638d307d0cbcbf1f2a63e727c0414923422"
+    },
+    "pairs": {
+      "count": 102,
+      "sha256": "04048f838deea3d2d27cc5263e57ff3542e9b7b78ba1a85ff8eddd5db2b000e7"
+    },
+    "raw": {
+      "count": 26,
+      "sha256": "c25112f770a2ad9dc80e4757ba2466a63b5657bfcf198da98ec3e2811cbe99e6"
+    }
+  }
+}

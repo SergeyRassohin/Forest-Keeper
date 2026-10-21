@@ -72,6 +72,17 @@ test('matches two normalized browser imports with evidence and authorized review
   await detail.getByRole('button', { name: 'Подтвердить совпадение', exact: true }).click(); const confirmation = await (await reviewed).json();
   expect(confirmation.status).toBe('MATCHED'); expect(confirmation.confirmed_by).toBeTruthy(); await expect(detail).toContainText('Подтвердил пользователь');
   await expect(detail.getByRole('region', { name: 'Решение человека', exact: true })).toContainText('Сверено человеком по синтетическому сценарию');
+  const remaining = await (await page.request.get('/api/v1/matching-runs/' + run.id + '/candidates?status=POSSIBLE_MATCH')).json();
+  expect(remaining.length).toBeGreaterThan(0);
+  const rejectedCandidate = remaining[0];
+  await result.getByRole('button', { name: rejectedCandidate.raw_record_a_id + ' ↔ ' + rejectedCandidate.raw_record_b_id, exact: true }).click();
+  await detail.getByLabel('Причина подтверждения или отклонения').fill('Проверено: разные сущности, объединять нельзя');
+  const rejected = page.waitForResponse((response) => response.url().endsWith('/review') && response.request().method() === 'POST');
+  await detail.getByRole('button', { name: 'Отклонить совпадение', exact: true }).click();
+  const rejection = await (await rejected).json();
+  expect(rejection.status).toBe('NOT_MATCHED');
+  expect(rejection.confirmed_by).toBeTruthy();
+  await expect(detail.getByRole('region', { name: 'Решение человека', exact: true })).toContainText('Проверено: разные сущности, объединять нельзя');
   await page.getByRole('button', { name: 'Выйти', exact: true }).click(); await signIn(page, 'VIEWER'); await chooseRun(page, run.id);
   await expect(page.getByRole('button', { name: 'Запустить сопоставление', exact: true })).toHaveCount(0);
   const after = await Promise.all(ids.map(async (id) => (await page.request.get('/api/v1/analysis/' + id + '/records')).json())); expect(after).toEqual(before);
