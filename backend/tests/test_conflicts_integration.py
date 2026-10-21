@@ -228,6 +228,15 @@ def test_guards_pagination_filters_and_fresh_app_persistence(client, auth_env, r
     detail = client.get("/api/v1/conflicts/" + record["id"]).json()
     source_id = detail["values_snapshot"][0]["source_id"]
     assert len(client.get("/api/v1/conflicts?source_id=" + source_id).json()) == 2
+    with patch("app.conflicts.routes.CONFIG_HASH", "f" * 64):
+        previous = client.get("/api/v1/conflicts/" + record["id"]).json()
+        assert previous["based_on_previous_profile"] is True
+        assert previous["basis"] == detail["basis"]
+    client.cookies.clear()
+    assert client.get("/api/v1/conflicts").status_code == 401
+    assert client.get("/api/v1/conflicts/" + record["id"]).status_code == 401
+    client.cookies.set(COOKIE_NAME, role_tokens["DATA_OWNER"])
+
     with TestClient(create_app(settings=auth_env), base_url="https://localhost:8443") as other:
         other.cookies.set(COOKIE_NAME, role_tokens["VIEWER"])
         assert other.get("/api/v1/conflicts/" + record["id"]).json() == detail

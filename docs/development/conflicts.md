@@ -89,3 +89,12 @@ Capacity: из backend `FK_TEST_INTEGRATION=1 uv run python -m tests.benchmark_c
 
 Human Review actions, Decision Registry, recommendations, AI, write-back и изменение
 Forest Codex относятся к последующим этапам и отсутствуют.
+
+При повторном benchmark только Conflict Engine можно использовать уже подготовленный
+реальный disposable matching run без нового импорта: `FK_TEST_INTEGRATION=1 uv run python
+-m tests.benchmark_conflicts_reuse --schema auth_test_<32hex> --matching-run <uuid>
+--records 100000`. Это не независимый review и не повтор измерений Stage2–4:
+новая execution текущего engine читает их immutable history. Probe держит DDL read locks
+до конца проверки, использует отдельную очередь/пользователей и печатает exact SHA.
+Схема должна принадлежать вызывающему тесту; её последующее удаление выполняет владелец.
+Обычный полный benchmark выше остаётся основным воспроизводимым standalone путём.
