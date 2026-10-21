@@ -1,6 +1,6 @@
 # Forest Keeper — блок-схема процесса и CI
 
-Актуально для `main` после принятия Stage 4.
+Актуально для `main` после принятия Stage 4 и фиксации ТЗ Stage 5 в [issue #21](https://github.com/SergeyRassohin/Forest-Keeper/issues/21).
 
 ## 1. Бизнес-процесс Forest Keeper
 
@@ -8,17 +8,17 @@
 flowchart LR
     A["Импорт данных<br/>CSV / XLSX / XML"] --> B["RawRecord<br/>immutable + provenance"]
     B --> C["Нормализация<br/>versioned profile"]
-    C --> D["Matching / Entity Resolution<br/>Stage 4"]
+    C --> D["Matching / Entity Resolution<br/>Stage 4 — ACCEPTED"]
     D --> D1{"Результат"}
     D1 -->|MATCHED| E["Единая идентичность<br/>без выбора 'истинного' значения"]
     D1 -->|POSSIBLE_MATCH| F["Ручная проверка identity"]
     D1 -->|NOT_MATCHED| G["Разные сущности"]
 
-    E --> H["Conflict Engine<br/>Stage 5"]
+    E --> H["Conflict Engine<br/>Stage 5 — issue #21"]
     F --> H
     H --> I["Conflict + evidence + provenance"]
     I --> J["Human Review<br/>Stage 6"]
-    J --> K["Decision Registry<br/>immutable history"]
+    J --> K["Decision Registry<br/>Stage 7 · immutable history"]
     K --> L["Similar Decision Retrieval<br/>Stage 8 / pgvector"]
     L --> M["Deterministic Recommendation<br/>Stage 9"]
     M --> N["Qwen explanation<br/>Stage 10, optional"]
@@ -34,7 +34,23 @@ flowchart LR
     class J,K,L,M,N,O future;
 ```
 
-**Статус:** этапы 0–4 приняты в `main`. Следующий отдельный этап — Stage 5 Conflict Engine. Полный путь до Decision/retrieval/recommendation/AI ещё не завершён.
+**Текущий статус:** этапы 0–4 приняты в `main`. Для Stage 5 утверждено подробное ТЗ и критерии приёмки в issue #21; runtime Stage 5 ещё не считается реализованным, пока отдельный PR не пройдёт test/security/product-intent gate, независимый retest, разрешённый merge и зелёный CI merge commit. Полный путь до Decision/retrieval/recommendation/AI ещё не завершён.
+
+### Граница ответственности этапов
+
+```mermaid
+flowchart TD
+    M["Matching"] -->|подтверждает identity| C["Conflict Engine"]
+    C -->|обнаруживает проблему| H["Human Review"]
+    H -->|человек принимает решение| D["Decision Registry"]
+    D -->|история и контекст| S["Similarity / Recommendation"]
+    S -->|structured evidence| A["AI explanation"]
+
+    X["Важно"] --> Y["Conflict != Decision"]
+    Y --> Z["AI != память и != business authority"]
+```
+
+Stage 5 не выбирает «истинное» значение, не создаёт Decision и не использует LLM как доказательство. `RULE_VIOLATION` допустим только по явному versioned rule source; `ANOMALY` — только при воспроизводимом detector.
 
 ## 2. GitHub Actions workflow
 
@@ -77,6 +93,23 @@ flowchart TD
     class F bad;
 ```
 
+### Stage gate для каждого следующего этапа
+
+```mermaid
+flowchart LR
+    A["Отдельная ветка / PR"] --> B["Self-review + tests"]
+    B --> C["Security / dependency gates"]
+    C --> D["Independent retest"]
+    D --> E["Architecture / Product Intent Gate"]
+    E --> F["Green CI на final HEAD"]
+    F --> G["Явное разрешение владельца"]
+    G --> H["Merge в main"]
+    H --> I["Green CI exact merge commit"]
+    I --> J["Этап ACCEPTED"]
+```
+
+Автоматический merge для стадий, требующих отдельной приёмки, не используется.
+
 ### Что означают старые красные runs
 
 GitHub сохраняет историю запусков. Старые `failure` относятся к старым commit SHA и не делают текущий `main` красным.
@@ -86,4 +119,11 @@ GitHub сохраняет историю запусков. Старые `failure
 - merge commit Stage 4 `bea0d55c92540744657feac863084cde131a7f43` — CI **SUCCESS**;
 - последующий documentation-only commit `8ef8a16a5b37d1e680ab88ffbbf9b42a2e9c3f09` — CI **SUCCESS**.
 
-При приёмке каждого следующего этапа используется то же правило: зелёный CI на финальном HEAD PR, затем merge и зелёный CI на точном merge commit в `main`.
+При приёмке Stage 5 применяется то же правило: зелёный CI на финальном HEAD PR, отдельное разрешение на merge, затем зелёный CI на точном merge commit в `main`.
+
+## 3. Связанные материалы
+
+- [Stage 5 ТЗ — issue #21](https://github.com/SergeyRassohin/Forest-Keeper/issues/21)
+- [MVP readiness — issue #18](https://github.com/SergeyRassohin/Forest-Keeper/issues/18)
+- [сквозной план до внешней проверки — issue #20](https://github.com/SergeyRassohin/Forest-Keeper/issues/20)
+- [презентация продукта](../marketing/presentation-v0.1.md)
