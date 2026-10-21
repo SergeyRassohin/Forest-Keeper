@@ -12,6 +12,11 @@ Forest Keeper разворачивается внутри инфраструкт
 
 Контрольная дата внешней проверки — **24 октября 2026**. Это цель, а не заявление о готовности полного MVP.
 
+
+## Схемы процесса
+
+Актуальная блок-схема бизнес-процесса Forest Keeper и GitHub Actions CI: [workflow overview](docs/architecture/workflow-overview.md).
+
 ## Что доступно в проверяемой версии
 
 Проверяемая версия — `main`, в которой приняты этапы 0–4. Matching объединён через [PR #15](https://github.com/SergeyRassohin/Forest-Keeper/pull/15), merge `bea0d55c92540744657feac863084cde131a7f43`; [CI merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39595762080). В main также включены изменения PR #19. Инструкция получает основную ветку; сохраняйте точный SHA проверки.
