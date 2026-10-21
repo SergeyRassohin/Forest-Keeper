@@ -202,79 +202,61 @@ Normalized decimal/quantity сериализуется строкой без bin
 
 ---
 
-## 7. Конфликты
+## 7. Конфликты — Stage 5 PR
+
+Контракт реализован в ветке Stage 5; до acceptance/merge он не означает готовности main.
+Подробная семантика и recovery: [Conflict Engine](../development/conflicts.md).
+
+### POST /api/v1/conflict-runs
+
+Cookie + разрешённый Origin + `analysis.run`. Body: `{ "matching_run_id": "uuid" }`.
+MatchingRun должен быть COMPLETED. 201 создаёт асинхронную техническую execution;
+200 возвращает текущий активный запуск для того же matching/config. MATCHED IDs фиксируются
+при создании; новые matching reviews требуют нового запуска. Ни один GET не запускает analysis.
+
+### GET /api/v1/conflict-runs и GET /api/v1/conflict-runs/{id}
+
+`conflict.view`. Список: limit1–100 (default50), offset0–1000000, newest created_at/id first.
+Detail: status NEW/QUEUED/PROCESSING/COMPLETED/FAILED, matching_run_id, profile_hash/snapshot,
+records_processed, attributes_evaluated, conflicts_generated, status_counts (type breakdown),
+created_at/completed_at/error_text. FAILED/partial не выдаётся за completed.
 
 ### GET /api/v1/conflicts
 
-Список конфликтов.
-
-Поддерживаемые фильтры:
-
-- `status`
-- `severity`
-- `conflict_type`
-- `entity_type`
-- `source_id`
-- `page`
-- `page_size`
-
-Пример ответа:
+`conflict.view`: VIEWER/REVIEWER/DATA_OWNER/ADMIN по canonical access matrix.
+Ответ — массив компактных metadata, как в существующих import/analysis/matching API.
+Фильтры: conflict_type, status, severity, entity_id, matching_run_id, source_id.
+Pagination: limit1–100/default50, offset0–1000000; порядок detected_at DESC, id DESC.
+Недопустимые enum/UUID/pagination →422 INVALID_REQUEST. Без роли →403; без сессии →401.
+Ответ не содержит values_snapshot/Basis. Source context: source_id/name/record key.
 
 ```json
-{
-  "items": [
-    {
-      "id": "uuid",
-      "entity_type": "Material",
-      "attribute_code": "mass",
-      "conflict_type": "VALUE_MISMATCH",
-      "severity": "MEDIUM",
-      "status": "OPEN"
-    }
-  ],
-  "total": 47
-}
+[{
+  "id": "uuid", "entity_id": "uuid", "analysis_run_id": "uuid",
+  "matching_run_id": "uuid", "match_candidate_id": "uuid",
+  "attribute_code": "mass", "conflict_type": "VALUE_MISMATCH",
+  "severity": "LOW", "status": "OPEN", "detected_at": "UTC timestamp",
+  "sources": [{"source_id": "uuid", "source_name": "CSV", "source_record_key": "DIFF"}]
+}]
 ```
 
 ### GET /api/v1/conflicts/{conflict_id}
 
-Полная карточка конфликта.
+Metadata + values_snapshot (две source/provenance/value стороны) + Basis.
+Values: raw/normalized/unit/quality, immutable EntityValue ID, normalization_rule,
+raw_record_id/entity_id, source_id/name, import_batch_id/filename/hash/position/record key.
+Presence различает PRESENT/MISSING/NULL/EMPTY/SCHEMA_UNMAPPED/INVALID_OR_UNKNOWN.
+Большое/структурированное raw отмечается raw_value_omitted, исходная ссылка сохраняется.
+Basis: deterministic reason, authority NOT_DEFINED, matching evidence и profile snapshot/hash,
+normalization context, engine/config snapshot/hash, human_decision NOT_TAKEN.
+`based_on_previous_profile` явно обозначает dependency drift; Forest Codex пока не настроен.
+Неизвестный ID →404 CONFLICT_NOT_FOUND. Все ответы private/no-store.
 
-Ответ должен содержать:
-
-- сравниваемые записи;
-- исходные значения;
-- нормализованные значения;
-- источник каждого значения;
-- применённые правила;
-- найденные похожие решения;
-- текущую рекомендацию FK.
-
-Пример:
-
-```json
-{
-  "id": "uuid",
-  "entity": {
-    "id": "uuid",
-    "entity_type": "Material"
-  },
-  "attribute_code": "mass",
-  "values": [
-    {
-      "source": "1С",
-      "raw_value": "12.5",
-      "normalized_value": "12.5"
-    },
-    {
-      "source": "Excel legacy",
-      "raw_value": "12,7 кг",
-      "normalized_value": "12.7"
-    }
-  ],
-  "recommendation_id": "uuid"
-}
-```
+Enums: VALUE_MISMATCH/MISSING/DUPLICATE/RULE_VIOLATION/ANOMALY;
+OPEN/IN_REVIEW/RESOLVED/INSUFFICIENT_DATA; LOW/MEDIUM/HIGH/CRITICAL.
+Stage 5 создаёт только OPEN/LOW. LOW — нейтральный technical default, не бизнес-риск.
+RULE_VIOLATION/ANOMALY generation выключен до пригодных versioned rule/detector.
+Stage 6+ Decision/recommendation endpoints ниже — целевой контракт, пока не реализован.
 
 ---
 

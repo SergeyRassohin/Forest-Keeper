@@ -1,0 +1,68 @@
+import { expect, test, type Page } from '@playwright/test';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+const accounts = JSON.parse(readFileSync(resolve(process.cwd(), '../deploy/local/e2e.json'), 'utf8'));
+async function signIn(page: Page, role: 'ADMIN' | 'REVIEWER' | 'VIEWER') {
+  await page.goto('/'); await page.getByLabel('Логин', { exact: true }).fill(accounts[role].login); await page.getByLabel('Пароль', { exact: true }).fill(accounts[role].password); await page.getByRole('button', { name: 'Войти', exact: true }).click();
+}
+async function input(page: Page, side: 'a' | 'b') {
+  await page.getByRole('button', { name: 'Импорт данных', exact: true }).click();
+  const source = page.locator('details').filter({ hasText: 'Добавить источник' });
+  if (!(await source.evaluate((element) => (element as HTMLDetailsElement).open))) await source.locator('summary').click();
+  await page.getByLabel('Название источника', { exact: true }).fill('Conflicts ' + side + ' ' + accounts.prefix);
+  await page.getByLabel('Код источника', { exact: true }).fill(accounts.prefix + '_conflict_' + side);
+  await page.getByRole('combobox', { name: 'Тип источника', exact: true }).selectOption(side === 'a' ? 'FILE' : 'ONE_C');
+  await page.getByRole('button', { name: 'Создать источник', exact: true }).click(); await expect(page.getByRole('status').filter({ hasText: 'Источник создан' })).toBeVisible();
+  await page.getByLabel('Исходный файл', { exact: true }).setInputFiles(resolve(process.cwd(), '../tests/data/conflicts/source-' + side + (side === 'a' ? '.csv' : '.xml')));
+  const upload = page.waitForResponse((response) => response.url().endsWith('/api/v1/imports') && response.request().method() === 'POST');
+  await page.getByRole('button', { name: 'Загрузить', exact: true }).click(); const batch = await (await upload).json();
+  const card = page.getByRole('region', { name: 'Карточка импорта', exact: true }); await expect(card).toContainText(batch.id); await expect(card).toContainText('Завершён', { timeout: 30000 });
+  const normalization = page.getByRole('region', { name: 'Нормализация', exact: true });
+  const started = page.waitForResponse((response) => response.url().endsWith('/api/v1/analysis') && response.request().method() === 'POST');
+  await normalization.getByRole('button', { name: 'Нормализовать пакет', exact: true }).click(); const run = await (await started).json();
+  await expect(normalization.getByRole('status')).toContainText('Нормализация завершена', { timeout: 30000 });
+  return run.id as string;
+}
+test('detects explains and persists conflicts from two browser imports without business actions', async ({ page }) => {
+  test.setTimeout(180000);
+  await signIn(page, 'ADMIN');
+  const ids = [await input(page, 'a'), await input(page, 'b')];
+  await page.getByRole('button', { name: 'Сопоставление', exact: true }).click();
+  await page.getByLabel('Нормализация источника A', { exact: true }).selectOption(ids[0]);
+  await page.getByLabel('Нормализация источника B', { exact: true }).selectOption(ids[1]);
+  const started = page.waitForResponse((response) => response.url().endsWith('/api/v1/matching-runs') && response.request().method() === 'POST');
+  await page.getByRole('button', { name: 'Запустить сопоставление', exact: true }).click();
+  const matching = await (await started).json();
+  await expect(page.getByRole('region', { name: 'Результат сопоставления', exact: true }).getByRole('status')).toContainText('Сопоставление завершено', { timeout: 30000 });
+  await page.getByRole('button', { name: 'Открыть конфликты сопоставления', exact: true }).click();
+  const generation = page.waitForResponse((response) => response.url().endsWith('/api/v1/conflict-runs') && response.request().method() === 'POST');
+  await page.getByRole('button', { name: 'Проверить конфликты', exact: true }).click();
+  const run = await (await generation).json();
+  await expect(page.getByRole('status').filter({ hasText: run.id })).toContainText('COMPLETED', { timeout: 30000 });
+  const response = await page.request.get('/api/v1/conflicts?matching_run_id=' + matching.id);
+  expect(response.ok()).toBeTruthy();
+  const rows = await response.json();
+  expect(rows).toHaveLength(2);
+  const mismatch = rows.find((item: { conflict_type: string }) => item.conflict_type === 'VALUE_MISMATCH');
+  await page.getByRole('button', { name: mismatch.id, exact: true }).click();
+  const detail = page.getByRole('region', { name: 'Карточка конфликта', exact: true });
+  await expect(detail).toContainText('12.5 kg'); await expect(detail).toContainText('12.4 kg');
+  await expect(detail).toContainText('Conflicts a ' + accounts.prefix); await expect(detail).toContainText('Conflicts b ' + accounts.prefix);
+  await expect(detail).toContainText('SHA-256'); await expect(detail).toContainText('fk-conflicts/1');
+  await expect(detail).toContainText('Решение человека ещё не принято');
+  await expect(detail.getByRole('button', { name: /Исправить|Выбрать|Принять/ })).toHaveCount(0);
+  const before = await (await page.request.get('/api/v1/conflicts/' + mismatch.id)).json();
+  await page.reload();
+  await page.getByRole('button', { name: 'Конфликты', exact: true }).click();
+  await page.getByLabel('Сопоставление для конфликтов', { exact: true }).selectOption(matching.id);
+  await page.getByRole('button', { name: mismatch.id, exact: true }).click();
+  await expect(page.getByRole('region', { name: 'Карточка конфликта' })).toContainText(mismatch.id);
+  expect(await (await page.request.get('/api/v1/conflicts/' + mismatch.id)).json()).toEqual(before);
+  await page.getByRole('button', { name: 'Выйти', exact: true }).click();
+  await signIn(page, 'VIEWER');
+  await page.getByRole('button', { name: 'Конфликты', exact: true }).click();
+  await page.getByLabel('Сопоставление для конфликтов', { exact: true }).selectOption(matching.id);
+  await page.getByRole('button', { name: mismatch.id, exact: true }).click();
+  await expect(page.getByRole('region', { name: 'Карточка конфликта' })).toContainText(mismatch.id);
+  await expect(page.getByRole('button', { name: 'Проверить конфликты' })).toHaveCount(0);
+});

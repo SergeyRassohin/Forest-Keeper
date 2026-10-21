@@ -42,3 +42,7 @@ Stage 5: подробное ТЗ, границы, benchmark, migration, browser 
 6. PASS/FAIL/BLOCKED по каждому шагу; unresolved blocker не заменяется SKIP или зелёным health.
 7. Независимое ревью и исправления до объявления готовности. Существующие исторические отчёты не выдаются за новое независимое ревью этой правки.
 8. Для Stage 5 после реализации: реальный Conflict ID, linked MatchCandidate, raw/normalized/provenance, deterministic Basis и сохранность после restart.
+
+## Stage 5: реализация в отдельном PR
+
+Ветка `codex/stage5-conflict-engine` содержит [Conflict Engine](../development/conflicts.md): persisted OPEN conflicts, async analysis, API и Web list/detail с immutable evidence. Это проверяемая реализация PR, а не принятый main. До independent retest, финального CI и отдельного разрешения владельца merge/acceptance заблокированы. Полный MVP #18/#20 остаётся незавершённым.

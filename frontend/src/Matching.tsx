@@ -35,7 +35,7 @@ function useRemote<T>(path: string | null, expired: () => void, revision: number
   return state.path === path ? state : {};
 }
 
-export function Matching({ user, onSessionExpired }: { user: User; onSessionExpired: () => void }) {
+export function Matching({ user, onSessionExpired, onConflicts }: { user: User; onSessionExpired: () => void; onConflicts?: (id: string) => void }) {
   const [revision, setRevision] = useState(0);
   const [profileId, setProfileId] = useState('');
   const [a, setA] = useState('');
@@ -86,6 +86,7 @@ export function Matching({ user, onSessionExpired }: { user: User; onSessionExpi
       <button disabled={!historyOffset} onClick={() => { chooseRun(''); setHistoryOffset(Math.max(0, historyOffset - 10)); }}>Предыдущие сопоставления</button><button disabled={(history.value?.length ?? 0) < 10} onClick={() => { chooseRun(''); setHistoryOffset(historyOffset + 10); }}>Следующие сопоставления</button>
     </section>
     {run.value && <section className="panel" aria-label="Результат сопоставления">
+      {run.value.status === 'COMPLETED' && onConflicts && user.permissions.includes('conflict.view') && <button onClick={() => onConflicts(run.value!.id)}>Открыть конфликты сопоставления</button>}
       <p role="status">{(names.get(run.value.status) ?? run.value.status)} · записей {run.value.records_processed}, кандидатов {run.value.candidates_generated}</p>
       {run.value.status !== 'COMPLETED' && <p className="warning">Результаты частичные до успешного завершения.</p>}
       {run.value.error_text && <p role="alert">{run.value.error_text}. Для повтора создайте новый запуск; история сохранена.</p>}

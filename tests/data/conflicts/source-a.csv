@@ -1,0 +1,9 @@
+id,name,mass,price,date
+EQ,Equivalent Bolt,12500 g,10,2026-01-01
+DIFF,Different Bolt,12.5 kg,10,2026-01-01
+MISS,Missing Bolt,,10,2026-01-01
+INVALID,Invalid Bolt,broken,10,2026-01-01
+UNKNOWN,Unknown Bolt,10 lb,10,2026-01-01
+DUP,Duplicate Bolt,1 kg,10,2026-01-01
+DUP,Duplicate Bolt,1 kg,10,2026-01-01
+NEG-A,Negative Bolt M8,2 kg,10,2026-01-01
