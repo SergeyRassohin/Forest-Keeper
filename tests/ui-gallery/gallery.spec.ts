@@ -76,7 +76,7 @@ async function importSource(page: Page, side: 'a' | 'b') {
   await expect(normalization.getByRole('status')).toContainText('Нормализация завершена', { timeout: 30000 });
   if (side === 'a') {
     const normalizedRecord = normalization.locator('.normalization-record').filter({ has: page.locator('summary').filter({ hasText: /^Запись MAT-001 ·/ }) });
-    await normalizedRecord.locator('summary').click();
+    await normalizedRecord.locator(':scope > summary').click();
     await capture(page, '05-normalization', 'Исходное → сопоставимое', 'Масса приводится к единой единице; исходное значение, качество и правило остаются доступными. Нормализация не объявляет значение истиной.', normalizedRecord);
   }
   return { analysis: run.id as string, batch: batch.id as string };
