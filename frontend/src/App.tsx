@@ -65,7 +65,7 @@ export function HealthDashboard({
     <div className="shell">
       <main>
         <p className="eyebrow">Состояние среды</p>
-        <h1>Основа для доверия к данным</h1>
+        <h1>Обзор рабочего пространства</h1>
         <p className="intro">
           Forest Keeper сравнивает источники, сохраняет происхождение данных и
           помогает принимать объяснимые решения.
@@ -162,6 +162,8 @@ export function App() {
     setError('');
     try {
       setUser(await signIn(login, password));
+      setPage('dashboard');
+      setConflictMatchingId('');
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'Не удалось войти.');
     } finally {
@@ -183,105 +185,45 @@ export function App() {
     }
   }
 
-  return (
-    <>
-      <header className="shell">
-        <span className="brand-mark" aria-hidden="true">
-          FK
-        </span>
-        <span>Forest Keeper</span>
-        {user && (
-          <>
-            <span className="identity">
-              {user.display_name} · {user.roles.join(', ')}
-            </span>
-            <button onClick={leave} disabled={busy}>
-              Выйти
-            </button>
-          </>
-        )}
-      </header>
-      {checking ? (
-        <main className="shell" role="status">
-          Проверяем сессию…
-        </main>
-      ) : failure ? (
-        <main className="shell">
-          <p role="alert">Не удалось подключиться к серверу.</p>
-          <button
-            onClick={() => {
-              setChecking(true);
-              setFailure(false);
-              setRetry(retry + 1);
-            }}
-          >
-            Повторить
-          </button>
-        </main>
-      ) : !user ? (
-        <main className="shell">
-          <section className="panel login-panel">
-            <h1>Вход в Forest Keeper</h1>
-            <p>Войдите, чтобы работать с доступными вам данными.</p>
-            <form onSubmit={enter}>
-              <label>
-                Логин
-                <input
-                  autoComplete="username"
-                  required
-                  value={login}
-                  onChange={(event) => setLogin(event.target.value)}
-                  maxLength={64}
-                />
-              </label>
-              <label>
-                Пароль
-                <input
-                  type="password"
-                  autoComplete="current-password"
-                  required
-                  value={password}
-                  onChange={(event) => setPassword(event.target.value)}
-                  maxLength={128}
-                />
-              </label>
-              {error && (
-                <p role="alert" className="warning">
-                  {error}
-                </p>
-              )}
-              <button disabled={busy}>{busy ? 'Входим…' : 'Войти'}</button>
-            </form>
-          </section>
-        </main>
-      ) : (
-        <>
-          {error && (
-            <p className="shell warning" role="alert">
-              {error}
-            </p>
-          )}
-          <nav className="shell" aria-label="Разделы приложения">
-            {user.permissions.includes('conflict.view') && <button onClick={() => setPage('conflicts')}>Конфликты</button>}
-            <button onClick={() => setPage('dashboard')}>Состояние сервера</button>
-            {user.permissions.includes('import.view') &&
-              <button onClick={() => setPage('imports')}>Импорт данных</button>}
-            {user.permissions.includes('match.view') && <button onClick={() => setPage('matching')}>Сопоставление</button>}
-          </nav>
-          {page === 'conflicts' && user.permissions.includes('conflict.view') ? (<Conflicts user={user} onSessionExpired={expire} initialRunId={conflictMatchingId} />) : page === 'matching' && user.permissions.includes('match.view') ? (<Matching user={user} onSessionExpired={expire} onConflicts={(id) => { setConflictMatchingId(id); setPage('conflicts'); }} />) : page === 'imports' && user.permissions.includes('import.view') ? (
-            <Imports user={user} onSessionExpired={expire} />
-          ) : user.permissions.includes('dashboard.view') ? (
-            <HealthDashboard onSessionExpired={expire} />
-          ) : (
-            <main className="shell">
-              <h1>Доступ не назначен</h1>
-              <p>Обратитесь к администратору для назначения роли.</p>
-            </main>
-          )}
-          {page === 'dashboard' && user.permissions.includes('user.view') && <UserAdmin />}
-        </>
-      )}
-      <footer className="shell">Исходные данные сохраняются. Окончательное решение принимает человек.</footer>
-    </>
-  );
+  const sections = [
+    { key: 'dashboard', label: 'Состояние сервера', caption: 'Обзор', permission: 'dashboard.view' },
+    { key: 'imports', label: 'Импорт данных', caption: 'Источники и нормализация', permission: 'import.view' },
+    { key: 'matching', label: 'Сопоставление', caption: 'Идентичность записей', permission: 'match.view' },
+    { key: 'conflicts', label: 'Конфликты', caption: 'Расхождения значений', permission: 'conflict.view' },
+    { key: 'users', label: 'Пользователи', caption: 'Администрирование', permission: 'user.view' },
+  ];
+  const currentSection = sections.find((item) => item.key === page);
+  const brand = <span className="brand"><img src="/brand/forest-keeper.svg" alt="" /><span>Forest Keeper<small>Порядок в корпоративных данных</small></span></span>;
+  const signInForm = <section className="login-panel" aria-labelledby="login-title">
+    <p className="eyebrow">Рабочее пространство</p>
+    <h1 id="login-title">Вход в Forest Keeper</h1>
+    <p>Войдите, чтобы сравнить источники и увидеть основания каждого результата.</p>
+    <form onSubmit={enter}>
+      <label>Логин<input autoComplete="username" required value={login} onChange={(event) => setLogin(event.target.value)} maxLength={64} /></label>
+      <label>Пароль<input type="password" autoComplete="current-password" required value={password} onChange={(event) => setPassword(event.target.value)} maxLength={128} /></label>
+      {error && <p role="alert">{error}</p>}
+      <button className="primary" disabled={busy}>{busy ? 'Входим…' : 'Войти'}</button>
+    </form>
+    <p className="login-footnote">Доступ определяется вашей ролью. Исходные данные сохраняются.</p>
+  </section>;
+
+  if (!user) return <><a className="skip-link" href="#main-content">Перейти к содержимому</a><main className="login-layout" id="main-content">
+    <aside className="login-brand" aria-label="Forest Keeper">{brand}<div><p className="brand-tagline">Ясность там, где данные расходятся.</p><p>Два источника. Объяснимое сравнение. Решение остаётся за человеком.</p></div><p>FOREST KEEPER · WEB CLIENT</p></aside>
+    {checking ? <section className="login-panel" role="status"><h1>Проверяем сессию…</h1><p>Подключаем ваше рабочее пространство.</p></section> : failure ? <section className="login-panel"><h1>Подключение недоступно</h1><p role="alert">Не удалось подключиться к серверу.</p><button onClick={() => { setChecking(true); setFailure(false); setRetry(retry + 1); }}>Повторить</button></section> : signInForm}
+  </main></>;
+
+  return <><a className="skip-link" href="#main-content">Перейти к содержимому</a><div className="app-frame">
+    <aside className="app-sidebar">{brand}
+      <nav className="app-nav" aria-label="Разделы приложения">{sections.filter((item) => user.permissions.includes(item.permission)).map((item, index) => <button key={item.key} aria-current={page === item.key ? 'page' : undefined} onClick={() => setPage(item.key)}><span className="nav-index" aria-hidden="true">0{index + 1}</span>{item.label}</button>)}</nav>
+      <div className="sidebar-note">Источники сохраняются.<br />Основания доступны.<br />Решение принимает человек.</div>
+    </aside>
+    <div className="app-workspace">
+      <header className="workspace-header"><span className="workspace-title"><small>Рабочее пространство</small>{currentSection?.caption ?? 'Обзор'}</span><span className="identity">{user.display_name}<small>{user.roles.join(' · ')}</small></span><button onClick={leave} disabled={busy}>Выйти</button></header>
+      <div className="workspace-content" id="main-content" tabIndex={-1}>
+        {error && <p className="shell" role="alert">{error}</p>}
+        {page === 'conflicts' && user.permissions.includes('conflict.view') ? <Conflicts user={user} onSessionExpired={expire} initialRunId={conflictMatchingId} /> : page === 'matching' && user.permissions.includes('match.view') ? <Matching user={user} onSessionExpired={expire} onConflicts={(id) => { setConflictMatchingId(id); setPage('conflicts'); }} /> : page === 'imports' && user.permissions.includes('import.view') ? <Imports user={user} onSessionExpired={expire} /> : page === 'users' && user.permissions.includes('user.view') ? <UserAdmin canManage={user.permissions.includes('user.manage') && user.permissions.includes('role.assign')} /> : user.permissions.includes('dashboard.view') ? <HealthDashboard onSessionExpired={expire} /> : <main className="shell"><p className="eyebrow">Права доступа</p><h1>Доступ не назначен</h1><p>Обратитесь к администратору для назначения роли.</p></main>}
+      </div>
+      <footer className="shell workspace-footer">Исходные данные сохраняются. Окончательное решение принимает человек.</footer>
+    </div>
+  </div></>;
 }

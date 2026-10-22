@@ -14,14 +14,14 @@ function setup(historical = false) {
 const user = (permissions: string[]) => ({ id: 'user', login: 'viewer', display_name: 'Viewer', roles: ['VIEWER'], permissions });
 it('shows raw normalized values provenance and honest human boundary, escaping hostile values', async () => {
   setup(); render(<Conflicts user={user(['conflict.view'])} onSessionExpired={() => {}} />);
-  fireEvent.click(await screen.findByRole('button', { name: row.id }));
+  fireEvent.click(await screen.findByRole('button', { name: 'Открыть конфликт ' + row.id }));
   expect(await screen.findByText('Нормализованные значения одного атрибута различаются.')).toBeVisible();
-  expect(screen.getByText('Исходное: "<script>alert(1)</script>"')).toBeVisible();
+  expect(screen.getByText('<script>alert(1)</script>')).toBeVisible();
   expect(document.querySelector('script')).toBeNull();
   expect(screen.getByRole('region', { name: 'Источники нормализации' })).toHaveTextContent('norm-A');
   expect(screen.getByRole('region', { name: 'Источники нормализации' })).toHaveTextContent('norm-B');
-  expect(screen.getByRole('region', { name: 'Источники нормализации' })).toHaveTextContent('profile-B v1');
-  expect(screen.getAllByText('Решение человека ещё не принято')).toHaveLength(2);
+  expect(screen.getByRole('region', { name: 'Источники нормализации' })).toHaveTextContent('Профиль: profile-B v1');
+  expect(screen.getByText('Решение человека ещё не принято. Human Review будет доступен на следующем этапе.')).toBeVisible();
   expect(screen.queryByRole('button', { name: 'Проверить конфликты' })).not.toBeInTheDocument();
   expect(screen.queryByRole('button', { name: /Выбрать значение|Исправить|Принять рекомендацию/ })).not.toBeInTheDocument();
 });
@@ -34,11 +34,26 @@ it('runs authorized analysis and filters by matching input', async () => {
 });
 it('marks results from a previous profile explicitly', async () => {
   setup(true); render(<Conflicts user={user(['conflict.view'])} onSessionExpired={() => {}} />);
-  fireEvent.click(await screen.findByRole('button', { name: row.id }));
+  fireEvent.click(await screen.findByRole('button', { name: 'Открыть конфликт ' + row.id }));
   expect(await screen.findByText(/Результат по предыдущей версии профиля/)).toBeVisible();
 });
 it('expires the session on unauthorized API response', async () => {
   vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response('{}', { status: 401 }));
   const expired = vi.fn(); render(<Conflicts user={user(['conflict.view'])} onSessionExpired={expired} />);
   await vi.waitFor(() => expect(expired).toHaveBeenCalled());
+});
+it('clears a selected detail when the list filter changes', async () => {
+  setup(); render(<Conflicts user={user(['conflict.view'])} onSessionExpired={() => {}} />);
+  fireEvent.click(await screen.findByRole('button', { name: 'Открыть конфликт ' + row.id }));
+  await screen.findByRole('region', { name: 'Карточка конфликта' });
+  fireEvent.change(screen.getByLabelText('Тип конфликта'), { target: { value: 'RULE_VIOLATION' } });
+  expect(screen.queryByRole('region', { name: 'Карточка конфликта' })).not.toBeInTheDocument();
+});
+it('does not describe an omitted long raw value as absent', async () => {
+  const omitted = { ...detail, values_snapshot: detail.values_snapshot.map((item, index) => index ? item : { ...item, value: { ...item.value, raw_value: null, raw_value_omitted: true } }) };
+  vi.spyOn(globalThis, 'fetch').mockImplementation(async (path) => new Response(JSON.stringify(String(path).includes('/conflicts/conflict-1') ? omitted : String(path).includes('/conflicts?') ? [row] : []), { status: 200 }));
+  render(<Conflicts user={user(['conflict.view'])} onSessionExpired={() => {}} />);
+  fireEvent.click(await screen.findByRole('button', { name: 'Открыть конфликт ' + row.id }));
+  expect(await screen.findByText('Сохранено в оригинале')).toBeVisible();
+  expect(screen.queryByText('Не задано')).not.toBeInTheDocument();
 });

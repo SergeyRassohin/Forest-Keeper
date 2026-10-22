@@ -31,14 +31,14 @@ it('shows source, raw, normalized, unit, quality and exact rule without offering
   expect(await screen.findByRole('status')).toBeInTheDocument();
   fireEvent.click(await screen.findByText('Запись 001 · Болт'));
   const row = screen.getAllByRole('row')[0].querySelector('th');
-  expect(row).toHaveTextContent('Канонический');
+  expect(row).toHaveTextContent('Атрибут');
   const valueRow = screen.getAllByRole('row')[1];
-  expect(within(valueRow).getByText('"12,5 кг"')).toBeInTheDocument();
-  expect(within(valueRow).getByText('"12.5"')).toBeInTheDocument();
+  expect(within(valueRow).getByText('12,5 кг')).toBeInTheDocument();
+  expect(within(valueRow).getByText('12.5')).toBeInTheDocument();
   expect(valueRow).toHaveTextContent('VALID');
   expect(valueRow).toHaveTextContent('quantity');
   expect(screen.getByText(/Источник: Source/)).toBeInTheDocument();
-  expect(screen.getByText(/Поля без mapping \(UNKNOWN\): unknown/)).toBeInTheDocument();
+  expect(screen.getByText(/Поля без правила нормализации \(UNKNOWN\): unknown/)).toBeInTheDocument();
   expect(screen.queryByRole('button', { name: 'Нормализовать пакет' })).not.toBeInTheDocument();
 });
 
