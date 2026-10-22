@@ -1,0 +1,76 @@
+Local missing: 0; HTTP checked: 0; HTTP failures: 0
+......
+----------------------------------------------------------------------
+Ran 6 tests in 0.007s
+
+OK
+All checks passed!
+78 files already formatted
+All checks passed!
+4 files already formatted
+Success: no issues found in 47 source files
+============================= test session starts ==============================
+platform linux -- Python 3.13.16, pytest-9.1.1, pluggy-1.6.0
+rootdir: /workspace/Forest-Keeper/backend
+configfile: pyproject.toml
+testpaths: tests
+plugins: anyio-4.15.1, platformdirs-4.13.0
+collected 635 items / 435 deselected / 200 selected
+
+tests/test_conflicts.py ...................                              [  9%]
+tests/test_health.py ......                                              [ 12%]
+tests/test_import_parsers.py ........................................... [ 34%]
+.............................                                            [ 48%]
+tests/test_matching.py ..................                                [ 57%]
+tests/test_normalization.py ............................................ [ 79%]
+........................                                                 [ 91%]
+tests/test_policy.py ..                                                  [ 92%]
+tests/test_secret_settings.py ..                                         [ 93%]
+tests/test_worker_health.py .............                                [100%]
+
+=============================== warnings summary ===============================
+.venv/lib/python3.13/site-packages/fastapi/testclient.py:1
+  /workspace/Forest-Keeper/backend/.venv/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================ 200 passed, 435 deselected, 1 warning in 3.07s ================
+
+> forest-keeper-web@0.1.0 lint
+> eslint .
+
+
+> forest-keeper-web@0.1.0 test
+> vitest run
+
+
+ RUN  v5.0.4 /workspace/Forest-Keeper/frontend
+
+
+ Test Files  6 passed (6)
+      Tests  25 passed (25)
+   Start at  18:57:13
+   Duration  10.80s (environment 48%, tests 36%, setup 13%, import 2%, transform 1%)
+
+Environment  jsdom was created 6 times · 4.44s total, 48% of tracked time
+             create it once per worker with pool: 'vmThreads' (keeps per-file isolation) or isolate: false (shares it across files)
+             learn more: https://vitest.dev/guide/improving-performance#test-environments
+
+
+> forest-keeper-web@0.1.0 build
+> tsc -b && vite build
+
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 22 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.44 kB │ gzip:  0.28 kB
+dist/assets/index-DYq3VFvJ.css    3.03 kB │ gzip:  1.14 kB
+dist/assets/index-D1-9ueLZ.js   270.34 kB │ gzip: 80.57 kB
+
+✓ built in 293ms
+
+> forest-keeper-web@0.1.0 typecheck:e2e
+> tsc -p ../tests/e2e/tsconfig.json
+

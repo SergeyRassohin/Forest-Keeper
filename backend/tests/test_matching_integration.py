@@ -135,7 +135,7 @@ def test_actual_import_normalization_matching_and_provenance(client, auth_env):
         assert detail["evidence"]["input_context"] == result["input_context"]
         assert detail["confirmed_by"] is None
     assert [client.get("/api/v1/analysis/" + value + "/records").json() for value in ids] == before
-    assert client.get("/api/v1/conflicts").status_code == 404
+    assert client.get("/api/v1/conflicts").status_code == 200
     old = candidates(client, run)
     execute_matching(UUID(run["id"]), auth_env)
     assert candidates(client, run) == old

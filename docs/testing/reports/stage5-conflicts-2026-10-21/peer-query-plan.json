@@ -1,0 +1,49 @@
+{
+  "input_raw_ids": 200,
+  "execution_ms": 2.349,
+  "plan": {
+    "node": "Nested Loop",
+    "index": null,
+    "rows": 100,
+    "loops": 1,
+    "children": [
+      {
+        "node": "Bitmap Heap Scan",
+        "index": null,
+        "rows": 100,
+        "loops": 1,
+        "children": [
+          {
+            "node": "BitmapOr",
+            "index": null,
+            "rows": 0,
+            "loops": 1,
+            "children": [
+              {
+                "node": "Bitmap Index Scan",
+                "index": "ix_match_candidates_raw_record_a_id",
+                "rows": 110,
+                "loops": 1,
+                "children": []
+              },
+              {
+                "node": "Bitmap Index Scan",
+                "index": "ix_match_candidates_raw_record_b_id",
+                "rows": 108,
+                "loops": 1,
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "node": "Index Only Scan",
+        "index": "conflict_inputs_pkey",
+        "rows": 1,
+        "loops": 100,
+        "children": []
+      }
+    ]
+  }
+}

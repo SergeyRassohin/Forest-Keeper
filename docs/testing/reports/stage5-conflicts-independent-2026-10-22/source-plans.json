@@ -1,0 +1,241 @@
+{
+  "review_started": "2026-10-22T10:38:00+00:00",
+  "records_per_source": 100000,
+  "conflicts": 15000,
+  "plans": [
+    {
+      "side": 0,
+      "matched_count": 15000,
+      "plan": [
+        {
+          "Plan": {
+            "Node Type": "Limit",
+            "Parallel Aware": false,
+            "Async Capable": false,
+            "Startup Cost": 0.29,
+            "Total Cost": 2504.3,
+            "Plan Rows": 50,
+            "Plan Width": 24,
+            "Actual Startup Time": 0.009,
+            "Actual Total Time": 0.061,
+            "Actual Rows": 50,
+            "Actual Loops": 1,
+            "Shared Hit Blocks": 46,
+            "Shared Read Blocks": 0,
+            "Shared Dirtied Blocks": 0,
+            "Shared Written Blocks": 0,
+            "Local Hit Blocks": 0,
+            "Local Read Blocks": 0,
+            "Local Dirtied Blocks": 0,
+            "Local Written Blocks": 0,
+            "Temp Read Blocks": 0,
+            "Temp Written Blocks": 0,
+            "Plans": [
+              {
+                "Node Type": "Index Scan",
+                "Parent Relationship": "Outer",
+                "Parallel Aware": false,
+                "Async Capable": false,
+                "Scan Direction": "Backward",
+                "Index Name": "ix_conflicts_created",
+                "Relation Name": "conflicts",
+                "Alias": "conflicts",
+                "Startup Cost": 0.29,
+                "Total Cost": 7512.34,
+                "Plan Rows": 150,
+                "Plan Width": 24,
+                "Actual Startup Time": 0.008,
+                "Actual Total Time": 0.057,
+                "Actual Rows": 50,
+                "Actual Loops": 1,
+                "Filter": "(values_snapshot @> '[{\"source_id\": \"4e314e1d-511f-4577-bba7-6296aeeb02fd\"}]'::jsonb)",
+                "Rows Removed by Filter": 0,
+                "Shared Hit Blocks": 46,
+                "Shared Read Blocks": 0,
+                "Shared Dirtied Blocks": 0,
+                "Shared Written Blocks": 0,
+                "Local Hit Blocks": 0,
+                "Local Read Blocks": 0,
+                "Local Dirtied Blocks": 0,
+                "Local Written Blocks": 0,
+                "Temp Read Blocks": 0,
+                "Temp Written Blocks": 0
+              }
+            ]
+          },
+          "Planning": {
+            "Shared Hit Blocks": 10,
+            "Shared Read Blocks": 1,
+            "Shared Dirtied Blocks": 0,
+            "Shared Written Blocks": 0,
+            "Local Hit Blocks": 0,
+            "Local Read Blocks": 0,
+            "Local Dirtied Blocks": 0,
+            "Local Written Blocks": 0,
+            "Temp Read Blocks": 0,
+            "Temp Written Blocks": 0
+          },
+          "Planning Time": 0.142,
+          "Triggers": [],
+          "Execution Time": 0.076
+        }
+      ]
+    },
+    {
+      "side": 1,
+      "matched_count": 15000,
+      "plan": [
+        {
+          "Plan": {
+            "Node Type": "Limit",
+            "Parallel Aware": false,
+            "Async Capable": false,
+            "Startup Cost": 0.29,
+            "Total Cost": 2504.3,
+            "Plan Rows": 50,
+            "Plan Width": 24,
+            "Actual Startup Time": 0.009,
+            "Actual Total Time": 0.06,
+            "Actual Rows": 50,
+            "Actual Loops": 1,
+            "Shared Hit Blocks": 46,
+            "Shared Read Blocks": 0,
+            "Shared Dirtied Blocks": 0,
+            "Shared Written Blocks": 0,
+            "Local Hit Blocks": 0,
+            "Local Read Blocks": 0,
+            "Local Dirtied Blocks": 0,
+            "Local Written Blocks": 0,
+            "Temp Read Blocks": 0,
+            "Temp Written Blocks": 0,
+            "Plans": [
+              {
+                "Node Type": "Index Scan",
+                "Parent Relationship": "Outer",
+                "Parallel Aware": false,
+                "Async Capable": false,
+                "Scan Direction": "Backward",
+                "Index Name": "ix_conflicts_created",
+                "Relation Name": "conflicts",
+                "Alias": "conflicts",
+                "Startup Cost": 0.29,
+                "Total Cost": 7512.34,
+                "Plan Rows": 150,
+                "Plan Width": 24,
+                "Actual Startup Time": 0.008,
+                "Actual Total Time": 0.056,
+                "Actual Rows": 50,
+                "Actual Loops": 1,
+                "Filter": "(values_snapshot @> '[{\"source_id\": \"f7144728-8707-4911-b827-62d4d1bbf0cb\"}]'::jsonb)",
+                "Rows Removed by Filter": 0,
+                "Shared Hit Blocks": 46,
+                "Shared Read Blocks": 0,
+                "Shared Dirtied Blocks": 0,
+                "Shared Written Blocks": 0,
+                "Local Hit Blocks": 0,
+                "Local Read Blocks": 0,
+                "Local Dirtied Blocks": 0,
+                "Local Written Blocks": 0,
+                "Temp Read Blocks": 0,
+                "Temp Written Blocks": 0
+              }
+            ]
+          },
+          "Planning": {
+            "Shared Hit Blocks": 0,
+            "Shared Read Blocks": 0,
+            "Shared Dirtied Blocks": 0,
+            "Shared Written Blocks": 0,
+            "Local Hit Blocks": 0,
+            "Local Read Blocks": 0,
+            "Local Dirtied Blocks": 0,
+            "Local Written Blocks": 0,
+            "Temp Read Blocks": 0,
+            "Temp Written Blocks": 0
+          },
+          "Planning Time": 0.056,
+          "Triggers": [],
+          "Execution Time": 0.066
+        }
+      ]
+    },
+    {
+      "side": "absent",
+      "matched_count": 0,
+      "plan": [
+        {
+          "Plan": {
+            "Node Type": "Limit",
+            "Parallel Aware": false,
+            "Async Capable": false,
+            "Startup Cost": 0.29,
+            "Total Cost": 2504.3,
+            "Plan Rows": 50,
+            "Plan Width": 24,
+            "Actual Startup Time": 15.961,
+            "Actual Total Time": 15.961,
+            "Actual Rows": 0,
+            "Actual Loops": 1,
+            "Shared Hit Blocks": 11776,
+            "Shared Read Blocks": 73,
+            "Shared Dirtied Blocks": 0,
+            "Shared Written Blocks": 0,
+            "Local Hit Blocks": 0,
+            "Local Read Blocks": 0,
+            "Local Dirtied Blocks": 0,
+            "Local Written Blocks": 0,
+            "Temp Read Blocks": 0,
+            "Temp Written Blocks": 0,
+            "Plans": [
+              {
+                "Node Type": "Index Scan",
+                "Parent Relationship": "Outer",
+                "Parallel Aware": false,
+                "Async Capable": false,
+                "Scan Direction": "Backward",
+                "Index Name": "ix_conflicts_created",
+                "Relation Name": "conflicts",
+                "Alias": "conflicts",
+                "Startup Cost": 0.29,
+                "Total Cost": 7512.34,
+                "Plan Rows": 150,
+                "Plan Width": 24,
+                "Actual Startup Time": 15.96,
+                "Actual Total Time": 15.96,
+                "Actual Rows": 0,
+                "Actual Loops": 1,
+                "Filter": "(values_snapshot @> '[{\"source_id\": \"ffed3686-cfd8-4029-9752-3cc4ba62417b\"}]'::jsonb)",
+                "Rows Removed by Filter": 15000,
+                "Shared Hit Blocks": 11776,
+                "Shared Read Blocks": 73,
+                "Shared Dirtied Blocks": 0,
+                "Shared Written Blocks": 0,
+                "Local Hit Blocks": 0,
+                "Local Read Blocks": 0,
+                "Local Dirtied Blocks": 0,
+                "Local Written Blocks": 0,
+                "Temp Read Blocks": 0,
+                "Temp Written Blocks": 0
+              }
+            ]
+          },
+          "Planning": {
+            "Shared Hit Blocks": 0,
+            "Shared Read Blocks": 0,
+            "Shared Dirtied Blocks": 0,
+            "Shared Written Blocks": 0,
+            "Local Hit Blocks": 0,
+            "Local Read Blocks": 0,
+            "Local Dirtied Blocks": 0,
+            "Local Written Blocks": 0,
+            "Temp Read Blocks": 0,
+            "Temp Written Blocks": 0
+          },
+          "Planning Time": 0.054,
+          "Triggers": [],
+          "Execution Time": 15.968
+        }
+      ]
+    }
+  ]
+}

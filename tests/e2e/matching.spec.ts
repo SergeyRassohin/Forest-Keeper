@@ -86,5 +86,5 @@ test('matches two normalized browser imports with evidence and authorized review
   await page.getByRole('button', { name: 'Выйти', exact: true }).click(); await signIn(page, 'VIEWER'); await chooseRun(page, run.id);
   await expect(page.getByRole('button', { name: 'Запустить сопоставление', exact: true })).toHaveCount(0);
   const after = await Promise.all(ids.map(async (id) => (await page.request.get('/api/v1/analysis/' + id + '/records')).json())); expect(after).toEqual(before);
-  expect((await page.request.get('/api/v1/conflicts')).status()).toBe(404);
+  expect((await page.request.get('/api/v1/conflicts')).status()).toBe(200);
 });

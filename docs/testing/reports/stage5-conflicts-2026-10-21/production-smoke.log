@@ -1,0 +1,4 @@
+PASS: two concurrent 100 MB HTTPS uploads, exact checksums, temporary files released
+PASS: production config, HTTPS health, file secrets, non-root/read-only/resources
+PASS: real RQ job; own worker healthy -> stale/unhealthy -> stopped -> restored healthy
+PASS: PostgreSQL/Redis persistence after restart; no credential values in inspect/logs

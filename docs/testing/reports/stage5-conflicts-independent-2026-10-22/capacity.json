@@ -1,0 +1,215 @@
+{
+  "commit": "d230f628c58e0d2164293549f2a5213940c0dbe7",
+  "dirty": false,
+  "environment": {
+    "python": "3.13.16",
+    "os": "Linux-6.18.55-x86_64-with-glibc2.41",
+    "execution": "host Python, isolated PostgreSQL schema/Redis queue; SimpleWorker"
+  },
+  "profiles": [
+    {
+      "source_datasets": 2,
+      "records_per_dataset": 100,
+      "attributes_per_record": 30,
+      "bytes_per_dataset": [
+        30381,
+        30486
+      ],
+      "import_seconds": 0.615,
+      "normalization_seconds": 0.738,
+      "matching_seconds": 0.105,
+      "conflict_seconds": 0.385,
+      "matched_identities_processed": 100,
+      "attributes_evaluated": 3000,
+      "conflicts_generated": 15,
+      "expected_conflicts": 15,
+      "false_conflicts": 0,
+      "missed_conflicts": 0,
+      "conflict_types": {
+        "MISSING": 5,
+        "VALUE_MISMATCH": 10
+      },
+      "records": 200,
+      "candidate_pairs_generated": 100,
+      "candidate_reduction_ratio": 0.99,
+      "status_counts": {
+        "MATCHED": 100
+      },
+      "false_merge_count": 0,
+      "records_per_second": 1908.22,
+      "coverage_diagnostics": {
+        "left_records": 100,
+        "right_records": 100,
+        "coverage_limited": true,
+        "pairs_omitted_cap": 0,
+        "full_cartesian_pairs": 10000,
+        "oversized_block_hits": 300,
+        "oversized_left_blocks": 3,
+        "oversized_right_blocks": 3,
+        "candidate_reduction_ratio": "0.99"
+      },
+      "normalization_values": 6000,
+      "metadata_endpoints": [
+        "/api/v1/conflicts/f6788207-4c83-5614-9690-907617aca483",
+        "/api/v1/conflicts?limit=50&matching_run_id=5a766cf2-5bf4-44f4-ab93-17d08ccc146f"
+      ],
+      "metadata_sessions": 10,
+      "metadata_p95_seconds": 0.2287,
+      "process_peak_rss_mib": 162.65,
+      "passed": true
+    },
+    {
+      "source_datasets": 2,
+      "records_per_dataset": 1000,
+      "attributes_per_record": 30,
+      "bytes_per_dataset": [
+        300381,
+        301431
+      ],
+      "import_seconds": 0.405,
+      "normalization_seconds": 2.936,
+      "matching_seconds": 0.36,
+      "conflict_seconds": 2.176,
+      "matched_identities_processed": 1000,
+      "attributes_evaluated": 30000,
+      "conflicts_generated": 150,
+      "expected_conflicts": 150,
+      "false_conflicts": 0,
+      "missed_conflicts": 0,
+      "conflict_types": {
+        "MISSING": 50,
+        "VALUE_MISMATCH": 100
+      },
+      "records": 2000,
+      "candidate_pairs_generated": 1000,
+      "candidate_reduction_ratio": 0.999,
+      "status_counts": {
+        "MATCHED": 1000
+      },
+      "false_merge_count": 0,
+      "records_per_second": 5553.29,
+      "coverage_diagnostics": {
+        "left_records": 1000,
+        "right_records": 1000,
+        "coverage_limited": true,
+        "pairs_omitted_cap": 0,
+        "full_cartesian_pairs": 1000000,
+        "oversized_block_hits": 3000,
+        "oversized_left_blocks": 3,
+        "oversized_right_blocks": 3,
+        "candidate_reduction_ratio": "0.999"
+      },
+      "normalization_values": 60000,
+      "metadata_endpoints": [
+        "/api/v1/conflicts/a7e719ff-bd11-52ad-ae41-7b1e9fa2677b",
+        "/api/v1/conflicts?limit=50&matching_run_id=a9e449cd-661e-4419-aaac-4ece7112d4a5"
+      ],
+      "metadata_sessions": 10,
+      "metadata_p95_seconds": 0.2681,
+      "process_peak_rss_mib": 190.12,
+      "passed": true
+    },
+    {
+      "source_datasets": 2,
+      "records_per_dataset": 10000,
+      "attributes_per_record": 30,
+      "bytes_per_dataset": [
+        3000381,
+        3010881
+      ],
+      "import_seconds": 2.85,
+      "normalization_seconds": 25.48,
+      "matching_seconds": 2.779,
+      "conflict_seconds": 46.6,
+      "matched_identities_processed": 10000,
+      "attributes_evaluated": 300000,
+      "conflicts_generated": 1500,
+      "expected_conflicts": 1500,
+      "false_conflicts": 0,
+      "missed_conflicts": 0,
+      "conflict_types": {
+        "MISSING": 500,
+        "VALUE_MISMATCH": 1000
+      },
+      "records": 20000,
+      "candidate_pairs_generated": 10000,
+      "candidate_reduction_ratio": 0.9999,
+      "status_counts": {
+        "MATCHED": 10000
+      },
+      "false_merge_count": 0,
+      "records_per_second": 7198.08,
+      "coverage_diagnostics": {
+        "left_records": 10000,
+        "right_records": 10000,
+        "coverage_limited": true,
+        "pairs_omitted_cap": 0,
+        "full_cartesian_pairs": 100000000,
+        "oversized_block_hits": 30000,
+        "oversized_left_blocks": 3,
+        "oversized_right_blocks": 3,
+        "candidate_reduction_ratio": "0.9999"
+      },
+      "normalization_values": 600000,
+      "metadata_endpoints": [
+        "/api/v1/conflicts/1de1691a-f949-55e6-b06a-5f4dff544edc",
+        "/api/v1/conflicts?limit=50&matching_run_id=ca58d7ad-fa79-4bfe-8029-0b9a37a7e4b5"
+      ],
+      "metadata_sessions": 10,
+      "metadata_p95_seconds": 0.4867,
+      "process_peak_rss_mib": 214.79,
+      "passed": true
+    },
+    {
+      "source_datasets": 2,
+      "records_per_dataset": 100000,
+      "attributes_per_record": 30,
+      "bytes_per_dataset": [
+        30000381,
+        30105381
+      ],
+      "import_seconds": 51.732,
+      "normalization_seconds": 345.29,
+      "matching_seconds": 33.093,
+      "conflict_seconds": 361.058,
+      "matched_identities_processed": 100000,
+      "attributes_evaluated": 3000000,
+      "conflicts_generated": 15000,
+      "expected_conflicts": 15000,
+      "false_conflicts": 0,
+      "missed_conflicts": 0,
+      "conflict_types": {
+        "MISSING": 5000,
+        "VALUE_MISMATCH": 10000
+      },
+      "records": 200000,
+      "candidate_pairs_generated": 100000,
+      "candidate_reduction_ratio": 0.99999,
+      "status_counts": {
+        "MATCHED": 100000
+      },
+      "false_merge_count": 0,
+      "records_per_second": 6043.57,
+      "coverage_diagnostics": {
+        "left_records": 100000,
+        "right_records": 100000,
+        "coverage_limited": true,
+        "pairs_omitted_cap": 0,
+        "full_cartesian_pairs": 10000000000,
+        "oversized_block_hits": 300000,
+        "oversized_left_blocks": 3,
+        "oversized_right_blocks": 3,
+        "candidate_reduction_ratio": "0.99999"
+      },
+      "normalization_values": 6000000,
+      "metadata_endpoints": [
+        "/api/v1/conflicts/0e7398ac-eaf7-5635-8789-9ca73ee76685",
+        "/api/v1/conflicts?limit=50&matching_run_id=cfe3e04a-c1bc-4b77-a8a8-8554674f14bd"
+      ],
+      "metadata_sessions": 10,
+      "metadata_p95_seconds": 0.5589,
+      "process_peak_rss_mib": 791.3,
+      "passed": true
+    }
+  ]
+}

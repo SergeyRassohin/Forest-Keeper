@@ -200,3 +200,26 @@ ID пакета / запуска / Decision, если существует:
 ```
 
 Отдельно оцените: стало ли понятно назначение продукта, удалось ли развернуть его без подсказок, видна ли связь raw и нормализованных значений, понятны ли основания сопоставления и ограничения, сохранилась ли история. Успех текущей проверки принятых этапов 0–4 не равен приёмке полного MVP.
+
+## Stage 5: реализация в отдельном PR
+
+Ветка `codex/stage5-conflict-engine` содержит [Conflict Engine](../development/conflicts.md): persisted OPEN conflicts, async analysis, API и Web list/detail с immutable evidence. Это проверяемая реализация PR, а не принятый main. [Независимый runtime/security/product-intent retest](../testing/reports/stage5-conflicts-independent-2026-10-22.md) PASS: 679 тестов, security/dependencies, quality, capacity 100/1k/10k/100k, production smoke и restart. Блокирующих замечаний нет. Финальный HEAD/CI — в PR #22; до отдельного разрешения владельца merge и принятие в main не выполняются. Полный MVP #18/#20 остаётся незавершённым.
+
+### Проверка конфликтов на ветке Stage 5
+
+После обычной установки переключитесь на exact SHA PR Stage 5 и повторите build/migration.
+Загрузите `tests/data/conflicts/source-a.csv` как FILE и `source-b.xml` как ONE_C
+в разные источники. Для обоих используйте synthetic-material normalization, затем
+synthetic-material matching. После завершения откройте «Открыть конфликты сопоставления»,
+нажмите «Проверить конфликты» и дождитесь COMPLETED.
+
+Ожидается ровно два конфликта: mass VALUE_MISMATCH для DIFF, mass MISSING для MISS.
+EQ (12500 g / 12.500 KG) конфликта не создаёт. INVALID/UNKNOWN не выдаются за отсутствие.
+Неподтверждённые DUP остаются matching review. Откройте карточку: оба значения, единицы,
+имена источников, hash/position, причина и версии должны быть видны. Надпись:
+«Решение человека ещё не принято». Кнопок выбора истинного значения нет.
+VIEWER видит карточку, но не запускает analysis.
+
+Запишите ID/Basis, выполните `docker compose restart`, дождитесь health и проверьте
+ту же карточку/значения. Volumes не удалять. Это проверка Conflict persistence;
+бизнес Decision, similarity и recommendation ещё отсутствуют.

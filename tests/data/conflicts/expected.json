@@ -1,0 +1,6 @@
+{
+  "automatic": {"VALUE_MISMATCH": 1, "MISSING": 1},
+  "after_explicit_duplicate_identity_review": {"VALUE_MISMATCH": 1, "MISSING": 1, "DUPLICATE": 2},
+  "cases": [["DIFF", "mass", "VALUE_MISMATCH"], ["MISS", "mass", "MISSING"], ["DUP", "code", "DUPLICATE"]],
+  "no_conflict": ["EQ", "INVALID", "UNKNOWN", "NEG-A", "NEG-B"]
+}

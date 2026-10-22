@@ -14,8 +14,9 @@ flowchart LR
     D1 -->|POSSIBLE_MATCH| F["Ручная проверка identity"]
     D1 -->|NOT_MATCHED| G["Разные сущности"]
 
-    E --> H["Conflict Engine<br/>Stage 5 — issue #21"]
-    F --> H
+    E --> H["Conflict Engine<br/>Stage 5 — PR #22"]
+    F -->|подтверждено MATCHED| E
+    F -->|отклонено NOT_MATCHED| G
     H --> I["Conflict + evidence + provenance"]
     I --> J["Human Review<br/>Stage 6"]
     J --> K["Decision Registry<br/>Stage 7 · immutable history"]
@@ -34,7 +35,7 @@ flowchart LR
     class J,K,L,M,N,O future;
 ```
 
-**Текущий статус:** этапы 0–4 приняты в `main`. Для Stage 5 утверждено подробное ТЗ и критерии приёмки в issue #21; runtime Stage 5 ещё не считается реализованным, пока отдельный PR не пройдёт test/security/product-intent gate, независимый retest, разрешённый merge и зелёный CI merge commit. Полный путь до Decision/retrieval/recommendation/AI ещё не завершён.
+**Текущий статус:** этапы 0–4 приняты в `main`. Conflict Engine реализован в отдельном [PR #22](https://github.com/SergeyRassohin/Forest-Keeper/pull/22) по ТЗ #21; независимый retest и его доказательства описаны в [отчёте](../testing/reports/stage5-conflicts-independent-2026-10-22.md). Это не приёмка Stage 5 в main: требуются зелёный финальный CI, отдельное разрешение владельца на merge и затем зелёный CI merge commit. Только подтверждённые MATCHED identities попадают в persisted Conflict; POSSIBLE_MATCH требует проверки identity, отклонённые пары не анализируются как одна сущность. Полный путь до Decision/retrieval/recommendation/AI ещё не завершён.
 
 ### Граница ответственности этапов
 
@@ -127,3 +128,7 @@ GitHub сохраняет историю запусков. Старые `failure
 - [MVP readiness — issue #18](https://github.com/SergeyRassohin/Forest-Keeper/issues/18)
 - [сквозной план до внешней проверки — issue #20](https://github.com/SergeyRassohin/Forest-Keeper/issues/20)
 - [презентация продукта](../marketing/presentation-v0.1.md)
+
+## Stage 5: реализация в отдельном PR
+
+Ветка `codex/stage5-conflict-engine` содержит [Conflict Engine](../development/conflicts.md): persisted OPEN conflicts, async analysis, API и Web list/detail с immutable evidence. Это проверяемая реализация PR, а не принятый main. До independent retest, финального CI и отдельного разрешения владельца merge/acceptance заблокированы. Полный MVP #18/#20 остаётся незавершённым.

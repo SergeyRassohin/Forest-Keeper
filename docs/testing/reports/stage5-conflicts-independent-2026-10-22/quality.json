@@ -1,0 +1,38 @@
+{
+  "commit": "d230f628c58e0d2164293549f2a5213940c0dbe7",
+  "true_conflicts": 4,
+  "false_conflicts": 0,
+  "missed_conflicts": 0,
+  "precision": 1.0,
+  "recall": 1.0,
+  "type_breakdown": {
+    "DUPLICATE": 2,
+    "MISSING": 1,
+    "VALUE_MISMATCH": 1
+  },
+  "cases": [
+    [
+      "DUP",
+      "code",
+      "DUPLICATE"
+    ],
+    [
+      "DUP",
+      "code",
+      "DUPLICATE"
+    ],
+    [
+      "MISS",
+      "mass",
+      "MISSING"
+    ],
+    [
+      "DIFF",
+      "mass",
+      "VALUE_MISMATCH"
+    ]
+  ],
+  "explicit_duplicate_identity_reviews": 2,
+  "passed": true,
+  "scope": "authored synthetic fixture, not a production quality SLA"
+}

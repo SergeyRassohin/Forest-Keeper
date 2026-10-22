@@ -1,0 +1,5 @@
+{
+  "passed": true,
+  "original_files_verified_after_full_restart": 2,
+  "checksum": "SHA-256 matches immutable ImportBatch and Conflict snapshots"
+}

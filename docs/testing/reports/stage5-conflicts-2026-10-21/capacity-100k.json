@@ -1,0 +1,28 @@
+{
+  "commit": "107330907f7abf16caed27910f08fdf97c2e1cb5",
+  "environment": {
+    "python": "3.13.16",
+    "os": "Linux-6.18.55-x86_64-with-glibc2.41",
+    "execution": "host Python; current engine on existing real Import/Normalization/Matching history; separate technical execution; DDL guard"
+  },
+  "records_per_dataset": 100000,
+  "source_datasets": 2,
+  "attributes_per_record": 30,
+  "matching_run_id": "3eac9320-674e-4b20-bf53-bf73a7a80407",
+  "reused_stage2_4_history": true,
+  "matched_identities_processed": 100000,
+  "attributes_evaluated": 3000000,
+  "conflicts_generated": 15000,
+  "type_breakdown": {
+    "MISSING": 5000,
+    "VALUE_MISMATCH": 10000
+  },
+  "true_conflicts": 15000,
+  "false_conflicts": 0,
+  "missed_conflicts": 0,
+  "conflict_seconds": 559.07,
+  "metadata_sessions": 10,
+  "metadata_p95_seconds": 0.2802,
+  "process_peak_rss_mib": 150.65,
+  "passed": true
+}

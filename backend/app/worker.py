@@ -4,6 +4,7 @@ from redis import Redis
 from rq import Queue, Worker
 
 from app.common.config import Settings
+from app.conflicts.jobs import recover_runs as recover_conflicts
 from app.imports.jobs import recover_imports
 from app.matching.jobs import recover_runs as recover_matching
 from app.normalization.jobs import recover_runs
@@ -17,6 +18,7 @@ class ForestWorker(Worker):
             settings = Settings()  # type: ignore[call-arg]
             recover_runs(settings, self.connection)
             recover_matching(settings, self.connection)
+            recover_conflicts(settings, self.connection)
         except Exception:
             # Database failures can include credentials or raw input in their text.
             logging.getLogger(__name__).warning("BACKGROUND_RECOVERY_UNAVAILABLE")
@@ -29,6 +31,7 @@ def main() -> None:
         recover_imports(settings, connection)
         recover_runs(settings, connection)
         recover_matching(settings, connection)
+        recover_conflicts(settings, connection)
         ForestWorker(
             [Queue(settings.import_queue_name, connection=connection)],
             connection=connection,
