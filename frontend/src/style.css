@@ -101,7 +101,7 @@ summary { cursor: pointer; font-size: .85rem; font-weight: 600; padding: .5rem 0
 .page-heading p { color: var(--text-secondary); max-width: 78ch; }
 .human-boundary { color: var(--info); background: var(--info-surface); padding: var(--space-4); border-radius: var(--radius-md); font-size: .875rem; }
 .user-list { list-style: none; padding: 0; }
-.user-list li { display: flex; align-items: center; gap: var(--space-4); justify-content: space-between; border-bottom: 1px solid var(--border); padding: var(--space-4) 0; font-size: .85rem; }
+.user-list li { display: block; overflow-wrap: anywhere; border-bottom: 1px solid var(--border); padding: var(--space-4) 0; font-size: .85rem; }
 .login-layout { min-height: 100vh; display: grid; grid-template-columns: minmax(320px, 1.05fr) minmax(0, 1fr); }
 .login-brand { background: linear-gradient(180deg, #07110d55, #07110dcc), url('/brand/forest-dark.jpg') center / cover; color: var(--on-brand); padding: clamp(32px, 5vw, 80px); display: flex; flex-direction: column; justify-content: space-between; }
 .login-brand .brand-tagline { color: var(--on-brand); font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.12; font-weight: 450; letter-spacing: -.045em; max-width: 12ch; }
@@ -130,3 +130,7 @@ summary { cursor: pointer; font-size: .85rem; font-weight: 600; padding: .5rem 0
 
 .brand > span { font-family: Georgia, 'Times New Roman', serif; }
 .brand small { font-family: var(--font-body); }
+
+.source-card th, .source-card td { padding: .65rem .5rem; }
+.source-card table { min-width: 440px; }
+.source-card .badge { overflow-wrap: normal; }
