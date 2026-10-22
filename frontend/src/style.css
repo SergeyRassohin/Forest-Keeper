@@ -134,3 +134,7 @@ summary { cursor: pointer; font-size: .85rem; font-weight: 600; padding: .5rem 0
 .source-card th, .source-card td { padding: .65rem .5rem; }
 .source-card table { min-width: 440px; }
 .source-card .badge { overflow-wrap: normal; }
+
+th { overflow-wrap: normal; }
+.badge { overflow-wrap: normal; }
+.numeric { white-space: nowrap; font-variant-numeric: tabular-nums; }

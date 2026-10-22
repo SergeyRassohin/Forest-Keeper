@@ -142,7 +142,7 @@ test('real product gallery, WCAG baseline and responsive Stage 1–5 path', asyn
   await page.getByRole('button', { name: 'Проверить конфликты', exact: true }).click();
   const execution = await (await generated).json();
   await expect(page.getByRole('status').filter({ hasText: execution.id })).toContainText('COMPLETED', { timeout: 30000 });
-  await capture(page, '08-conflicts', 'Расхождения значений', 'Список объяснимых конфликтов подтверждённых пар. Человеческие подписи сопровождают технические типы и статусы.');
+  await capture(page, '08-conflicts', 'Расхождения значений', 'Список объяснимых конфликтов подтверждённых пар. Человеческие подписи сопровождают технические типы и статусы.', page.getByRole('region', { name: 'Список конфликтов', exact: true }));
   const conflicts = await (await page.request.get('/api/v1/conflicts?matching_run_id=' + matching.id)).json();
   const mismatch = conflicts.find((r: { conflict_type: string }) => r.conflict_type === 'VALUE_MISMATCH');
   expect(mismatch).toBeTruthy();
@@ -155,7 +155,7 @@ test('real product gallery, WCAG baseline and responsive Stage 1–5 path', asyn
   await capture(page, '17-provenance', 'От результата к исходной записи', 'По запросу раскрываются файл, контрольная сумма, позиция исходной записи и правило нормализации. Это реальные сохранённые сведения, а не макет.', conflict.locator('.source-card').first());
   await page.getByRole('combobox', { name: 'Тип конфликта', exact: true }).selectOption('RULE_VIOLATION');
   await expect(page.getByRole('heading', { name: 'Конфликты не найдены', exact: true })).toBeVisible();
-  await capture(page, '10-empty', 'Понятное пустое состояние', 'Результат фильтра не подменяется вымышленными данными. RULE_VIOLATION пока не генерируется без утверждённого источника правил.');
+  await capture(page, '10-empty', 'Понятное пустое состояние', 'Результат фильтра не подменяется вымышленными данными. RULE_VIOLATION пока не генерируется без утверждённого источника правил.', page.getByRole('heading', { name: 'Конфликты не найдены', exact: true }));
   await page.getByRole('button', { name: 'Пользователи', exact: true }).click();
   await expect(page.getByRole('listitem')).not.toHaveCount(0);
   await capture(page, '11-users', 'Пользователи и роли', 'Администратор управляет доступом. Роль ADMIN сама по себе не даёт полномочий подтверждать совпадения или принимать бизнес-решения.');
