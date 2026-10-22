@@ -102,4 +102,4 @@ Forest Keeper разворачивается внутри инфраструкт
 
 ## Stage 5: реализация в отдельном PR
 
-Ветка `codex/stage5-conflict-engine` содержит [Conflict Engine](docs/development/conflicts.md): persisted OPEN conflicts, async analysis, API и Web list/detail с immutable evidence. Это проверяемая реализация PR, а не принятый main. До independent retest, финального CI и отдельного разрешения владельца merge/acceptance заблокированы. Полный MVP #18/#20 остаётся незавершённым.
+Ветка `codex/stage5-conflict-engine` содержит [Conflict Engine](docs/development/conflicts.md): persisted OPEN conflicts, async analysis, API и Web list/detail с immutable evidence. Это проверяемая реализация PR, а не принятый main. [Независимый runtime/security/product-intent retest](docs/testing/reports/stage5-conflicts-independent-2026-10-22.md) PASS: 679 тестов, security/dependencies, quality, capacity 100/1k/10k/100k, production smoke и restart. Блокирующих замечаний нет. Финальный HEAD/CI — в PR #22; до отдельного разрешения владельца merge и принятие в main не выполняются. Полный MVP #18/#20 остаётся незавершённым.

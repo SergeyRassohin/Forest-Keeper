@@ -99,6 +99,6 @@ GitHub читаем и понятен
 
 ## Stage 5: реализация в отдельном PR
 
-Ветка `codex/stage5-conflict-engine` содержит [Conflict Engine](conflicts.md): persisted OPEN conflicts, async analysis, API и Web list/detail с immutable evidence. Это проверяемая реализация PR, а не принятый main. До independent retest, финального CI и отдельного разрешения владельца merge/acceptance заблокированы. Полный MVP #18/#20 остаётся незавершённым.
+Ветка `codex/stage5-conflict-engine` содержит [Conflict Engine](conflicts.md): persisted OPEN conflicts, async analysis, API и Web list/detail с immutable evidence. Это проверяемая реализация PR, а не принятый main. [Независимый runtime/security/product-intent retest](../testing/reports/stage5-conflicts-independent-2026-10-22.md) PASS: 679 тестов, security/dependencies, quality, capacity 100/1k/10k/100k, production smoke и restart. Блокирующих замечаний нет. Финальный HEAD/CI — в PR #22; до отдельного разрешения владельца merge и принятие в main не выполняются. Полный MVP #18/#20 остаётся незавершённым.
 
 Stage 5 local verification: 677 automated tests PASS, synthetic false/missed=0, 100k capacity and full runtime restart PASS. [Author report](../testing/reports/stage5-conflicts-acceptance-2026-10-21.md). Acceptance remains BLOCKED pending independent retest and exact final-head CI, then separate owner merge permission.

@@ -2,7 +2,7 @@
 
 PR: [#22](https://github.com/SergeyRassohin/Forest-Keeper/pull/22), refs #21/#20/#18.
 
-**Overall: BLOCKED pending independent runtime/security/product-intent review.**
+**Current follow-up: independent runtime/security/product-intent review PASS, no blocking findings. Final exact-HEAD CI and separate owner acceptance remain required; see the 2026-10-22 section below.**
 This is the implementation author's verification, not an independent retest.
 No automatic merge; Stage 5 is not accepted and #18/#20/#21 remain open.
 
@@ -129,3 +129,13 @@ worktree/commit differences during capacity were test helpers and evidence only.
 Independent reviewer must repeat #21 section27, resolve blocking findings, and validate the
 final exact HEAD CI. Then obtain the owner's separate merge permission. Only after merge and
 green exact merge-commit CI can Stage5 be accepted; Stage6+ is not started by this PR.
+
+## Independent review follow-up — 2026-10-22
+
+A separate Codex review session inspected/retested exact HEAD `d230f628c58e0d2164293549f2a5213940c0dbe7`, including de3d61d/d230f62 regressions. **679 automated tests PASS** (200 backend unit, 437 integration/API, 25 frontend, 11 HTTPS browser, six artifact tests), security/dependency/production gates PASS. [Independent report, findings, architecture gate and measured evidence](stage5-conflicts-independent-2026-10-22.md). This resolves the earlier NOT RUN independent-review checkpoint; the 677-test author record above is historical.
+
+All owner findings were checked: both normalization origins/versions/hashes in API/Basis/UI; rerun counters count execution outputs with no extra immutable facts/creation Audit; source filter covers either side and unknown source; performance is an explicit background-batch limitation. Independent fresh 100k/source path: 100000 MATCHED identities, 3000000 attributes, 15000 expected conflicts, zero false/missed, Conflict Engine 361.058 s, metadata/card p95 .5589 s at ten sessions. Source-filter query plans pass on the 15000-row dataset.
+
+Both the historical 559.070 s and independent 361.058 s are engineering measurements, not customer SLA or interactive/near-real-time promises. Optimization remains an open pilot-hardening target; measured profiling is in the independent report and conflicts.md. Ordered runtime restart preserves the same browser Conflict IDs/full HTTPS cards/Basis/raw/normalization/matching; both original files physically retain their SHA-256.
+
+Independent Architecture / Product Intent Gate: **PASS**, no blocking runtime/security findings. The follow-up changes documentation/evidence only; final exact SHA and CI are recorded in PR #22. **READY TO MERGE after green final-SHA CI, subject to separate owner acceptance. No merge performed or authorized here.** #18/#20/#21 remain open; Stage 6 is not started.

@@ -112,8 +112,14 @@ Capacity: из backend `FK_TEST_INTEGRATION=1 uv run python -m tests.benchmark_c
 без отдельного чтения на каждую identity. На каждый обнаруженный conflict выполняются
 INSERT Conflict/RETURNING, INSERT Output и запись Audit; повторные JSONB snapshots увеличивают
 serialization/storage overhead. Это кандидаты для профилирования, а не доказанное распределение
-559 s. Первым следует измерять write round trips и JSONB serialization/hydration, затем
-рассматривать batching, сохраняя immutable evidence и атомарность checkpoints. Алгоритм
+559 s. Отдельный cProfile-прогон 1000 records/source в независимой review-сессии
+22 октября измерил execute_conflict 10.204 s cumulative, process_chunk 9.993 s (11 вызовов),
+load_values 7.072 s (10 вызовов), включая SQL/ORM hydration и подготовку normalization
+metadata. Это инструментированный малый прогон с overhead и параллельными проверками,
+а не распределение времени 100k или прогноз SLA. Первым кандидатом на измеряемую
+оптимизацию становится load_values/hydration и повторное разрешение mapping/field metadata;
+затем следует отдельно сравнить write round trips и JSONB batching, сохраняя immutable
+evidence и атомарность checkpoints. Алгоритм
 не меняется ради числа перед независимой проверкой. Измеренный профиль и source-filter query
 plans прилагаются к независимому отчёту; их результаты нельзя переносить на промышленный SLA.
 

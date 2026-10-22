@@ -1,0 +1,310 @@
+{
+  "records_per_source": 1000,
+  "instrument": "cProfile; overhead and concurrent development checks; do not extrapolate to production SLA",
+  "functions": [
+    {
+      "file": "backend/app/conflicts/jobs.py",
+      "line": 102,
+      "function": "process_conflict",
+      "calls": 1,
+      "own_seconds": 3.6e-05,
+      "cumulative_seconds": 10.205552
+    },
+    {
+      "file": "backend/app/conflicts/jobs.py",
+      "line": 142,
+      "function": "execute_conflict",
+      "calls": 1,
+      "own_seconds": 0.082429,
+      "cumulative_seconds": 10.204073
+    },
+    {
+      "file": "backend/app/conflicts/pipeline.py",
+      "line": 65,
+      "function": "process_chunk",
+      "calls": 11,
+      "own_seconds": 0.164581,
+      "cumulative_seconds": 9.993444
+    },
+    {
+      "file": "backend/app/conflicts/pipeline.py",
+      "line": 19,
+      "function": "load_values",
+      "calls": 10,
+      "own_seconds": 0.782205,
+      "cumulative_seconds": 7.071566
+    },
+    {
+      "file": "backend/app/conflicts/routes.py",
+      "line": 160,
+      "function": "conflicts",
+      "calls": 50,
+      "own_seconds": 0.007134,
+      "cumulative_seconds": 1.43322
+    },
+    {
+      "file": "backend/app/conflicts/routes.py",
+      "line": 195,
+      "function": "detail",
+      "calls": 50,
+      "own_seconds": 0.003297,
+      "cumulative_seconds": 0.730958
+    },
+    {
+      "file": "backend/app/conflicts/pipeline.py",
+      "line": 41,
+      "function": "<genexpr>",
+      "calls": 120000,
+      "own_seconds": 0.280765,
+      "cumulative_seconds": 0.517202
+    },
+    {
+      "file": "backend/app/conflicts/engine.py",
+      "line": 30,
+      "function": "compare",
+      "calls": 30000,
+      "own_seconds": 0.068672,
+      "cumulative_seconds": 0.251548
+    },
+    {
+      "file": "backend/app/conflicts/routes.py",
+      "line": 1,
+      "function": "<module>",
+      "calls": 1,
+      "own_seconds": 5e-05,
+      "cumulative_seconds": 0.155971
+    },
+    {
+      "file": "backend/app/conflicts/engine.py",
+      "line": 19,
+      "function": "presence",
+      "calls": 60600,
+      "own_seconds": 0.076904,
+      "cumulative_seconds": 0.121624
+    },
+    {
+      "file": "backend/app/conflicts/routes.py",
+      "line": 60,
+      "function": "start",
+      "calls": 1,
+      "own_seconds": 0.000113,
+      "cumulative_seconds": 0.107658
+    },
+    {
+      "file": "backend/app/conflicts/jobs.py",
+      "line": 1,
+      "function": "<module>",
+      "calls": 1,
+      "own_seconds": 2.1e-05,
+      "cumulative_seconds": 0.062495
+    },
+    {
+      "file": "backend/app/conflicts/pipeline.py",
+      "line": 1,
+      "function": "<module>",
+      "calls": 1,
+      "own_seconds": 1.6e-05,
+      "cumulative_seconds": 0.061458
+    },
+    {
+      "file": "backend/app/conflicts/jobs.py",
+      "line": 24,
+      "function": "lock_key",
+      "calls": 3,
+      "own_seconds": 4.1e-05,
+      "cumulative_seconds": 0.028125
+    },
+    {
+      "file": "backend/app/conflicts/routes.py",
+      "line": 137,
+      "function": "summary",
+      "calls": 2550,
+      "own_seconds": 0.011897,
+      "cumulative_seconds": 0.026059
+    },
+    {
+      "file": "backend/app/conflicts/jobs.py",
+      "line": 181,
+      "function": "recover_runs",
+      "calls": 1,
+      "own_seconds": 4.5e-05,
+      "cumulative_seconds": 0.024546
+    },
+    {
+      "file": "backend/app/conflicts/jobs.py",
+      "line": 121,
+      "function": "enqueue",
+      "calls": 1,
+      "own_seconds": 3.4e-05,
+      "cumulative_seconds": 0.012557
+    },
+    {
+      "file": "backend/app/conflicts/models.py",
+      "line": 1,
+      "function": "<module>",
+      "calls": 1,
+      "own_seconds": 1.4e-05,
+      "cumulative_seconds": 0.010151
+    },
+    {
+      "file": "backend/app/conflicts/engine.py",
+      "line": 33,
+      "function": "<genexpr>",
+      "calls": 89950,
+      "own_seconds": 0.008473,
+      "cumulative_seconds": 0.008473
+    },
+    {
+      "file": "backend/app/conflicts/engine.py",
+      "line": 1,
+      "function": "<module>",
+      "calls": 1,
+      "own_seconds": 2.5e-05,
+      "cumulative_seconds": 0.006381
+    },
+    {
+      "file": "backend/app/conflicts/routes.py",
+      "line": 129,
+      "function": "run_detail",
+      "calls": 1,
+      "own_seconds": 6e-06,
+      "cumulative_seconds": 0.004091
+    },
+    {
+      "file": "backend/app/conflicts/jobs.py",
+      "line": 106,
+      "function": "publish",
+      "calls": 1,
+      "own_seconds": 2e-05,
+      "cumulative_seconds": 0.002844
+    },
+    {
+      "file": "backend/app/conflicts/engine.py",
+      "line": 15,
+      "function": "conflict_id",
+      "calls": 150,
+      "own_seconds": 0.000232,
+      "cumulative_seconds": 0.002819
+    },
+    {
+      "file": "backend/app/conflicts/engine.py",
+      "line": 52,
+      "function": "basis",
+      "calls": 450,
+      "own_seconds": 0.0008,
+      "cumulative_seconds": 0.001742
+    },
+    {
+      "file": "backend/app/conflicts/jobs.py",
+      "line": 34,
+      "function": "audit",
+      "calls": 4,
+      "own_seconds": 0.0001,
+      "cumulative_seconds": 0.001184
+    },
+    {
+      "file": "backend/app/conflicts/models.py",
+      "line": 35,
+      "function": "ConflictRun",
+      "calls": 1,
+      "own_seconds": 5.5e-05,
+      "cumulative_seconds": 0.001053
+    },
+    {
+      "file": "backend/app/conflicts/models.py",
+      "line": 62,
+      "function": "Conflict",
+      "calls": 1,
+      "own_seconds": 3.7e-05,
+      "cumulative_seconds": 0.000947
+    },
+    {
+      "file": "backend/app/conflicts/jobs.py",
+      "line": 72,
+      "function": "transition",
+      "calls": 3,
+      "own_seconds": 2.6e-05,
+      "cumulative_seconds": 0.000911
+    },
+    {
+      "file": "backend/app/conflicts/models.py",
+      "line": 90,
+      "function": "ConflictOutput",
+      "calls": 1,
+      "own_seconds": 7e-06,
+      "cumulative_seconds": 0.000168
+    },
+    {
+      "file": "backend/app/conflicts/models.py",
+      "line": 13,
+      "function": "ConflictType",
+      "calls": 1,
+      "own_seconds": 3e-06,
+      "cumulative_seconds": 0.000133
+    },
+    {
+      "file": "backend/app/conflicts/models.py",
+      "line": 98,
+      "function": "ConflictInput",
+      "calls": 1,
+      "own_seconds": 6e-06,
+      "cumulative_seconds": 0.00013
+    },
+    {
+      "file": "backend/app/conflicts/pipeline.py",
+      "line": 82,
+      "function": "<genexpr>",
+      "calls": 30,
+      "own_seconds": 7.6e-05,
+      "cumulative_seconds": 8.6e-05
+    },
+    {
+      "file": "backend/app/conflicts/models.py",
+      "line": 21,
+      "function": "ConflictStatus",
+      "calls": 1,
+      "own_seconds": 2e-06,
+      "cumulative_seconds": 3e-05
+    },
+    {
+      "file": "backend/app/conflicts/models.py",
+      "line": 28,
+      "function": "Severity",
+      "calls": 1,
+      "own_seconds": 2e-06,
+      "cumulative_seconds": 2.9e-05
+    },
+    {
+      "file": "backend/app/conflicts/routes.py",
+      "line": 40,
+      "function": "run_view",
+      "calls": 2,
+      "own_seconds": 6e-06,
+      "cumulative_seconds": 2.1e-05
+    },
+    {
+      "file": "backend/app/conflicts/jobs.py",
+      "line": 30,
+      "function": "job_id",
+      "calls": 5,
+      "own_seconds": 1.1e-05,
+      "cumulative_seconds": 1.3e-05
+    },
+    {
+      "file": "backend/app/conflicts/routes.py",
+      "line": 35,
+      "function": "StartConflicts",
+      "calls": 1,
+      "own_seconds": 4e-06,
+      "cumulative_seconds": 8e-06
+    },
+    {
+      "file": "backend/app/conflicts/__init__.py",
+      "line": 1,
+      "function": "<module>",
+      "calls": 1,
+      "own_seconds": 0.0,
+      "cumulative_seconds": 0.0
+    }
+  ]
+}
