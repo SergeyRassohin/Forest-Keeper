@@ -102,3 +102,9 @@ GitHub читаем и понятен
 PR #22 объединён владельцем в main: `6235dd6a18f8cbb8aeceac2a7d052f5fca396482`; [CI точного merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39768647312). Этап 5 принят; 679 тестов и независимый runtime/security/product-intent retest PASS. Шаг Stage 5 из #20 завершён. Stage 6–7 — следующий отдельный этап; #18/#20 остаются открытыми. Полный MVP #18/#20 остаётся незавершённым.
 
 Исторический авторский прогон: 677 тестов. Финальная независимая проверка: **679 PASS**, false/missed=0, capacity и restart PASS. [Acceptance report с завершённым merge gate](../testing/reports/stage5-conflicts-acceptance-2026-10-21.md).
+
+## Stage 5.1 — фирменный Web UI, 22 октября 2026
+
+Отдельная ветка по [issue #23](https://github.com/SergeyRassohin/Forest-Keeper/issues/23) от принятого Stage 5. Общие design tokens, фирменный shell, стабильная навигация с permissions, русские статусы, согласованные формы/таблицы и читаемые карточки evidence. Нормализация остаётся в карточке импорта; администрирование выделено в собственный раздел. JSON/Basis доступны в раскрывающихся технических подробностях.
+
+Автоматическая реальная [галерея](../../frontend/public/interface/index.html) строится из синтетических CSV/1С XML через HTTPS Playwright, с WCAG и пятью viewport-проверками на экран. [Brand guidelines](ui-brand-guidelines.md), [публикация](../site/interface.md). Страница внешнего сайта подготовлена, но публикация на прежнем домене ожидает доступа к его исходникам/инструменту. Backend business behavior и Stage 6–7 не менялись. Merge — только после отдельного разрешения владельца; окончательный CI и отчёт в PR.

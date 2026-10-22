@@ -55,7 +55,7 @@ async function importSource(page: Page, side: 'a' | 'b') {
   if (!(await details.evaluate((e) => (e as HTMLDetailsElement).open))) await details.locator('summary').click();
   await page.getByLabel('Название источника', { exact: true }).fill(side === 'a' ? 'Excel · Каталог снабжения' : '1С · Номенклатура');
   await page.getByLabel('Код источника', { exact: true }).fill(accounts.prefix + '_gallery_' + side);
-  await page.getByLabel('Тип источника', { exact: true }).selectOption(side === 'a' ? 'FILE' : 'ONE_C');
+  await page.getByRole('combobox', { name: 'Тип источника', exact: true }).selectOption(side === 'a' ? 'FILE' : 'ONE_C');
   await page.getByRole('button', { name: 'Создать источник', exact: true }).click();
   await expect(page.getByRole('status').filter({ hasText: 'Источник создан' })).toBeVisible();
   await details.locator('summary').click();
@@ -83,6 +83,7 @@ async function importSource(page: Page, side: 'a' | 'b') {
 
 test('real product gallery, WCAG baseline and responsive Stage 1–5 path', async ({ page }) => {
   test.setTimeout(300000);
+  page.setDefaultTimeout(30000);
   if (process.env.FK_CAPTURE_UI !== '1' || !output) throw new Error('Explicit gallery opt-in is required');
   mkdirSync(output, { recursive: true });
   const bundles: { file: string; sha256: string }[] = [];
@@ -117,8 +118,8 @@ test('real product gallery, WCAG baseline and responsive Stage 1–5 path', asyn
   const a = await importSource(page, 'a');
   const b = await importSource(page, 'b');
   await page.getByRole('button', { name: 'Сопоставление', exact: true }).click();
-  await page.getByLabel('Нормализация источника A', { exact: true }).selectOption(a.analysis);
-  await page.getByLabel('Нормализация источника B', { exact: true }).selectOption(b.analysis);
+  await page.getByRole('combobox', { name: 'Нормализация источника A', exact: true }).selectOption(a.analysis);
+  await page.getByRole('combobox', { name: 'Нормализация источника B', exact: true }).selectOption(b.analysis);
   const started = page.waitForResponse((r) => r.url().endsWith('/api/v1/matching-runs') && r.request().method() === 'POST');
   await page.getByRole('button', { name: 'Запустить сопоставление', exact: true }).click();
   const matching = await (await started).json();
@@ -151,7 +152,7 @@ test('real product gallery, WCAG baseline and responsive Stage 1–5 path', asyn
   expect(await page.getByRole('button', { name: /Принять решение|Выбрать значение|Исправить|Записать в систему|Применить рекомендацию/ }).count()).toBe(0);
   await conflict.locator('.source-card details > summary').first().click();
   await capture(page, '17-provenance', 'От результата к исходной записи', 'По запросу раскрываются файл, контрольная сумма, позиция исходной записи и правило нормализации. Это реальные сохранённые сведения, а не макет.', conflict.locator('.source-card').first());
-  await page.getByLabel('Тип конфликта', { exact: true }).selectOption('RULE_VIOLATION');
+  await page.getByRole('combobox', { name: 'Тип конфликта', exact: true }).selectOption('RULE_VIOLATION');
   await expect(page.getByRole('heading', { name: 'Конфликты не найдены', exact: true })).toBeVisible();
   await capture(page, '10-empty', 'Понятное пустое состояние', 'Результат фильтра не подменяется вымышленными данными. RULE_VIOLATION пока не генерируется без утверждённого источника правил.');
   await page.getByRole('button', { name: 'Пользователи', exact: true }).click();
@@ -160,8 +161,8 @@ test('real product gallery, WCAG baseline and responsive Stage 1–5 path', asyn
   await signOut(page);
   await signIn(page, 'REVIEWER');
   await page.getByRole('button', { name: 'Сопоставление', exact: true }).click();
-  await page.getByLabel('Запуск сопоставления', { exact: true }).selectOption(matching.id);
-  await page.getByLabel('Статус кандидата', { exact: true }).selectOption('POSSIBLE_MATCH');
+  await page.getByRole('combobox', { name: 'Запуск сопоставления', exact: true }).selectOption(matching.id);
+  await page.getByRole('combobox', { name: 'Статус кандидата', exact: true }).selectOption('POSSIBLE_MATCH');
   const pending = await (await page.request.get('/api/v1/matching-runs/' + matching.id + '/candidates?status=POSSIBLE_MATCH')).json();
   expect(pending.length).toBeGreaterThan(0);
   await page.getByRole('button', { name: 'Сравнить записи ' + pending[0].raw_record_a_id + ' ↔ ' + pending[0].raw_record_b_id, exact: true }).click();
@@ -169,7 +170,7 @@ test('real product gallery, WCAG baseline and responsive Stage 1–5 path', asyn
   await capture(page, '12-matching-review', 'Проверка идентичности экспертом', 'Уже существующий matching review требует объяснения. Это проверка того, что записи относятся к одной сущности, а не разрешение конфликта значений.', page.locator('section[aria-label="Основание сопоставления"] form'));
   await signOut(page); await signIn(page, 'VIEWER');
   await page.getByRole('button', { name: 'Конфликты', exact: true }).click();
-  await page.getByLabel('Сопоставление для конфликтов', { exact: true }).selectOption(matching.id);
+  await page.getByRole('combobox', { name: 'Сопоставление для конфликтов', exact: true }).selectOption(matching.id);
   await expect(page.getByRole('button', { name: 'Проверить конфликты', exact: true })).toHaveCount(0);
   await expect(page.getByRole('button', { name: 'Пользователи', exact: true })).toHaveCount(0);
   await capture(page, '13-viewer', 'Просмотр без полномочий на изменение', 'VIEWER видит разрешённые результаты и их основания. Запуск обработки и управление пользователями не отображаются.');

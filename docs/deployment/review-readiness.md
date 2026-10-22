@@ -46,3 +46,9 @@ Stage 5: подробное ТЗ, границы, benchmark, migration, browser 
 ## Stage 5: принят в main — 22 октября 2026
 
 PR #22 объединён владельцем в main: `6235dd6a18f8cbb8aeceac2a7d052f5fca396482`; [CI точного merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39768647312). Этап 5 принят; 679 тестов и независимый runtime/security/product-intent retest PASS. Шаг Stage 5 из #20 завершён. Stage 6–7 — следующий отдельный этап; #18/#20 остаются открытыми. Полный MVP #18/#20 остаётся незавершённым.
+
+## Stage 5.1 — отдельная подготовка интерфейса
+
+[Issue #23](https://github.com/SergeyRassohin/Forest-Keeper/issues/23): единый бренд существующих экранов, понятные evidence-карточки и [реальная галерея](../../frontend/public/interface/index.html). Съёмка проверяет WCAG A/AA и desktop 1920/1440/1280/1024, дополнительно narrow390px. [Воспроизведение](../development/ui-brand-guidelines.md), [публикация страницы](../site/interface.md). Исходники внешнего сайта и инструмент публикации в среде отсутствуют; готовая страница в репозитории не является подтверждением обновления внешнего домена.
+
+Stage 5.1 не снимает блокеры Decision/AI полного MVP и не даёт ADMIN бизнес-полномочий. Final HEAD, точный CI и независимый visual/product retest фиксируются в PR перед отдельным разрешением на merge.
