@@ -3,9 +3,27 @@
 import hashlib
 import json
 import subprocess
+from html.parser import HTMLParser
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+class GalleryMarkup(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.images = set()
+        self.stylesheets = set()
+        self.inline_style = False
+
+    def handle_starttag(self, tag, attrs):
+        attributes = dict(attrs)
+        if tag == "img":
+            self.images.add(attributes.get("src"))
+        if tag == "link" and attributes.get("rel") == "stylesheet":
+            self.stylesheets.add(attributes.get("href"))
+        if tag == "style" or "style" in attributes:
+            self.inline_style = True
 
 
 def main() -> None:
@@ -40,6 +58,16 @@ def main() -> None:
         raise SystemExit("Failed accessibility/responsive gallery gate")
     if not (folder / "index.html").exists():
         raise SystemExit("Missing public interface page")
+    markup = GalleryMarkup()
+    markup.feed((folder / "index.html").read_text())
+    if markup.images != {item["file"] for item in data["captures"]}:
+        raise SystemExit("Gallery page does not include the complete screenshot set")
+    if markup.stylesheets != {"interface.css"} or markup.inline_style:
+        raise SystemExit("Gallery must preserve the server's strict style CSP")
+    if (folder / "interface.css").read_bytes() != (
+        ROOT / "scripts/templates/interface.css"
+    ).read_bytes():
+        raise SystemExit("Missing or stale gallery stylesheet")
     print(
         f"PASS: {len(data['captures'])} real screenshots, WCAG checks; "
         f"{len(data['responsive'])} responsive checks; source tree matches"

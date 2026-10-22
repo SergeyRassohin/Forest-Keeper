@@ -24,6 +24,7 @@ alt="{title} — реальный экран Forest Keeper" width="1440"></a>
     template = Path(__file__).with_name("templates") / "interface.html"
     page = template.read_text().replace("<!-- GALLERY -->", "\n".join(cards))
     (folder / "index.html").write_text(page)
+    (folder / "interface.css").write_text(template.with_suffix(".css").read_text())
 
 
 if __name__ == "__main__":

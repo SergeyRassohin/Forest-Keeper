@@ -73,6 +73,6 @@ prepared=1
 (cd frontend && npx playwright test --config playwright.gallery.config.ts)
 python3 scripts/render-ui-gallery.py "$FK_GALLERY_OUTPUT"
 mkdir -p frontend/public/interface
-cp "$FK_GALLERY_OUTPUT/"*.png "$FK_GALLERY_OUTPUT/manifest.json" "$FK_GALLERY_OUTPUT/index.html" frontend/public/interface/
+cp "$FK_GALLERY_OUTPUT/"*.png "$FK_GALLERY_OUTPUT/manifest.json" "$FK_GALLERY_OUTPUT/index.html" "$FK_GALLERY_OUTPUT/interface.css" frontend/public/interface/
 python3 scripts/check-ui-gallery.py
 printf 'PASS: real UI gallery: frontend/public/interface/index.html\n'
