@@ -38,7 +38,7 @@ button { min-height: var(--control-height); border: 1px solid var(--border); col
 button:hover { background: var(--surface-muted); border-color: var(--brand-secondary); }
 button.primary, form > button:first-of-type { background: var(--brand-primary); color: var(--on-brand); border-color: var(--brand-primary); }
 button.primary:hover, form > button:first-of-type:hover { background: var(--brand-secondary); }
-button:disabled { opacity: 1; color: #637066; background: #e6e9e1; border-color: #cbd5c9; cursor: not-allowed; }
+button:disabled, button.primary:disabled, form > button:disabled:first-of-type { opacity: 1; color: #637066; background: #e6e9e1; border-color: #cbd5c9; cursor: not-allowed; }
 :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
 button + button { margin-left: var(--space-2); }
 .app-nav button + button { margin-left: 0; }
