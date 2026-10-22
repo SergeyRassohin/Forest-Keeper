@@ -19,7 +19,7 @@ Forest Keeper разворачивается внутри инфраструкт
 
 ## Что доступно в проверяемой версии
 
-Проверяемая версия — `main`, в которой приняты этапы 0–4. Matching объединён через [PR #15](https://github.com/SergeyRassohin/Forest-Keeper/pull/15), merge `bea0d55c92540744657feac863084cde131a7f43`; [CI merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39595762080). В main также включены изменения PR #19. Инструкция получает основную ветку; сохраняйте точный SHA проверки.
+Проверяемая версия — `main`, в которой приняты этапы 0–5. Matching объединён через [PR #15](https://github.com/SergeyRassohin/Forest-Keeper/pull/15), merge `bea0d55c92540744657feac863084cde131a7f43`; [CI merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39595762080). В main также включены изменения PR #19. Инструкция получает основную ветку; сохраняйте точный SHA проверки.
 
 | Возможность | Статус |
 | --- | --- |
@@ -27,13 +27,13 @@ Forest Keeper разворачивается внутри инфраструкт
 | CSV/XLSX/XML: импорт, оригинал, исходные записи и происхождение | Реализовано, этап 2 принят |
 | Нормализация по объявленному профилю, качество значений, история правил | Реализовано, этап 3 принят |
 | Matching: совпадение / требует проверки / не совпадает | Реализовано в main, этап 4 принят; независимый retest и CI merge commit PASS |
-| Conflict Engine | ТЗ зафиксировано в [issue #21](https://github.com/SergeyRassohin/Forest-Keeper/issues/21); runtime ещё не реализован в main |
+| Conflict Engine | Реализован в main, этап 5 принят; persisted OPEN conflicts, Basis/provenance и read-only UI |
 | Human Review с сохранением Decision | Не реализовано в main; этапы 6–7 после Conflict Engine |
 | Поиск прошлого Decision, рекомендации, AI inference | Не реализовано в main |
 | Получение и проверка pinned Qwen artifacts | [Команды и точные ссылки](docs/ai/model-downloads.md); это подготовка файлов, без запуска AI |
 | Корпоративный установщик, лицензирование, Update Service | Последующие этапы |
 
-Этап 3 принят через [PR #13](https://github.com/SergeyRassohin/Forest-Keeper/pull/13), merge `6a494534a49960b79fdf64e5e2b8436c32011688`; [CI merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39452965438). Этап 4 принят через PR #15. Следующий отдельный этап — **Stage 5 Conflict Engine**, полное ТЗ и критерии приёмки находятся в [issue #21](https://github.com/SergeyRassohin/Forest-Keeper/issues/21). Полный путь «свой файл → конфликт → Decision → похожий случай → рекомендация» пока **заблокирован отсутствующими модулями**, см. [критерии готовности](docs/deployment/review-readiness.md). Зелёный health означает готовность инфраструктуры, а не наличие всех бизнес-функций.
+Этап 3 принят через [PR #13](https://github.com/SergeyRassohin/Forest-Keeper/pull/13), merge `6a494534a49960b79fdf64e5e2b8436c32011688`; [CI merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39452965438). Этап 4 принят через PR #15. Stage 5 принят через PR #22. Следующий отдельный этап — **Stage 6–7: Human Review и Decision Registry**. Полный путь «свой файл → конфликт → Decision → похожий случай → рекомендация» пока **заблокирован отсутствующими модулями**, см. [критерии готовности](docs/deployment/review-readiness.md). Зелёный health означает готовность инфраструктуры, а не наличие всех бизнес-функций.
 
 ## Что можно проверить сейчас
 
@@ -41,7 +41,7 @@ Forest Keeper разворачивается внутри инфраструкт
 2. Создать два источника и загрузить CSV/XLSX/XML.
 3. Проверить исходные записи, позиции, SHA-256 файла и нормализацию.
 4. На двух [синтетических наборах для matching](tests/data/matching/README.md) получить три статуса сопоставления, открыть основания и подтвердить либо отклонить сомнительную пару с причиной под ролью REVIEWER. Это проверка идентичности записей; сохранение бизнес-решения по конфликту относится к следующим этапам.
-5. Перезапустить систему и убедиться, что пакеты и результаты сохранились.
+5. Проверить [конфликты на учебных данных](docs/deployment/external-review-quickstart.md#проверка-конфликтов-в-main): raw/normalized, Basis и происхождение; перезапустить систему и убедиться, что IDs и evidence сохранились.
 6. Проверить импорт своего файла с учётом [поддерживаемых форматов](docs/development/import.md). Для нормализации нужен профиль именно его полей; произвольные колонки автоматически не интерпретируются.
 
 Есть [пример на открытых данных USGS](tests/data/external-review/README.md) и отдельный профиль для него. Примеры демонстрируют обработку, а не качество промышленного Entity Resolution. Первый промышленный pilot domain остаётся отдельным решением.
@@ -100,6 +100,6 @@ Forest Keeper разворачивается внутри инфраструкт
 - `docs/ai/` — AI/embedding baseline и правила интеграции
 - `models/` — manifest и конфигурация моделей без весовых файлов
 
-## Stage 5: реализация в отдельном PR
+## Stage 5: принят в main — 22 октября 2026
 
-Ветка `codex/stage5-conflict-engine` содержит [Conflict Engine](docs/development/conflicts.md): persisted OPEN conflicts, async analysis, API и Web list/detail с immutable evidence. Это проверяемая реализация PR, а не принятый main. [Независимый runtime/security/product-intent retest](docs/testing/reports/stage5-conflicts-independent-2026-10-22.md) PASS: 679 тестов, security/dependencies, quality, capacity 100/1k/10k/100k, production smoke и restart. Блокирующих замечаний нет. Финальный HEAD/CI — в PR #22; до отдельного разрешения владельца merge и принятие в main не выполняются. Полный MVP #18/#20 остаётся незавершённым.
+PR #22 объединён владельцем в main: `6235dd6a18f8cbb8aeceac2a7d052f5fca396482`; [CI точного merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39768647312). Этап 5 принят; 679 тестов и независимый runtime/security/product-intent retest PASS. Шаг Stage 5 из #20 завершён. Stage 6–7 — следующий отдельный этап; #18/#20 остаются открытыми. Полный MVP #18/#20 остаётся незавершённым.

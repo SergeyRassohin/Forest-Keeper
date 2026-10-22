@@ -1,6 +1,6 @@
 # Локальная разработка MVP
 
-Реализованы и приняты этапы 0–4: каркас, [Authentication + RBAC](authentication.md), [импорт](import.md), [нормализация](normalization.md) и [matching](matching.md). Conflict/Human Review, Decision Registry и AI-рекомендации в main отсутствуют. Python 3.13, FastAPI/Pydantic v2, SQLAlchemy 2, Alembic, PostgreSQL 17 + pgvector, Redis 7.4/RQ, React/TypeScript/Vite. Зависимости зафиксированы в `backend/uv.lock` и `frontend/package-lock.json`.
+Реализованы и приняты этапы 0–5: каркас, [Authentication + RBAC](authentication.md), [импорт](import.md), [нормализация](normalization.md), [matching](matching.md) и [Conflict Engine](conflicts.md). Human Review, Decision Registry и AI-рекомендации в main отсутствуют. Python 3.13, FastAPI/Pydantic v2, SQLAlchemy 2, Alembic, PostgreSQL 17 + pgvector, Redis 7.4/RQ, React/TypeScript/Vite. Зависимости зафиксированы в `backend/uv.lock` и `frontend/package-lock.json`.
 
 ## Критерий готовности к внешней проверке
 
@@ -92,7 +92,7 @@ docker compose up -d --wait --wait-timeout 180 worker
 bash scripts/check-integration.sh
 ```
 
-Дождитесь ответа health 200 после перезапуска зависимостей. Текущий migration head main — `0005_matching`; миграции 0002–0004 создают auth/import/normalization таблицы; 0005 добавляет matching runs/candidates, не переписывая Stage 2/3 историю. Миграция `0001_foundation` включает pgvector. Alembic downgrade до base убирает запись версии, но сохраняет расширение для защиты зависимых объектов. Повторный upgrade восстанавливает готовность.
+Дождитесь ответа health 200 после перезапуска зависимостей. Текущий migration head main — `0006_conflicts`; миграции 0002–0004 создают auth/import/normalization таблицы; 0005 добавляет matching runs/candidates, не переписывая Stage 2/3 историю; 0006 добавляет immutable conflicts и технические runs/inputs/outputs. Миграция `0001_foundation` включает pgvector. Alembic downgrade до base убирает запись версии, но сохраняет расширение для защиты зависимых объектов. Повторный upgrade восстанавливает готовность.
 
 ## Разработка без пересборки контейнеров
 
@@ -119,4 +119,4 @@ python3 scripts/check-doc-links.py --external --report work/link-check.json
 uv run --script scripts/models.py check-upstream
 ```
 
-Первая проверка локальная, вторая требует Интернет и сохраняет HTTP-результаты; model check сверяет pinned metadata/контрольные суммы, не запускает inference. Для полного получения весов и проверки локальных SHA-256 используйте [инструкцию Qwen](../ai/model-downloads.md). Модели не нужны для этапов 0–4.
+Первая проверка локальная, вторая требует Интернет и сохраняет HTTP-результаты; model check сверяет pinned metadata/контрольные суммы, не запускает inference. Для полного получения весов и проверки локальных SHA-256 используйте [инструкцию Qwen](../ai/model-downloads.md). Модели не нужны для этапов 0–5.

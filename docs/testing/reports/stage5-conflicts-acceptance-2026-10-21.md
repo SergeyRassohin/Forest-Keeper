@@ -1,8 +1,8 @@
-# Stage 5 Conflict Engine — pre-merge acceptance
+# Stage 5 Conflict Engine — acceptance history and main gate
 
 PR: [#22](https://github.com/SergeyRassohin/Forest-Keeper/pull/22), refs #21/#20/#18.
 
-**Current follow-up: independent runtime/security/product-intent review PASS, no blocking findings. Final exact-HEAD CI and separate owner acceptance remain required; see the 2026-10-22 section below.**
+**Current outcome: Stage 5 accepted in main. PR #22 merged as `6235dd6a18f8cbb8aeceac2a7d052f5fca396482`; exact merge-commit CI SUCCESS. See the final main merge gate section below; pre-merge statements are historical checkpoints.**
 This is the implementation author's verification, not an independent retest.
 No automatic merge; Stage 5 is not accepted and #18/#20/#21 remain open.
 
@@ -139,3 +139,11 @@ All owner findings were checked: both normalization origins/versions/hashes in A
 Both the historical 559.070 s and independent 361.058 s are engineering measurements, not customer SLA or interactive/near-real-time promises. Optimization remains an open pilot-hardening target; measured profiling is in the independent report and conflicts.md. Ordered runtime restart preserves the same browser Conflict IDs/full HTTPS cards/Basis/raw/normalization/matching; both original files physically retain their SHA-256.
 
 Independent Architecture / Product Intent Gate: **PASS**, no blocking runtime/security findings. The follow-up changes documentation/evidence only; final exact SHA and CI are recorded in PR #22. **READY TO MERGE after green final-SHA CI, subject to separate owner acceptance. No merge performed or authorized here.** #18/#20/#21 remain open; Stage 6 is not started.
+
+## Main merge gate — Stage 5 accepted, 2026-10-22
+
+The owner merged approved final HEAD `9b356a19e24a3affe60421aa136ccffb50fa0d31` through PR #22 as **`6235dd6a18f8cbb8aeceac2a7d052f5fca396482`**. The user explicitly instructed completion of the merge gate. Git tree `1c9e029824bae55e36ef21d9483169d6e34e0d4f` is identical to reviewed final HEAD; no application/tests/migrations changed during integration.
+
+[GitHub Actions on the exact main merge commit](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39768647312): **SUCCESS**, including the complete mandatory tests/security/build/migration/integration/browser/production pipeline. Independent runtime/security and Architecture / Product Intent Gate remain PASS. **Stage 5 accepted in main; issue #21 complete; Stage 5 step of #20 complete.** Earlier READY/BLOCKED statements above describe historical checkpoints and are superseded by this completed gate.
+
+README, setup/Quick Start, workflow, module map, progress/readiness and presentation now describe main through Stage 5. All known limitations remain: synthetic quality, neutral LOW severity, disabled RULE_VIOLATION/ANOMALY generation without rule/detector, background-batch performance (361.058/559.070 s engineering measurements, not SLA), matching coverage caps and abrupt Redis/worker stale-lease limitation. #18/#20 stay open; Stage 6+ was not started by this closure.

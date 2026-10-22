@@ -1,7 +1,7 @@
 # Conflict Engine — Stage 5
 
-Реализация в отдельной ветке/PR по [ТЗ #21](https://github.com/SergeyRassohin/Forest-Keeper/issues/21).
-До merge и приёмки это не описание принятого main. Conflict фиксирует проблему;
+Этап принят в main через PR #22, merge `6235dd6a18f8cbb8aeceac2a7d052f5fca396482`; [CI — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39768647312).
+Реализация по [ТЗ #21](https://github.com/SergeyRassohin/Forest-Keeper/issues/21). Conflict фиксирует проблему;
 MatchCandidate фиксирует идентичность; Decision будет отдельным человеческим бизнес-фактом.
 
 ## Запуск и права
@@ -135,4 +135,4 @@ Forest Codex относятся к последующим этапам и отс
 Схема должна принадлежать вызывающему тесту; её последующее удаление выполняет владелец.
 Обычный полный benchmark выше остаётся основным воспроизводимым standalone путём.
 
-[Pre-merge acceptance report and blockers](../testing/reports/stage5-conflicts-acceptance-2026-10-21.md).
+[Acceptance report / completed main merge gate](../testing/reports/stage5-conflicts-acceptance-2026-10-21.md).

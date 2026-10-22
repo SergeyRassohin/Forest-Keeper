@@ -1,6 +1,6 @@
 # Forest Keeper — блок-схема процесса и CI
 
-Актуально для `main` после принятия Stage 4 и фиксации ТЗ Stage 5 в [issue #21](https://github.com/SergeyRassohin/Forest-Keeper/issues/21).
+Актуально для `main` после принятия Stage 5 по ТЗ в [issue #21](https://github.com/SergeyRassohin/Forest-Keeper/issues/21).
 
 ## 1. Бизнес-процесс Forest Keeper
 
@@ -14,7 +14,7 @@ flowchart LR
     D1 -->|POSSIBLE_MATCH| F["Ручная проверка identity"]
     D1 -->|NOT_MATCHED| G["Разные сущности"]
 
-    E --> H["Conflict Engine<br/>Stage 5 — PR #22"]
+    E --> H["Conflict Engine<br/>Stage 5 — ACCEPTED"]
     F -->|подтверждено MATCHED| E
     F -->|отклонено NOT_MATCHED| G
     H --> I["Conflict + evidence + provenance"]
@@ -30,12 +30,11 @@ flowchart LR
     classDef next fill:#fff0c2,stroke:#bf8700,color:#111;
     classDef future fill:#eaeef2,stroke:#57606a,color:#111;
 
-    class A,B,C,D,D1,E,F,G done;
-    class H,I next;
+    class A,B,C,D,D1,E,F,G,H,I done;
     class J,K,L,M,N,O future;
 ```
 
-**Текущий статус:** этапы 0–4 приняты в `main`. Conflict Engine реализован в отдельном [PR #22](https://github.com/SergeyRassohin/Forest-Keeper/pull/22) по ТЗ #21; независимый retest и его доказательства описаны в [отчёте](../testing/reports/stage5-conflicts-independent-2026-10-22.md). Это не приёмка Stage 5 в main: требуются зелёный финальный CI, отдельное разрешение владельца на merge и затем зелёный CI merge commit. Только подтверждённые MATCHED identities попадают в persisted Conflict; POSSIBLE_MATCH требует проверки identity, отклонённые пары не анализируются как одна сущность. Полный путь до Decision/retrieval/recommendation/AI ещё не завершён.
+**Текущий статус:** этапы 0–5 приняты в main. PR #22 объединён владельцем в main: `6235dd6a18f8cbb8aeceac2a7d052f5fca396482`; [CI точного merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39768647312). Этап 5 принят; 679 тестов и независимый runtime/security/product-intent retest PASS. Шаг Stage 5 из #20 завершён. Stage 6–7 — следующий отдельный этап; #18/#20 остаются открытыми. Только подтверждённые MATCHED identities создают business Conflict; отклонённые пары не анализируются как одна сущность. Полный путь до Decision/retrieval/recommendation/AI ещё не завершён.
 
 ### Граница ответственности этапов
 
@@ -129,6 +128,6 @@ GitHub сохраняет историю запусков. Старые `failure
 - [сквозной план до внешней проверки — issue #20](https://github.com/SergeyRassohin/Forest-Keeper/issues/20)
 - [презентация продукта](../marketing/presentation-v0.1.md)
 
-## Stage 5: реализация в отдельном PR
+## Stage 5: принят в main — 22 октября 2026
 
-Ветка `codex/stage5-conflict-engine` содержит [Conflict Engine](../development/conflicts.md): persisted OPEN conflicts, async analysis, API и Web list/detail с immutable evidence. Это проверяемая реализация PR, а не принятый main. До independent retest, финального CI и отдельного разрешения владельца merge/acceptance заблокированы. Полный MVP #18/#20 остаётся незавершённым.
+PR #22 объединён владельцем в main: `6235dd6a18f8cbb8aeceac2a7d052f5fca396482`; [CI точного merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39768647312). Этап 5 принят; 679 тестов и независимый runtime/security/product-intent retest PASS. Шаг Stage 5 из #20 завершён. Stage 6–7 — следующий отдельный этап; #18/#20 остаются открытыми. Полный MVP #18/#20 остаётся незавершённым.

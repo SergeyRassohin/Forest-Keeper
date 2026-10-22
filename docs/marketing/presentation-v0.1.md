@@ -1,6 +1,6 @@
 # Forest Keeper — презентация v0.1
 
-Статус: актуально на 21 октября 2026 после принятия Stage 4 и фиксации ТЗ Stage 5 в [issue #21](https://github.com/SergeyRassohin/Forest-Keeper/issues/21).
+Статус: актуально на 22 октября 2026 после принятия Stage 5 по ТЗ в [issue #21](https://github.com/SergeyRassohin/Forest-Keeper/issues/21).
 
 Эта презентация является текстовым источником для внешних слайдов. При изменении продукта сначала обновляются инженерные документы и решения, затем этот файл и визуальная версия презентации.
 
@@ -29,8 +29,8 @@ Forest Keeper наблюдает данные предприятия, сопос
 
 Текущий статус:
 
-- этапы 0–4 приняты в `main`;
-- Stage 5 Conflict Engine — следующий этап, ТЗ зафиксировано в issue #21;
+- этапы 0–5 приняты в `main`;
+- Stage 5 Conflict Engine принят через PR #22; следующий этап — Human Review / Decision Registry;
 - внешний review планируется на 24 октября 2026.
 
 ---
@@ -75,8 +75,8 @@ Import
 
 Граница текущей реализации:
 
-- Stage 0–4: ACCEPTED;
-- Stage 5: ТЗ утверждено, runtime ещё не принят;
+- Stage 0–5: ACCEPTED;
+- Stage 5: ACCEPTED, OPEN conflicts/Basis/provenance; не Decision Registry;
 - Stage 6+: pending.
 
 Важно:
@@ -145,6 +145,8 @@ Import
 - `DUPLICATE`;
 - `RULE_VIOLATION`;
 - `ANOMALY`.
+
+В принятом Stage 5 генерируются VALUE_MISMATCH/MISSING/DUPLICATE. RULE_VIOLATION/ANOMALY остаются canonical enum с выключенной генерацией до валидных versioned Rules/detector. LOW — нейтральный technical default, не бизнес-риск.
 
 Граница:
 
@@ -303,7 +305,7 @@ fresh clone
 → optional Qwen explanation
 ```
 
-На текущем `main` уверенно доступны этапы до matching включительно. Stage 5 — следующий необходимый вертикальный шаг.
+На текущем `main` доступны этапы до Conflict Engine включительно. Human Review / Decision Registry — следующий необходимый вертикальный шаг.
 
 Критерий успеха внешней проверки: специалист оценивает продукт, архитектуру, UX, риски и потенциал, а не тратит время на выяснение «как это вообще запустить».
 

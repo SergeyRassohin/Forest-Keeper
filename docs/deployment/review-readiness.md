@@ -8,7 +8,7 @@
 | Два источника, импорт CSV/XLSX/XML, raw/provenance | Этап 2 принят | Проверка собственного файла и открытого примера |
 | Нормализация и история правил | Этап 3 принят; только явные профили | Подходящий mapping, исходные/нормализованные значения |
 | Matching/evidence | Этап 4 принят в main; независимый retest и CI merge commit PASS | Промышленный pilot domain и проверка реальных файлов |
-| Conflict Engine | BLOCKED в runtime: ТЗ и DoD зафиксированы в [issue #21](https://github.com/SergeyRassohin/Forest-Keeper/issues/21) | Отдельный PR Stage 5, реальный Conflict с deterministic evidence, restart persistence и зелёный merge CI |
+| Conflict Engine | Этап 5 принят в main, независимый retest и merge CI PASS | Реальные Conflict ID/Basis/provenance и подтверждение сохранности после restart |
 | Human Review + Decision Registry | BLOCKED: этапы 6–7 не реализованы | Сохранённый Decision, actor/reason/context и immutable history |
 | Restart с сохранением Decision | BLOCKED: нет Decision | Проверка того же ID после restart без удаления volumes |
 | Similar Decision/recommendation | BLOCKED: нет retrieval/recommendation | Следующий похожий кейс с реальной ссылкой на прошлый Decision |
@@ -16,11 +16,11 @@
 | LLM/embedding runtime + model-info | BLOCKED: нет поддерживаемого запуска | Точные ID/revisions; inference и 1024 dimensions smoke |
 | AI evidence / offline / LLM failure | BLOCKED: нет интеграции | Только реальные evidence IDs; офлайн-тест; работа истории без LLM |
 
-**Итог: полная внешняя приёмка MVP пока BLOCKED.** Можно проводить техническую проверку реализованных этапов, честно отмечая границу. Наличие ТЗ Stage 5 не означает наличие работающего Conflict Engine. Эта документация не закрывает #18.
+**Итог: полная внешняя приёмка MVP пока BLOCKED.** Можно проводить техническую проверку реализованных этапов, честно отмечая границу. Conflict Engine принят, но не заменяет ещё отсутствующие Human Review/Decision Registry. Эта документация не закрывает #18.
 
 Stage 4: [текущий отчёт и DoD](../testing/reports/stage4-matching-acceptance-2026-10-21.md). Локальные проверки, gold, 100k capacity и restart выполнены; [отдельный independent runtime/security retest](../testing/reports/stage4-matching-independent-2026-10-21.md) PASS без блокирующих замечаний, повторены 619 тестов и все четыре capacity профиля. Владелец принял HEAD `f44e01e` и разрешил merge; main merge `bea0d55c92540744657feac863084cde131a7f43`, [CI — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39595762080). Шаг 1 / Stage 4 из #20 завершён.
 
-Stage 5: подробное ТЗ, границы, benchmark, migration, browser E2E, recovery и merge gate зафиксированы в [issue #21](https://github.com/SergeyRassohin/Forest-Keeper/issues/21). Реализация должна идти отдельным PR и остановиться на `READY TO MERGE` до отдельного разрешения владельца.
+Stage 5: подробное ТЗ, границы, benchmark, migration, browser E2E, recovery и merge gate зафиксированы в [issue #21](https://github.com/SergeyRassohin/Forest-Keeper/issues/21). PR #22 принят и объединён после отдельного разрешения; merge gate завершён.
 
 ## Согласованные правила
 
@@ -43,6 +43,6 @@ Stage 5: подробное ТЗ, границы, benchmark, migration, browser 
 7. Независимое ревью и исправления до объявления готовности. Существующие исторические отчёты не выдаются за новое независимое ревью этой правки.
 8. Для Stage 5 после реализации: реальный Conflict ID, linked MatchCandidate, raw/normalized/provenance, deterministic Basis и сохранность после restart.
 
-## Stage 5: реализация в отдельном PR
+## Stage 5: принят в main — 22 октября 2026
 
-Ветка `codex/stage5-conflict-engine` содержит [Conflict Engine](../development/conflicts.md): persisted OPEN conflicts, async analysis, API и Web list/detail с immutable evidence. Это проверяемая реализация PR, а не принятый main. [Независимый runtime/security/product-intent retest](../testing/reports/stage5-conflicts-independent-2026-10-22.md) PASS: 679 тестов, security/dependencies, quality, capacity 100/1k/10k/100k, production smoke и restart. Блокирующих замечаний нет. Финальный HEAD/CI — в PR #22; до отдельного разрешения владельца merge и принятие в main не выполняются. Полный MVP #18/#20 остаётся незавершённым.
+PR #22 объединён владельцем в main: `6235dd6a18f8cbb8aeceac2a7d052f5fca396482`; [CI точного merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39768647312). Этап 5 принят; 679 тестов и независимый runtime/security/product-intent retest PASS. Шаг Stage 5 из #20 завершён. Stage 6–7 — следующий отдельный этап; #18/#20 остаются открытыми. Полный MVP #18/#20 остаётся незавершённым.
