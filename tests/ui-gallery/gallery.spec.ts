@@ -186,7 +186,7 @@ test('real product gallery, WCAG baseline and responsive Stage 1–5 path', asyn
   await expect(page.getByRole('heading', { name: 'Проверяем сессию…', exact: true })).toBeVisible();
   await capture(page, '15-loading', 'Выполнение запроса', 'Настоящее состояние ожидания ответа; для демонстрации ответ намеренно задержан тестом.', page.getByRole('heading', { name: 'Проверяем сессию…', exact: true }));
   releaseSession();
-  await page.unroute('**/api/v1/auth/me');
+  await page.unrouteAll({ behavior: 'wait' });
   await expect(page.getByRole('heading', { name: 'Вход в Forest Keeper' })).toBeVisible();
   await page.route('**/api/v1/auth/login', (route) => route.abort());
   await page.getByLabel('Логин', { exact: true }).fill(accounts.VIEWER.login);
