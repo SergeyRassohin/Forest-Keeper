@@ -36,6 +36,9 @@ def upgrade() -> None:
       UNIQUE(version_id,decision_id));
     CREATE INDEX ix_embedding_filters ON decision_embeddings
       (version_id,domain,entity_type,attribute_code,conflict_type,value_kind,unit);
+    CREATE INDEX ix_embedding_integrity ON decision_embeddings(version_id,decision_id)
+      WHERE vector_hash IS DISTINCT FROM encode(sha256(public.vector_send(embedding)),'hex')
+      OR feature_hash IS DISTINCT FROM input_hash OR dimensions<>1024;
     CREATE TABLE retrieval_queries (
       version_id uuid NOT NULL REFERENCES retrieval_versions, context_hash varchar(64) NOT NULL,
       features jsonb NOT NULL, embedding public.vector(1024) NOT NULL

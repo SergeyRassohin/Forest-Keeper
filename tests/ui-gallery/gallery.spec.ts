@@ -241,6 +241,10 @@ test('real product gallery, WCAG baseline and responsive Stage 1–7 path', asyn
   const past = page.getByRole('article', { name: 'Карточка решения', exact: true });
   await expect(past).toContainText('Эксперт каталога'); await expect(past).toContainText('13.25'); await expect(past).toContainText(precedent.reason);
   await capture(page, '25-precedent-detail', 'От похожести к реальному решению', 'Открывается неизменяемый факт: автор, дата, выбранное человеком значение, обоснование и история. Поиск не предлагает действие для нового конфликта.', past);
+  await page.getByRole('button', { name: 'Вернуться к текущему конфликту', exact: true }).click();
+  await expect(page.getByRole('region', { name: 'Карточка конфликта', exact: true })).toBeVisible();
+  await expect(similar).toContainText(precedent.id);
+  await expect(similar).toContainText('Похожесть'); await expect(similar).toContainText('Совпало:');
   const unrelated = await newRetrievalCase(page, '_other', true);
   await expect.poll(async () => (await (await page.request.get('/api/v1/conflicts/' + unrelated.conflict + '/similar-decisions')).json()).reason_code, { timeout: 60000 }).toBe('BELOW_THRESHOLD');
   await similar.getByRole('button', { name: 'Повторить поиск', exact: true }).click();

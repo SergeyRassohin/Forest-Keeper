@@ -44,3 +44,48 @@ def test_empty_upgrade_downgrade_and_transactional_retry(bootstrap_env):
         command.downgrade(config, "0007_decisions")
         command.upgrade(config, "head")
     engine.dispose()
+
+
+def test_extension_in_wrong_schema_blocks_then_retry_succeeds(bootstrap_env):
+    from uuid import uuid4
+
+    from pydantic import SecretStr
+    from sqlalchemy.engine import make_url
+    from sqlalchemy.exc import DBAPIError
+
+    database = "fk_stage7_vector_" + uuid4().hex
+    admin = make_engine(bootstrap_env)
+    url = (
+        make_url(bootstrap_env.database_url.get_secret_value())
+        .difference_update_query(["options"])
+        .set(database=database)
+        .render_as_string(hide_password=False)
+    )
+    settings = bootstrap_env.model_copy(update={"database_url": SecretStr(url)})
+    target = None
+    config = Config(str(Path(__file__).resolve().parents[1] / "alembic.ini"))
+    try:
+        with admin.connect().execution_options(isolation_level="AUTOCOMMIT") as connection:
+            connection.execute(text('CREATE DATABASE "' + database + '"'))
+        target = make_engine(settings)
+        with patch.dict(os.environ, {"FK_DATABASE_URL": url}):
+            command.upgrade(config, "0007_decisions")
+            with target.begin() as connection:
+                connection.execute(text("CREATE SCHEMA displaced_vector"))
+                connection.execute(text("ALTER EXTENSION vector SET SCHEMA displaced_vector"))
+            with pytest.raises(DBAPIError, match="Required public pgvector"):
+                command.upgrade(config, "head")
+            with target.begin() as connection:
+                assert (
+                    connection.scalar(text("SELECT version_num FROM alembic_version"))
+                    == "0007_decisions"
+                )
+                connection.execute(text("ALTER EXTENSION vector SET SCHEMA public"))
+            command.upgrade(config, "head")
+            command.upgrade(config, "head")
+    finally:
+        if target:
+            target.dispose()
+        with admin.connect().execution_options(isolation_level="AUTOCOMMIT") as connection:
+            connection.execute(text('DROP DATABASE IF EXISTS "' + database + '" WITH (FORCE)'))
+        admin.dispose()

@@ -19,4 +19,4 @@ if [[ -z "$proxy_ip" ]]; then
 fi
 export FK_BUILD_PROXY_HOST_ENTRY="$proxy_host=$proxy_ip"
 docker compose -f compose.yaml -f deploy/proxy-build.compose.yaml build \
-  --build-arg HTTPS_PROXY --build-arg HTTP_PROXY --build-arg NO_PROXY
+  --build-arg HTTPS_PROXY --build-arg HTTP_PROXY --build-arg NO_PROXY "$@"

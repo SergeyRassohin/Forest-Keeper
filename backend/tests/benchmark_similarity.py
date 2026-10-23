@@ -17,7 +17,7 @@ from fastapi.testclient import TestClient
 from redis import Redis
 from rq import Queue
 from rq.job import Job
-from sqlalchemy import func, select, text
+from sqlalchemy import event, func, select, text
 from sqlalchemy.orm import Session
 
 from app.auth.dependencies import COOKIE_NAME
@@ -78,6 +78,28 @@ def run():
             with TestClient(
                 create_app(settings=settings), base_url="https://localhost:8443"
             ) as client:
+
+                def phase(statement):
+                    if "sha256" in statement:
+                        return "integrity"
+                    if "LEFT OUTER JOIN retrieval_items" in statement:
+                        return "coverage"
+                    if "OPERATOR(public.<=>)" in statement:
+                        return "ranking"
+                    return "metadata"
+
+                def failed(context):
+                    print(
+                        json.dumps(
+                            {
+                                "sql_failure_phase": phase(context.statement or ""),
+                                "sqlstate": getattr(context.original_exception, "sqlstate", None),
+                            }
+                        ),
+                        flush=True,
+                    )
+
+                event.listen(client.app.state.engine, "handle_error", failed)
                 client.cookies.set(COOKIE_NAME, tokens[0])
                 first = real_case(client, settings)
                 seed = save(client, first, selection(begin(client, first)))
@@ -85,6 +107,7 @@ def run():
                 for count in [100, 1000, 10000]:
                     with Session(engine) as session:
                         existing = session.scalar(select(func.count()).select_from(Decision))
+                        new_rows = count - existing
                         seed_row = session.get(Decision, UUID(seed["decision_id"]))
                         while existing < count:
                             amount = min(count - existing, 250)
@@ -179,12 +202,10 @@ def run():
                         ).strip(),
                         "decision_rows": count,
                         "vector_rows": actual,
-                        "indexing_new_rows": count
-                        - (100 if count == 1000 else 1000 if count == 10000 else 0),
+                        "indexing_new_rows": new_rows,
                         "index_seconds": round(index_seconds, 4),
                         "new_vectors_per_second": round(
-                            (count - (100 if count == 1000 else 1000 if count == 10000 else 0))
-                            / index_seconds,
+                            new_rows / index_seconds,
                             2,
                         ),
                         "first_query_with_preparation_seconds": round(first_query_seconds, 4),

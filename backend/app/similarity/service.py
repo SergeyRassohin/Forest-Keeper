@@ -3,7 +3,7 @@
 from typing import Any
 from uuid import NAMESPACE_URL, UUID, uuid5
 
-from sqlalchemy import Float, cast, exists, func, literal, select
+from sqlalchemy import Float, cast, exists, func, literal, literal_column, select
 from sqlalchemy.orm import Session, aliased
 
 from app.auth.models import AuditEvent, User
@@ -181,6 +181,9 @@ def retrieval(
 
         try:
             request_query(case.id, version.id, digest(features), settings)
+        except ProviderError as error:
+            result["reason_code"] = str(error)
+            return result
         except Exception:
             result["reason_code"] = "QUERY_PREPARATION_UNAVAILABLE"
             return result
@@ -233,20 +236,34 @@ def retrieval(
         return result
     # Validate every scoped compatible artifact before thresholding: corrupt vectors
     # cannot disappear below threshold and masquerade as an honest empty result.
-    invalid = (
+    integrity_predicate = (
+        DecisionEmbedding.vector_hash.is_distinct_from(
+            func.encode(
+                func.sha256(func.public.vector_send(DecisionEmbedding.embedding)),
+                literal_column("'hex'"),
+            )
+        )
+        | DecisionEmbedding.feature_hash.is_distinct_from(DecisionEmbedding.input_hash)
+        | (DecisionEmbedding.dimensions != literal_column("1024"))
+    )
+    invalid_vector = (
+        select(DecisionEmbedding.id)
+        .where(
+            DecisionEmbedding.version_id == version.id,
+            integrity_predicate,
+            DecisionEmbedding.decision_id.in_(select(pool_ids.c.id)),
+        )
+        .limit(1)
+    )
+    # The partial integrity index is maintained on every insert/write, including a
+    # deliberate test/admin corruption. It checks the whole scoped pool without
+    # serializing and hashing 10k vectors again for each concurrent HTTP reader.
+    invalid_features = (
         select(DecisionEmbedding.id)
         .where(
             DecisionEmbedding.version_id == version.id,
             DecisionEmbedding.decision_id.in_(select(pool_ids.c.id)),
-            (
-                DecisionEmbedding.vector_hash
-                != func.encode(
-                    func.sha256(func.public.vector_send(DecisionEmbedding.embedding)), "hex"
-                )
-            )
-            | (DecisionEmbedding.dimensions != DIMENSIONS)
-            | (DecisionEmbedding.feature_hash != DecisionEmbedding.input_hash)
-            | (DecisionEmbedding.domain != features["domain"])
+            (DecisionEmbedding.domain != features["domain"])
             | (DecisionEmbedding.entity_type != features["entity_type"])
             | (DecisionEmbedding.attribute_code != features["attribute_code"])
             | (DecisionEmbedding.conflict_type != features["conflict_type"])
@@ -255,7 +272,7 @@ def retrieval(
         )
         .limit(1)
     )
-    if session.scalar(invalid):
+    if session.scalar(invalid_vector) or session.scalar(invalid_features):
         result.update(state="UNAVAILABLE", reason_code="INDEX_INTEGRITY_FAILURE")
         return result
     distance = cast(

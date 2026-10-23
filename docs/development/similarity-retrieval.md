@@ -113,6 +113,12 @@ The request has a 750ms local statement timeout, bounded input/page sizes and 12
 reads/minute; timeout/queue/provider failures preserve Human Review and Registry availability.
 Binary fingerprints are checked across the scoped compatible pool **before thresholding**,
 so a corrupt vector moved below threshold cannot silently become an honest no-precedent result.
+The partial `ix_embedding_integrity` index maintains the fingerprint invariant on every
+write, allowing bounded reads without rehashing 10k vectors per concurrent reader.
+PostgreSQL physical storage/checksum monitoring remains responsible for raw disk corruption;
+the application gate proves detection of corrupt stored rows, not repair of damaged pages.
+Query-preparation failures retain a sanitized RQ FAILED status and return UNAVAILABLE;
+after a 30-second cooldown the next read can request a bounded retry.
 
 ## API and UI
 

@@ -241,6 +241,27 @@ def test_vector_db_dimension_and_immutability_guards(client, auth_env):
         engine.dispose()
 
 
+def test_downgrade_with_vectors_refuses_without_losing_decision_history(client, auth_env):
+    from alembic import command
+    from alembic.config import Config
+    from sqlalchemy.exc import DBAPIError
+
+    index(auth_env)
+    engine = make_engine(auth_env)
+    with Session(engine) as session:
+        before = session.scalar(select(func.count()).select_from(Decision))
+        vectors = session.scalar(select(func.count()).select_from(DecisionEmbedding))
+        assert vectors > 0
+    with patch.dict(os.environ, {"FK_DATABASE_URL": auth_env.database_url.get_secret_value()}):
+        with pytest.raises(DBAPIError, match="Preserve derived audit"):
+            command.downgrade(Config("alembic.ini"), "0007_decisions")
+    with Session(engine) as session:
+        assert session.scalar(select(func.count()).select_from(Decision)) == before
+        assert session.scalar(select(func.count()).select_from(DecisionEmbedding)) == vectors
+        assert session.scalar(text("SELECT version_num FROM alembic_version")) == "0008_similarity"
+    engine.dispose()
+
+
 @pytest.mark.parametrize(
     "field,value",
     [
@@ -522,3 +543,123 @@ def test_hard_corruption_below_threshold_fails_closed_before_ranking(client, aut
                     )
                 )
         engine.dispose()
+
+
+def test_real_statement_timeout_is_local_and_registry_remains_readable(client, auth_env):
+    import time
+
+    case = real_case(client, auth_env)
+
+    def slow(session, *args):
+        session.execute(text("SELECT pg_sleep(1.5)"))
+
+    started = time.monotonic()
+    with patch("app.similarity.routes.retrieval", slow):
+        response = client.get(f"/api/v1/conflicts/{case}/similar-decisions")
+    assert response.status_code == 503 and time.monotonic() - started < 1.5
+    assert client.get("/api/v1/decisions").status_code == 200
+    assert client.get(f"/api/v1/conflicts/{case}/review-context").status_code == 200
+
+
+def test_rq_recovery_coalesces_queued_delivery_and_finishes_real_backfill(client, auth_env):
+    from uuid import uuid4
+
+    from redis import Redis
+    from rq import Queue, SimpleWorker
+
+    from app.similarity.jobs import recover_indexes
+
+    case = real_case(client, auth_env)
+    save(client, case, selection(begin(client, case)))
+    settings = enabled(auth_env).model_copy(
+        update={"import_queue_name": "retrieval-recovery-" + uuid4().hex}
+    )
+    engine = make_engine(settings)
+    with Session(engine) as session:
+        run = start_run(session, settings)
+        session.commit()
+        identifier = run.id
+    with Redis.from_url(settings.redis_url.get_secret_value()) as redis:
+        queue = Queue(settings.import_queue_name, connection=redis)
+        try:
+            recover_indexes(settings, redis)
+            recover_indexes(settings, redis)
+            assert len(queue.get_job_ids()) == 1
+            with patch("app.similarity.jobs.Settings", return_value=settings):
+                SimpleWorker([queue], connection=redis).work(burst=True, logging_level="ERROR")
+            with Session(engine) as session:
+                assert session.get(IndexRun, identifier).status == "COMPLETED"
+        finally:
+            for job_id in [
+                *queue.get_job_ids(),
+                *queue.finished_job_registry.get_job_ids(),
+                *queue.failed_job_registry.get_job_ids(),
+            ]:
+                from rq.job import Job
+
+                job = Job.fetch_many([job_id], connection=redis)[0]
+                if job:
+                    job.delete()
+            queue.delete(delete_jobs=True)
+    engine.dispose()
+
+
+def test_query_provider_failure_is_unavailable_then_bounded_retry_recovers(
+    client, auth_env, role_tokens, tmp_path
+):
+    from datetime import UTC, datetime, timedelta
+    from uuid import uuid4
+
+    from redis import Redis
+    from rq import Queue, SimpleWorker
+    from rq.job import Job
+
+    from app.similarity.provider import ProviderError
+    from tests.test_conflicts_integration import DATA
+
+    for file in ["source-a.csv", "source-b.xml"]:
+        (tmp_path / file).write_text(
+            (DATA / file).read_text().replace("Different Bolt", "Distinct Query Failure Fixture")
+        )
+    with patch("tests.test_conflicts_integration.DATA", tmp_path):
+        case = real_case(client, auth_env)
+    index(auth_env)
+    settings = enabled(auth_env).model_copy(
+        update={"import_queue_name": "query-failure-" + uuid4().hex}
+    )
+    with (
+        TestClient(create_app(settings=settings), base_url="https://localhost:8443") as reader,
+        Redis.from_url(settings.redis_url.get_secret_value()) as redis,
+    ):
+        reader.cookies.set(COOKIE_NAME, role_tokens["DATA_OWNER"])
+        queue = Queue(settings.import_queue_name, connection=redis)
+        path = f"/api/v1/conflicts/{case}/similar-decisions"
+        try:
+            assert reader.get(path).json()["reason_code"] == "QUERY_CONTEXT_PENDING"
+            job_id = queue.get_job_ids()[0]
+            with (
+                patch("app.similarity.jobs.Settings", return_value=settings),
+                patch(
+                    "app.similarity.provider.TestProvider.embed",
+                    side_effect=ProviderError("sensitive provider payload"),
+                ),
+            ):
+                SimpleWorker([queue], connection=redis).work(burst=True, logging_level="CRITICAL")
+            failed = reader.get(path)
+            assert failed.status_code == 200 and failed.json()["state"] == "UNAVAILABLE"
+            assert failed.json()["reason_code"] == "QUERY_PREPARATION_FAILED"
+            assert "sensitive" not in failed.text
+            job = Job.fetch(job_id, connection=redis)
+            assert "sensitive" not in (job.exc_info or "")
+            job.ended_at = datetime.now(UTC) - timedelta(seconds=31)
+            job.save()
+            assert reader.get(path).json()["reason_code"] == "QUERY_CONTEXT_PENDING"
+            with patch("app.similarity.jobs.Settings", return_value=settings):
+                SimpleWorker([queue], connection=redis).work(burst=True, logging_level="ERROR")
+            assert reader.get(path).json()["state"] == "NO_PRECEDENT"
+            assert reader.get(f"/api/v1/conflicts/{case}/review-context").status_code == 200
+        finally:
+            job = Job.fetch_many([job_id], connection=redis)[0] if "job_id" in locals() else None
+            if job:
+                job.delete()
+            queue.delete(delete_jobs=True)

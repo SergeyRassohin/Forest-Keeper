@@ -1,6 +1,7 @@
 """Bounded transactional checkpoints and restart recovery, independent of Decision save."""
 
 import hashlib
+from datetime import UTC, datetime
 from typing import Any
 from uuid import UUID
 
@@ -86,8 +87,8 @@ def prepare_query(
             )
             session.commit()
     except Exception:
-        # Query failure does not affect Registry or immutable human facts. GET can retry.
-        return
+        # RQ retains a sanitized FAILED state; GET distinguishes failure from indexing.
+        raise ProviderError("QUERY_PREPARATION_FAILED") from None
     finally:
         engine.dispose()
 
@@ -97,8 +98,16 @@ def request_query(case_id: UUID, version_id: UUID, context_hash: str, settings: 
         settings.redis_url.get_secret_value(), socket_connect_timeout=0.5, socket_timeout=0.5
     ) as redis:
         queue = Queue(settings.import_queue_name, connection=redis)
-        job_id = "retrieval-query-" + version_id.hex + "-" + context_hash
+        queue_namespace = hashlib.sha256(settings.import_queue_name.encode()).hexdigest()[:12]
+        job_id = "retrieval-query-" + queue_namespace + "-" + version_id.hex + "-" + context_hash
         job = Job.fetch_many([job_id], connection=redis)[0]
+        if job and job.get_status(refresh=True) == "failed":
+            ended = job.ended_at
+            if (
+                ended is None
+                or (datetime.now(UTC) - ended.replace(tzinfo=UTC)).total_seconds() < 30
+            ):
+                raise ProviderError("QUERY_PREPARATION_FAILED")
         if job and job.get_status(refresh=True) in {"queued", "started", "deferred", "scheduled"}:
             return
         if job:

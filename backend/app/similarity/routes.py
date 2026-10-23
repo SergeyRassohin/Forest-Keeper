@@ -26,9 +26,13 @@ class RetrievalQuery(BaseModel):
 
 def snapshot_actor(request: Request, session: Db, settings: Config) -> User:
     # Establish the snapshot before authentication and every later retrieval SELECT.
-    session.connection(execution_options={"isolation_level": "REPEATABLE READ"})
-    session.execute(text("SET TRANSACTION READ ONLY"))
-    session.execute(text("SET LOCAL statement_timeout = '750ms'"))
+    try:
+        session.connection(execution_options={"isolation_level": "REPEATABLE READ"})
+        session.execute(text("SET TRANSACTION READ ONLY"))
+        session.execute(text("SET LOCAL statement_timeout = '750ms'"))
+    except SQLAlchemyError:
+        session.rollback()
+        raise ApiError(503, "RETRIEVAL_UNAVAILABLE", "Поиск временно недоступен") from None
     return authenticated(request, session, settings)
 
 
