@@ -60,6 +60,7 @@ def run(count, sources=2):
                 password_hash = hash_password(secrets.token_urlsafe(24))
                 for index in range(10):
                     user = User(
+                        data_domains=["*"],
                         login=f"capacity_{index}",
                         full_name="Synthetic benchmark",
                         password_hash=password_hash,

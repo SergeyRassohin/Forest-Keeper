@@ -84,6 +84,7 @@ def run(schema, matching_id, count):
                 password_hash = hash_password(secrets.token_urlsafe(24))
                 for index in range(10):
                     user = User(
+                        data_domains=["*"],
                         login="retest_" + uuid4().hex,
                         full_name="Synthetic capacity retest",
                         password_hash=password_hash,

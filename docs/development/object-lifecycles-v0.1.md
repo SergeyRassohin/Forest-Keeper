@@ -542,3 +542,8 @@ ImportBatch COMPLETED
 - изменение source-систем как следствие перехода статуса.
 
 Если разработка упирается в необходимость одного из этих переходов, это считается архитектурным вопросом, а не местом, где код должен проявить творческую инициативу.
+
+
+## Stage 6: явный пересмотр того же решения
+
+По Decision Log от 2026-10-23 RESOLVED/INSUFFICIENT_DATA → IN_REVIEW допускается отдельным human command с decision.supersede и ссылкой на текущий head. Это исправление решения по тому же историческому случаю; новая загрузка по-прежнему создаёт новый случай. Старый Decision остаётся head до атомарной записи нового. SELECT_VALUE/ENTER_VALUE → RESOLVED; INSUFFICIENT_DATA → одноимённый статус; DEFERRED → IN_REVIEW. GET не меняет lifecycle. Подробнее: [Human Review](human-review.md).

@@ -47,7 +47,7 @@ async function capture(page: Page, file: string, title: string, description: str
   await page.mouse.move(0, 0);
   const path = resolve(output, file + '.png');
   await page.screenshot({ path, fullPage: false, animations: 'disabled' });
-  report.captures.push({ file: file + '.png', title, description, feature_status: 'Реализовано · Stage 0–5', viewport: { width: 1440, height: 900 }, sha256: createHash('sha256').update(readFileSync(path)).digest('hex') });
+  report.captures.push({ file: file + '.png', title, description, feature_status: 'Реализовано · Stage 0–6', viewport: { width: 1440, height: 900 }, sha256: createHash('sha256').update(readFileSync(path)).digest('hex') });
 }
 async function importSource(page: Page, side: 'a' | 'b') {
   await page.getByRole('button', { name: 'Импорт данных', exact: true }).click();
@@ -82,8 +82,8 @@ async function importSource(page: Page, side: 'a' | 'b') {
   return { analysis: run.id as string, batch: batch.id as string };
 }
 
-test('real product gallery, WCAG baseline and responsive Stage 1–5 path', async ({ page }) => {
-  test.setTimeout(300000);
+test('real product gallery, WCAG baseline and responsive Stage 1–6 path', async ({ page }) => {
+  test.setTimeout(420000);
   page.setDefaultTimeout(30000);
   if (process.env.FK_CAPTURE_UI !== '1' || !output) throw new Error('Explicit gallery opt-in is required');
   mkdirSync(output, { recursive: true });
@@ -169,6 +169,37 @@ test('real product gallery, WCAG baseline and responsive Stage 1–5 path', asyn
   await page.getByRole('button', { name: 'Сравнить записи ' + pending[0].raw_record_a_id + ' ↔ ' + pending[0].raw_record_b_id, exact: true }).click();
   await expect(page.getByRole('button', { name: 'Подтвердить совпадение', exact: true })).toBeVisible();
   await capture(page, '12-matching-review', 'Проверка идентичности экспертом', 'Уже существующий matching review требует объяснения. Это проверка того, что записи относятся к одной сущности, а не разрешение конфликта значений.', page.locator('section[aria-label="Основание сопоставления"] form'));
+  await page.getByRole('button', { name: 'Конфликты', exact: true }).click();
+  await page.getByRole('combobox', { name: 'Сопоставление для конфликтов', exact: true }).selectOption(matching.id);
+  await page.getByRole('button', { name: 'Открыть конфликт ' + mismatch.id, exact: true }).click();
+  await page.getByRole('button', { name: 'Начать рассмотрение', exact: true }).click();
+  const review = page.getByRole('region', { name: 'Рассмотрение конфликта', exact: true });
+  await page.getByRole('radio', { name: /^Источник [AB]:.*12\.5 kg$/ }).check();
+  await page.getByLabel('Обоснование решения', { exact: true }).fill('Проверен документ поставщика: масса 12.5 kg подтверждена человеком.');
+  await capture(page, '19-human-review', 'Решение по проверенным основаниям', 'Эксперт выбирает источник или другое допустимое значение, объясняет выбор. Авторитет источника автоматически не выдумывается.', review);
+  await page.getByRole('button', { name: 'Проверить перед сохранением', exact: true }).click();
+  const dialog = page.getByRole('dialog');
+  await expect(dialog.getByRole('button', { name: 'Сохранить решение', exact: true })).toBeFocused();
+  await capture(page, '20-decision-confirmation', 'Проверка перед сохранением', 'Итог, значение, обоснование и версия контекста перед явным подтверждением. Записи во внешних системах не меняются.', dialog);
+  await dialog.getByRole('button', { name: 'Сохранить решение', exact: true }).click();
+  await expect(page.getByText('Решение сохранено', { exact: true })).toBeVisible();
+  await capture(page, '21-decision-receipt', 'Сервер подтвердил сохранение', 'Настоящий Decision ID, автор, время, значение и объяснение. Надпись появляется после успешного ответа сервера.', page.getByRole('heading', { name: 'Подтверждение сохранённого решения', exact: true }));
+  await page.getByRole('button', { name: 'Открыть решение в реестре', exact: true }).click();
+  await expect(page.getByRole('article', { name: 'Карточка решения' })).toBeVisible();
+  await capture(page, '22-decision-registry', 'Реестр решений', 'Отдельные неизменяемые решения, фильтры и исторический контекст. Это память о действии человека, а не новая запись в исходной системе.');
+  await page.getByRole('button', { name: 'Конфликты', exact: true }).click();
+  await page.getByRole('combobox', { name: 'Сопоставление для конфликтов', exact: true }).selectOption(matching.id);
+  await page.getByRole('button', { name: 'Открыть конфликт ' + mismatch.id, exact: true }).click();
+  await page.getByRole('button', { name: 'Пересмотреть решение', exact: true }).click();
+  await page.getByRole('radio', { name: 'Указать другое значение', exact: true }).check();
+  await page.getByRole('textbox', { name: /^Подтверждённое значение/ }).fill('13,25');
+  await page.getByLabel('Обоснование решения', { exact: true }).fill('Повторная проверка: эксперт уточнил массу по документу. Предыдущее решение сохранено.');
+  await page.getByRole('button', { name: 'Проверить перед сохранением', exact: true }).click();
+  await dialog.getByRole('button', { name: 'Сохранить решение', exact: true }).click();
+  await expect(page.getByText('Решение сохранено', { exact: true })).toBeVisible();
+  await page.getByRole('button', { name: 'Открыть решение в реестре', exact: true }).click();
+  await expect(page.getByRole('region', { name: 'История решений', exact: true })).toContainText('Заменяет');
+  await capture(page, '23-decision-history', 'Исправление сохраняет историю', 'Новое решение заменяет предыдущее. В истории видны оба автора, время, обоснования и явная связь между записями.', page.getByRole('region', { name: 'История решений', exact: true }));
   await signOut(page); await signIn(page, 'VIEWER');
   await page.getByRole('button', { name: 'Конфликты', exact: true }).click();
   await page.getByRole('combobox', { name: 'Сопоставление для конфликтов', exact: true }).selectOption(matching.id);

@@ -562,3 +562,8 @@ Forest Keeper не должен активировать новое правил
 - `POST /api/v1/match-candidates/{id}/review` — существующее `match.review`, cookie + Origin; `{status:"MATCHED"|"NOT_MATCHED",reason:nonempty string≤1000}`. Только POSSIBLE_MATCH завершённого run; actor в confirmed_by, audit и atomic counters. Terminal/repeated/concurrent loser→409. ADMIN без REVIEWER/DATA_OWNER→403.
 
 Read pagination limit1..100, offset0..1000000; matching/analysis private responses no-store. No header bearer mode. Политика threshold OPEN, fuzzy не получает автоматический MATCHED. [Подсистема, ограничения, history/currentness и recovery](../development/matching.md).
+
+
+## Stage 6: реализованный Human Review API
+
+Актуальные POST/GET endpoints, DTO, ошибки, scope и pagination описаны в [Decision Registry](../development/decision-registry.md#api). Decision PATCH/DELETE отсутствуют. Cookie + Origin; actor только из сессии. Create требует version token, UUID idempotency_key, reason и explicit confirmed=true. Результат возвращается после атомарного commit. Старый target recommendation/similarity API остаётся не реализованным.

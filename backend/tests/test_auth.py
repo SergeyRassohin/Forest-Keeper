@@ -105,6 +105,7 @@ def role_tokens(auth_env, password):
                 token = secrets.token_urlsafe(32)
                 user = User(
                     login=str(role).lower(),
+                    data_domains=["*"],
                     full_name=str(role),
                     password_hash=stored,
                     roles=[] if role == "NO_ROLES" else [UserRole(role_code=role)],

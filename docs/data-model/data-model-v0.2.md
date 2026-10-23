@@ -167,3 +167,8 @@ INVALID означает провал проверки подписи или с�
 5. RawRecord не переписывается нормализованными значениями.
 6. Исторический Decision, Rule, Template и Recommendation сохраняют версию и контекст, использованный в тот момент.
 7. Backend валидирует state transition и RBAC независимо от UI.
+
+
+## Stage 6: физическое представление Decision
+
+Decision остаётся отдельным append-only фактом. ACTIVE/SUPERSEDED выводится из successor; immutable supersedes_decision_id, unique root/successor и same-case FK дают один head. Conflict дополнен review_version/current_decision_id. User.data_domains задаёт отдельный явный data scope, без новых ролей/permissions. Поля и historical context: [Decision Registry](../development/decision-registry.md).

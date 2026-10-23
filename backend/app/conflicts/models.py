@@ -80,6 +80,8 @@ class Conflict(Base):
     conflict_type: Mapped[str] = mapped_column(String(32))
     severity: Mapped[str] = mapped_column(String(16))
     status: Mapped[str] = mapped_column(String(32), default="OPEN")
+    review_version: Mapped[int] = mapped_column(default=0)
+    current_decision_id: Mapped[UUID | None]
     values_snapshot: Mapped[list[dict[str, Any]]] = mapped_column(JSONB)
     basis: Mapped[dict[str, Any]] = mapped_column(JSONB)
     detected_at: Mapped[datetime] = mapped_column(

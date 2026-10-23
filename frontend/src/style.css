@@ -138,3 +138,15 @@ summary { cursor: pointer; font-size: .85rem; font-weight: 600; padding: .5rem 0
 th { overflow-wrap: normal; }
 .badge { overflow-wrap: normal; }
 .numeric { white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+.nav-index { flex: none; white-space: nowrap; }
+.human-reason { white-space: pre-wrap; unicode-bidi: plaintext; overflow-wrap: anywhere; }
+.decision-timeline { padding-left: 1.4rem; }
+.decision-timeline li { padding: 1rem 0; border-bottom: 1px solid var(--border); overflow-wrap: anywhere; }
+.decision-receipt { background: var(--success-surface); padding: var(--space-5); border: 1px solid var(--border); border-radius: var(--radius-md); }
+.review-filters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
+.human-review fieldset { min-width: 0; }
+.human-review input[type=radio] { width: 1.1rem; min-height: 1.1rem; flex: none; accent-color: var(--brand-primary); }
+dialog { color: var(--text-primary); background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--space-6); width: min(700px, calc(100% - 32px)); max-height: calc(100vh - 40px); overflow: auto; }
+dialog::backdrop { background: #07110dcc; }
+@media(max-width:760px) { .review-filters { grid-template-columns: 1fr; } }

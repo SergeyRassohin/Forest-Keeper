@@ -34,6 +34,8 @@ class User(Base):
     job_title: Mapped[str] = mapped_column(String(200), default="")
     status: Mapped[str] = mapped_column(String(16), default=UserStatus.ACTIVE)
     password_hash: Mapped[str] = mapped_column(String(512))
+    # Domain access is explicit and independent of action/role permissions.
+    data_domains: Mapped[list[str]] = mapped_column(JSONB, default=list)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     roles: Mapped[list["UserRole"]] = relationship(cascade="all, delete-orphan", lazy="selectin")
 

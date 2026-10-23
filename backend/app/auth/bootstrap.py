@@ -38,6 +38,7 @@ def main() -> None:
                 parser.exit(1, "Bootstrap refused: users already exist.\n")
             user = User(
                 login=body.login,
+                data_domains=["*"],
                 full_name=body.full_name,
                 job_title="",
                 password_hash=hash_password(password),

@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from redis import Redis
 from sqlalchemy import Engine, text
 
-SCHEMA_REVISION = "0006_conflicts"
+SCHEMA_REVISION = "0007_decisions"
 ComponentStatus = Literal["ok", "unavailable"]
 
 

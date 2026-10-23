@@ -20,10 +20,11 @@ from app.conflicts.models import (
     ConflictType,
     Severity,
 )
+from app.decisions.models import Decision
 from app.matching.models import MatchCandidate, MatchingPair
 from app.matching.routes import run_or_404
 from app.matching.routes import view as matching_view
-from app.normalization.models import AnalysisRun
+from app.normalization.models import AnalysisRun, CanonicalEntity
 
 router = APIRouter(prefix="/api/v1", tags=["conflicts"])
 Reader = Annotated[User, Depends(require_permission("conflict.view"))]
@@ -134,7 +135,7 @@ def run_detail(run_id: UUID, session: Db, actor: Reader) -> dict[str, Any]:
     return run_view(run)
 
 
-def summary(conflict: Conflict) -> dict[str, Any]:
+def summary(conflict: Conflict, decision_type: str | None = None) -> dict[str, Any]:
     result = {
         key: getattr(conflict, key)
         for key in [
@@ -150,6 +151,9 @@ def summary(conflict: Conflict) -> dict[str, Any]:
             "detected_at",
         ]
     }
+    result["current_decision_type"] = decision_type
+    result["review_version"] = conflict.review_version
+    result["current_decision_id"] = conflict.current_decision_id
     result["sources"] = [
         {key: value.get(key) for key in ["source_id", "source_name", "source_record_key"]}
         for value in conflict.values_snapshot
@@ -170,7 +174,15 @@ def conflicts(
     limit: Limit = 50,
     offset: Offset = 0,
 ) -> list[dict[str, Any]]:
-    query = select(Conflict).options(defer(Conflict.basis))
+    query = (
+        select(Conflict, Decision.decision_type)
+        .outerjoin(Decision, Decision.id == Conflict.current_decision_id)
+        .options(defer(Conflict.basis))
+    )
+    if "*" not in (actor.data_domains or []):
+        query = query.join(CanonicalEntity, CanonicalEntity.id == Conflict.entity_id).where(
+            CanonicalEntity.domain.in_(actor.data_domains or [])
+        )
     if source_id:
         query = query.where(Conflict.values_snapshot.contains([{"source_id": str(source_id)}]))
     for field, value in [
@@ -183,8 +195,8 @@ def conflicts(
         if value is not None:
             query = query.where(field == value)
     return [
-        summary(row)
-        for row in session.scalars(
+        summary(row, outcome)
+        for row, outcome in session.execute(
             query.order_by(Conflict.detected_at.desc(), Conflict.id.desc())
             .offset(offset)
             .limit(limit)
@@ -195,8 +207,16 @@ def conflicts(
 @router.get("/conflicts/{conflict_id}")
 def detail(conflict_id: UUID, session: Db, actor: Reader) -> dict[str, Any]:
     conflict = session.get(Conflict, conflict_id)
-    if conflict is None:
-        raise ApiError(404, "CONFLICT_NOT_FOUND", "Конфликт не найден")
+    entity = session.get(CanonicalEntity, conflict.entity_id) if conflict else None
+    if (
+        conflict is None
+        or entity is None
+        or (
+            "*" not in (actor.data_domains or [])
+            and entity.domain not in (actor.data_domains or [])
+        )
+    ):
+        raise ApiError(404, "CONFLICT_NOT_FOUND", "Конфликт не найден или недоступен")
     matching = run_or_404(conflict.matching_run_id, session)
     # Both immutable inputs, including human-readable versions, are available for
     # historical conflicts without rewriting their persisted Basis or snapshots.
@@ -209,8 +229,13 @@ def detail(conflict_id: UUID, session: Db, actor: Reader) -> dict[str, Any]:
             )
         )
     }
+    effective = (
+        session.get(Decision, conflict.current_decision_id)
+        if conflict.current_decision_id
+        else None
+    )
     return {
-        **summary(conflict),
+        **summary(conflict, effective.decision_type if effective else None),
         "values_snapshot": conflict.values_snapshot,
         "basis": conflict.basis,
         "normalization_origins": [
@@ -219,6 +244,6 @@ def detail(conflict_id: UUID, session: Db, actor: Reader) -> dict[str, Any]:
         ],
         "based_on_previous_profile": matching_view(matching)["based_on_previous_profile"]
         or conflict.basis["config_hash"] != CONFIG_HASH,
-        "human_decision": "NOT_TAKEN",
+        "human_decision": "TAKEN" if conflict.current_decision_id else "NOT_TAKEN",
         "forest_codex_configured": False,
     }

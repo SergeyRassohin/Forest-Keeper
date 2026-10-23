@@ -36,6 +36,7 @@ export interface User {
   display_name: string;
   roles: string[];
   permissions: string[];
+  data_domains?: string[];
 }
 
 export async function currentUser(signal: AbortSignal): Promise<User | null> {
@@ -76,16 +77,26 @@ export async function signOut(): Promise<void> {
     throw new Error('Не удалось выйти. Повторите попытку.');
 }
 
+export class ApiFailure extends Error {
+  status: number;
+  code: string;
+  constructor(message: string, status: number, code: string) {
+    super(message); this.status = status; this.code = code;
+  }
+}
+
 export async function requestJson<T>(path: string, options?: RequestInit): Promise<T> {
   const response = await fetch('/api/v1' + path, { cache: 'no-store', ...options });
   if (response.status === 401) throw new SessionExpired();
   if (!response.ok) {
     let message = 'Не удалось выполнить запрос. Повторите попытку.';
+    let code = 'REQUEST_FAILED';
     try {
       const body = await response.json();
       if (typeof body?.error?.message === 'string') message = body.error.message;
+      if (typeof body?.error?.code === 'string') code = body.error.code;
     } catch { /* Gateway errors need the same readable fallback. */ }
-    throw new Error(message);
+    throw new ApiFailure(message, response.status, code);
   }
   return response.json() as Promise<T>;
 }

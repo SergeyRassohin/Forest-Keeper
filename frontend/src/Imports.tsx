@@ -159,7 +159,7 @@ export function Imports({ user, onSessionExpired }: { user: User; onSessionExpir
       <summary>Добавить источник</summary>
       <form onSubmit={createSource}>
         <label>Название источника<input required maxLength={200} value={sourceName} onChange={(event) => setSourceName(event.target.value)} /></label>
-        <label>Код источника<input required maxLength={64} pattern="[A-Za-z0-9_-]+" value={sourceCode} onChange={(event) => setSourceCode(event.target.value)} /></label>
+        <label>Код источника<input required maxLength={64} pattern="[A-Za-z0-9_\-]+" value={sourceCode} onChange={(event) => setSourceCode(event.target.value)} /></label>
         <label>Тип источника<select value={sourceType} onChange={(event) => setSourceType(event.target.value)}><option value="FILE">Файловая выгрузка</option><option value="ONE_C">Выгрузка 1С</option></select></label>
         <button disabled={busy}>Создать источник</button>
       </form>
