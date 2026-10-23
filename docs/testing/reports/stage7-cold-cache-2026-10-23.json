@@ -1,0 +1,35 @@
+{
+  "source_commit": "39fc33c21d9b6647eff00ee662cc404a11eadf59",
+  "cache_boundary": "Owned fk-stage7 PostgreSQL process restarted; PostgreSQL shared_buffers cold for this private 10k schema. OS filesystem cache deliberately retained on shared host.",
+  "measurements": [
+    {
+      "profile": "first_after_owned_postgres_restart",
+      "limit": 20,
+      "seconds": 0.312886,
+      "results": 20,
+      "scoped_compatible_decisions": 10000
+    },
+    {
+      "profile": "warm_1",
+      "limit": 1,
+      "seconds": 0.228861,
+      "results": 1,
+      "scoped_compatible_decisions": 10000
+    },
+    {
+      "profile": "warm_5",
+      "limit": 5,
+      "seconds": 0.108172,
+      "results": 5,
+      "scoped_compatible_decisions": 10000
+    },
+    {
+      "profile": "warm_20",
+      "limit": 20,
+      "seconds": 0.122182,
+      "results": 20,
+      "scoped_compatible_decisions": 10000
+    }
+  ],
+  "passed": true
+}

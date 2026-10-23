@@ -36,7 +36,7 @@ flowchart LR
     class J,K,L,M,N,O future;
 ```
 
-**Текущий статус:** этапы 0–5 приняты в main. PR #22 объединён владельцем в main: `6235dd6a18f8cbb8aeceac2a7d052f5fca396482`; [CI точного merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39768647312). Этап 5 принят; 679 тестов и независимый runtime/security/product-intent retest PASS. Шаг Stage 5 из #20 завершён. Stage 6–7 — следующий отдельный этап; #18/#20 остаются открытыми. Только подтверждённые MATCHED identities создают business Conflict; отклонённые пары не анализируются как одна сущность. Полный путь до Decision/retrieval/recommendation/AI ещё не завершён.
+**Текущий статус:** этапы 0–6 приняты в main, включая Human Review и Decision Registry через PR #26 (exact merge CI 39947944543 SUCCESS). PR #22 объединён владельцем в main: `6235dd6a18f8cbb8aeceac2a7d052f5fca396482`; [CI точного merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39768647312). Этап 5 принят; 679 тестов и независимый runtime/security/product-intent retest PASS. Шаг Stage 5 из #20 завершён. Stage 6 принят через PR #26; Stage 7 проверяется отдельно по #27; #18/#20 остаются открытыми. Только подтверждённые MATCHED identities создают business Conflict; отклонённые пары не анализируются как одна сущность. Stage 7 retrieval проверяется отдельно; production semantic provider/recommendation/AI полного MVP ещё отсутствуют.
 
 ### Граница ответственности этапов
 
@@ -132,10 +132,10 @@ GitHub сохраняет историю запусков. Старые `failure
 
 ## Stage 5: принят в main — 22 октября 2026
 
-PR #22 объединён владельцем в main: `6235dd6a18f8cbb8aeceac2a7d052f5fca396482`; [CI точного merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39768647312). Этап 5 принят; 679 тестов и независимый runtime/security/product-intent retest PASS. Шаг Stage 5 из #20 завершён. Stage 6–7 — следующий отдельный этап; #18/#20 остаются открытыми. Полный MVP #18/#20 остаётся незавершённым.
+PR #22 объединён владельцем в main: `6235dd6a18f8cbb8aeceac2a7d052f5fca396482`; [CI точного merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39768647312). Этап 5 принят; 679 тестов и независимый runtime/security/product-intent retest PASS. Шаг Stage 5 из #20 завершён. Stage 6 принят через PR #26; Stage 7 проверяется отдельно по #27; #18/#20 остаются открытыми. Полный MVP #18/#20 остаётся незавершённым.
 
 
-## Stage 6: фактический путь в отдельной ветке
+## Stage 6: фактический путь, принятый в main
 
 Import → Normalization → Matching → persisted Conflict → Human Review → immutable Decision → audit/history. Decision хранится в PostgreSQL; review path не вызывает AI/Redis jobs и не пишет в исходные системы. Авторизацию обеспечивает backend. Исправление создаёт новую запись со ссылкой на прежнюю. См. [реализованный workflow](../development/human-review.md).
 
