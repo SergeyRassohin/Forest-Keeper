@@ -1,0 +1,32 @@
+{
+  "passed": true,
+  "source_commit": "7a55797c87c3427a178c5d83cb247937d3dd11b3",
+  "project": "fk-stage6",
+  "conflict_id": "46669941-e4c6-5c3c-9a63-bf2b3142fc4c",
+  "first_decision_id": "624a7b7d-d1cb-40a7-b972-897265cd8d31",
+  "superseding_decision_id": "485ed5be-d571-4b8c-9050-63d914121bd1",
+  "history_rows": 3,
+  "concurrent_http_statuses": [
+    201,
+    409
+  ],
+  "review_while_redis_stopped": true,
+  "exact_idempotent_replay_after_restart": true,
+  "same_https_history_and_cards": true,
+  "before": {
+    "raw": "fe347c15685bfdd34b90defe9de6e3002765cf05ce495090e4395d3d56a28a1b",
+    "originals": "cb26f1e12f32e394fb2d9e360f3ed4f2a32f179f7cb4e4115275e6f0b37a9ec5",
+    "normalization": "4ab5290b18e4f1b59be7386823d6c878808250ce07359e1d12488b16ea5330d6",
+    "matching": "300fff3366db0fa46cafbcf32f4bfd92812ee41ae994b0ab1282e20b4e1edf2d",
+    "evidence": "182f11f705d7e3c4337ded6d8b6039b0dafae97f354059765232c76e9c921875",
+    "decisions": "62876a320b831a4a0cc696325d56dd54936a91746ade5965231a9a85d57e8653"
+  },
+  "after": {
+    "raw": "fe347c15685bfdd34b90defe9de6e3002765cf05ce495090e4395d3d56a28a1b",
+    "originals": "cb26f1e12f32e394fb2d9e360f3ed4f2a32f179f7cb4e4115275e6f0b37a9ec5",
+    "normalization": "4ab5290b18e4f1b59be7386823d6c878808250ce07359e1d12488b16ea5330d6",
+    "matching": "300fff3366db0fa46cafbcf32f4bfd92812ee41ae994b0ab1282e20b4e1edf2d",
+    "evidence": "182f11f705d7e3c4337ded6d8b6039b0dafae97f354059765232c76e9c921875",
+    "decisions": "62876a320b831a4a0cc696325d56dd54936a91746ade5965231a9a85d57e8653"
+  }
+}

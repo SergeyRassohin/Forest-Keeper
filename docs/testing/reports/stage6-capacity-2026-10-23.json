@@ -1,0 +1,137 @@
+{
+  "captured_at": "2026-10-23T10:57:43.544929+00:00",
+  "scope": "Synthetic read queue capacity with real frozen CSV/XML Conflict evidence and one real API Decision; not 100k Decisions or end-to-end import throughput",
+  "environment": {
+    "cpu_quota": 4,
+    "memory_limit_gib": 32,
+    "python": "3.13.16",
+    "node": "24.19.0",
+    "database": "PostgreSQL17/pgvector",
+    "redis": "7.4",
+    "docker_storage": "vfs"
+  },
+  "profiles": [
+    {
+      "source_commit": "9f5173347fef15f60254af9664d0e415689321dd",
+      "queue_rows": 100,
+      "decision_rows": 1,
+      "sessions": 10,
+      "requests": 150,
+      "p95_seconds": 0.3132,
+      "endpoint_p95_seconds": {
+        "/api/v1/conflicts?limit=50": 0.4406,
+        "/api/v1/conflicts/8f741ae2-bf5d-5427-b885-1b7f466a8b97/review-context": 0.2589,
+        "/api/v1/decisions?limit=50": 0.1345,
+        "/api/v1/decisions/4df0b78f-4f1f-46a6-b0a3-175ba37b4658": 0.1406,
+        "/api/v1/conflicts/8f741ae2-bf5d-5427-b885-1b7f466a8b97/decisions?limit=50": 0.1085
+      },
+      "create_seconds_observed_no_sla": 0.0268,
+      "plans": [
+        [
+          "Limit  (cost=25.32..25.45 rows=50 width=24)",
+          "  ->  Sort  (cost=25.32..25.57 rows=100 width=24)",
+          "        Sort Key: detected_at DESC, id DESC",
+          "        ->  Seq Scan on conflicts  (cost=0.00..22.00 rows=100 width=24)"
+        ],
+        [
+          "Limit  (cost=11.04..11.11 rows=30 width=24)",
+          "  ->  Sort  (cost=11.04..11.11 rows=30 width=24)",
+          "        Sort Key: decided_at DESC, id DESC",
+          "        ->  Seq Scan on decisions  (cost=0.00..10.30 rows=30 width=24)"
+        ]
+      ],
+      "process_peak_rss_mib": 164.39,
+      "passed": true
+    },
+    {
+      "source_commit": "9f5173347fef15f60254af9664d0e415689321dd",
+      "queue_rows": 1000,
+      "decision_rows": 1,
+      "sessions": 10,
+      "requests": 150,
+      "p95_seconds": 0.6184,
+      "endpoint_p95_seconds": {
+        "/api/v1/conflicts?limit=50": 0.6668,
+        "/api/v1/conflicts/8f741ae2-bf5d-5427-b885-1b7f466a8b97/review-context": 0.2733,
+        "/api/v1/decisions?limit=50": 0.136,
+        "/api/v1/decisions/4df0b78f-4f1f-46a6-b0a3-175ba37b4658": 0.1129,
+        "/api/v1/conflicts/8f741ae2-bf5d-5427-b885-1b7f466a8b97/decisions?limit=50": 0.1224
+      },
+      "create_seconds_observed_no_sla": 0.0268,
+      "plans": [
+        [
+          "Limit  (cost=0.28..26.15 rows=50 width=24)",
+          "  ->  Index Only Scan Backward using ix_conflicts_created on conflicts  (cost=0.28..517.77 rows=1000 width=24)"
+        ],
+        [
+          "Limit  (cost=11.04..11.11 rows=30 width=24)",
+          "  ->  Sort  (cost=11.04..11.11 rows=30 width=24)",
+          "        Sort Key: decided_at DESC, id DESC",
+          "        ->  Seq Scan on decisions  (cost=0.00..10.30 rows=30 width=24)"
+        ]
+      ],
+      "process_peak_rss_mib": 164.39,
+      "passed": true
+    },
+    {
+      "source_commit": "9f5173347fef15f60254af9664d0e415689321dd",
+      "queue_rows": 10000,
+      "decision_rows": 1,
+      "sessions": 10,
+      "requests": 150,
+      "p95_seconds": 0.4415,
+      "endpoint_p95_seconds": {
+        "/api/v1/conflicts?limit=50": 0.4452,
+        "/api/v1/conflicts/8f741ae2-bf5d-5427-b885-1b7f466a8b97/review-context": 0.2751,
+        "/api/v1/decisions?limit=50": 0.1829,
+        "/api/v1/decisions/4df0b78f-4f1f-46a6-b0a3-175ba37b4658": 0.4582,
+        "/api/v1/conflicts/8f741ae2-bf5d-5427-b885-1b7f466a8b97/decisions?limit=50": 0.4477
+      },
+      "create_seconds_observed_no_sla": 0.0268,
+      "plans": [
+        [
+          "Limit  (cost=0.29..25.66 rows=50 width=24)",
+          "  ->  Index Only Scan Backward using ix_conflicts_created on conflicts  (cost=0.29..5075.28 rows=10000 width=24)"
+        ],
+        [
+          "Limit  (cost=11.04..11.11 rows=30 width=24)",
+          "  ->  Sort  (cost=11.04..11.11 rows=30 width=24)",
+          "        Sort Key: decided_at DESC, id DESC",
+          "        ->  Seq Scan on decisions  (cost=0.00..10.30 rows=30 width=24)"
+        ]
+      ],
+      "process_peak_rss_mib": 164.39,
+      "passed": true
+    },
+    {
+      "source_commit": "9f5173347fef15f60254af9664d0e415689321dd",
+      "queue_rows": 100000,
+      "decision_rows": 1,
+      "sessions": 10,
+      "requests": 150,
+      "p95_seconds": 0.5856,
+      "endpoint_p95_seconds": {
+        "/api/v1/conflicts?limit=50": 0.521,
+        "/api/v1/conflicts/8f741ae2-bf5d-5427-b885-1b7f466a8b97/review-context": 0.666,
+        "/api/v1/decisions?limit=50": 0.5696,
+        "/api/v1/decisions/4df0b78f-4f1f-46a6-b0a3-175ba37b4658": 0.137,
+        "/api/v1/conflicts/8f741ae2-bf5d-5427-b885-1b7f466a8b97/decisions?limit=50": 0.131
+      },
+      "create_seconds_observed_no_sla": 0.0268,
+      "plans": [
+        [
+          "Limit  (cost=0.42..10.70 rows=50 width=24)",
+          "  ->  Index Only Scan Backward using ix_conflicts_created on conflicts  (cost=0.42..20568.73 rows=100000 width=24)"
+        ],
+        [
+          "Limit  (cost=11.04..11.11 rows=30 width=24)",
+          "  ->  Sort  (cost=11.04..11.11 rows=30 width=24)",
+          "        Sort Key: decided_at DESC, id DESC",
+          "        ->  Seq Scan on decisions  (cost=0.00..10.30 rows=30 width=24)"
+        ]
+      ],
+      "process_peak_rss_mib": 179.05,
+      "passed": true
+    }
+  ]
+}

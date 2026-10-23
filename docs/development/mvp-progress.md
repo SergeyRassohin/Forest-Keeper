@@ -116,3 +116,6 @@ Stage 5.1: **689 уникальных тестов PASS**, 18 реальных P
 ## Stage 6 — Human Review + Decision Registry, 23 октября 2026
 
 Реализованы канонические outcomes, атомарные immutable Decisions, superseding history, scope/RBAC, version token, idempotency, API и Web UI. Stage 5.1 принят владельцем через PR #24, main `04793d9`, exact CI `39908239589` SUCCESS. Stage 6 пока не принят: отдельный PR и зелёный CI merge commit обязательны. Отчёт и проверки фиксируются отдельно. Stage 7 не начат; #18/#20 не закрываются.
+
+
+Stage 6: [acceptance и ограничения](../testing/reports/stage6-human-review-acceptance-2026-10-23.md), [независимый retest](../testing/reports/stage6-human-review-independent-2026-10-23.md), [restart proof](../testing/reports/stage6-restart-2026-10-23.json), [capacity](../testing/reports/stage6-capacity-2026-10-23.json). Локально PASS: 234 unit + 469 integration + 43 component + 13 browser; production/security и 23 Axe/115 responsive checks. READY TO MERGE требует CI exact final HEAD, который связывается с этим отчётом в PR. Приёмка main после merge остаётся отдельным gate владельца.
