@@ -9,6 +9,7 @@ import math
 import os
 import resource
 import secrets
+import subprocess
 import tempfile
 import time
 from concurrent.futures import ThreadPoolExecutor
@@ -17,6 +18,9 @@ from pathlib import Path
 from uuid import UUID, uuid4
 
 from fastapi.testclient import TestClient
+from redis import Redis
+from rq import Queue
+from rq.job import Job
 from sqlalchemy import insert, select, text
 from sqlalchemy.orm import Session
 
@@ -38,7 +42,12 @@ def run():
     results = []
     try:
         with tempfile.TemporaryDirectory(prefix="fk-decision-capacity-") as folder:
-            settings = base.model_copy(update={"import_storage_root": Path(folder)})
+            settings = base.model_copy(
+                update={
+                    "import_storage_root": Path(folder),
+                    "import_queue_name": "decision-capacity-" + uuid4().hex,
+                }
+            )
             engine = make_engine(settings)
             tokens = []
             with Session(engine) as session:
@@ -141,6 +150,9 @@ def run():
                         ]
                     results.append(
                         {
+                            "source_commit": subprocess.check_output(
+                                ["git", "rev-parse", "HEAD"], text=True
+                            ).strip(),
                             "queue_rows": count,
                             "decision_rows": 1,
                             "sessions": 10,
@@ -161,6 +173,18 @@ def run():
                     print(json.dumps(results[-1]), flush=True)
             engine.dispose()
     finally:
+        if "settings" in locals():
+            redis = Redis.from_url(settings.redis_url.get_secret_value())
+            queue = Queue(settings.import_queue_name, connection=redis)
+            identifiers = queue.get_job_ids()
+            for registry in [queue.finished_job_registry, queue.failed_job_registry]:
+                identifiers += registry.get_job_ids()
+            for identifier in set(identifiers):
+                job = Job.fetch_many([identifier], connection=redis)[0]
+                if job:
+                    job.delete()
+            queue.delete(delete_jobs=True)
+            redis.close()
         try:
             next(environment)
         except StopIteration:
