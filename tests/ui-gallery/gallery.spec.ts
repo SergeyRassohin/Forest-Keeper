@@ -174,7 +174,7 @@ test('real product gallery, WCAG baseline and responsive Stage 1–6 path', asyn
   await page.getByRole('button', { name: 'Открыть конфликт ' + mismatch.id, exact: true }).click();
   await page.getByRole('button', { name: 'Начать рассмотрение', exact: true }).click();
   const review = page.getByRole('region', { name: 'Рассмотрение конфликта', exact: true });
-  await page.getByRole('radio', { name: /^Источник A:/ }).check();
+  await page.getByRole('radio', { name: /^Источник [AB]:.*12\.5 kg$/ }).check();
   await page.getByLabel('Обоснование решения', { exact: true }).fill('Проверен документ поставщика: масса 12.5 kg подтверждена человеком.');
   await capture(page, '19-human-review', 'Решение по проверенным основаниям', 'Эксперт выбирает источник или другое допустимое значение, объясняет выбор. Авторитет источника автоматически не выдумывается.', review);
   await page.getByRole('button', { name: 'Проверить перед сохранением', exact: true }).click();
