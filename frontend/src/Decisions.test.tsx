@@ -28,6 +28,6 @@ it('drops the old card when reading a different historical decision is denied', 
     return new Response(JSON.stringify(url.endsWith('/decisions/decision-1') ? row : url.includes('/conflicts/') ? [{ ...row, id: 'old-decision' }] : [row]));
   });
   render(<Decisions onSessionExpired={expired} initialId="decision-1" />);
-  fireEvent.click(await screen.findByRole('button', { name: 'Историческое решение old-decision' }));
+  fireEvent.click(await screen.findByRole('button', { name: 'Показать эту запись: историческое решение old-decision' }));
   await screen.findByRole('alert'); expect(screen.queryByRole('article', { name: 'Карточка решения' })).not.toBeInTheDocument();
 });
