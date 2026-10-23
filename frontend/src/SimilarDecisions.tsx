@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { requestJson, SessionExpired } from './api';
 import { DataValue, Identifier, StatusBadge } from './ui';
+import { outcomeLabels } from './decisionTypes';
 
 type Precedent = {
   decision_id: string; conflict_id: string; similarity: number; matched_features: string[];
@@ -48,7 +49,7 @@ export function SimilarDecisions({ conflictId, onSessionExpired, onOpenDecision 
     {data?.state === 'NO_PRECEDENT' && <p role="status">{data.reason_code === 'NO_ACCESSIBLE_PRECEDENT' ? 'Нет доступных решений в вашей области данных.' : 'Похожих подтверждённых решений пока нет.'}</p>}
     {data?.results.map((item) => <article className="source-card" key={item.decision_id}>
       <p className="eyebrow">Похожесть {(item.similarity * 100).toFixed(2)}%</p>
-      <StatusBadge value={item.outcome} />
+      <StatusBadge value={item.outcome} label={outcomeLabels.get(item.outcome)} code={false} />
       <p>Область: {item.domain} · Тип сущности: {item.entity_type} · Атрибут: {item.attribute_code} · Единица: {item.unit ?? 'Без единицы'}</p>
       <p><DataValue value={item.selected_value} /> {item.unit}</p>
       <p>{item.actor.display_name} · {new Date(item.decided_at).toLocaleString()}</p>
