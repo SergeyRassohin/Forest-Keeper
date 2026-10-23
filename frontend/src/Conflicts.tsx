@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { HumanReview } from './HumanReview';
+import { SimilarDecisions } from './SimilarDecisions';
 import { StatusBadge, EmptyState, DataValue, Identifier } from './ui';
 import { requestJson as api, SessionExpired, type User } from './api';
 
@@ -89,6 +90,7 @@ export function Conflicts({ user, onSessionExpired, initialRunId = '', onOpenDec
       <p className="muted">Авторитетный источник не задан. Нормализованное значение не является истиной. Forest Codex не настроен.</p>
       <section aria-label="Источники нормализации"><h3>Оба запуска нормализации</h3><div className="comparison-grid">{detail.normalization_origins.map((origin) => <div key={origin.analysis_id}><p>Профиль v{origin.profile_version} · {origin.engine_version}</p><Identifier>Запуск: {origin.analysis_id} · Источник: {origin.source_id}</Identifier><details><summary>Версия и контрольная сумма профиля</summary><Identifier>Профиль: {origin.profile_id} v{origin.profile_version} · SHA-256: {origin.mapping_hash}</Identifier></details></div>)}</div></section>
       <details><summary>Технические идентификаторы, Basis и основания идентичности</summary><p>Conflict ID: <Identifier>{detail.id}</Identifier></p><p>MatchCandidate: <Identifier>{detail.match_candidate_id}</Identifier></p><p>Алгоритм: {detail.basis.engine_version} · Config: <Identifier>{detail.basis.config_hash}</Identifier></p><p>Matching profile: <Identifier>{detail.basis.matching_profile_hash}</Identifier></p><pre>{JSON.stringify(detail.basis, null, 2)}</pre></details>
+      {user.permissions.includes('decision.view') && <SimilarDecisions key={'similar-' + detail.id} conflictId={detail.id} onSessionExpired={onSessionExpired} onOpenDecision={onOpenDecision} />}
       {user.permissions.includes('decision.view') && <HumanReview key={detail.id} conflictId={detail.id} onSessionExpired={onSessionExpired} onSaved={() => setRevision((value) => value + 1)} onOpenDecision={onOpenDecision} />}
     </section>}
   </main>;

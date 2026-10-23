@@ -204,3 +204,59 @@ An explicit review-start POST, not GET, enters IN_REVIEW. Correcting the same ca
 Minimal persisted domain grants complement existing action permissions. User.data_domains defaults to [] for new accounts; an explicitly assigned ["*"] means all domains in this instance. Migration preserves legacy instance-wide data access as an explicit grant; no scope is inferred from ADMIN/REVIEWER role names. Scope assignment uses existing user.manage plus role.assign, recent authentication and audit. New Conflict/Decision reads and review writes enforce scope; this does not advertise a complete new multitenant ingestion isolation scheme. ADMIN remains a technical role without implicit business authority. Scope and permission are rechecked on submission.
 
 Corrected values are allowed only when frozen canonical kind/unit are supported and unambiguous; no numeric business range is invented. Null/missing/invalid/unknown values cannot be selected as valid truth; the user can explicitly record insufficient data or defer. Input/trace and historical references remain inside the immutable Decision; raw and normalized source facts never change. Decision saves require a human reason and explicit client confirmation. No service/AI actor creates decisions.
+
+### 2026-10-23 — Stage 7 retrieval policy before implementation (issue #27)
+
+Stage 6 is accepted in main at 0ce2a14304d0cf28fcf90ec9cd3d6c23601ec852 (PR #26;
+merge CI 39947944543 passed). Actual Stage 7 is Similar Decision Retrieval, the older
+roadmap's Stage 8. Recommendation/AI/LLM/runtime/write-back remain outside this stage.
+
+Eligible precedents are immutable SELECT_VALUE/ENTER_VALUE facts which are the current
+effective head of a RESOLVED Conflict, have no successor and have validated frozen
+evidence. INSUFFICIENT_DATA, DEFERRED, superseded and IN_REVIEW cases are excluded.
+Disabled historical actors do not erase their legitimate human decisions. Caller
+authentication, existing conflict.view and decision.view permissions and explicit
+domain grants are checked afresh. No new permission or inferred ADMIN scope is added.
+Scope is applied before counts, compatibility and ranking; restricted empty pools say
+NO_ACCESSIBLE_PRECEDENT without revealing whether foreign history exists.
+
+Compatibility requires exact domain, entity type, attribute, conflict type, canonical
+value kind and unit; unknown or ambiguous kinds/units fail closed. Normalized observations
+are sorted semantically, without transient IDs, timestamps, reasons or selected outcomes
+as embedding signals. Source type/role is frozen for new facts; absent legacy metadata
+remains UNKNOWN rather than being reconstructed from today's source configuration.
+
+The provider contract is 1024 dimensions. The pinned future Qwen manifest is unchanged.
+There is no accepted production provider: production returns explicit UNAVAILABLE and
+preserves Registry/Human Review. Issue #27 §8 permits a deterministic test provider;
+it requires explicit development/test deployment plus explicit opt-in, uses a separate
+model ID and exact revision, and accepts only declared frozen synthetic profiles.
+Test vectors are infrastructure evidence, not production semantic-quality evidence.
+No network model calls, weights or AI runtime are introduced.
+
+Retrieval uses exact filtered pgvector cosine search (no approximate recall claim),
+score clamp(1-distance,0,1), full precision threshold >= 0.85, API six decimals and UI
+two decimal percent. Default top-N 5, maximum 20, offset 0..100; ties use distance ASC,
+decided_at DESC, Decision ID ASC. Threshold is versioned server configuration; clients
+cannot override it. Version changes create new immutable derived artifacts; explicit
+audited operator activation leaves old versions readable. No similarity operation
+creates a Decision, reopens a Conflict, proposes an action or changes source data.
+
+Backfill is server-operated, background, bounded and restartable. Per-version locking
+and unique Decision/version checkpoints prevent duplicate work; an anti-join detects
+late commits rather than trusting a timestamp watermark. Live scoped coverage is
+checked on every query, so partial indexes never masquerade as complete results.
+Technical runs reuse AnalysisStatus; checkpoint outcomes are derived metadata, not
+new business lifecycle states. Configuration, activation, run lifecycle and security
+denials are audited; normal similarity GETs do not log input, vectors or human reasons.
+
+Independent review refinement: the retrieval transaction is read-only REPEATABLE READ
+starting before authentication, so permissions, eligibility, counts, coverage and rank
+share one snapshot. A concurrent later commit is visible on the next request, never as
+a partial READY pool. Query embeddings are also background jobs (FK-NFR-PER-004): a
+missing immutable context/version cache returns INDEXING/QUERY_CONTEXT_PENDING and
+queues bounded technical preparation without changing business facts. GET performs no
+embedding calculation. Binary vector fingerprints are checked before thresholding,
+including candidates which would otherwise disappear below threshold. The API has a
+750ms local statement timeout and an authenticated 120 reads/minute limit; migrations
+and Decision saves do not inherit the retrieval timeout.

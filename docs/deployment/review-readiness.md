@@ -1,6 +1,8 @@
 # Готовность к внешней проверке — 24 октября 2026
 
-Состояние 23 октября 2026: `main` принял Stage 0–5.1 через PR #24; Stage 6 проверяется в отдельной ветке `codex/stage6-human-review`. Цель — самостоятельная проверка человеком, впервые увидевшим продукт, по [Quick Start](external-review-quickstart.md). Исходные требования: [#18](https://github.com/SergeyRassohin/Forest-Keeper/issues/18). Описание целевого поведения не заменяет работающую функцию.
+**Актуально на 23 октября 2026:** Stage 0–6 приняты в `main` через PR #26 (merge `0ce2a14304d0cf28fcf90ec9cd3d6c23601ec852`, exact CI 39947944543 SUCCESS). Stage 7 Similar Decision Retrieval реализуется в отдельной ветке `codex/stage7-similar-decisions` по issue #27. Production embedding provider отключён; синтетический test provider не доказывает промышленное качество. Recommendation Engine, AI/LLM и write-back отсутствуют. #18/#20 остаются открытыми.
+
+Состояние 23 октября 2026: `main` принял Stage 0–6 через PR #26; Stage 7 проверяется в отдельной ветке `codex/stage7-similar-decisions`. Цель — самостоятельная проверка человеком, впервые увидевшим продукт, по [Quick Start](external-review-quickstart.md). Исходные требования: [#18](https://github.com/SergeyRassohin/Forest-Keeper/issues/18). Описание целевого поведения не заменяет работающую функцию.
 
 | Проверка | Состояние main | Что предъявить для полной приёмки |
 | --- | --- | --- |
@@ -9,14 +11,14 @@
 | Нормализация и история правил | Этап 3 принят; только явные профили | Подходящий mapping, исходные/нормализованные значения |
 | Matching/evidence | Этап 4 принят в main; независимый retest и CI merge commit PASS | Промышленный pilot domain и проверка реальных файлов |
 | Conflict Engine | Этап 5 принят в main, независимый retest и merge CI PASS | Реальные Conflict ID/Basis/provenance и подтверждение сохранности после restart |
-| Human Review + Decision Registry | Реализованы в ветке Stage 6; отдельный merge в main ожидается | Сохранённый Decision, actor/reason/context и immutable history |
-| Restart с сохранением Decision | PASS в acceptance ветки Stage 6; не является приёмкой main до merge | Проверка того же ID после restart без удаления volumes |
-| Similar Decision/recommendation | BLOCKED: нет retrieval/recommendation | Следующий похожий кейс с реальной ссылкой на прошлый Decision |
+| Human Review + Decision Registry | Stage 6 принят в main через PR #26 | Сохранённый Decision, actor/reason/context и immutable history |
+| Restart с сохранением Decision | Stage 6 PASS; merge CI main SUCCESS | Проверка того же ID после restart без удаления volumes |
+| Similar Decision / recommendation | Stage 7 retrieval в отдельной ветке; production provider/recommendation BLOCKED | Следующий похожий кейс с реальной ссылкой на прошлый Decision |
 | Pinned Qwen artifacts | Manifest и lock проверяются; есть downloader | Полная локальная SHA-256 проверка файлов |
 | LLM/embedding runtime + model-info | BLOCKED: нет поддерживаемого запуска | Точные ID/revisions; inference и 1024 dimensions smoke |
 | AI evidence / offline / LLM failure | BLOCKED: нет интеграции | Только реальные evidence IDs; офлайн-тест; работа истории без LLM |
 
-**Итог: полная внешняя приёмка MVP пока BLOCKED.** Можно проводить техническую проверку реализованных этапов, честно отмечая границу. Ветка Stage 6 добавляет Human Review/Decision Registry; similarity/recommendation/AI полного MVP всё ещё отсутствуют. Эта документация не закрывает #18.
+**Итог: полная внешняя приёмка MVP пока BLOCKED.** Можно проводить техническую проверку реализованных этапов, честно отмечая границу. Human Review/Decision Registry приняты в main; Stage 7 добавляет тестовый retrieval. Production semantic provider/recommendation/AI полного MVP ещё отсутствуют. Эта документация не закрывает #18.
 
 Stage 4: [текущий отчёт и DoD](../testing/reports/stage4-matching-acceptance-2026-10-21.md). Локальные проверки, gold, 100k capacity и restart выполнены; [отдельный independent runtime/security retest](../testing/reports/stage4-matching-independent-2026-10-21.md) PASS без блокирующих замечаний, повторены 619 тестов и все четыре capacity профиля. Владелец принял HEAD `f44e01e` и разрешил merge; main merge `bea0d55c92540744657feac863084cde131a7f43`, [CI — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39595762080). Шаг 1 / Stage 4 из #20 завершён.
 

@@ -1,5 +1,7 @@
 # Forest Keeper — блок-схема процесса и CI
 
+**Актуально на 23 октября 2026:** Stage 0–6 приняты в `main` через PR #26 (merge `0ce2a14304d0cf28fcf90ec9cd3d6c23601ec852`, exact CI 39947944543 SUCCESS). Stage 7 Similar Decision Retrieval реализуется в отдельной ветке `codex/stage7-similar-decisions` по issue #27. Production embedding provider отключён; синтетический test provider не доказывает промышленное качество. Recommendation Engine, AI/LLM и write-back отсутствуют. #18/#20 остаются открытыми.
+
 Актуально для `main` после принятия Stage 5 по ТЗ в [issue #21](https://github.com/SergeyRassohin/Forest-Keeper/issues/21).
 
 ## 1. Бизнес-процесс Forest Keeper
@@ -136,3 +138,7 @@ PR #22 объединён владельцем в main: `6235dd6a18f8cbb8aeceac2
 ## Stage 6: фактический путь в отдельной ветке
 
 Import → Normalization → Matching → persisted Conflict → Human Review → immutable Decision → audit/history. Decision хранится в PostgreSQL; review path не вызывает AI/Redis jobs и не пишет в исходные системы. Авторизацию обеспечивает backend. Исправление создаёт новую запись со ссылкой на прежнюю. См. [реализованный workflow](../development/human-review.md).
+
+## Stage 7: фактическая граница отдельной ветки
+
+New Conflict → scoped context → background query vector → eligible resolved Decision pool → compatibility filters → complete active pgvector version → cosine top-N → actual Decision/history. `Similarity != Recommendation != Decision`. Production provider unavailable; deterministic test vectors only in explicit synthetic test/development configuration. [Описание](../development/similarity-retrieval.md).

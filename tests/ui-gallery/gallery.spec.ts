@@ -47,25 +47,28 @@ async function capture(page: Page, file: string, title: string, description: str
   await page.mouse.move(0, 0);
   const path = resolve(output, file + '.png');
   await page.screenshot({ path, fullPage: false, animations: 'disabled' });
-  report.captures.push({ file: file + '.png', title, description, feature_status: 'Реализовано · Stage 0–6', viewport: { width: 1440, height: 900 }, sha256: createHash('sha256').update(readFileSync(path)).digest('hex') });
+  report.captures.push({ file: file + '.png', title, description, feature_status: 'Реализовано · Stage 0–7 · синтетические данные', viewport: { width: 1440, height: 900 }, sha256: createHash('sha256').update(readFileSync(path)).digest('hex') });
 }
-async function importSource(page: Page, side: 'a' | 'b') {
+async function importSource(page: Page, side: 'a' | 'b', suffix = '', unrelated = false) {
   await page.getByRole('button', { name: 'Импорт данных', exact: true }).click();
   const details = page.locator('details').filter({ hasText: 'Добавить источник' });
   if (!(await details.evaluate((e) => (e as HTMLDetailsElement).open))) await details.locator('summary').click();
   await page.getByLabel('Название источника', { exact: true }).fill(side === 'a' ? 'Excel · Каталог снабжения' : '1С · Номенклатура');
-  await page.getByLabel('Код источника', { exact: true }).fill(accounts.prefix + '_gallery_' + side);
+  await page.getByLabel('Код источника', { exact: true }).fill(accounts.prefix + '_gallery_' + side + suffix);
   await page.getByRole('combobox', { name: 'Тип источника', exact: true }).selectOption(side === 'a' ? 'FILE' : 'ONE_C');
   await page.getByRole('button', { name: 'Создать источник', exact: true }).click();
   await expect(page.getByRole('status').filter({ hasText: 'Источник создан' })).toBeVisible();
   await details.locator('summary').click();
-  await page.getByLabel('Исходный файл', { exact: true }).setInputFiles(resolve(root, 'tests/data/ui-gallery/' + (side === 'a' ? 'catalog.csv' : 'onec.xml')));
+  const filename = side === 'a' ? 'catalog.csv' : 'onec.xml';
+  let content = readFileSync(resolve(root, 'tests/data/ui-gallery/' + filename));
+  if (unrelated) content = Buffer.from(content.toString().replaceAll('Болт M8×30', 'Керамическая труба'));
+  await page.getByLabel('Исходный файл', { exact: true }).setInputFiles({ name: filename, mimeType: side === 'a' ? 'text/csv' : 'application/xml', buffer: content });
   const uploaded = page.waitForResponse((r) => r.url().endsWith('/api/v1/imports') && r.request().method() === 'POST');
   await page.getByRole('button', { name: 'Загрузить', exact: true }).click();
   const batch = await (await uploaded).json();
   const card = page.getByRole('region', { name: 'Карточка импорта', exact: true });
   await expect(card).toContainText('Завершён', { timeout: 30000 });
-  if (side === 'a') {
+  if (side === 'a' && !suffix) {
     await capture(page, '04-import-detail', 'Оригинал и записи', 'Сохранённый файл, исходные поля и происхождение каждой записи. Данные в источнике не изменяются.', card);
     await capture(page, '18-raw-records', 'Исходные записи и их поля', 'Структурированный просмотр значений без стены JSON. Видны ключ, позиция и исходные поля.', page.getByRole('heading', { name: 'Исходные записи', exact: true }));
   }
@@ -74,7 +77,7 @@ async function importSource(page: Page, side: 'a' | 'b') {
   await normalization.getByRole('button', { name: 'Нормализовать пакет', exact: true }).click();
   const run = await (await started).json();
   await expect(normalization.getByRole('status')).toContainText('Нормализация завершена', { timeout: 30000 });
-  if (side === 'a') {
+  if (side === 'a' && !suffix) {
     const normalizedRecord = normalization.locator('.normalization-record').filter({ has: page.locator('summary').filter({ hasText: /^Запись MAT-001 ·/ }) });
     await normalizedRecord.locator(':scope > summary').click();
     await capture(page, '05-normalization', 'Исходное → сопоставимое', 'Масса приводится к единой единице; исходное значение, качество и правило остаются доступными. Нормализация не объявляет значение истиной.', normalizedRecord);
@@ -82,8 +85,30 @@ async function importSource(page: Page, side: 'a' | 'b') {
   return { analysis: run.id as string, batch: batch.id as string };
 }
 
-test('real product gallery, WCAG baseline and responsive Stage 1–6 path', async ({ page }) => {
-  test.setTimeout(420000);
+async function newRetrievalCase(page: Page, suffix: string, unrelated = false) {
+  const a = await importSource(page, 'a', suffix, unrelated);
+  const b = await importSource(page, 'b', suffix, unrelated);
+  await page.getByRole('button', { name: 'Сопоставление', exact: true }).click();
+  await page.getByRole('combobox', { name: 'Нормализация источника A', exact: true }).selectOption(a.analysis);
+  await page.getByRole('combobox', { name: 'Нормализация источника B', exact: true }).selectOption(b.analysis);
+  const started = page.waitForResponse((r) => r.url().endsWith('/api/v1/matching-runs') && r.request().method() === 'POST');
+  await page.getByRole('button', { name: 'Запустить сопоставление', exact: true }).click();
+  const matching = await (await started).json();
+  await expect(page.getByRole('region', { name: 'Результат сопоставления', exact: true }).getByRole('status')).toContainText('Сопоставление завершено');
+  await page.getByRole('button', { name: 'Открыть конфликты сопоставления', exact: true }).click();
+  const generated = page.waitForResponse((r) => r.url().endsWith('/api/v1/conflict-runs') && r.request().method() === 'POST');
+  await page.getByRole('button', { name: 'Проверить конфликты', exact: true }).click();
+  const execution = await (await generated).json();
+  await expect(page.getByRole('status').filter({ hasText: execution.id })).toContainText('COMPLETED');
+  const rows = await (await page.request.get('/api/v1/conflicts?matching_run_id=' + matching.id)).json();
+  const conflict = rows.find((r: { conflict_type: string }) => r.conflict_type === 'VALUE_MISMATCH');
+  expect(conflict).toBeTruthy();
+  await page.getByRole('button', { name: 'Открыть конфликт ' + conflict.id, exact: true }).click();
+  return { matching: matching.id as string, conflict: conflict.id as string };
+}
+
+test('real product gallery, WCAG baseline and responsive Stage 1–7 path', async ({ page }) => {
+  test.setTimeout(600000);
   page.setDefaultTimeout(30000);
   if (process.env.FK_CAPTURE_UI !== '1' || !output) throw new Error('Explicit gallery opt-in is required');
   mkdirSync(output, { recursive: true });
@@ -200,12 +225,51 @@ test('real product gallery, WCAG baseline and responsive Stage 1–6 path', asyn
   await page.getByRole('button', { name: 'Открыть решение в реестре', exact: true }).click();
   await expect(page.getByRole('region', { name: 'История решений', exact: true })).toContainText('Заменяет');
   await capture(page, '23-decision-history', 'Исправление сохраняет историю', 'Новое решение заменяет предыдущее. В истории видны оба автора, время, обоснования и явная связь между записями.', page.getByRole('region', { name: 'История решений', exact: true }));
+  const history = await (await page.request.get('/api/v1/conflicts/' + mismatch.id + '/decisions')).json();
+  const precedent = history.find((r: { status: string }) => r.status === 'ACTIVE');
+  await signOut(page); await signIn(page, 'DATA_OWNER');
+  const next = await newRetrievalCase(page, '_next');
+  await expect.poll(async () => (await (await page.request.get('/api/v1/conflicts/' + next.conflict + '/similar-decisions')).json()).state, { timeout: 90000 }).toBe('READY');
+  const similar = page.getByRole('region', { name: 'Похожие прошлые решения', exact: true });
+  await similar.getByRole('button', { name: 'Повторить поиск', exact: true }).click();
+  await expect(similar).toContainText(precedent.id);
+  await expect(similar).toContainText('Похожесть'); await expect(similar).toContainText('Совпало:');
+  await expect(similar).toContainText('Похожие решения показывают прошлый опыт. Они не являются автоматическим решением текущего конфликта.');
+  await similar.getByText('Исторические значения и ограничения', { exact: true }).click();
+  await capture(page, '24-similar-decisions', 'Похожие прошлые решения', 'Новый импорт находит настоящий Decision ID прошлого случая. Видны сходство, совпавшие признаки и исторические значения. Явно обозначен тестовый провайдер.', similar);
+  await similar.getByRole('button', { name: 'Открыть прошлое решение', exact: true }).click();
+  const past = page.getByRole('article', { name: 'Карточка решения', exact: true });
+  await expect(past).toContainText('Эксперт каталога'); await expect(past).toContainText('13.25'); await expect(past).toContainText(precedent.reason);
+  await capture(page, '25-precedent-detail', 'От похожести к реальному решению', 'Открывается неизменяемый факт: автор, дата, выбранное человеком значение, обоснование и история. Поиск не предлагает действие для нового конфликта.', past);
+  const unrelated = await newRetrievalCase(page, '_other', true);
+  await expect.poll(async () => (await (await page.request.get('/api/v1/conflicts/' + unrelated.conflict + '/similar-decisions')).json()).reason_code, { timeout: 60000 }).toBe('BELOW_THRESHOLD');
+  await similar.getByRole('button', { name: 'Повторить поиск', exact: true }).click();
+  await expect(similar).toContainText('Похожих подтверждённых решений пока нет');
+  await capture(page, '26-no-precedent', 'Непохожий случай остаётся без прецедента', 'Совместимый атрибут и единица не делают керамическую трубу похожей на болт. Ни автоматического выбора, ни нового решения не появляется.', similar);
   await signOut(page); await signIn(page, 'VIEWER');
   await page.getByRole('button', { name: 'Конфликты', exact: true }).click();
   await page.getByRole('combobox', { name: 'Сопоставление для конфликтов', exact: true }).selectOption(matching.id);
   await expect(page.getByRole('button', { name: 'Проверить конфликты', exact: true })).toHaveCount(0);
   await expect(page.getByRole('button', { name: 'Пользователи', exact: true })).toHaveCount(0);
   await capture(page, '13-viewer', 'Просмотр без полномочий на изменение', 'VIEWER видит разрешённые результаты и их основания. Запуск обработки и управление пользователями не отображаются.');
+  await page.getByRole('combobox', { name: 'Сопоставление для конфликтов', exact: true }).selectOption(next.matching);
+  await page.getByRole('button', { name: 'Открыть конфликт ' + next.conflict, exact: true }).click();
+  await expect(similar).toContainText(precedent.id);
+  await similar.getByRole('button', { name: 'Открыть прошлое решение', exact: true }).click();
+  await expect(page.getByRole('article', { name: 'Карточка решения', exact: true })).toContainText(precedent.id);
+  await signOut(page); await signIn(page, 'ADMIN');
+  await page.getByRole('button', { name: 'Пользователи', exact: true }).click();
+  const scope = page.locator('details.scope-editor').filter({ hasText: accounts.VIEWER.login });
+  await scope.locator('summary').click();
+  await scope.getByRole('checkbox', { name: 'Все домены экземпляра для ' + accounts.VIEWER.login, exact: true }).uncheck();
+  await scope.getByRole('button', { name: 'Сохранить область доступа', exact: true }).click();
+  await expect(scope).toContainText('Область доступа сохранена');
+  await signOut(page); await signIn(page, 'VIEWER');
+  expect((await page.request.get('/api/v1/conflicts/' + next.conflict + '/similar-decisions')).status()).toBe(404);
+  expect((await page.request.get('/api/v1/decisions/' + precedent.id)).status()).toBe(404);
+  await page.getByRole('button', { name: 'Конфликты', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Конфликты не найдены', exact: true })).toBeVisible();
+  await capture(page, '27-retrieval-scope', 'Отзыв области данных действует сразу', 'После явного отзыва доступа VIEWER не видит чужие конфликты и решения. Прямые запросы к similarity и Decision ID также отклоняются сервером.');
   await signOut(page); await signIn(page, 'NO_ROLES');
   await expect(page.getByRole('heading', { name: 'Доступ не назначен', exact: true })).toBeVisible();
   await capture(page, '14-permission', 'Роль ещё не назначена', 'Понятный следующий шаг вместо пустого экрана. Авторизация и фактические разрешения проверяются сервером.');

@@ -567,3 +567,7 @@ Read pagination limit1..100, offset0..1000000; matching/analysis private respons
 ## Stage 6: реализованный Human Review API
 
 Актуальные POST/GET endpoints, DTO, ошибки, scope и pagination описаны в [Decision Registry](../development/decision-registry.md#api). Decision PATCH/DELETE отсутствуют. Cookie + Origin; actor только из сессии. Create требует version token, UUID idempotency_key, reason и explicit confirmed=true. Результат возвращается после атомарного commit. Старый target recommendation/similarity API остаётся не реализованным.
+
+## Реализуемый Stage 7: similarity GET (issue #27)
+
+`GET /api/v1/conflicts/{id}/similar-decisions?limit=5&offset=0`: cookie authentication, conflict.view + decision.view + explicit data_domains. Limit 1..20, offset 0..100, other query fields rejected422. Earlier target min_similarity override is superseded: threshold>=0.85 is immutable versioned server configuration. Full response/state/reason/security contract: [Similarity Retrieval](../development/similarity-retrieval.md#api-и-ui). Unavailable counts are null; no recommendation/action/write endpoint.

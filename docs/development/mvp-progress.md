@@ -1,5 +1,7 @@
 # MVP: состояние реализации
 
+**Актуально на 23 октября 2026:** Stage 0–6 приняты в `main` через PR #26 (merge `0ce2a14304d0cf28fcf90ec9cd3d6c23601ec852`, exact CI 39947944543 SUCCESS). Stage 7 Similar Decision Retrieval реализуется в отдельной ветке `codex/stage7-similar-decisions` по issue #27. Production embedding provider отключён; синтетический test provider не доказывает промышленное качество. Recommendation Engine, AI/LLM и write-back отсутствуют. #18/#20 остаются открытыми.
+
 ## Итерация 1 — этап 0
 
 Реализован запускаемый каркас по MVP Development Plan:
@@ -115,7 +117,11 @@ Stage 5.1: **689 уникальных тестов PASS**, 18 реальных P
 
 ## Stage 6 — Human Review + Decision Registry, 23 октября 2026
 
-Реализованы канонические outcomes, атомарные immutable Decisions, superseding history, scope/RBAC, version token, idempotency, API и Web UI. Stage 5.1 принят владельцем через PR #24, main `04793d9`, exact CI `39908239589` SUCCESS. Stage 6 пока не принят: отдельный PR и зелёный CI merge commit обязательны. Отчёт и проверки фиксируются отдельно. Stage 7 не начат; #18/#20 не закрываются.
+Реализованы канонические outcomes, атомарные immutable Decisions, superseding history, scope/RBAC, version token, idempotency, API и Web UI. Stage 5.1 принят владельцем через PR #24, main `04793d9`, exact CI `39908239589` SUCCESS. Stage 6 принят: PR #26, main `0ce2a14304d0cf28fcf90ec9cd3d6c23601ec852`, exact merge CI 39947944543 SUCCESS. Stage 7 начат отдельной веткой по issue #27; #18/#20 не закрываются.
 
 
 Stage 6: [acceptance и ограничения](../testing/reports/stage6-human-review-acceptance-2026-10-23.md), [независимый retest](../testing/reports/stage6-human-review-independent-2026-10-23.md), [restart proof](../testing/reports/stage6-restart-2026-10-23.json), [capacity](../testing/reports/stage6-capacity-2026-10-23.json). Локально PASS: 234 unit + 469 integration + 43 component + 13 browser; production/security и 23 Axe/115 responsive checks. READY TO MERGE требует CI exact final HEAD, который связывается с этим отчётом в PR. Приёмка main после merge остаётся отдельным gate владельца.
+
+## Stage 7 — отдельная ветка, issue #27
+
+Реализуются [Similar Decision Retrieval и его ограничения](similarity-retrieval.md): versioned pgvector artifacts, фоновые backfill/query embedding, scoped exact search, API и Web UI. Test provider доступен только при явном opt-in на синтетических данных; production возвращает UNAVAILABLE. Acceptance и independent review ещё выполняются; merge не разрешён.

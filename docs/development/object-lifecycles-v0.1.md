@@ -547,3 +547,7 @@ ImportBatch COMPLETED
 ## Stage 6: явный пересмотр того же решения
 
 По Decision Log от 2026-10-23 RESOLVED/INSUFFICIENT_DATA → IN_REVIEW допускается отдельным human command с decision.supersede и ссылкой на текущий head. Это исправление решения по тому же историческому случаю; новая загрузка по-прежнему создаёт новый случай. Старый Decision остаётся head до атомарной записи нового. SELECT_VALUE/ENTER_VALUE → RESOLVED; INSUFFICIENT_DATA → одноимённый статус; DEFERRED → IN_REVIEW. GET не меняет lifecycle. Подробнее: [Human Review](human-review.md).
+
+## Stage 7 technical retrieval execution
+
+IndexRun uses existing AnalysisStatus NEW→QUEUED→PROCESSING→COMPLETED/FAILED; restart resumes PROCESSING checkpoints, explicit retry creates a new run. IndexItem INDEXED/skip-reason is immutable derived checkpoint metadata, not a business state. No new Conflict/Decision transition is introduced. See [retrieval policy](similarity-retrieval.md).

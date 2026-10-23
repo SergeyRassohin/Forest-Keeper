@@ -196,3 +196,7 @@ Changing embedding model or dimension requires a controlled re-embedding migrati
 - https://github.com/ggml-org/llama.cpp
 
 Upstream documentation is reference material. Forest Keeper implementation must follow the pinned model manifest and project decisions rather than automatically following upstream `main`.
+
+## Stage 7 provider boundary (issue #27)
+
+Pinned Qwen artifacts/revisions and 1024 dimensions remain unchanged. No Qwen/LLM runtime is added. Production adapter is a contract and returns unavailable until separately accepted. Explicit synthetic test environments can use the separately named deterministic test provider; it is never labelled Qwen or production semantic retrieval. [Contract, exact versioning and limits](../development/similarity-retrieval.md#provider-contract-and-limits).

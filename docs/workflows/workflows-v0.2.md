@@ -40,3 +40,7 @@ Observer не блокирует исходные системы.
 ## Stage 6: реализованный human workflow
 
 Conflict evidence → явное начало рассмотрения → допустимый outcome + reason → подтверждение → атомарный Decision/lifecycle/audit → receipt → Registry/history. Исправление — новый Decision с supersedes, без переписывания старого. [Пошаговый сценарий](../development/human-review.md). Similar Decision Retrieval/recommendation/AI/write-back остаются Stage 7+.
+
+## Stage 7 retrieval branch (issue #27)
+
+New Conflict → scope/permission → versioned structured context → background query preparation if absent → scoped eligibility/compatibility → complete active pgvector representation → exact cosine top-N → real historical Decision IDs → human reads actual history. No proposed action and no automatic Decision. Production provider unavailable is explicit and preserves Registry/review. [Workflow and recovery](../development/similarity-retrieval.md).

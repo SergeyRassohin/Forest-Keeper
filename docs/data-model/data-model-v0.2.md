@@ -172,3 +172,7 @@ INVALID означает провал проверки подписи или с�
 ## Stage 6: физическое представление Decision
 
 Decision остаётся отдельным append-only фактом. ACTIVE/SUPERSEDED выводится из successor; immutable supersedes_decision_id, unique root/successor и same-case FK дают один head. Conflict дополнен review_version/current_decision_id. User.data_domains задаёт отдельный явный data scope, без новых ролей/permissions. Поля и historical context: [Decision Registry](../development/decision-registry.md).
+
+## Stage 7 derived retrieval storage
+
+Migration0008_similarity adds immutable RetrievalVersion/DecisionEmbedding/QueryEmbedding and technical IndexItem/IndexRun plus explicit active-version state. Decision remains immutable/source of truth. 1024-dimensional pgvector, source Decision FK, unique Decision/version, frozen context/hashes/binary vector fingerprint; model/revision/schema/preprocessing/dimension metadata belongs to immutable referenced RetrievalVersion. Query vectors are prepared in background and cached by version/context hash. IndexRun reuses canonical AnalysisStatus. These are technical derived artifacts, not new business lifecycle objects. [Details and policies](../development/similarity-retrieval.md).

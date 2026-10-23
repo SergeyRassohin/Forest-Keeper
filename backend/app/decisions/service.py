@@ -16,6 +16,7 @@ from app.conflicts.models import Conflict
 from app.decisions.models import Decision, DecisionType
 from app.decisions.schemas import BeginReview, CreateDecision
 from app.decisions.validation import correction_policy, resolve_value, selectable
+from app.imports.models import SourceSystem
 from app.matching.models import MatchingRun
 from app.normalization.models import AnalysisRun, CanonicalEntity
 
@@ -183,6 +184,15 @@ def historical_context(session: Session, case: Conflict) -> dict[str, Any]:
             "display_name": entity.display_name,
         },
         "normalization_origins": origins,
+        "retrieval_sources": [
+            {
+                "source_id": side["source_id"],
+                "source_type": source.source_type if source else "UNKNOWN",
+                "role": "NOT_DEFINED",
+            }
+            for side in case.values_snapshot
+            for source in [session.get(SourceSystem, UUID(side["source_id"]))]
+        ],
         "matching": {
             "run_id": str(matching.id),
             "profile_id": str(matching.profile_id),

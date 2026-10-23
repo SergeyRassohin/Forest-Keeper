@@ -44,6 +44,8 @@ with open(sys.argv[1], 'w') as out:
     out.write('services:\n')
     for service in ['backend', 'worker', 'migrate']:
         out.write(f'  {service}:\n    image: {json.dumps(backend)}\n    environment:\n      FK_ALLOWED_ORIGINS: {json.dumps(origin)}\n')
+        # Only this unique disposable synthetic gallery project enables the test provider.
+        out.write('      FK_DEPLOYMENT_MODE: test\n      FK_SIMILARITY_PROVIDER: test\n      FK_SIMILARITY_ALLOW_TEST_PROVIDER: "true"\n      FK_SIMILARITY_AUTOINDEX: "true"\n')
         if service == 'backend': out.write('    ports: !override []\n')
     out.write(f'  frontend:\n    image: {json.dumps(frontend)}\n    ports: !override ["127.0.0.1:{port}:8443"]\n')
     out.write('  postgres:\n    ports: !override ["127.0.0.1::5432"]\n  redis:\n    ports: !override ["127.0.0.1::6379"]\n')
@@ -70,6 +72,7 @@ export FK_E2E_BASE_URL="https://localhost:$FK_GALLERY_PORT"
 (cd backend && uv run --frozen python -m tests.e2e_accounts prepare)
 prepared=1
 (cd backend && uv run --frozen python -m tests.ui_gallery_accounts)
+"${compose[@]}" exec -T backend python -m app.similarity.cli start --activate > "$fixture_root/index-start.log"
 (cd frontend && npx playwright test --config playwright.gallery.config.ts)
 python3 scripts/render-ui-gallery.py "$FK_GALLERY_OUTPUT"
 mkdir -p frontend/public/interface
