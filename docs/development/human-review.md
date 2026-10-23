@@ -43,3 +43,20 @@ Row lock на Conflict сериализует конкурентов; unique roo
 ## Проверки
 
 `test_decision_validation.py`, `test_decisions_integration.py`, `HumanReview.test.tsx`, `tests/e2e/decisions.spec.ts`, реальная [галерея](../../frontend/public/interface/index.html). Общие gates: [testing strategy](../testing/testing-strategy-v0.1.md). Подробности хранения: [Decision Registry](decision-registry.md).
+
+
+## Воспроизведение runtime acceptance
+
+Все команды ниже предназначены только для собственного изолированного тестового стенда. Для общего/default Compose и производственных данных harness откажется запускаться.
+
+```bash
+# После real browser E2E, с переменными БД своего fk-stage6 проекта:
+cd backend
+FK_TEST_INTEGRATION=1 uv run --frozen python -m tests.restart_decisions \
+  --project fk-stage6 --env-file /path/to/private-stage6.env \
+  --override /path/to/private-stage6-ports.yaml --base-url https://localhost:18447
+# Отдельная временная schema; queue/card/history p95, 10 sessions:
+FK_TEST_INTEGRATION=1 uv run --frozen python -m tests.benchmark_decisions
+```
+
+Restart harness проверяет соответствие database port выбранному Compose project, использует собственные временные reviewer accounts, оставляет business history и volumes. По завершении аккаунты отключаются, их сессии отзываются. Он останавливает только worker/Redis выбранного проекта, сохраняет решения через настоящий HTTPS и проверяет однозначность двух конкурирующих отправок. Затем перезапускает PostgreSQL/Redis/backend/frontend, восстанавливает worker и сравнивает ID, полные HTTP карточки, историю и hashes raw/normalization/matching/evidence/Decision. Повтор исходного key после superseding и restart возвращает прежнюю запись.

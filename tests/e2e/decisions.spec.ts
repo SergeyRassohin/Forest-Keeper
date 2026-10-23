@@ -79,3 +79,31 @@ test('human confirmation receipt refresh correction immutable registry and read-
     expect(denied.status()).toBe(403); await session.close();
   }
 });
+
+test('two reviewer browser sessions keep the same evidence token and only one decision wins', async ({ page, browser }) => {
+  test.setTimeout(120000); await login(page, 'DATA_OWNER'); const fixture = await prepare(page);
+  const origin = new URL(page.url()).origin;
+  const review = await (await page.request.get('/api/v1/conflicts/' + fixture.conflict + '/review-context')).json();
+  const started = await page.request.post('/api/v1/conflicts/' + fixture.conflict + '/review', { headers: { Origin: origin }, data: { context_version: review.context_version } });
+  expect(started.status()).toBe(200);
+  const sessions = await Promise.all([0, 1].map(() => browser.newContext({ baseURL: origin, ignoreHTTPSErrors: true })));
+  try {
+    const reviewers = await Promise.all(sessions.map((session) => session.newPage()));
+    await Promise.all(reviewers.map(async (reviewer, index) => {
+      await login(reviewer, 'REVIEWER'); await open(reviewer, fixture);
+      await reviewer.getByRole('button', { name: 'Начать рассмотрение', exact: true }).click();
+      await reviewer.getByRole('radio', { name: index ? /^Источник B:/ : /^Источник A:/ }).check();
+      await reviewer.getByLabel('Обоснование решения', { exact: true }).fill('Независимая проверка эксперта ' + index);
+      await reviewer.getByRole('button', { name: 'Проверить перед сохранением', exact: true }).click();
+    }));
+    const received = reviewers.map((reviewer) => reviewer.waitForResponse((r) => r.url().endsWith('/decisions') && r.request().method() === 'POST'));
+    await Promise.all(reviewers.map((reviewer) => reviewer.getByRole('dialog').getByRole('button', { name: 'Сохранить решение', exact: true }).click()));
+    const responses = await Promise.all(received);
+    expect(responses.map((r) => r.status()).sort()).toEqual([201, 409]);
+    const loser = reviewers[responses.findIndex((r) => r.status() === 409)];
+    await expect(loser.getByRole('alert')).toContainText('Контекст изменился');
+    await expect(loser.getByLabel('Обоснование решения', { exact: true })).toHaveCount(0);
+    const history = await (await page.request.get('/api/v1/conflicts/' + fixture.conflict + '/decisions')).json();
+    expect(history).toHaveLength(1); expect(history[0].status).toBe('ACTIVE');
+  } finally { await Promise.all(sessions.map((session) => session.close())); }
+});

@@ -1,6 +1,6 @@
 # Готовность к внешней проверке — 24 октября 2026
 
-Снимок 21 октября 2026; `main` после принятия PR #15 с изменениями PR #19. Цель — самостоятельная проверка человеком, впервые увидевшим продукт, по [Quick Start](external-review-quickstart.md). Исходные требования: [#18](https://github.com/SergeyRassohin/Forest-Keeper/issues/18). Описание целевого поведения не заменяет работающую функцию.
+Состояние 23 октября 2026: `main` принял Stage 0–5.1 через PR #24; Stage 6 проверяется в отдельной ветке `codex/stage6-human-review`. Цель — самостоятельная проверка человеком, впервые увидевшим продукт, по [Quick Start](external-review-quickstart.md). Исходные требования: [#18](https://github.com/SergeyRassohin/Forest-Keeper/issues/18). Описание целевого поведения не заменяет работающую функцию.
 
 | Проверка | Состояние main | Что предъявить для полной приёмки |
 | --- | --- | --- |
@@ -9,14 +9,14 @@
 | Нормализация и история правил | Этап 3 принят; только явные профили | Подходящий mapping, исходные/нормализованные значения |
 | Matching/evidence | Этап 4 принят в main; независимый retest и CI merge commit PASS | Промышленный pilot domain и проверка реальных файлов |
 | Conflict Engine | Этап 5 принят в main, независимый retest и merge CI PASS | Реальные Conflict ID/Basis/provenance и подтверждение сохранности после restart |
-| Human Review + Decision Registry | BLOCKED: этапы 6–7 не реализованы | Сохранённый Decision, actor/reason/context и immutable history |
-| Restart с сохранением Decision | BLOCKED: нет Decision | Проверка того же ID после restart без удаления volumes |
+| Human Review + Decision Registry | Реализованы в ветке Stage 6; отдельный merge в main ожидается | Сохранённый Decision, actor/reason/context и immutable history |
+| Restart с сохранением Decision | PASS в acceptance ветки Stage 6; не является приёмкой main до merge | Проверка того же ID после restart без удаления volumes |
 | Similar Decision/recommendation | BLOCKED: нет retrieval/recommendation | Следующий похожий кейс с реальной ссылкой на прошлый Decision |
 | Pinned Qwen artifacts | Manifest и lock проверяются; есть downloader | Полная локальная SHA-256 проверка файлов |
 | LLM/embedding runtime + model-info | BLOCKED: нет поддерживаемого запуска | Точные ID/revisions; inference и 1024 dimensions smoke |
 | AI evidence / offline / LLM failure | BLOCKED: нет интеграции | Только реальные evidence IDs; офлайн-тест; работа истории без LLM |
 
-**Итог: полная внешняя приёмка MVP пока BLOCKED.** Можно проводить техническую проверку реализованных этапов, честно отмечая границу. Conflict Engine принят, но не заменяет ещё отсутствующие Human Review/Decision Registry. Эта документация не закрывает #18.
+**Итог: полная внешняя приёмка MVP пока BLOCKED.** Можно проводить техническую проверку реализованных этапов, честно отмечая границу. Ветка Stage 6 добавляет Human Review/Decision Registry; similarity/recommendation/AI полного MVP всё ещё отсутствуют. Эта документация не закрывает #18.
 
 Stage 4: [текущий отчёт и DoD](../testing/reports/stage4-matching-acceptance-2026-10-21.md). Локальные проверки, gold, 100k capacity и restart выполнены; [отдельный independent runtime/security retest](../testing/reports/stage4-matching-independent-2026-10-21.md) PASS без блокирующих замечаний, повторены 619 тестов и все четыре capacity профиля. Владелец принял HEAD `f44e01e` и разрешил merge; main merge `bea0d55c92540744657feac863084cde131a7f43`, [CI — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39595762080). Шаг 1 / Stage 4 из #20 завершён.
 
@@ -45,7 +45,7 @@ Stage 5: подробное ТЗ, границы, benchmark, migration, browser 
 
 ## Stage 5: принят в main — 22 октября 2026
 
-PR #22 объединён владельцем в main: `6235dd6a18f8cbb8aeceac2a7d052f5fca396482`; [CI точного merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39768647312). Этап 5 принят; 679 тестов и независимый runtime/security/product-intent retest PASS. Шаг Stage 5 из #20 завершён. Stage 6–7 — следующий отдельный этап; #18/#20 остаются открытыми. Полный MVP #18/#20 остаётся незавершённым.
+PR #22 объединён владельцем в main: `6235dd6a18f8cbb8aeceac2a7d052f5fca396482`; [CI точного merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39768647312). Этап 5 принят; 679 тестов и независимый runtime/security/product-intent retest PASS. Шаг Stage 5 из #20 завершён. Human Review/Decision Registry объединены новым ТЗ #25 в Stage 6; #18/#20 остаются открытыми. Полный MVP #18/#20 остаётся незавершённым.
 
 ## Stage 5.1 — отдельная подготовка интерфейса
 
@@ -60,3 +60,6 @@ Stage 5.1 не снимает блокеры Decision/AI полного MVP и �
 ## Stage 6: состояние отдельной ветки
 
 Human Review/Decision Registry реализованы отдельным PR по #25, с каноническими outcomes и immutable history. Для проверки именно этой ветки используйте [сценарий](../development/human-review.md). Приёмка требует независимого retest, final-head CI, отдельного разрешения владельца и CI точного merge commit; до этого Stage 6 не объявляется accepted. Similarity/recommendation/AI по #18/#20 остаются BLOCKED отсутствием runtime.
+
+
+Stage 6 runtime: `backend/tests/restart_decisions.py` проверяет собственный проект `fk-stage6`, реальные HTTPS receipt/history, сохранность source/evidence, race 201/409, запись при остановленном Redis и тот же persistent key после restart. [Реализованный workflow](../development/human-review.md). Исторические ограничения публикации Stage 5.1 выше относятся к прежним отчётам; issue #25 явно фиксирует принятие и публикацию владельцем. Новая галерея Stage 6 готовится в репозитории; обновление внешнего сайта отдельно не заявляется.

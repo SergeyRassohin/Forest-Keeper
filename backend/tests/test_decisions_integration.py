@@ -538,3 +538,31 @@ def test_role_revocation_between_context_and_submit_is_rechecked(client, auth_en
         save(client, identifier, request)
     finally:
         engine.dispose()
+
+
+def test_review_works_when_optional_network_clients_are_unavailable(client, auth_env):
+    from redis.exceptions import RedisError
+
+    identifier = real_case(client, auth_env)
+    with patch.object(
+        client.app.state.redis, "ping", side_effect=RedisError("offline")
+    ) as redis_ping:
+        with patch("socket.create_connection", side_effect=OSError("outbound HTTP unavailable")):
+            request = selection(begin(client, identifier))
+            result = save(client, identifier, request)
+            assert result["decision_id"]
+        redis_ping.assert_not_called()
+
+
+def test_database_unavailable_before_transaction_is_sanitized(client, auth_env):
+    identifier = real_case(client, auth_env)
+    request = selection(begin(client, identifier))
+    with patch(
+        "app.decisions.routes.current_user", side_effect=SQLAlchemyError("PRIVATE_SQL_PARAMS")
+    ):
+        response = client.post(
+            f"/api/v1/conflicts/{identifier}/decisions", headers=ORIGIN, json=request
+        )
+    assert response.status_code == 503
+    assert "PRIVATE_SQL_PARAMS" not in response.text
+    assert client.get(f"/api/v1/conflicts/{identifier}/decisions").json() == []

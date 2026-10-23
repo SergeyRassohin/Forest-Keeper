@@ -1,7 +1,7 @@
 {
-  "captured_at": "2026-10-22T14:15:14.407Z",
-  "source_commit": "b3d4423131dcd4e2c07536e7dc05e742015b8c2d",
-  "source_tree": "19d0850606bfd3a3fb341d155cb2633d562cb096",
+  "captured_at": "2026-10-23T10:48:39.682Z",
+  "source_commit": "7a55797c87c3427a178c5d83cb247937d3dd11b3",
+  "source_tree": "50f74a4b6dd5f697884a4928e5c725d5b5881fb4",
   "brand_assets": [
     {
       "file": "forest-keeper.svg",
@@ -14,17 +14,17 @@
   ],
   "worktree_dirty": true,
   "images": {
-    "frontend": "sha256:de3a08c8864043614166459d5ecc845548efbebe0b6f435cd1151fc8eac9ec20",
-    "backend": "sha256:9daf63943d9a38c96efed720b75125190a5b8819d1f85155bd3faa33be8a1cd5"
+    "frontend": "sha256:f97a0b5d65f56964540892081c01d9d2c8fce1fc218d8aba3f8bad86dfb4f968",
+    "backend": "sha256:bbfd78a4b9a4a0a9339b5f6b03bfadc5491b2849bc0a1807509dc81a71056420"
   },
   "served_bundles": [
     {
-      "file": "/assets/index-CRMNlME7.js",
-      "sha256": "17e368e8e91c6d218c931570aada229b944a92a57f28443520b80cb1be22906a"
+      "file": "/assets/index-4RvlnLCT.js",
+      "sha256": "76e0be9ccdb59bddad0d5acd2553683f7010278b959322cdec78c53fb19b4e79"
     },
     {
-      "file": "/assets/index-ZT6ZmBlr.css",
-      "sha256": "20942ebf08909738b5b27bdaac96979273c138fd27aa671ff7e3b6301facd819"
+      "file": "/assets/index-DOJQvSuJ.css",
+      "sha256": "3343ca8076006984fb1002d8fda9af914e921d0bcf7aaffcc2bf476d6203103a"
     }
   ],
   "capture": "Real HTTPS Web Client and backend with owned synthetic data; no generated/mock product screenshots",
@@ -35,7 +35,7 @@
       "file": "01-login.png",
       "title": "Вход в рабочее пространство",
       "description": "Защищённая браузерная сессия. Доступ к действиям определяется назначенными ролями.",
-      "feature_status": "Реализовано · Stage 0–5",
+      "feature_status": "Реализовано · Stage 0–6",
       "viewport": {
         "width": 1440,
         "height": 900
@@ -46,161 +46,216 @@
       "file": "02-overview.png",
       "title": "Готовность среды",
       "description": "Настоящий ответ сервера: состояние API, PostgreSQL и Redis. Здесь нет выдуманных показателей качества данных.",
-      "feature_status": "Реализовано · Stage 0–5",
+      "feature_status": "Реализовано · Stage 0–6",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "sha256": "3324b581cc9fb87d33a0edb88d65047e526b83596a1ae6b0563b8a5dbef01bc6"
+      "sha256": "57e030087610cc46da5db8841752adfd2f8b1d15515cf0737fb792f28dc99166"
     },
     {
       "file": "03-import.png",
       "title": "Источники и импорт",
       "description": "Загрузка CSV, XLSX и XML с сохранением оригинала. Пустая таблица объясняет, с чего начать.",
-      "feature_status": "Реализовано · Stage 0–5",
+      "feature_status": "Реализовано · Stage 0–6",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "sha256": "a7f7426c503ce5c6048c581d8438967f553b2e2510006d91c18acb4c57006c4a"
+      "sha256": "730a2c189c3e505db2400aa045a484669fd1520afb0912f812d96a4d69ff4a7f"
     },
     {
       "file": "04-import-detail.png",
       "title": "Оригинал и записи",
       "description": "Сохранённый файл, исходные поля и происхождение каждой записи. Данные в источнике не изменяются.",
-      "feature_status": "Реализовано · Stage 0–5",
+      "feature_status": "Реализовано · Stage 0–6",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "sha256": "92570a1f85a73cd253c9429d555d0d40a5109c38bec1575497d250b8795df3a2"
+      "sha256": "36418ab6bd60e4397bf1ac576d9305f5eb8652644865dbcb492254f46c79c5fe"
     },
     {
       "file": "18-raw-records.png",
       "title": "Исходные записи и их поля",
       "description": "Структурированный просмотр значений без стены JSON. Видны ключ, позиция и исходные поля.",
-      "feature_status": "Реализовано · Stage 0–5",
+      "feature_status": "Реализовано · Stage 0–6",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "sha256": "6c58d44d7e7c47929dc3c5a7e9d2bc0b0db8597afc3b6e283339607aab7d41a6"
+      "sha256": "ccf7903c3a94ab4f26556fe9fd3d1965f458d072b889b300ca924b6651656381"
     },
     {
       "file": "05-normalization.png",
       "title": "Исходное → сопоставимое",
       "description": "Масса приводится к единой единице; исходное значение, качество и правило остаются доступными. Нормализация не объявляет значение истиной.",
-      "feature_status": "Реализовано · Stage 0–5",
+      "feature_status": "Реализовано · Stage 0–6",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "sha256": "09d348a194664dd129568415b12132f5a827bbee7306083837c6ace261c6022d"
+      "sha256": "623f69f30f00dd8e5503765bb0b04e6537a87c6b99dfd259fec02985216e41ab"
     },
     {
       "file": "06-matching.png",
       "title": "Какие записи относятся к одной сущности",
       "description": "Отдельно показаны совпадения, отклонённые пары и кандидаты для проверки. Оценка похожести сама по себе не подтверждает идентичность.",
-      "feature_status": "Реализовано · Stage 0–5",
+      "feature_status": "Реализовано · Stage 0–6",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "sha256": "8018b8db8f9d35d74986e523586733982d436baeb0d5f60a6b1a6e6c7b68becb"
+      "sha256": "65ffb4052f9ae27a8aaa7fe51a120856fe04e77b7a4b71370c55580a750024df"
     },
     {
       "file": "07-match-detail.png",
       "title": "Основания совпадения",
       "description": "Обе исходные записи, нормализованные значения и вклад признаков доступны рядом. Подтверждение идентичности не выбирает правильную массу.",
-      "feature_status": "Реализовано · Stage 0–5",
+      "feature_status": "Реализовано · Stage 0–6",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "sha256": "8ed438f050a25769adc0b0280db002162a2c3f9f95939d1315541c5d7f976313"
+      "sha256": "d5bfe320245e40a6f14e5ad8206cbfe16ee9926c4a77600f4a1454cd1a4b224a"
     },
     {
       "file": "08-conflicts.png",
       "title": "Расхождения значений",
       "description": "Список объяснимых конфликтов подтверждённых пар. Человеческие подписи сопровождают технические типы и статусы.",
-      "feature_status": "Реализовано · Stage 0–5",
+      "feature_status": "Реализовано · Stage 0–6",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "sha256": "2f98d82f6834d0a85f7cff30e9c1a527711349670a421291b56515d47e884f94"
+      "sha256": "5aa10d497ab38c7b8a8389b8c9a300b26ddf83f81db04b56f4a68cacea3b8fa1"
     },
     {
       "file": "09-conflict-detail.png",
       "title": "Что не совпало и откуда взялись значения",
       "description": "12500 g и 12.4 kg сравниваются как 12.5 и 12.4 kg. Видны два источника и контекст нормализации. Решение человека ещё не принято.",
-      "feature_status": "Реализовано · Stage 0–5",
+      "feature_status": "Реализовано · Stage 0–6",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "sha256": "8ac3a1f96be3f798505d29bbb101bb9250f0152d7592f6dab8dba0c73a1f3033"
+      "sha256": "f83dbee0caafa80f282ebee361456cef5cf0f971200ef4c44329149d3087ad70"
     },
     {
       "file": "17-provenance.png",
       "title": "От результата к исходной записи",
       "description": "По запросу раскрываются файл, контрольная сумма, позиция исходной записи и правило нормализации. Это реальные сохранённые сведения, а не макет.",
-      "feature_status": "Реализовано · Stage 0–5",
+      "feature_status": "Реализовано · Stage 0–6",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "sha256": "639a386dc19eb34e60389c19aa6572d74fdaa6fd9d685aaf7508b37160203711"
+      "sha256": "1a995b7a5cf985a1ef5457aa2ddc2742542f5d479c933817751b18c97a21fc8e"
     },
     {
       "file": "10-empty.png",
       "title": "Понятное пустое состояние",
       "description": "Результат фильтра не подменяется вымышленными данными. RULE_VIOLATION пока не генерируется без утверждённого источника правил.",
-      "feature_status": "Реализовано · Stage 0–5",
+      "feature_status": "Реализовано · Stage 0–6",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "sha256": "f9e58880b3798f125183d4723a4ab5d871dd3c2a3035b534d601985b03f74365"
+      "sha256": "a27d0cc4045c8de97748e7bb62df70d67b449bae00e0c6adf4df4646ee0c89fa"
     },
     {
       "file": "11-users.png",
       "title": "Пользователи и роли",
       "description": "Администратор управляет доступом. Роль ADMIN сама по себе не даёт полномочий подтверждать совпадения или принимать бизнес-решения.",
-      "feature_status": "Реализовано · Stage 0–5",
+      "feature_status": "Реализовано · Stage 0–6",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "sha256": "653728ef0676a5c343756e84d13dda33d01b502960bae1dd05f482ec18cc4b9f"
+      "sha256": "e6077d7359baa7419d72d91363b4a6cd31bf137158b0a5be11c06f38586f9e74"
     },
     {
       "file": "12-matching-review.png",
       "title": "Проверка идентичности экспертом",
       "description": "Уже существующий matching review требует объяснения. Это проверка того, что записи относятся к одной сущности, а не разрешение конфликта значений.",
-      "feature_status": "Реализовано · Stage 0–5",
+      "feature_status": "Реализовано · Stage 0–6",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "sha256": "0ecd38ad38eb1efd047e651682be29d5b668773cf206cfc09c5cf1a92dc007ab"
+      "sha256": "2c8d12aebcacdeafaeacdf42ad15046c16c5395836b1d70a28c11dc289b75f26"
+    },
+    {
+      "file": "19-human-review.png",
+      "title": "Решение по проверенным основаниям",
+      "description": "Эксперт выбирает источник или другое допустимое значение, объясняет выбор. Авторитет источника автоматически не выдумывается.",
+      "feature_status": "Реализовано · Stage 0–6",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "866c93d9aa9e501152fff871ee0e6718d1dcaeea2db9b39a1b4c41753fcf8314"
+    },
+    {
+      "file": "20-decision-confirmation.png",
+      "title": "Проверка перед сохранением",
+      "description": "Итог, значение, обоснование и версия контекста перед явным подтверждением. Записи во внешних системах не меняются.",
+      "feature_status": "Реализовано · Stage 0–6",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "3661e4bb30172e356d0faada16f7a8d598412c62cb02477da9e07dc0d0a38ed7"
+    },
+    {
+      "file": "21-decision-receipt.png",
+      "title": "Сервер подтвердил сохранение",
+      "description": "Настоящий Decision ID, автор, время, значение и объяснение. Надпись появляется после успешного ответа сервера.",
+      "feature_status": "Реализовано · Stage 0–6",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "45716994dc1b8cb544819be422ac52d011f61278795e07a044cfa6dc6fffde79"
+    },
+    {
+      "file": "22-decision-registry.png",
+      "title": "Реестр решений",
+      "description": "Отдельные неизменяемые решения, фильтры и исторический контекст. Это память о действии человека, а не новая запись в исходной системе.",
+      "feature_status": "Реализовано · Stage 0–6",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "e4ff9284bf2f8137aba07e47ab65a94f938bab4f04a8affe2900d641e7000764"
+    },
+    {
+      "file": "23-decision-history.png",
+      "title": "Исправление сохраняет историю",
+      "description": "Новое решение заменяет предыдущее. В истории видны оба автора, время, обоснования и явная связь между записями.",
+      "feature_status": "Реализовано · Stage 0–6",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "e834cb4e394b3e0c836866283e94c387825a957d245beead60e28c215b02d07f"
     },
     {
       "file": "13-viewer.png",
       "title": "Просмотр без полномочий на изменение",
       "description": "VIEWER видит разрешённые результаты и их основания. Запуск обработки и управление пользователями не отображаются.",
-      "feature_status": "Реализовано · Stage 0–5",
+      "feature_status": "Реализовано · Stage 0–6",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "sha256": "09e4305c2c35d716f6cea72d33a79feee8b8aa88075401042c5e0aef328a4832"
+      "sha256": "5643ac731d9d4e188e31a024d2e7fe432be9ed1b215582b16c416ecd071ee43a"
     },
     {
       "file": "14-permission.png",
       "title": "Роль ещё не назначена",
       "description": "Понятный следующий шаг вместо пустого экрана. Авторизация и фактические разрешения проверяются сервером.",
-      "feature_status": "Реализовано · Stage 0–5",
+      "feature_status": "Реализовано · Stage 0–6",
       "viewport": {
         "width": 1440,
         "height": 900
@@ -211,7 +266,7 @@
       "file": "15-loading.png",
       "title": "Выполнение запроса",
       "description": "Настоящее состояние ожидания ответа; для демонстрации ответ намеренно задержан тестом.",
-      "feature_status": "Реализовано · Stage 0–5",
+      "feature_status": "Реализовано · Stage 0–6",
       "viewport": {
         "width": 1440,
         "height": 900
@@ -222,12 +277,12 @@
       "file": "16-error.png",
       "title": "Восстановление после ошибки",
       "description": "Симуляция потери соединения: читаемое сообщение, очищенный пароль и возможность повторить попытку.",
-      "feature_status": "Реализовано · Stage 0–5",
+      "feature_status": "Реализовано · Stage 0–6",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "sha256": "a2ffc28e4972d1c33e08dad3e61a38ae62dc135e1012f8360b496c095f248d06"
+      "sha256": "7de930960b0e14588c2d33fb6e5a2120e4cc32bd1d43654566509e44eab0f347"
     }
   ],
   "accessibility": [
@@ -285,6 +340,26 @@
     },
     {
       "screen": "12-matching-review",
+      "violations": []
+    },
+    {
+      "screen": "19-human-review",
+      "violations": []
+    },
+    {
+      "screen": "20-decision-confirmation",
+      "violations": []
+    },
+    {
+      "screen": "21-decision-receipt",
+      "violations": []
+    },
+    {
+      "screen": "22-decision-registry",
+      "violations": []
+    },
+    {
+      "screen": "23-decision-history",
       "violations": []
     },
     {
@@ -859,6 +934,206 @@
     },
     {
       "screen": "12-matching-review",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "19-human-review",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "19-human-review",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "19-human-review",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "19-human-review",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "19-human-review",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "20-decision-confirmation",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "20-decision-confirmation",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "20-decision-confirmation",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "20-decision-confirmation",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "20-decision-confirmation",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "21-decision-receipt",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "21-decision-receipt",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "21-decision-receipt",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "21-decision-receipt",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "21-decision-receipt",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "22-decision-registry",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "22-decision-registry",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "22-decision-registry",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "22-decision-registry",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "22-decision-registry",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "23-decision-history",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "23-decision-history",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "23-decision-history",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "23-decision-history",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "23-decision-history",
       "width": 390,
       "height": 844,
       "viewport": 390,
