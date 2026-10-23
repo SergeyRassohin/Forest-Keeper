@@ -109,7 +109,7 @@ synthetic gallery/restart fixture. Decision saves have no embedding/Redis-job de
 Missing query context/vector cache returns INDEXING/QUERY_CONTEXT_PENDING and queues a
 bounded RQ preparation job. GET never calculates an embedding. Retry then reads the immutable
 context/version vector. This implements FK-NFR-PER-004 for query and historical embeddings.
-The request has a 750ms local statement timeout, bounded input/page sizes and 120 authenticated
+The request has a 1500ms local statement timeout, bounded input/page sizes and 120 authenticated
 reads/minute; timeout/queue/provider failures preserve Human Review and Registry availability.
 Binary fingerprints are checked across the scoped compatible pool **before thresholding**,
 so a corrupt vector moved below threshold cannot silently become an honest no-precedent result.
@@ -153,3 +153,5 @@ before READY TO MERGE. It cannot establish production semantic quality, producti
 runtime readiness or the complete recommendation MVP (#18/#20). A 100k Conflict queue is
 not a 100k Decision benchmark. Performance evidence must count actual persisted Decisions
 and vectors, disclose synthetic provenance, host/cache limits and first/warm/concurrent reads.
+
+Performance execution profile: narrow scoped eligibility and metadata are materialized once; exact distances are reused for count/page and full history loads only for top-N. PostgreSQL17 effective-head correlation requires a local hash-join preference and JIT off for this query. Both settings and the1500ms protective deadline end with the read transaction, preserving other API/migration defaults. An existing valid vector satisfies representation coverage; absent vectors require a persisted exclusion checkpoint or return INDEXING.

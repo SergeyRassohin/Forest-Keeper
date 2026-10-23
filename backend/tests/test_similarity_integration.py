@@ -551,12 +551,12 @@ def test_real_statement_timeout_is_local_and_registry_remains_readable(client, a
     case = real_case(client, auth_env)
 
     def slow(session, *args):
-        session.execute(text("SELECT pg_sleep(1.5)"))
+        session.execute(text("SELECT pg_sleep(3)"))
 
     started = time.monotonic()
     with patch("app.similarity.routes.retrieval", slow):
         response = client.get(f"/api/v1/conflicts/{case}/similar-decisions")
-    assert response.status_code == 503 and time.monotonic() - started < 1.5
+    assert response.status_code == 503 and time.monotonic() - started < 2
     assert client.get("/api/v1/decisions").status_code == 200
     assert client.get(f"/api/v1/conflicts/{case}/review-context").status_code == 200
 
@@ -663,3 +663,29 @@ def test_query_provider_failure_is_unavailable_then_bounded_retry_recovers(
             if job:
                 job.delete()
             queue.delete(delete_jobs=True)
+
+
+def test_pagination_ties_empty_offset_and_local_planner_settings(client, auth_env):
+    case = real_case(client, auth_env)
+    index(auth_env)
+    with client.app.state.engine.connect() as connection:
+        original = (
+            connection.scalar(text("SHOW enable_nestloop")),
+            connection.scalar(text("SHOW jit")),
+            connection.scalar(text("SHOW statement_timeout")),
+        )
+    first = similar(client, case, "?limit=2")
+    second = similar(client, case, "?limit=2&offset=2")
+    assert first["state"] == second["state"] == "READY"
+    assert not (
+        {r["decision_id"] for r in first["results"]} & {r["decision_id"] for r in second["results"]}
+    )
+    assert similar(client, case, "?limit=2")["results"] == first["results"]
+    empty = similar(client, case, "?limit=2&offset=100")
+    assert empty["results"] == [] and empty["total_above_threshold"] > 0
+    with client.app.state.engine.connect() as connection:
+        assert (
+            connection.scalar(text("SHOW enable_nestloop")),
+            connection.scalar(text("SHOW jit")),
+            connection.scalar(text("SHOW statement_timeout")),
+        ) == original

@@ -1,5 +1,6 @@
 """Versioned, bounded context from frozen evidence; no raw payload or chosen answer."""
 
+import hashlib
 import json
 import unicodedata
 from typing import Any
@@ -7,6 +8,15 @@ from typing import Any
 from app.decisions.models import Decision
 from app.decisions.service import digest
 from app.similarity.provider import SCHEMA, ProviderError
+
+
+def fingerprint(value: Any) -> str:
+    """Same canonical hash as Decision.digest, for already-frozen JSON primitives."""
+    return hashlib.sha256(
+        json.dumps(
+            value, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False
+        ).encode()
+    ).hexdigest()
 
 
 def normalized(value: Any, maximum: int = 4096) -> str:
@@ -20,7 +30,7 @@ def context(snapshot: dict[str, Any], decision: Decision | None = None) -> dict[
         evidence = snapshot["conflict"]
         subject = snapshot["subject"]
         if decision is not None and (
-            decision.evidence_hash != digest(evidence)
+            decision.evidence_hash != fingerprint(evidence)
             or str(decision.conflict_id) != evidence["id"]
             or str(decision.entity_id) != evidence["entity_id"]
             or decision.domain != subject["domain"]

@@ -258,5 +258,7 @@ missing immutable context/version cache returns INDEXING/QUERY_CONTEXT_PENDING a
 queues bounded technical preparation without changing business facts. GET performs no
 embedding calculation. Binary vector fingerprints are checked before thresholding,
 including candidates which would otherwise disappear below threshold. The API has a
-750ms local statement timeout and an authenticated 120 reads/minute limit; migrations
+1500ms local statement timeout and an authenticated 120 reads/minute limit; migrations
 and Decision saves do not inherit the retrieval timeout.
+
+The PostgreSQL17 capacity gate exposed underestimation of the cross-table effective-head join. Retrieval now materializes narrow scoped eligibility once, joins artifact metadata once, scores once and loads full historical JSON only for top-N. Its read transaction locally prefers hash joins and disables JIT startup; ordinary API/migration connections keep their defaults. The 1500ms protective statement deadline permits rare outliers while the measured p95 target remains <=1s at10sessions. Null-free predecessor exclusion preserves superseded policy. Actual vectors satisfy coverage directly; immutable skip checkpoints are consulted only for missing representations.

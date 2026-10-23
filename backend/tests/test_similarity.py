@@ -126,3 +126,20 @@ def test_hostile_unicode_is_bounded_and_normalized():
     data["subject"]["display_name"] = "x" * 257
     with pytest.raises(ProviderError):
         context(data)
+
+
+def test_frozen_json_fingerprint_preserves_stage6_canonical_hash_contract():
+    from datetime import UTC, datetime
+    from uuid import UUID
+
+    from fastapi.encoders import jsonable_encoder
+
+    from app.similarity.context import fingerprint
+
+    original = {
+        "id": UUID("05891706-bce8-48cb-8237-5c11818de871"),
+        "at": datetime(2026, 10, 23, tzinfo=UTC),
+        "unicode": "Болт",
+        "values": [None, True, 12, 1.5, {"x": "12.5"}],
+    }
+    assert fingerprint(jsonable_encoder(original)) == digest(original)

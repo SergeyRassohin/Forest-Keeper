@@ -70,7 +70,7 @@ def prepare_query(
                 or session.get(QueryEmbedding, (version.id, expected_hash)) is not None
             ):
                 return
-            features = context(historical_context(session, case))
+            features = context(historical_context(session, case, include_review=False))
             if digest(features) != expected_hash:
                 return
             vector = validate_vector(provider(settings, version.config["revision"]).embed(features))

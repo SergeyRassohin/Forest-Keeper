@@ -13,12 +13,12 @@ type Retrieval = {
   state: 'READY' | 'NO_PRECEDENT' | 'INDEXING' | 'UNAVAILABLE'; reason_code: string;
   results: Precedent[]; embedding_model: { is_test: boolean } | null;
 };
-const labels: Record<string, string> = {
+const labels = new Map(Object.entries({
   domain: 'Область данных', entity_type: 'Тип сущности', attribute_code: 'Атрибут',
   conflict_type: 'Тип расхождения', value_kind: 'Тип значения', unit: 'Единица измерения',
   subject: 'Наименование', observations: 'Значения и источники', matching: 'Контекст сопоставления',
   normalization: 'Контекст нормализации', authority: 'Авторитетный источник', forest_codex: 'Forest Codex',
-};
+}));
 
 export function SimilarDecisions({ conflictId, onSessionExpired, onOpenDecision }: {
   conflictId: string; onSessionExpired: () => void; onOpenDecision?: (id: string) => void;
@@ -53,8 +53,8 @@ export function SimilarDecisions({ conflictId, onSessionExpired, onOpenDecision 
       <p><DataValue value={item.selected_value} /> {item.unit}</p>
       <p>{item.actor.display_name} · {new Date(item.decided_at).toLocaleString()}</p>
       <p>{item.reason}</p>
-      <p>Совпало: {item.matched_features.map((key) => labels[key] ?? key).join(', ')}</p>
-      {!!item.mismatched_features.length && <p>Различается: {item.mismatched_features.map((key) => labels[key] ?? key).join(', ')}</p>}
+      <p>Совпало: {item.matched_features.map((key) => labels.get(key) ?? key).join(', ')}</p>
+      {!!item.mismatched_features.length && <p>Различается: {item.mismatched_features.map((key) => labels.get(key) ?? key).join(', ')}</p>}
       <p>Случай прошёл проверку совместимости области, типа сущности, атрибута и единицы. Оценка отражает сходство контекста.</p>
       {item.evidence_summary && <details><summary>Исторические значения и ограничения</summary>
         <p>Наименование: {item.evidence_summary.subject}</p>

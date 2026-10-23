@@ -3,6 +3,7 @@
 import json
 import math
 import os
+import re
 import resource
 import secrets
 import subprocess
@@ -40,7 +41,8 @@ def percentile(values, fraction):
 def run():
     if os.getenv("FK_TEST_INTEGRATION") != "1":
         raise SystemExit("Owned development schema opt-in required")
-    environment = isolated_environment()
+    keep_fixture = os.getenv("FK_KEEP_SIMILARITY_BENCH") == "1"
+    environment = isolated_environment(preserve_schema=keep_fixture)
     base = next(environment)
     results = []
     try:
@@ -78,6 +80,18 @@ def run():
             with TestClient(
                 create_app(settings=settings), base_url="https://localhost:8443"
             ) as client:
+                recorded = {}
+
+                def capture_plan_input(
+                    connection, cursor, statement, parameters, context, executemany
+                ):
+                    if (
+                        statement.startswith("WITH ")
+                        and "scored_precedents AS MATERIALIZED" in statement
+                    ):
+                        recorded.update(sql=statement, parameters=parameters)
+
+                event.listen(client.app.state.engine, "before_cursor_execute", capture_plan_input)
 
                 def phase(statement):
                     if "sha256" in statement:
@@ -104,6 +118,24 @@ def run():
                 first = real_case(client, settings)
                 seed = save(client, first, selection(begin(client, first)))
                 query = real_case(client, settings)
+                if keep_fixture:
+                    private = Path("/tmp/fk-stage7-capacity-debug.json")
+                    with private.open("w") as output:
+                        os.chmod(private, 0o600)
+                        json.dump(
+                            {
+                                "database_url": settings.database_url.get_secret_value(),
+                                "redis_url": settings.redis_url.get_secret_value(),
+                                "query": query,
+                                "tokens": tokens,
+                                "queue": settings.import_queue_name,
+                            },
+                            output,
+                        )
+                    print(
+                        "Owned persistent debug fixture: /tmp/fk-stage7-capacity-debug.json",
+                        flush=True,
+                    )
                 for count in [100, 1000, 10000]:
                     with Session(engine) as session:
                         existing = session.scalar(select(func.count()).select_from(Decision))
@@ -176,17 +208,26 @@ def run():
                             .mappings()
                             .one()
                         )
-                        plan = (
+                        connection.execute(text("SET LOCAL enable_nestloop=off; SET LOCAL jit=off"))
+                        plan = [
+                            re.sub(
+                                r"'\[[^]]+\]'::(?:public\.)?vector(?:\(\d+\))?",
+                                "'[REDACTED_VECTOR]'::public.vector",
+                                row,
+                            )
+                            for row in connection.exec_driver_sql(
+                                "EXPLAIN (ANALYZE,BUFFERS) " + recorded["sql"],
+                                recorded["parameters"],
+                            ).scalars()
+                        ]
+                        integrity_plan = (
                             connection.execute(
                                 text(
-                                    "EXPLAIN (ANALYZE,BUFFERS) SELECT decision_id "
-                                    "FROM decision_embeddings "
-                                    "WHERE version_id=:version AND domain='synthetic-material' "
-                                    "AND entity_type='Material' AND attribute_code='mass' "
-                                    "AND conflict_type='VALUE_MISMATCH' AND value_kind='quantity' "
-                                    "AND unit='kg' ORDER BY embedding OPERATOR(public.<=>) "
-                                    "(SELECT embedding FROM retrieval_queries LIMIT 1),"
-                                    "decision_id LIMIT 5"
+                                    "EXPLAIN SELECT decision_id FROM decision_embeddings "
+                                    "WHERE version_id=:version AND (vector_hash IS DISTINCT FROM "
+                                    "encode(sha256(public.vector_send(embedding)),'hex') "
+                                    "OR feature_hash IS DISTINCT FROM input_hash "
+                                    "OR dimensions<>1024)"
                                 ),
                                 {"version": UUID(result["retrieval_version"])},
                             )
@@ -229,6 +270,7 @@ def run():
                         ),
                         "sizes": sizes,
                         "filtered_exact_pgvector_plan": plan,
+                        "partial_integrity_plan": integrity_plan,
                         "passed": True,
                     }
                     results.append(output)

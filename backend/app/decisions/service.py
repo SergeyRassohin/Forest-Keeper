@@ -164,7 +164,9 @@ def outcome_state(kind: str) -> str:
     }[kind]
 
 
-def historical_context(session: Session, case: Conflict) -> dict[str, Any]:
+def historical_context(
+    session: Session, case: Conflict, *, include_review: bool = True
+) -> dict[str, Any]:
     entity = session.get(CanonicalEntity, case.entity_id)
     matching = session.get(MatchingRun, case.matching_run_id)
     if entity is None or matching is None:
@@ -175,7 +177,7 @@ def historical_context(session: Session, case: Conflict) -> dict[str, Any]:
         if run is None:
             raise ApiError(409, "EVIDENCE_UNAVAILABLE", "Исторический контекст недоступен")
         origins.append({**origin, "profile_version": run.mapping_snapshot["version"]})
-    return {
+    result = {
         "schema_version": 1,
         "conflict": frozen_evidence(case),
         "subject": {
@@ -202,15 +204,17 @@ def historical_context(session: Session, case: Conflict) -> dict[str, Any]:
         },
         "forest_codex": {"configured": False, "version": None},
         "authority": "NOT_DEFINED",
-        "review": {
+    }
+    if include_review:
+        result["review"] = {
             "status": case.status,
             "version": case.review_version,
             "context_version": context_version(case),
             "effective_decision_id": str(case.current_decision_id)
             if case.current_decision_id
             else None,
-        },
-    }
+        }
+    return result
 
 
 def review_context(session: Session, case: Conflict, actor: User) -> dict[str, Any]:

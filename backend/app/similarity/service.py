@@ -1,17 +1,20 @@
 """Scope-first exact pgvector search, live eligibility and complete-coverage checks."""
 
+from collections.abc import Iterable
 from typing import Any
+from typing import cast as typed_cast
 from uuid import NAMESPACE_URL, UUID, uuid5
 
-from sqlalchemy import Float, cast, exists, func, literal, literal_column, select
-from sqlalchemy.orm import Session, aliased
+from sqlalchemy import Float, Select, cast, exists, func, literal, literal_column, select, text
+from sqlalchemy import case as sql_case
+from sqlalchemy.orm import Session, defer
 
 from app.auth.models import AuditEvent, User
 from app.common.config import Settings
 from app.conflicts.models import Conflict
 from app.decisions.models import Decision
 from app.decisions.service import digest, historical_context
-from app.similarity.context import COMPATIBILITY, context, explain
+from app.similarity.context import COMPATIBILITY, context, explain, fingerprint
 from app.similarity.models import (
     DecisionEmbedding,
     IndexItem,
@@ -99,7 +102,11 @@ def start_run(
 
 
 def eligible(actor: User | None = None) -> Any:
-    successor = aliased(Decision)
+    superseded = (
+        select(Decision.supersedes_decision_id)
+        .where(Decision.supersedes_decision_id.is_not(None))
+        .correlate(None)
+    )
     query = (
         select(Decision)
         .join(Conflict, Conflict.id == Decision.conflict_id)
@@ -107,7 +114,7 @@ def eligible(actor: User | None = None) -> Any:
             Decision.decision_type.in_(["SELECT_VALUE", "ENTER_VALUE"]),
             Conflict.status == "RESOLVED",
             Conflict.current_decision_id == Decision.id,
-            ~exists(select(successor.id).where(successor.supersedes_decision_id == Decision.id)),
+            Decision.id.not_in(superseded),
         )
     )
     if actor is not None and "*" not in (actor.data_domains or []):
@@ -165,7 +172,7 @@ def retrieval(
             next(k for k, v in REVISIONS.items() if v == version.config["revision"])
         ):
             raise ProviderError("UNSUPPORTED_VERSION")
-        features = context(historical_context(session, case))
+        features = context(historical_context(session, case, include_review=False))
         if not features["synthetic"]:
             raise ProviderError("SYNTHETIC_ONLY")
     except (ProviderError, StopIteration, KeyError, TypeError) as error:
@@ -173,14 +180,15 @@ def retrieval(
             str(error) if isinstance(error, ProviderError) else "UNSUPPORTED_VERSION"
         )
         return result
-    result["query_context_hash"] = digest(features)
+    feature_hash = fingerprint(features)
+    result["query_context_hash"] = feature_hash
     result["query_context"] = features
-    query_cache = session.get(QueryEmbedding, (version.id, digest(features)))
+    query_cache = session.get(QueryEmbedding, (version.id, feature_hash))
     if query_cache is None:
         from app.similarity.jobs import request_query
 
         try:
-            request_query(case.id, version.id, digest(features), settings)
+            request_query(case.id, version.id, feature_hash, settings)
         except ProviderError as error:
             result["reason_code"] = str(error)
             return result
@@ -198,44 +206,30 @@ def retrieval(
         result["reason_code"] = "QUERY_INTEGRITY_FAILURE"
         return result
     query_vector = query_cache.embedding
-    before = eligible(actor).where(Decision.conflict_id != case.id).subquery()
-    pool = compatible_pool(actor, case, features)
-    pool_ids = pool.with_only_columns(Decision.id).subquery()
-    result["total_candidates_before_filter"] = session.scalar(
-        select(func.count()).select_from(before)
+    # Materialize eligibility once. Counts, coverage, invariant checks and ranking
+    # reuse this narrow set instead of repeatedly joining the immutable Registry.
+    scoped = (
+        eligible(actor)
+        .where(Decision.conflict_id != case.id)
+        .with_only_columns(
+            Decision.id,
+            Decision.decided_at,
+            Decision.domain,
+            Decision.entity_type,
+            Decision.attribute_code,
+            Conflict.conflict_type,
+            Decision.value_kind,
+            func.coalesce(Decision.unit, "").label("unit"),
+        )
+        .cte("scoped_precedents")
+        .prefix_with("MATERIALIZED")
     )
-    result["total_after_filter"] = session.scalar(select(func.count()).select_from(pool_ids))
-    result.update(
-        state="NO_PRECEDENT", reason_code="NO_COMPATIBLE_PRECEDENT", total_above_threshold=0
+    compatible = (
+        select(scoped)
+        .where(*[scoped.c[key] == features[key] for key in COMPATIBILITY])
+        .cte("compatible_precedents")
+        .prefix_with("MATERIALIZED")
     )
-    if not result["total_candidates_before_filter"]:
-        result["reason_code"] = (
-            "NO_HISTORY" if "*" in (actor.data_domains or []) else "NO_ACCESSIBLE_PRECEDENT"
-        )
-        return result
-    if not result["total_after_filter"]:
-        return result
-    # INDEXED checkpoint without vector is corruption, not successful empty coverage.
-    uncovered = (
-        pool.with_only_columns(Decision.id)
-        .outerjoin(
-            IndexItem, (IndexItem.version_id == version.id) & (IndexItem.decision_id == Decision.id)
-        )
-        .outerjoin(
-            DecisionEmbedding,
-            (DecisionEmbedding.version_id == version.id)
-            & (DecisionEmbedding.decision_id == Decision.id),
-        )
-        .where(
-            IndexItem.decision_id.is_(None)
-            | ((IndexItem.reason == "INDEXED") & DecisionEmbedding.id.is_(None))
-        )
-    )
-    if session.scalar(uncovered.limit(1)):
-        result.update(state="INDEXING", reason_code="INDEX_NOT_READY", total_above_threshold=None)
-        return result
-    # Validate every scoped compatible artifact before thresholding: corrupt vectors
-    # cannot disappear below threshold and masquerade as an honest empty result.
     integrity_predicate = (
         DecisionEmbedding.vector_hash.is_distinct_from(
             func.encode(
@@ -246,65 +240,185 @@ def retrieval(
         | DecisionEmbedding.feature_hash.is_distinct_from(DecisionEmbedding.input_hash)
         | (DecisionEmbedding.dimensions != literal_column("1024"))
     )
-    invalid_vector = (
-        select(DecisionEmbedding.id)
+    corrupt_ids = (
+        select(DecisionEmbedding.decision_id)
         .where(
             DecisionEmbedding.version_id == version.id,
             integrity_predicate,
-            DecisionEmbedding.decision_id.in_(select(pool_ids.c.id)),
         )
-        .limit(1)
+        .cte("corrupt_artifacts")
+        .prefix_with("MATERIALIZED")
     )
-    # The partial integrity index is maintained on every insert/write, including a
-    # deliberate test/admin corruption. It checks the whole scoped pool without
-    # serializing and hashing 10k vectors again for each concurrent HTTP reader.
-    invalid_features = (
-        select(DecisionEmbedding.id)
-        .where(
-            DecisionEmbedding.version_id == version.id,
-            DecisionEmbedding.decision_id.in_(select(pool_ids.c.id)),
-            (DecisionEmbedding.domain != features["domain"])
-            | (DecisionEmbedding.entity_type != features["entity_type"])
-            | (DecisionEmbedding.attribute_code != features["attribute_code"])
-            | (DecisionEmbedding.conflict_type != features["conflict_type"])
-            | (DecisionEmbedding.value_kind != features["value_kind"])
-            | (DecisionEmbedding.unit != features["unit"]),
-        )
-        .limit(1)
-    )
-    if session.scalar(invalid_vector) or session.scalar(invalid_features):
-        result.update(state="UNAVAILABLE", reason_code="INDEX_INTEGRITY_FAILURE")
-        return result
     distance = cast(
         DecisionEmbedding.embedding.op("OPERATOR(public.<=>)")(
             cast(literal(query_vector, type_=Vector()), Vector())
         ),
         Float,
     )
-    ranked = (
-        select(DecisionEmbedding, Decision, distance.label("distance"))
-        .join(Decision, Decision.id == DecisionEmbedding.decision_id)
-        .where(
-            DecisionEmbedding.version_id == version.id,
-            Decision.id.in_(select(pool_ids.c.id)),
-            *[getattr(DecisionEmbedding, key) == features[key] for key in COMPATIBILITY],
+    # One metadata/vector join supplies both coverage and scores. Materialize only
+    # narrow derived fields, never full historical JSON or the vectors themselves.
+    prepared = (
+        select(
+            compatible.c.id.label("decision_id"),
+            compatible.c.decided_at,
+            DecisionEmbedding.id.label("artifact_id"),
+            distance.label("distance"),
+            sql_case(
+                (DecisionEmbedding.id.is_not(None), False),
+                else_=~exists(
+                    select(IndexItem.decision_id)
+                    .where(
+                        IndexItem.version_id == version.id,
+                        IndexItem.decision_id == compatible.c.id,
+                        IndexItem.reason != "INDEXED",
+                    )
+                    .correlate(compatible)
+                ),
+            ).label("missing"),
+            (
+                (DecisionEmbedding.domain != features["domain"])
+                | (DecisionEmbedding.entity_type != features["entity_type"])
+                | (DecisionEmbedding.attribute_code != features["attribute_code"])
+                | (DecisionEmbedding.conflict_type != features["conflict_type"])
+                | (DecisionEmbedding.value_kind != features["value_kind"])
+                | (DecisionEmbedding.unit != features["unit"])
+            ).label("corrupt_features"),
         )
+        .select_from(compatible)
+        .outerjoin(
+            DecisionEmbedding,
+            (DecisionEmbedding.version_id == version.id)
+            & (DecisionEmbedding.decision_id == compatible.c.id),
+        )
+        .cte("prepared_precedents")
+        .prefix_with("MATERIALIZED")
     )
-    above = ranked.where(distance <= 1 - version.config["threshold"])
-    result["total_above_threshold"] = session.scalar(
-        select(func.count()).select_from(above.subquery())
+    aggregate = (
+        select(
+            func.count().label("after_count"),
+            func.coalesce(func.bool_or(prepared.c.missing), False).label("missing"),
+            func.coalesce(func.bool_or(prepared.c.corrupt_features), False).label(
+                "corrupt_features"
+            ),
+        )
+        .select_from(prepared)
+        .subquery()
     )
-    for artifact, decision, dist in session.execute(
-        above.order_by(distance, Decision.decided_at.desc(), Decision.id)
+    diagnostics = (
+        select(
+            select(func.count()).select_from(scoped).scalar_subquery().label("before_count"),
+            aggregate.c.after_count,
+            aggregate.c.missing,
+            exists(
+                select(corrupt_ids.c.decision_id).where(
+                    corrupt_ids.c.decision_id.in_(select(compatible.c.id))
+                )
+            ).label("corrupt_vector"),
+            aggregate.c.corrupt_features,
+        )
+        .select_from(aggregate)
+        .cte("retrieval_diagnostics")
+        .prefix_with("MATERIALIZED")
+    )
+    scored = (
+        select(
+            prepared.c.artifact_id,
+            prepared.c.decision_id,
+            prepared.c.decided_at,
+            prepared.c.distance,
+        )
+        .join(diagnostics, literal(True))
+        .where(
+            ~diagnostics.c.missing, ~diagnostics.c.corrupt_vector, ~diagnostics.c.corrupt_features
+        )
+        .cte("scored_precedents")
+        .prefix_with("MATERIALIZED")
+    )
+    qualified = select(scored).where(scored.c.distance <= 1 - version.config["threshold"])
+    total = select(func.count().label("count")).select_from(qualified.subquery()).subquery()
+    page = (
+        qualified.order_by(scored.c.distance, scored.c.decided_at.desc(), scored.c.decision_id)
         .limit(limit)
         .offset(offset)
-    ):
+        .cte("precedent_page")
+        .prefix_with("MATERIALIZED")
+    )
+    query: Select[Any] = (
+        select(DecisionEmbedding, Decision, page.c.distance, total.c.count, *diagnostics.c)
+        .select_from(total)
+        .join(diagnostics, literal(True))
+        .outerjoin(page, literal(True))
+        .outerjoin(DecisionEmbedding, DecisionEmbedding.id == page.c.artifact_id)
+        .outerjoin(Decision, Decision.id == page.c.decision_id)
+        .options(defer(DecisionEmbedding.embedding))
+        .order_by(page.c.distance, page.c.decided_at.desc(), page.c.decision_id)
+    )
+    # Cross-table effective-head correlation is underestimated by PostgreSQL17.
+    # Prefer hash joins for this set operation; avoid JIT startup on its tiny
+    # singleton cross joins. SET LOCAL is rolled back with this read transaction.
+    session.execute(text("SET LOCAL enable_nestloop=off; SET LOCAL jit=off"))
+    rows = typed_cast(
+        Iterable[
+            tuple[
+                DecisionEmbedding | None,
+                Decision | None,
+                float | None,
+                int,
+                int,
+                int,
+                bool,
+                bool,
+                bool,
+            ]
+        ],
+        session.execute(query),
+    )
+    for (
+        artifact,
+        decision,
+        dist,
+        above_count,
+        before_count,
+        after_count,
+        missing,
+        corrupt_vector,
+        corrupt_features,
+    ) in rows:
+        result.update(
+            total_candidates_before_filter=before_count,
+            total_after_filter=after_count,
+            total_above_threshold=above_count,
+            state="NO_PRECEDENT",
+            reason_code="NO_COMPATIBLE_PRECEDENT",
+        )
+        if not before_count:
+            result["reason_code"] = (
+                "NO_HISTORY" if "*" in (actor.data_domains or []) else "NO_ACCESSIBLE_PRECEDENT"
+            )
+            return result
+        if not after_count:
+            return result
+        if missing:
+            result.update(
+                state="INDEXING", reason_code="INDEX_NOT_READY", total_above_threshold=None
+            )
+            return result
+        if corrupt_vector or corrupt_features:
+            result.update(
+                state="UNAVAILABLE",
+                reason_code="INDEX_INTEGRITY_FAILURE",
+                total_above_threshold=None,
+            )
+            return result
+        if artifact is None or decision is None or dist is None:
+            continue
         try:
             past = context(decision.context_snapshot, decision)
+            past_hash = fingerprint(past)
             if (
-                digest(past) != artifact.feature_hash
+                past_hash != artifact.feature_hash
                 or past != artifact.features
-                or artifact.input_hash != digest(past)
+                or artifact.input_hash != past_hash
             ):
                 raise ProviderError("INDEX_INTEGRITY_FAILURE")
         except ProviderError:
