@@ -5,6 +5,12 @@ const accounts = JSON.parse(readFileSync(resolve(process.cwd(), '../deploy/local
 async function signIn(page: Page, role: 'ADMIN' | 'REVIEWER' | 'VIEWER') {
   await page.goto('/'); await page.getByLabel('Логин', { exact: true }).fill(accounts[role].login); await page.getByLabel('Пароль', { exact: true }).fill(accounts[role].password); await page.getByRole('button', { name: 'Войти', exact: true }).click();
 }
+async function signOut(page: Page) {
+  const response = page.waitForResponse((item) => item.url().endsWith('/api/v1/auth/logout') && item.request().method() === 'POST');
+  await page.getByRole('button', { name: 'Выйти', exact: true }).click();
+  expect((await response).ok()).toBeTruthy();
+  await expect(page.getByLabel('Логин', { exact: true })).toBeVisible();
+}
 async function input(page: Page, side: 'a' | 'b') {
   await page.getByRole('button', { name: 'Импорт данных', exact: true }).click();
   const source = page.locator('details').filter({ hasText: 'Добавить источник' });
@@ -65,7 +71,7 @@ test('matches two normalized browser imports with evidence and authorized review
   await filter.selectOption('POSSIBLE_MATCH');
   await result.getByRole('button', { name: 'Сравнить записи ' + fuzzyCandidate.raw_record_a_id + ' ↔ ' + fuzzyCandidate.raw_record_b_id, exact: true }).click();
   await expect(detail.getByRole('button', { name: 'Подтвердить совпадение' })).toHaveCount(0);
-  await page.getByRole('button', { name: 'Выйти', exact: true }).click(); await signIn(page, 'REVIEWER'); await chooseRun(page, run.id);
+  await signOut(page); await signIn(page, 'REVIEWER'); await chooseRun(page, run.id);
   await filter.selectOption('POSSIBLE_MATCH'); await expect(result.getByRole('row').nth(1)).toContainText('Требует проверки');
   await result.getByRole('button', { name: 'Сравнить записи ' + fuzzyCandidate.raw_record_a_id + ' ↔ ' + fuzzyCandidate.raw_record_b_id, exact: true }).click();
   await detail.getByLabel('Причина подтверждения или отклонения').fill('Сверено человеком по синтетическому сценарию');
@@ -84,7 +90,7 @@ test('matches two normalized browser imports with evidence and authorized review
   expect(rejection.status).toBe('NOT_MATCHED');
   expect(rejection.confirmed_by).toBeTruthy();
   await expect(detail.getByRole('region', { name: 'Решение человека', exact: true })).toContainText('Проверено: разные сущности, объединять нельзя');
-  await page.getByRole('button', { name: 'Выйти', exact: true }).click(); await signIn(page, 'VIEWER'); await chooseRun(page, run.id);
+  await signOut(page); await signIn(page, 'VIEWER'); await chooseRun(page, run.id);
   await expect(page.getByRole('button', { name: 'Запустить сопоставление', exact: true })).toHaveCount(0);
   const after = await Promise.all(ids.map(async (id) => (await page.request.get('/api/v1/analysis/' + id + '/records')).json())); expect(after).toEqual(before);
   expect((await page.request.get('/api/v1/conflicts')).status()).toBe(200);
