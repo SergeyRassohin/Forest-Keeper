@@ -2,9 +2,10 @@
 
 Date: 23 October 2026, Europe/Moscow. Scope: [issue #27](https://github.com/SergeyRassohin/Forest-Keeper/issues/27).
 Branch: `codex/stage7-similar-decisions`; merge base/main: `0ce2a14304d0cf28fcf90ec9cd3d6c23601ec852`.
-Capacity/backend source: `3defa922a72e6907aea7c1eb5cf4a02af53610b5`.
-Real HTTPS runtime, final UI/gallery and cold-cache source: `39fc33c21d9b6647eff00ee662cc404a11eadf59` (same backend).
-Later benchmark reporting correction separates newly expanded Decisions from newly indexed vectors. Final UI outcome label uses the existing human-readable labels at `39fc33c21d9b6647eff00ee662cc404a11eadf59`; backend application source is unchanged.
+Capacity/retrieval request source: `3defa922a72e6907aea7c1eb5cf4a02af53610b5`.
+Initial real HTTPS runtime, UI/gallery and cold-cache source: `39fc33c21d9b6647eff00ee662cc404a11eadf59` (same retrieval/API/provider code).
+Later benchmark reporting correction separates newly expanded Decisions from newly indexed vectors. Final UI outcome label uses the existing human-readable labels at `39fc33c21d9b6647eff00ee662cc404a11eadf59`; retrieval/API/provider source is unchanged. Idle-worker wake-up was subsequently corrected at `27952b9af1db2c130e1d2dd0c4fd5a54a1e57700`; refreshed proof below uses `df597af278acfebff9a4afc472c7df2d9120714b`.
+Final local runtime/gallery source: `df597af278acfebff9a4afc472c7df2d9120714b`; backend idle-worker fix: `27952b9af1db2c130e1d2dd0c4fd5a54a1e57700`.
 Final HEAD and exact CI are recorded in the PR so this report does not claim a self-referential commit hash.
 
 ## Product, architecture and trust boundary
@@ -28,14 +29,22 @@ Migration `0008_similarity` follows `0007_decisions` and adds version/config, ve
 ## Verification record
 
 - `bash scripts/check.sh`: PASS — doc links/gallery/model checks, Ruff/lint/format, mypy, **256 backend unit + 49 component tests**, production frontend build and E2E/gallery TypeScript checks.
-- `bash scripts/check-integration.sh`: PASS — **507 integration + 13 browser tests**, migration head 0008 and HTTPS readiness. A final additional populated Stage 2–6 history-preservation case passed with the full 3-case migration module, giving 508 integration cases in the final suite. Exact-final-HEAD CI repeats the complete suite.
+- Integration phase: **509 integration tests PASS** on the standard public-schema/queue configuration, including populated Stage 2–6 migration preservation and real idle worker recovery; migration head 0008 and HTTPS readiness checked. **13 browser tests PASS** after correcting logout synchronization in the existing matching driver. Exact-final-HEAD CI repeats the complete `bash scripts/check-integration.sh` gate.
 - Similarity-focused unit/integration/migration run: 60 PASS before the additional history-preservation case. Includes all 6 compatibility filters, malformed/hostile inputs/vectors, IDOR/scope/matrix negatives, repeated requests 429, local SQL timeout 503 and unchanged Registry, coherent concurrent snapshot, pagination/ties/empty offset, uncertain/skipped contexts and below-threshold corruption.
 - `bash scripts/check-sast.sh`: PASS — Bandit and TypeScript security ESLint. `bash scripts/check-secrets.sh`: PASS — Git history/tracked tree. `bash scripts/test-security-gates.sh`: PASS — unsafe shell/eval/PAT fixtures rejected. `bash scripts/check-dependencies.sh`: PASS — pip/npm, zero known vulnerabilities.
 - Final `bash scripts/capture-ui-gallery.sh`: PASS — **27 actual screenshots, 27 Axe checks and 135 responsive checks**, committed frontend source-tree and served-bundle provenance checked. Browser uses actual uploads/normalization/matching/human confirmation/new-case retrieval, real Decision ID/detail/actor/date/value/reason, return with score/features, unrelated no-precedent, VIEWER read and immediate scope/detail revocation. The 13 ordinary browser cases prove unavailable retrieval preserves Human Review/save/Registry and the two-reviewer 201/409 race.
 - [Real HTTPS runtime/restart proof](stage7-restart-2026-10-23.json): PASS — own `fk-stage7` only; two full source pipelines, confirmed Decision, saved partial checkpoint 1, actual PostgreSQL/Redis/backend/frontend restart, worker recovery, explicit dual-version activation, idempotent duplicate delivery, full restart with identical results/facts/vectors, actual PostgreSQL-stop sanitized 503 and recovery. Synthetic business facts/volumes are retained; the owned acceptance login/session is revoked afterwards.
 - Migration: empty upgrade/downgrade, interrupted transactional rollback/retry/repeat, wrong-schema pgvector refusal/retry, populated downgrade refusal and complete pre-Stage7 table fingerprints across 0007→0008/repeat all PASS. No existing Decision/source/evidence/audit history is rewritten.
 - `python3 scripts/check-production.py --backend-image fk-stage7-backend --frontend-image fk-stage7-frontend`: PASS in a unique disposable production project — two concurrent 100 MB HTTPS uploads/checksums/temp cleanup, actual RQ job, healthy→stale/unhealthy→stopped→restored worker, non-root/read-only/resources, file secrets, PostgreSQL/Redis restart persistence and no credential values in inspect/logs. Only owned disposable smoke volumes were removed; previous-stage stacks and Stage 7 business volumes were preserved.
-- [Independent review](stage7-similarity-independent-2026-10-23.md): **20 targeted real integration/migration tests independently PASS**, final API/UI/27 screenshot hashes/Axe/responsive/runtime/security/capacity evidence inspected without blocking findings. Exact-final-HEAD/CI acknowledgment is linked in the PR.
+- [Independent review](stage7-similarity-independent-2026-10-23.md): **21 targeted real integration/migration tests independently PASS**, final API/UI/27 screenshot hashes/Axe/responsive/runtime/security/capacity evidence inspected without blocking findings. Exact-final-HEAD/CI acknowledgment is linked in the PR.
+
+## Exact-HEAD CI finding and correction
+
+CI for `583717e` failed only the gallery's unchanged 90s READY wait. RQ default idle BLPOP could last 105s with 120s TTL, delaying nominal 30s maintenance when no unrelated jobs arrived. This was a real recovery defect, superseding earlier local-only acceptance. `27952b9` caps `ForestWorker.dequeue_timeout` by the maintenance interval, minimum 1s; TTL/readiness margin and Decision-save independence are preserved. No timeout/assertion was weakened. The real idle subprocess regression failed before the fix and passed afterwards; an independent execution also passed.
+
+`df597af` only synchronizes existing browser role changes with successful logout and the rendered login form. The old immediate navigation could cancel logout; no application authentication behavior changed.
+
+The refreshed [isolated real HTTPS restart proof](stage7-restart-idle-fix-2026-10-23.json) passes partial backfill/recovery, dual versions, explicit activation, duplicate delivery, full service restart and actual PostgreSQL-stop recovery. Original public Decision fingerprints were checked unchanged. Updated gallery and production evidence use the corrected worker. The 10k timed retrieval path is unchanged; independent review explicitly approved carrying forward its accurately pinned source measurements.
 
 ## Capacity and limits
 

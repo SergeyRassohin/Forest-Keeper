@@ -211,3 +211,48 @@ Inspected `/tmp/fk-stage7-production-final.log` and completed `docs/testing/repo
 **Final local acceptance verdict: PASS — no unresolved blocking architecture, product-intent, canonical-model, lifecycle, security, scope, retrieval integrity, API/UI, migration, runtime/recovery or capacity finding.** All earlier findings in this review were corrected and affected source/tests/evidence rechecked. Independent execution20 targeted real integration/migration cases PASS; complete root gates and final artifacts inspected as recorded above. No Recommendation Engine, AI/LLM/Qwen runtime, automatic Decision, rule mutation or write-back entered scope. Production deliberately returns honest unavailable and the separate test provider is not represented as production semantic acceptance.
 
 The only remaining release gate is final commit/artifact delta inspection and successful CI for the **exact final HEAD** to be identified in the PR. Until that acknowledgment, this is local acceptance and not an assertion that finalHEAD CI has completed. After that gate passes, the permitted stop is READY TO MERGE; no merge or issue closure is authorized. Production semantic quality/runtime,100k actual Decisions, cold OS cache and external-site publication remain explicitly outside the proved acceptance boundary.
+
+## Exact-HEAD CI finding — idle worker recovery delay (583717e not accepted)
+
+Final583717e CI failed the real gallery because retrieval remained INDEXING for90s. This supersedes the earlier local-only PASS as a release verdict: **the current release gate is BLOCKED pending the idle-worker correction and affected retests/new exactHEAD CI.** No merge occurred.
+
+Read-only investigation of pinned RQ source independently confirms the root cause. `dequeue_timeout` is `max(1,worker_ttl-15)`, therefore105s at the configured120s worker TTL. The blocking dequeue loop evaluates maintenance before blocking and after a dequeue timeout, so `maintenance_interval=30` alone does not cause recovery at30s when the queue stays empty. Earlier local gallery workloads could wake the worker with unrelated jobs and mask the idle path. New Decisions intentionally do not enqueue Redis jobs, so autoindex depends on periodic recovery.
+
+The proposed `ForestWorker.dequeue_timeout` override capping the RQ blocking interval by `maintenance_interval` is valid and preserves all authorization/lifecycle/queue/checkpoint boundaries. Clamp the interval to at least1s to avoid Redis BLPOP0's infinite wait. RQ assigns `maintenance_interval` before connection timeout configuration calls this property, so initialization is safe. This changes only the worker wake-up cadence and derived autoindex latency; it introduces no business writes, AI, role authority or Decision-save Redis dependency. A real subprocess ForestWorker test with an empty unique queue, a subsequently committed human Decision and no unrelated job is the correct regression. Reviewer ran no tests or services during the parent's baseline reproduction. Worker health freshness may remain150s, but its old105s idle comment should be clarified.
+
+## Idle-worker correction independent retest — 27952b9af1db2c130e1d2dd0c4fd5a54a1e57700
+
+Reviewed the committed fix and real subprocess regression. `ForestWorker.dequeue_timeout` now returns `max(1,min(super().dequeue_timeout,maintenance_interval))`, preserving TTL limits and avoiding infinite BLPOP0. The health comment correctly describes30s idle wake-up while preserving the conservative150s heartbeat threshold. The gallery's90s bound is unchanged; it now reports HTTP status/state/reason diagnostics. No eligibility, query/API, scope, persistence or Decision-save behavior changed.
+
+At the explicitly authorized independent window, ran against fixture-owned schema/queue only:
+
+```text
+uv run --frozen pytest -q tests/test_similarity_integration.py::test_idle_real_worker_indexes_new_decision_without_another_queue_job
+1 PASSED,5.48s
+```
+
+This starts a real subprocess ForestWorker genuinely idle on a unique empty queue, then commits a human Decision and verifies its vector appears through maintenance without any unrelated enqueue. Parent also demonstrated the same case failing before the correction; reviewer independently confirmed the pinned-RQ root cause earlier. Fixture cleanup completed; no public data/service/deployment mutations by reviewer. Independent targeted total is now21 cases, all PASS.
+
+**The idle-maintenance source finding is resolved.** Affected full integration/gallery/restart/production and new exactHEAD CI are still required before final release acknowledgment. Repeating the10k query benchmark is unnecessary solely for this polling correction: SQL/filtering/provider/cache/API and the measured capacity path are unchanged, and the existing report accurately preserves its3def source provenance. New runtime/gallery evidence should identify27952b9 or the subsequent artifact-only final commit.
+
+## Browser synchronization review — df597af278acfebff9a4afc472c7df2d9120714b
+
+Reviewed the test-only matching browser helper change read-only. The prior click→immediate page.goto could navigate while the logout POST was still pending, leaving the next sign-in attempt authenticated or aborting logout. The helper now waits for the actual successful POST logout response and visible login form before switching to REVIEWER/VIEWER. Existing authorization/history assertions and timeouts are unchanged; no retry, forced session deletion or application permission bypass was added. This is a valid synchronization correction, with no blocking security/product concern. Parent reports the full509 integration suite passed on the correct default provider/queue setup; fresh13-browser and affected worker/runtime/gallery/production evidence are still pending review. Reviewer ran no tests/services for this test-only delta.
+
+## Postfix refreshed-gate evidence review at df597af278acfebff9a4afc472c7df2d9120714b
+
+Inspected fresh gate logs read-only. Integration phase509 PASS in170.02s includes both new preservation and real idle-worker regressions. That invocation's later browser phase contained the existing logout/navigation race; the separately corrected13-browser invocation passed in1.1m. This separation is correctly recorded rather than claiming the first combined command succeeded. Fresh check pipeline passes256 unit,49 component, lint/format/mypy/build/type checks; fresh backend/frontend SAST passes.
+
+Refreshed runtime report `stage7-restart-idle-fix-2026-10-23.json` pinsdf597af and proves actualHTTPS interrupted-checkpoint worker recovery, dual versions/activation, duplicate delivery, all-service restart with identical facts/results, actual PostgreSQL-stop sanitized503 and recovery. It uses an owned isolated schema; original public Decision aggregate fingerprints were separately compared unchanged. This preserves existing accepted business data.
+
+Refreshed gallery log passes27 real screens,27 Axe and135 responsive checks at the unchanged90s retrieval wait. Independently rechecked all27 screenshot hashes and current committed frontend tree against the updated manifest: sourcedf597af, frontend treebe3a27916937046f924c34d69ca63b4c89fd10cc, rebuilt backend digestdc4f0004240052f32ff79eea967074383079585977c955a5cd760519b078581c. No failed gallery check or unreviewed application delta found. Existing independently inspected visual layout remains unchanged apart from actual synthetic IDs/times.
+
+No source/security/product blocker remains. New production smoke log was still pending at this inspection; postfix local acceptance requires that outcome plus the later exact-finalHEAD CI. Existing accurately pinned10k capacity evidence remains applicable because the retrieval timed path did not change.
+
+## Final post-fix local acceptance
+
+Inspected the completed `/tmp/fk-stage7-production-idle-fix-final.log`: all4 production groups PASS with the corrected worker — concurrent100MB HTTPS uploads/checksums/temp cleanup; HTTPS/file secrets/non-root/read-only/resources; real RQ healthy→stale/unhealthy→stopped→restored; PostgreSQL/Redis persistence with no credential values in inspect/logs. No unreviewed application/test-driver changes exist beyonddf597af.
+
+**Post-fix local acceptance: PASS, no unresolved blocking findings.** The genuine idle-worker defect found by583717e CI was corrected, independently source-reviewed and independently retested with a real idle process. Existing matching browser logout synchronization was reviewed without weakened assertions/timeouts. Refreshed509 integration,13 browser,256 unit,49 component/lint/format/mypy/build/types, SAST, actualHTTPS restart,27 screenshot/Axe135 responsive and production smoke evidence now passes. Previously passing secret/dependency/rejecting-fixture and accurately pinned10k capacity/coldPG evidence remains applicable; these boundaries are explicit in acceptance. Independent targeted integration/migration execution totals21 passing cases.
+
+Decision Registry/evidence remain immutable sources of truth; scope and lifecycle policies are preserved. No Recommendation Engine, AI/LLM runtime, automatic Decision or write-back was added. The final report must preserve the failed583717e CI as historical evidence, not use it as release approval. A new artifact/report-only final commit and successful CI for its exact SHA are still required before READY TO MERGE. No merge or issue closure is authorized by this local verdict.
