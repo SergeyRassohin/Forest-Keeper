@@ -13,13 +13,14 @@
     "lint": "eslint .",
     "security:sast": "eslint src --config eslint.security.config.js --max-warnings 0",
     "test:e2e": "playwright test",
-    "typecheck:e2e": "tsc -p ../tests/e2e/tsconfig.json"
+    "typecheck:e2e": "tsc -p ../tests/e2e/tsconfig.json && tsc -p ../tests/ui-gallery/tsconfig.json"
   },
   "dependencies": {
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
     "@eslint/js": "^10.0.0",
     "@playwright/test": "^1.51.0",
     "@testing-library/jest-dom": "^6.6.3",

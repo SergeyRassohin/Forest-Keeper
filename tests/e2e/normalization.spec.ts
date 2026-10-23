@@ -49,10 +49,10 @@ test('normalizes two sources without matching and preserves original mass, quali
       await section.getByText(new RegExp(`^Запись 00${index + 1} ·`)).click();
       const record = section.locator('.normalization-record').filter({ has: page.getByText(new RegExp(`^Запись 00${index + 1} ·`)) });
       const mass = record.locator('tr[data-attribute="mass"]');
-      await expect(mass.getByRole('cell').nth(1)).toHaveText(JSON.stringify(raw));
-      await expect(mass.getByRole('cell').nth(2)).toHaveText('"12.5"');
+      await expect(mass.getByRole('cell').nth(1)).toHaveText(String(raw));
+      await expect(mass.getByRole('cell').nth(2)).toHaveText('12.5');
       await expect(mass.getByRole('cell').nth(3)).toHaveText('kg');
-      await expect(mass.getByRole('cell').nth(4)).toHaveText('VALID');
+      await expect(mass.getByRole('cell').nth(4)).toContainText('VALID');
       await expect(mass.getByRole('cell').nth(5)).toContainText('quantity');
       await expect(mass.getByRole('cell').nth(5)).toContainText('factor');
       await expect(record).toContainText('Нормализация ' + kind + ' ' + accounts.prefix);
@@ -93,7 +93,8 @@ test('external reviewer imports public USGS CSV/XML and sees documented normaliz
     const pending = page.waitForResponse((response) => response.url().endsWith('/api/v1/analysis') && response.request().method() === 'POST');
     await section.getByRole('button', { name: 'Нормализовать пакет', exact: true }).click();
     const run = await (await pending).json();
-    await expect(section.getByRole('status')).toContainText('Нормализация завершена · записей 60, значений 240', { timeout: 30000 });
+    await expect(section.getByRole('status')).toContainText('Нормализация завершена', { timeout: 30000 });
+    await expect(section.getByRole('status')).toContainText('записей 60, значений 240');
     const detail = await (await page.request.get(`/api/v1/analysis/${run.id}`)).json();
     expect(detail.quality_counts.VALID).toBe(240);
     const records = await (await page.request.get(`/api/v1/analysis/${run.id}/records?limit=100`)).json();

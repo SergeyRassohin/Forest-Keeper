@@ -93,6 +93,7 @@ test('ADMIN creates a reviewer without inheriting business permissions', async (
   expect(profile.permissions).not.toContain('decision.create');
   expect(profile.permissions).not.toContain('match.review');
   expect(profile.permissions).not.toContain('rule.activate');
+  await page.getByRole('button', { name: 'Пользователи', exact: true }).click();
   await page
     .getByLabel('Логин нового пользователя')
     .fill(accounts.prefix + '_created');

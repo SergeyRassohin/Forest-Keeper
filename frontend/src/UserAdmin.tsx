@@ -3,7 +3,8 @@ import type { User } from './api';
 
 const roles = ['VIEWER', 'REVIEWER', 'DATA_OWNER', 'ADMIN'];
 
-export function UserAdmin() {
+export function UserAdmin({ canManage }: { canManage: boolean }) {
+  const [loaded, setLoaded] = useState(false);
   const [users, setUsers] = useState<User[]>([]);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
@@ -19,7 +20,7 @@ export function UserAdmin() {
         if (!response.ok) throw new Error();
         return response.json() as Promise<User[]>;
       })
-      .then(setUsers)
+      .then((items) => { setUsers(items); setLoaded(true); })
       .catch(() => {
         if (!controller.signal.aborted)
           setError('Не удалось загрузить пользователей.');
@@ -70,17 +71,19 @@ export function UserAdmin() {
   }
 
   return (
-    <section className="shell" aria-labelledby="users-title">
+    <main className="shell" aria-labelledby="users-title"><p className="eyebrow">Администрирование</p><h1 id="users-title">Пользователи</h1><p>Доступ к данным и действиям определяется назначенными ролями.</p>
       <div className="panel">
-        <h2 id="users-title">Пользователи</h2>
-        <ul>
+        <h2>Участники рабочего пространства</h2>
+        {error && <p role="alert">{error}</p>}
+        {!loaded && !error && <p role="status">Загружаем пользователей…</p>}
+        <ul className="user-list">
           {users.map((user) => (
             <li key={user.id}>
               {user.display_name} · {user.login} · {user.roles.join(', ')}
             </li>
           ))}
         </ul>
-        <h3>Создать пользователя</h3>
+        {canManage && <><h3>Создать пользователя</h3>
         <form onSubmit={create}>
           <label>
             Логин нового пользователя
@@ -137,14 +140,9 @@ export function UserAdmin() {
             ADMIN управляет системой. Для бизнес-решений отдельно нужны REVIEWER
             или DATA_OWNER.
           </p>
-          {error && (
-            <p role="alert" className="warning">
-              {error}
-            </p>
-          )}
           <button disabled={busy}>Создать пользователя</button>
-        </form>
+        </form></>}
       </div>
-    </section>
+    </main>
   );
 }

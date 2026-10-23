@@ -33,7 +33,7 @@ Forest Keeper разворачивается внутри инфраструкт
 | Получение и проверка pinned Qwen artifacts | [Команды и точные ссылки](docs/ai/model-downloads.md); это подготовка файлов, без запуска AI |
 | Корпоративный установщик, лицензирование, Update Service | Последующие этапы |
 
-Этап 3 принят через [PR #13](https://github.com/SergeyRassohin/Forest-Keeper/pull/13), merge `6a494534a49960b79fdf64e5e2b8436c32011688`; [CI merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39452965438). Этап 4 принят через PR #15. Stage 5 принят через PR #22. Следующий отдельный этап — **Stage 6–7: Human Review и Decision Registry**. Полный путь «свой файл → конфликт → Decision → похожий случай → рекомендация» пока **заблокирован отсутствующими модулями**, см. [критерии готовности](docs/deployment/review-readiness.md). Зелёный health означает готовность инфраструктуры, а не наличие всех бизнес-функций.
+Этап 3 принят через [PR #13](https://github.com/SergeyRassohin/Forest-Keeper/pull/13), merge `6a494534a49960b79fdf64e5e2b8436c32011688`; [CI merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39452965438). Этап 4 принят через PR #15. Stage 5 принят через PR #22. Перед Stage 6–7 реализован отдельный **Stage 5.1: фирменный Web UI и галерея**; результаты проверок, CI и отдельное разрешение на merge фиксируются в его PR. Полный путь «свой файл → конфликт → Decision → похожий случай → рекомендация» пока **заблокирован отсутствующими модулями**, см. [критерии готовности](docs/deployment/review-readiness.md). Зелёный health означает готовность инфраструктуры, а не наличие всех бизнес-функций.
 
 ## Что можно проверить сейчас
 
@@ -103,3 +103,9 @@ Forest Keeper разворачивается внутри инфраструкт
 ## Stage 5: принят в main — 22 октября 2026
 
 PR #22 объединён владельцем в main: `6235dd6a18f8cbb8aeceac2a7d052f5fca396482`; [CI точного merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39768647312). Этап 5 принят; 679 тестов и независимый runtime/security/product-intent retest PASS. Шаг Stage 5 из #20 завершён. Stage 6–7 — следующий отдельный этап; #18/#20 остаются открытыми. Полный MVP #18/#20 остаётся незавершённым.
+
+## Stage 5.1: интерфейс и реальные экраны
+
+В ветке Stage 5.1 обновлены вход, навигация, импорт и исходные записи, нормализация, сопоставление, конфликты и администрирование. [Галерея из настоящего приложения](frontend/public/interface/index.html) доступна после сборки по `/interface/`; [снимки и manifest](frontend/public/interface/) можно просмотреть прямо в GitHub. [Правила оформления и воспроизведение](docs/development/ui-brand-guidelines.md), [инструкция страницы сайта](docs/site/interface.md).
+
+Данные демонстрации синтетические. Галерея отделяет реализованные функции от следующих этапов. Публикация на прежнем внешнем домене требует доступа к проекту сайта; исходники страницы подготовлены здесь. Stage 5.1 не добавляет бизнес-решения, AI и запись в системы-источники.

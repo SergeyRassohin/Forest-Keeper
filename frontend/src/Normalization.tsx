@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { StatusBadge, DataValue, Identifier } from './ui';
 import { requestJson as api, SessionExpired, type User } from './api';
 
 type Profile = { id: string; code: string; version: string; synthetic: boolean };
@@ -93,7 +94,7 @@ export function Normalization({ batchId, importReady, user, onSessionExpired }: 
   }
 
   return <section className="normalization panel" aria-label="Нормализация">
-    <h3>Исходное и нормализованное</h3>
+    <p className="eyebrow">Подготовка к сравнению</p><h3>Исходное и нормализованное</h3>
     <p>Нормализация приводит значения к сопоставимому виду. Она не устанавливает истину и не объединяет записи из разных источников.</p>
     {error && <p role="alert" className="warning">{error}</p>}
     <label>Профиль нормализации<select value={profileId} onChange={(event) => setProfileId(event.target.value)}>{profiles.map((item) => <option key={item.id} value={item.id}>{item.code} v{item.version}{item.synthetic ? ' — синтетический тестовый профиль' : ''}</option>)}</select></label>
@@ -103,25 +104,25 @@ export function Normalization({ batchId, importReady, user, onSessionExpired }: 
     <button disabled={!listOffset} onClick={() => { choose(''); setListOffset(Math.max(0, listOffset - 10)); }}>Предыдущие запуски</button>
     <button disabled={runs.length < 10} onClick={() => { choose(''); setListOffset(listOffset + 10); }}>Следующие запуски</button>
     {run && <>
-      <p role="status">{statuses[run.status]} · записей {run.records_processed}, значений {run.values_processed}</p>
+      <p role="status"><StatusBadge value={run.status} label={statuses[run.status]} /> · записей {run.records_processed}, значений {run.values_processed}</p>
       {run.status !== 'COMPLETED' && <p className="warning">Результаты частичные. Запуск ещё не завершён успешно.</p>}
       {run.error_text && <p className="warning">Обработка прервана ({run.error_text}). Можно создать новый запуск; история сохранена.</p>}
-      <p>Mapping v{run.mapping_snapshot.version} · правила {run.mapping_snapshot.engine_version}</p>
-      <p className="checksum">SHA-256 mapping: {run.mapping_hash}</p>
+      <p>Профиль нормализации v{run.mapping_snapshot.version} · правила {run.mapping_snapshot.engine_version}</p>
+      <details><summary>Версия и контрольная сумма правил</summary><Identifier>SHA-256 профиля: {run.mapping_hash}</Identifier></details>
       {records.map((record) => <details key={record.raw_record_id} className="normalization-record">
         <summary>Запись {record.source_record_key ?? record.raw_record_id} · {record.entity?.display_name ?? 'Объект без mapping'}</summary>
         <p>Источник: {record.source.name} ({record.source.code}) · {record.import_batch.original_filename} · пакет {record.import_batch.id}</p>
         <p className="checksum">SHA-256 оригинала: {record.import_batch.file_hash}</p>
         <pre>Позиция: {JSON.stringify(record.source_position)}</pre>
         {record.entity && <p>Представление одной исходной записи: {record.entity.domain} / {record.entity.entity_type} · {record.entity.id}</p>}
-        <div className="table-scroll"><table><thead><tr><th>Канонический атрибут / source field</th><th>Исходное значение</th><th>Нормализованное значение</th><th>Единица</th><th>Качество</th><th>Правило / основание</th></tr></thead><tbody>
+        <div className="table-scroll" tabIndex={0} role="region" aria-label="Таблица значений"><table><thead><tr><th>Атрибут / поле источника</th><th>Исходное значение</th><th>Нормализованное значение</th><th>Единица</th><th>Качество</th><th>Правило / основание</th></tr></thead><tbody>
           {record.values.map((value) => <tr key={value.id} data-attribute={value.attribute_code}>
             <td>{value.attribute_code}<pre>{JSON.stringify(value.rule_definition.path)}</pre></td>
-            <td><pre>{JSON.stringify(value.raw_value)}</pre></td><td><pre>{JSON.stringify(value.normalized_value)}</pre></td><td>{value.unit ?? '—'}</td><td>{value.quality_status}</td>
-            <td><pre>{JSON.stringify({ definition: value.rule_definition, evidence: value.normalization_rule }, null, 2)}</pre></td>
+            <td><DataValue value={value.raw_value} /></td><td><DataValue value={value.normalized_value} /></td><td>{value.unit ?? '—'}</td><td><StatusBadge value={value.quality_status} /></td>
+            <td><details><summary>Правило и основание</summary><pre>{JSON.stringify({ definition: value.rule_definition, evidence: value.normalization_rule }, null, 2)}</pre></details></td>
           </tr>)}
         </tbody></table></div>
-        {!!record.mapping_details.unmapped_fields.length && <p>Поля без mapping (UNKNOWN): {record.mapping_details.unmapped_fields.join(', ')}</p>}
+        {!!record.mapping_details.unmapped_fields.length && <p>Поля без правила нормализации (UNKNOWN): {record.mapping_details.unmapped_fields.join(', ')}</p>}
         {record.mapping_details.code !== 'OK' && <p>UNKNOWN: {record.mapping_details.code}</p>}
         <details><summary>Исходная запись целиком</summary><pre>{JSON.stringify(record.raw_payload, null, 2)}</pre></details>
       </details>)}

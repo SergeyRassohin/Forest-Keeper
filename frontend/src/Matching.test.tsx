@@ -24,15 +24,15 @@ function setup(historical = false) {
 async function open() {
   await waitFor(() => expect(screen.getByRole('combobox', { name: 'Запуск сопоставления' }).querySelectorAll('option')).toHaveLength(2));
   fireEvent.change(screen.getByRole('combobox', { name: 'Запуск сопоставления' }), { target: { value: 'run' } });
-  fireEvent.click(await screen.findByRole('button', { name: 'raw-a ↔ raw-b' }));
+  fireEvent.click(await screen.findByRole('button', { name: 'Сравнить записи raw-a ↔ raw-b' }));
   await screen.findByRole('region', { name: 'Основание сопоставления' });
 }
 afterEach(() => { cleanup(); vi.restoreAllMocks(); });
 describe('Matching browser screen', () => {
   it('shows original values, normalized units and signals without viewer mutations', async () => {
     setup(); render(<Matching user={user(['match.view'])} onSessionExpired={vi.fn()} />); await open();
-    expect(screen.getByText('"12,5 кг"')).toBeInTheDocument(); expect(screen.getByText('"12500 г"')).toBeInTheDocument();
-    expect(screen.getAllByText('"12.5"')).toHaveLength(2); expect(screen.getByText('name / token_sort_ratio')).toBeInTheDocument();
+    expect(screen.getByText('12,5 кг')).toBeInTheDocument(); expect(screen.getByText('12500 г')).toBeInTheDocument();
+    expect(screen.getAllByText('12.5')).toHaveLength(2); expect(screen.getByText('name / token_sort_ratio')).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Запустить сопоставление' })).not.toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Подтвердить совпадение' })).not.toBeInTheDocument();
   });

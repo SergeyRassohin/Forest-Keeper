@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Интерфейс Forest Keeper</title>
+<meta name="description" content="Настоящие экраны Forest Keeper: импорт, нормализация, сопоставление, конфликты и происхождение данных.">
+<link rel="stylesheet" href="interface.css">
+</head>
+<body>
+<header>
+<a href="https://forest-keeper-data.sergey-rassohin0511.chatgpt.site/">Forest Keeper ↗</a>
+<p>РЕАЛЬНОЕ РАБОЧЕЕ ПРОСТРАНСТВО</p>
+<h1>Интерфейс Forest Keeper</h1>
+<p>От двух файлов до объяснимого расхождения. Здесь показано текущее приложение с настоящими результатами обработки синтетических каталогов.</p>
+</header>
+<main>
+<section class="intro">
+<div>
+<h2>Что уже работает</h2>
+<p>Вход и роли, импорт CSV/XLSX/XML, нормализация, сопоставление, проверка идентичности экспертом, конфликты и история происхождения значений.</p>
+</div>
+<div>
+<h2>Следующие этапы</h2>
+<p>Разрешение конфликтов человеком, Decision Registry, поиск похожих решений, рекомендации и AI ещё не реализованы. Эти экраны и действия здесь не изображаются.</p>
+</div>
+</section>
+<p class="note">Это реальные снимки тестового стенда, а не концепты. Данные вымышленные. Состояния ожидания и ошибки связи воспроизведены управляемым тестом и явно подписаны.</p>
+<section class="gallery" aria-label="Реальные экраны">
+<article><a href="01-login.png"><img loading="lazy" src="01-login.png"
+alt="Вход в рабочее пространство — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Вход в рабочее пространство</h2>
+<p>Защищённая браузерная сессия. Доступ к действиям определяется назначенными ролями.</p>
+<a href="01-login.png">Открыть полный экран ↗</a></div></article>
+<article><a href="02-overview.png"><img loading="lazy" src="02-overview.png"
+alt="Готовность среды — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Готовность среды</h2>
+<p>Настоящий ответ сервера: состояние API, PostgreSQL и Redis. Здесь нет выдуманных показателей качества данных.</p>
+<a href="02-overview.png">Открыть полный экран ↗</a></div></article>
+<article><a href="03-import.png"><img loading="lazy" src="03-import.png"
+alt="Источники и импорт — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Источники и импорт</h2>
+<p>Загрузка CSV, XLSX и XML с сохранением оригинала. Пустая таблица объясняет, с чего начать.</p>
+<a href="03-import.png">Открыть полный экран ↗</a></div></article>
+<article><a href="04-import-detail.png"><img loading="lazy" src="04-import-detail.png"
+alt="Оригинал и записи — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Оригинал и записи</h2>
+<p>Сохранённый файл, исходные поля и происхождение каждой записи. Данные в источнике не изменяются.</p>
+<a href="04-import-detail.png">Открыть полный экран ↗</a></div></article>
+<article><a href="18-raw-records.png"><img loading="lazy" src="18-raw-records.png"
+alt="Исходные записи и их поля — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Исходные записи и их поля</h2>
+<p>Структурированный просмотр значений без стены JSON. Видны ключ, позиция и исходные поля.</p>
+<a href="18-raw-records.png">Открыть полный экран ↗</a></div></article>
+<article><a href="05-normalization.png"><img loading="lazy" src="05-normalization.png"
+alt="Исходное → сопоставимое — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Исходное → сопоставимое</h2>
+<p>Масса приводится к единой единице; исходное значение, качество и правило остаются доступными. Нормализация не объявляет значение истиной.</p>
+<a href="05-normalization.png">Открыть полный экран ↗</a></div></article>
+<article><a href="06-matching.png"><img loading="lazy" src="06-matching.png"
+alt="Какие записи относятся к одной сущности — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Какие записи относятся к одной сущности</h2>
+<p>Отдельно показаны совпадения, отклонённые пары и кандидаты для проверки. Оценка похожести сама по себе не подтверждает идентичность.</p>
+<a href="06-matching.png">Открыть полный экран ↗</a></div></article>
+<article><a href="07-match-detail.png"><img loading="lazy" src="07-match-detail.png"
+alt="Основания совпадения — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Основания совпадения</h2>
+<p>Обе исходные записи, нормализованные значения и вклад признаков доступны рядом. Подтверждение идентичности не выбирает правильную массу.</p>
+<a href="07-match-detail.png">Открыть полный экран ↗</a></div></article>
+<article><a href="08-conflicts.png"><img loading="lazy" src="08-conflicts.png"
+alt="Расхождения значений — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Расхождения значений</h2>
+<p>Список объяснимых конфликтов подтверждённых пар. Человеческие подписи сопровождают технические типы и статусы.</p>
+<a href="08-conflicts.png">Открыть полный экран ↗</a></div></article>
+<article><a href="09-conflict-detail.png"><img loading="lazy" src="09-conflict-detail.png"
+alt="Что не совпало и откуда взялись значения — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Что не совпало и откуда взялись значения</h2>
+<p>12500 g и 12.4 kg сравниваются как 12.5 и 12.4 kg. Видны два источника и контекст нормализации. Решение человека ещё не принято.</p>
+<a href="09-conflict-detail.png">Открыть полный экран ↗</a></div></article>
+<article><a href="17-provenance.png"><img loading="lazy" src="17-provenance.png"
+alt="От результата к исходной записи — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>От результата к исходной записи</h2>
+<p>По запросу раскрываются файл, контрольная сумма, позиция исходной записи и правило нормализации. Это реальные сохранённые сведения, а не макет.</p>
+<a href="17-provenance.png">Открыть полный экран ↗</a></div></article>
+<article><a href="10-empty.png"><img loading="lazy" src="10-empty.png"
+alt="Понятное пустое состояние — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Понятное пустое состояние</h2>
+<p>Результат фильтра не подменяется вымышленными данными. RULE_VIOLATION пока не генерируется без утверждённого источника правил.</p>
+<a href="10-empty.png">Открыть полный экран ↗</a></div></article>
+<article><a href="11-users.png"><img loading="lazy" src="11-users.png"
+alt="Пользователи и роли — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Пользователи и роли</h2>
+<p>Администратор управляет доступом. Роль ADMIN сама по себе не даёт полномочий подтверждать совпадения или принимать бизнес-решения.</p>
+<a href="11-users.png">Открыть полный экран ↗</a></div></article>
+<article><a href="12-matching-review.png"><img loading="lazy" src="12-matching-review.png"
+alt="Проверка идентичности экспертом — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Проверка идентичности экспертом</h2>
+<p>Уже существующий matching review требует объяснения. Это проверка того, что записи относятся к одной сущности, а не разрешение конфликта значений.</p>
+<a href="12-matching-review.png">Открыть полный экран ↗</a></div></article>
+<article><a href="13-viewer.png"><img loading="lazy" src="13-viewer.png"
+alt="Просмотр без полномочий на изменение — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Просмотр без полномочий на изменение</h2>
+<p>VIEWER видит разрешённые результаты и их основания. Запуск обработки и управление пользователями не отображаются.</p>
+<a href="13-viewer.png">Открыть полный экран ↗</a></div></article>
+<article><a href="14-permission.png"><img loading="lazy" src="14-permission.png"
+alt="Роль ещё не назначена — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Роль ещё не назначена</h2>
+<p>Понятный следующий шаг вместо пустого экрана. Авторизация и фактические разрешения проверяются сервером.</p>
+<a href="14-permission.png">Открыть полный экран ↗</a></div></article>
+<article><a href="15-loading.png"><img loading="lazy" src="15-loading.png"
+alt="Выполнение запроса — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Выполнение запроса</h2>
+<p>Настоящее состояние ожидания ответа; для демонстрации ответ намеренно задержан тестом.</p>
+<a href="15-loading.png">Открыть полный экран ↗</a></div></article>
+<article><a href="16-error.png"><img loading="lazy" src="16-error.png"
+alt="Восстановление после ошибки — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Восстановление после ошибки</h2>
+<p>Симуляция потери соединения: читаемое сообщение, очищенный пароль и возможность повторить попытку.</p>
+<a href="16-error.png">Открыть полный экран ↗</a></div></article>
+</section>
+</main>
+<footer>Forest Keeper · Web Client. Источники сохраняются. Решение принимает человек. <a href="manifest.json">Происхождение снимков и результаты проверок</a>
+</footer>
+</body>
+</html>

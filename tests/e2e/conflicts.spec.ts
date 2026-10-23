@@ -45,7 +45,7 @@ test('detects explains and persists conflicts from two browser imports without b
   const rows = await response.json();
   expect(rows).toHaveLength(2);
   const mismatch = rows.find((item: { conflict_type: string }) => item.conflict_type === 'VALUE_MISMATCH');
-  await page.getByRole('button', { name: mismatch.id, exact: true }).click();
+  await page.getByRole('button', { name: 'Открыть конфликт ' + mismatch.id, exact: true }).click();
   const detail = page.getByRole('region', { name: 'Карточка конфликта', exact: true });
   await expect(detail).toContainText('12.5 kg'); await expect(detail).toContainText('12.4 kg');
   await expect(detail).toContainText('Conflicts a ' + accounts.prefix); await expect(detail).toContainText('Conflicts b ' + accounts.prefix);
@@ -59,7 +59,7 @@ test('detects explains and persists conflicts from two browser imports without b
   await page.reload();
   await page.getByRole('button', { name: 'Конфликты', exact: true }).click();
   await page.getByRole('combobox', { name: 'Сопоставление для конфликтов', exact: true }).selectOption(matching.id);
-  await page.getByRole('button', { name: mismatch.id, exact: true }).click();
+  await page.getByRole('button', { name: 'Открыть конфликт ' + mismatch.id, exact: true }).click();
   await expect(page.getByRole('region', { name: 'Карточка конфликта' })).toContainText(mismatch.id);
   expect(await (await page.request.get('/api/v1/conflicts/' + mismatch.id)).json()).toEqual(before);
   const signedOut = page.waitForResponse((response) => response.url().endsWith('/api/v1/auth/logout') && response.request().method() === 'POST');
@@ -69,7 +69,7 @@ test('detects explains and persists conflicts from two browser imports without b
   await signIn(page, 'VIEWER');
   await page.getByRole('button', { name: 'Конфликты', exact: true }).click();
   await page.getByRole('combobox', { name: 'Сопоставление для конфликтов', exact: true }).selectOption(matching.id);
-  await page.getByRole('button', { name: mismatch.id, exact: true }).click();
+  await page.getByRole('button', { name: 'Открыть конфликт ' + mismatch.id, exact: true }).click();
   await expect(page.getByRole('region', { name: 'Карточка конфликта' })).toContainText(mismatch.id);
   await expect(page.getByRole('button', { name: 'Проверить конфликты' })).toHaveCount(0);
 });

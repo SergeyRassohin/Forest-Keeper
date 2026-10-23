@@ -39,8 +39,9 @@ test('matches two normalized browser imports with evidence and authorized review
   await page.getByRole('button', { name: 'Запустить сопоставление', exact: true }).click(); const run = await (await started).json();
   const result = page.getByRole('region', { name: 'Результат сопоставления', exact: true }); await expect(result.getByRole('status')).toContainText('Сопоставление завершено', { timeout: 30000 });
   const filter = page.getByRole('combobox', { name: 'Статус кандидата', exact: true });
-  for (const [status,label] of [['MATCHED','Совпадение'],['POSSIBLE_MATCH','Требует проверки'],['NOT_MATCHED','Разные сущности']]) {
-    await filter.selectOption(status); await expect(result.getByRole('cell', { name: label, exact: true }).first()).toBeVisible();
+  for (const [status,label] of [['MATCHED','Сопоставлено'],['POSSIBLE_MATCH','Требует проверки'],['NOT_MATCHED','Не сопоставлено']]) {
+    await filter.selectOption(status); await expect(result.getByRole('cell').filter({ hasText: label }).first()).toBeVisible();
+    await expect(result.getByRole('cell').filter({ hasText: label }).first()).toContainText(status);
   }
   await filter.selectOption('MATCHED');
   const matches = await (await page.request.get('/api/v1/matching-runs/' + run.id + '/candidates?status=MATCHED')).json();
@@ -49,7 +50,7 @@ test('matches two normalized browser imports with evidence and authorized review
     const detail = await (await page.request.get('/api/v1/match-candidates/' + candidate.id)).json();
     if (detail.records.every((record: { source_record_key: string }) => record.source_record_key === 'MAT001')) selected = candidate;
   }
-  await result.getByRole('button', { name: selected.raw_record_a_id + ' ↔ ' + selected.raw_record_b_id, exact: true }).click();
+  await result.getByRole('button', { name: 'Сравнить записи ' + selected.raw_record_a_id + ' ↔ ' + selected.raw_record_b_id, exact: true }).click();
   const detail = page.getByRole('region', { name: 'Основание сопоставления', exact: true });
   await expect(detail).toContainText('12500 г'); await expect(detail).toContainText('12.500 KG'); await expect(detail).toContainText('12.5');
   await expect(detail).toContainText('Matching a ' + accounts.prefix); await expect(detail).toContainText('Matching b ' + accounts.prefix);
@@ -62,11 +63,11 @@ test('matches two normalized browser imports with evidence and authorized review
     if (snapshot.records.every((record: { source_record_key: string }) => record.source_record_key === 'MAT003')) fuzzyCandidate = candidate;
   }
   await filter.selectOption('POSSIBLE_MATCH');
-  await result.getByRole('button', { name: fuzzyCandidate.raw_record_a_id + ' ↔ ' + fuzzyCandidate.raw_record_b_id, exact: true }).click();
+  await result.getByRole('button', { name: 'Сравнить записи ' + fuzzyCandidate.raw_record_a_id + ' ↔ ' + fuzzyCandidate.raw_record_b_id, exact: true }).click();
   await expect(detail.getByRole('button', { name: 'Подтвердить совпадение' })).toHaveCount(0);
   await page.getByRole('button', { name: 'Выйти', exact: true }).click(); await signIn(page, 'REVIEWER'); await chooseRun(page, run.id);
   await filter.selectOption('POSSIBLE_MATCH'); await expect(result.getByRole('row').nth(1)).toContainText('Требует проверки');
-  await result.getByRole('button', { name: fuzzyCandidate.raw_record_a_id + ' ↔ ' + fuzzyCandidate.raw_record_b_id, exact: true }).click();
+  await result.getByRole('button', { name: 'Сравнить записи ' + fuzzyCandidate.raw_record_a_id + ' ↔ ' + fuzzyCandidate.raw_record_b_id, exact: true }).click();
   await detail.getByLabel('Причина подтверждения или отклонения').fill('Сверено человеком по синтетическому сценарию');
   const reviewed = page.waitForResponse((response) => response.url().endsWith('/review') && response.request().method() === 'POST');
   await detail.getByRole('button', { name: 'Подтвердить совпадение', exact: true }).click(); const confirmation = await (await reviewed).json();
@@ -75,7 +76,7 @@ test('matches two normalized browser imports with evidence and authorized review
   const remaining = await (await page.request.get('/api/v1/matching-runs/' + run.id + '/candidates?status=POSSIBLE_MATCH')).json();
   expect(remaining.length).toBeGreaterThan(0);
   const rejectedCandidate = remaining[0];
-  await result.getByRole('button', { name: rejectedCandidate.raw_record_a_id + ' ↔ ' + rejectedCandidate.raw_record_b_id, exact: true }).click();
+  await result.getByRole('button', { name: 'Сравнить записи ' + rejectedCandidate.raw_record_a_id + ' ↔ ' + rejectedCandidate.raw_record_b_id, exact: true }).click();
   await detail.getByLabel('Причина подтверждения или отклонения').fill('Проверено: разные сущности, объединять нельзя');
   const rejected = page.waitForResponse((response) => response.url().endsWith('/review') && response.request().method() === 'POST');
   await detail.getByRole('button', { name: 'Отклонить совпадение', exact: true }).click();

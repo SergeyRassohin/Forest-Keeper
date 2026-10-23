@@ -1,0 +1,1029 @@
+{
+  "captured_at": "2026-10-22T14:15:14.407Z",
+  "source_commit": "b3d4423131dcd4e2c07536e7dc05e742015b8c2d",
+  "source_tree": "19d0850606bfd3a3fb341d155cb2633d562cb096",
+  "brand_assets": [
+    {
+      "file": "forest-keeper.svg",
+      "sha256": "45f0ce768cc0b760ac0f553c75b88f87c81bf608fb41f0a88eebf111f592575b"
+    },
+    {
+      "file": "forest-dark.jpg",
+      "sha256": "9d197dfb97a0fc680d70148f34a184f881c2e70e25ddafd1f62e4ed9556356ac"
+    }
+  ],
+  "worktree_dirty": true,
+  "images": {
+    "frontend": "sha256:de3a08c8864043614166459d5ecc845548efbebe0b6f435cd1151fc8eac9ec20",
+    "backend": "sha256:9daf63943d9a38c96efed720b75125190a5b8819d1f85155bd3faa33be8a1cd5"
+  },
+  "served_bundles": [
+    {
+      "file": "/assets/index-CRMNlME7.js",
+      "sha256": "17e368e8e91c6d218c931570aada229b944a92a57f28443520b80cb1be22906a"
+    },
+    {
+      "file": "/assets/index-ZT6ZmBlr.css",
+      "sha256": "20942ebf08909738b5b27bdaac96979273c138fd27aa671ff7e3b6301facd819"
+    }
+  ],
+  "capture": "Real HTTPS Web Client and backend with owned synthetic data; no generated/mock product screenshots",
+  "locale": "ru-RU",
+  "timezone": "Europe/Moscow",
+  "captures": [
+    {
+      "file": "01-login.png",
+      "title": "Вход в рабочее пространство",
+      "description": "Защищённая браузерная сессия. Доступ к действиям определяется назначенными ролями.",
+      "feature_status": "Реализовано · Stage 0–5",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "44d5440f63d16c058d8242c3818a43a3a30a07d13eab7f7ff5785cd9ae6629e0"
+    },
+    {
+      "file": "02-overview.png",
+      "title": "Готовность среды",
+      "description": "Настоящий ответ сервера: состояние API, PostgreSQL и Redis. Здесь нет выдуманных показателей качества данных.",
+      "feature_status": "Реализовано · Stage 0–5",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "3324b581cc9fb87d33a0edb88d65047e526b83596a1ae6b0563b8a5dbef01bc6"
+    },
+    {
+      "file": "03-import.png",
+      "title": "Источники и импорт",
+      "description": "Загрузка CSV, XLSX и XML с сохранением оригинала. Пустая таблица объясняет, с чего начать.",
+      "feature_status": "Реализовано · Stage 0–5",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "a7f7426c503ce5c6048c581d8438967f553b2e2510006d91c18acb4c57006c4a"
+    },
+    {
+      "file": "04-import-detail.png",
+      "title": "Оригинал и записи",
+      "description": "Сохранённый файл, исходные поля и происхождение каждой записи. Данные в источнике не изменяются.",
+      "feature_status": "Реализовано · Stage 0–5",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "92570a1f85a73cd253c9429d555d0d40a5109c38bec1575497d250b8795df3a2"
+    },
+    {
+      "file": "18-raw-records.png",
+      "title": "Исходные записи и их поля",
+      "description": "Структурированный просмотр значений без стены JSON. Видны ключ, позиция и исходные поля.",
+      "feature_status": "Реализовано · Stage 0–5",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "6c58d44d7e7c47929dc3c5a7e9d2bc0b0db8597afc3b6e283339607aab7d41a6"
+    },
+    {
+      "file": "05-normalization.png",
+      "title": "Исходное → сопоставимое",
+      "description": "Масса приводится к единой единице; исходное значение, качество и правило остаются доступными. Нормализация не объявляет значение истиной.",
+      "feature_status": "Реализовано · Stage 0–5",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "09d348a194664dd129568415b12132f5a827bbee7306083837c6ace261c6022d"
+    },
+    {
+      "file": "06-matching.png",
+      "title": "Какие записи относятся к одной сущности",
+      "description": "Отдельно показаны совпадения, отклонённые пары и кандидаты для проверки. Оценка похожести сама по себе не подтверждает идентичность.",
+      "feature_status": "Реализовано · Stage 0–5",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "8018b8db8f9d35d74986e523586733982d436baeb0d5f60a6b1a6e6c7b68becb"
+    },
+    {
+      "file": "07-match-detail.png",
+      "title": "Основания совпадения",
+      "description": "Обе исходные записи, нормализованные значения и вклад признаков доступны рядом. Подтверждение идентичности не выбирает правильную массу.",
+      "feature_status": "Реализовано · Stage 0–5",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "8ed438f050a25769adc0b0280db002162a2c3f9f95939d1315541c5d7f976313"
+    },
+    {
+      "file": "08-conflicts.png",
+      "title": "Расхождения значений",
+      "description": "Список объяснимых конфликтов подтверждённых пар. Человеческие подписи сопровождают технические типы и статусы.",
+      "feature_status": "Реализовано · Stage 0–5",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "2f98d82f6834d0a85f7cff30e9c1a527711349670a421291b56515d47e884f94"
+    },
+    {
+      "file": "09-conflict-detail.png",
+      "title": "Что не совпало и откуда взялись значения",
+      "description": "12500 g и 12.4 kg сравниваются как 12.5 и 12.4 kg. Видны два источника и контекст нормализации. Решение человека ещё не принято.",
+      "feature_status": "Реализовано · Stage 0–5",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "8ac3a1f96be3f798505d29bbb101bb9250f0152d7592f6dab8dba0c73a1f3033"
+    },
+    {
+      "file": "17-provenance.png",
+      "title": "От результата к исходной записи",
+      "description": "По запросу раскрываются файл, контрольная сумма, позиция исходной записи и правило нормализации. Это реальные сохранённые сведения, а не макет.",
+      "feature_status": "Реализовано · Stage 0–5",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "639a386dc19eb34e60389c19aa6572d74fdaa6fd9d685aaf7508b37160203711"
+    },
+    {
+      "file": "10-empty.png",
+      "title": "Понятное пустое состояние",
+      "description": "Результат фильтра не подменяется вымышленными данными. RULE_VIOLATION пока не генерируется без утверждённого источника правил.",
+      "feature_status": "Реализовано · Stage 0–5",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "f9e58880b3798f125183d4723a4ab5d871dd3c2a3035b534d601985b03f74365"
+    },
+    {
+      "file": "11-users.png",
+      "title": "Пользователи и роли",
+      "description": "Администратор управляет доступом. Роль ADMIN сама по себе не даёт полномочий подтверждать совпадения или принимать бизнес-решения.",
+      "feature_status": "Реализовано · Stage 0–5",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "653728ef0676a5c343756e84d13dda33d01b502960bae1dd05f482ec18cc4b9f"
+    },
+    {
+      "file": "12-matching-review.png",
+      "title": "Проверка идентичности экспертом",
+      "description": "Уже существующий matching review требует объяснения. Это проверка того, что записи относятся к одной сущности, а не разрешение конфликта значений.",
+      "feature_status": "Реализовано · Stage 0–5",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "0ecd38ad38eb1efd047e651682be29d5b668773cf206cfc09c5cf1a92dc007ab"
+    },
+    {
+      "file": "13-viewer.png",
+      "title": "Просмотр без полномочий на изменение",
+      "description": "VIEWER видит разрешённые результаты и их основания. Запуск обработки и управление пользователями не отображаются.",
+      "feature_status": "Реализовано · Stage 0–5",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "09e4305c2c35d716f6cea72d33a79feee8b8aa88075401042c5e0aef328a4832"
+    },
+    {
+      "file": "14-permission.png",
+      "title": "Роль ещё не назначена",
+      "description": "Понятный следующий шаг вместо пустого экрана. Авторизация и фактические разрешения проверяются сервером.",
+      "feature_status": "Реализовано · Stage 0–5",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "e73c207762761322fcbb73ac6001ddaff8b2ccca520a479ccf2a6ac289b0dafc"
+    },
+    {
+      "file": "15-loading.png",
+      "title": "Выполнение запроса",
+      "description": "Настоящее состояние ожидания ответа; для демонстрации ответ намеренно задержан тестом.",
+      "feature_status": "Реализовано · Stage 0–5",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "416984087adc63248af3422f7ded4897367a2b87fd3b3ccb80c0b77da1cf108a"
+    },
+    {
+      "file": "16-error.png",
+      "title": "Восстановление после ошибки",
+      "description": "Симуляция потери соединения: читаемое сообщение, очищенный пароль и возможность повторить попытку.",
+      "feature_status": "Реализовано · Stage 0–5",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "a2ffc28e4972d1c33e08dad3e61a38ae62dc135e1012f8360b496c095f248d06"
+    }
+  ],
+  "accessibility": [
+    {
+      "screen": "01-login",
+      "violations": []
+    },
+    {
+      "screen": "02-overview",
+      "violations": []
+    },
+    {
+      "screen": "03-import",
+      "violations": []
+    },
+    {
+      "screen": "04-import-detail",
+      "violations": []
+    },
+    {
+      "screen": "18-raw-records",
+      "violations": []
+    },
+    {
+      "screen": "05-normalization",
+      "violations": []
+    },
+    {
+      "screen": "06-matching",
+      "violations": []
+    },
+    {
+      "screen": "07-match-detail",
+      "violations": []
+    },
+    {
+      "screen": "08-conflicts",
+      "violations": []
+    },
+    {
+      "screen": "09-conflict-detail",
+      "violations": []
+    },
+    {
+      "screen": "17-provenance",
+      "violations": []
+    },
+    {
+      "screen": "10-empty",
+      "violations": []
+    },
+    {
+      "screen": "11-users",
+      "violations": []
+    },
+    {
+      "screen": "12-matching-review",
+      "violations": []
+    },
+    {
+      "screen": "13-viewer",
+      "violations": []
+    },
+    {
+      "screen": "14-permission",
+      "violations": []
+    },
+    {
+      "screen": "15-loading",
+      "violations": []
+    },
+    {
+      "screen": "16-error",
+      "violations": []
+    }
+  ],
+  "responsive": [
+    {
+      "screen": "01-login",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "01-login",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "01-login",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "01-login",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "01-login",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "02-overview",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "02-overview",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "02-overview",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "02-overview",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "02-overview",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "03-import",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "03-import",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "03-import",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "03-import",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "03-import",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "04-import-detail",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "04-import-detail",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "04-import-detail",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "04-import-detail",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "04-import-detail",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "18-raw-records",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "18-raw-records",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "18-raw-records",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "18-raw-records",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "18-raw-records",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "05-normalization",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "05-normalization",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "05-normalization",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "05-normalization",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "05-normalization",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "06-matching",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "06-matching",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "06-matching",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "06-matching",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "06-matching",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "07-match-detail",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "07-match-detail",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "07-match-detail",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "07-match-detail",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "07-match-detail",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "08-conflicts",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "08-conflicts",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "08-conflicts",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "08-conflicts",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "08-conflicts",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "09-conflict-detail",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "09-conflict-detail",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "09-conflict-detail",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "09-conflict-detail",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "09-conflict-detail",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "17-provenance",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "17-provenance",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "17-provenance",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "17-provenance",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "17-provenance",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "10-empty",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "10-empty",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "10-empty",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "10-empty",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "10-empty",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "11-users",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "11-users",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "11-users",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "11-users",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "11-users",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "12-matching-review",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "12-matching-review",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "12-matching-review",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "12-matching-review",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "12-matching-review",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "13-viewer",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "13-viewer",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "13-viewer",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "13-viewer",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "13-viewer",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "14-permission",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "14-permission",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "14-permission",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "14-permission",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "14-permission",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "15-loading",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "15-loading",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "15-loading",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "15-loading",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "15-loading",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "16-error",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "16-error",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "16-error",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "16-error",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "16-error",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    }
+  ]
+}
