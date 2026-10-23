@@ -59,9 +59,9 @@ Stage 5.1 не снимает блокеры Decision/AI полного MVP и �
 [Независимая проверка Stage 5.1](../testing/reports/stage51-brand-independent-2026-10-23.md) завершена 23 октября: приложение/галерея в репозитории PASS, блокирующих замечаний нет. 19 Axe/95 viewport checks и повторные 11 E2E PASS. Внешняя публикация §26.17–18 остаётся BLOCKED / NOT VERIFIED. Это не приёмка отсутствующих Decision/AI.
 
 
-## Stage 6: состояние отдельной ветки
+## Stage 6: принят в main
 
-Human Review/Decision Registry реализованы отдельным PR по #25, с каноническими outcomes и immutable history. Для проверки именно этой ветки используйте [сценарий](../development/human-review.md). Приёмка требует независимого retest, final-head CI, отдельного разрешения владельца и CI точного merge commit; до этого Stage 6 не объявляется accepted. Similarity/recommendation/AI по #18/#20 остаются BLOCKED отсутствием runtime.
+Human Review/Decision Registry приняты владельцем через PR #26 по #25, с каноническими outcomes, immutable history, независимым retest и зелёным exact merge CI 39947944543. Для проверки используйте [сценарий](../development/human-review.md). Stage 7 retrieval проверяется отдельно; production semantic provider, recommendation и AI по #18/#20 остаются BLOCKED.
 
 
-Stage 6 runtime: `backend/tests/restart_decisions.py` проверяет собственный проект `fk-stage6`, реальные HTTPS receipt/history, сохранность source/evidence, race 201/409, запись при остановленном Redis и тот же persistent key после restart. [Реализованный workflow](../development/human-review.md). Исторические ограничения публикации Stage 5.1 выше относятся к прежним отчётам; issue #25 явно фиксирует принятие и публикацию владельцем. Новая галерея Stage 6 готовится в репозитории; обновление внешнего сайта отдельно не заявляется.
+Stage 6 runtime: `backend/tests/restart_decisions.py` проверяет собственный проект `fk-stage6`, реальные HTTPS receipt/history, сохранность source/evidence, race 201/409, запись при остановленном Redis и тот же persistent key после restart. [Реализованный workflow](../development/human-review.md). Исторические ограничения публикации Stage 5.1 выше относятся к прежним отчётам; issue #25 явно фиксирует принятие и публикацию владельцем. Галерея Stage 6 сохранена в репозитории; обновление внешнего сайта отдельно не заявляется.

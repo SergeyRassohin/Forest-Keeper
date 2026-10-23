@@ -149,6 +149,10 @@ def run():
                         before_bytes = connection.scalar(
                             text("SELECT pg_total_relation_size('decision_embeddings')")
                         )
+                    with Session(engine) as session:
+                        before_vectors = session.scalar(
+                            select(func.count()).select_from(DecisionEmbedding)
+                        )
                     started = time.monotonic()
                     index(settings)
                     index_seconds = time.monotonic() - started
@@ -243,10 +247,11 @@ def run():
                         ).strip(),
                         "decision_rows": count,
                         "vector_rows": actual,
-                        "indexing_new_rows": new_rows,
+                        "expanded_decisions": new_rows,
+                        "indexing_new_vectors": actual - before_vectors,
                         "index_seconds": round(index_seconds, 4),
                         "new_vectors_per_second": round(
-                            new_rows / index_seconds,
+                            (actual - before_vectors) / index_seconds,
                             2,
                         ),
                         "first_query_with_preparation_seconds": round(first_query_seconds, 4),

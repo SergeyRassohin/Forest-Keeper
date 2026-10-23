@@ -48,7 +48,7 @@ Web Client — единственное поддерживаемое напра�
 
 ## Статус реализации
 
-Компоненты и потоки ниже — целевая архитектура MVP. В main приняты этапы 0–5.1: вход, импорт, нормализация, Matching, Conflict Engine и фирменный Web UI. Stage 6 реализует Human Review и Decision Registry отдельным модулем backend в отдельном PR; приёмка ещё требует разрешения владельца и CI merge commit. Recommendation/AI runtime отсутствуют. Актуальная [матрица готовности](../deployment/review-readiness.md) отделяет архитектурные требования от доступных функций.
+Компоненты и потоки ниже — целевая архитектура MVP. В main приняты этапы 0–6: вход, импорт, нормализация, Matching, Conflict Engine, Human Review, Decision Registry и фирменный Web UI. Stage 7 добавляет Similar Decision Retrieval в отдельном PR; его приёмка требует полного acceptance и зелёного CI точного финального HEAD. Recommendation/AI runtime отсутствуют. Актуальная [матрица готовности](../deployment/review-readiness.md) отделяет архитектурные требования от доступных функций.
 
 ## 3. Серверный контур
 
