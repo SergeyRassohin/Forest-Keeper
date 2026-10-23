@@ -52,3 +52,6 @@ PR #22 объединён владельцем в main: `6235dd6a18f8cbb8aeceac2
 [Issue #23](https://github.com/SergeyRassohin/Forest-Keeper/issues/23): единый бренд существующих экранов, понятные evidence-карточки и [реальная галерея](../../frontend/public/interface/index.html). Съёмка проверяет WCAG A/AA и desktop 1920/1440/1280/1024, дополнительно narrow390px. [Воспроизведение](../development/ui-brand-guidelines.md), [публикация страницы](../site/interface.md). Исходники внешнего сайта и инструмент публикации в среде отсутствуют; готовая страница в репозитории не является подтверждением обновления внешнего домена.
 
 Stage 5.1 не снимает блокеры Decision/AI полного MVP и не даёт ADMIN бизнес-полномочий. Final HEAD, точный CI и независимый visual/product retest фиксируются в PR перед отдельным разрешением на merge.
+
+
+[Независимая проверка Stage 5.1](../testing/reports/stage51-brand-independent-2026-10-23.md) завершена 23 октября: приложение/галерея в репозитории PASS, блокирующих замечаний нет. 19 Axe/95 viewport checks и повторные 11 E2E PASS. Внешняя публикация §26.17–18 остаётся BLOCKED / NOT VERIFIED. Это не приёмка отсутствующих Decision/AI.

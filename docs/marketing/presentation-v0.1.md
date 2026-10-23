@@ -1,6 +1,6 @@
 # Forest Keeper — презентация v0.1
 
-Статус: актуально на 22 октября 2026 после принятия Stage 5 по ТЗ в [issue #21](https://github.com/SergeyRassohin/Forest-Keeper/issues/21).
+Статус: актуально на 23 октября 2026. Stage 5 принят по [issue #21](https://github.com/SergeyRassohin/Forest-Keeper/issues/21); отдельный Stage 5.1 готовит фирменный Web UI и реальные экраны, его приёмка фиксируется в PR по [issue #23](https://github.com/SergeyRassohin/Forest-Keeper/issues/23).
 
 Эта презентация является текстовым источником для внешних слайдов. При изменении продукта сначала обновляются инженерные документы и решения, затем этот файл и визуальная версия презентации.
 
@@ -77,6 +77,7 @@ Import
 
 - Stage 0–5: ACCEPTED;
 - Stage 5: ACCEPTED, OPEN conflicts/Basis/provenance; не Decision Registry;
+- Stage 5.1: отдельное обновление оформления существующего Web Client; [галерея реальных экранов](../../frontend/public/interface/index.html), [публикация страницы](../site/interface.md). Будущие функции не изображаются работающими; старый внешний домен ещё не обновлён.
 - Stage 6+: pending.
 
 Важно:

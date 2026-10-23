@@ -33,7 +33,7 @@ Forest Keeper разворачивается внутри инфраструкт
 | Получение и проверка pinned Qwen artifacts | [Команды и точные ссылки](docs/ai/model-downloads.md); это подготовка файлов, без запуска AI |
 | Корпоративный установщик, лицензирование, Update Service | Последующие этапы |
 
-Этап 3 принят через [PR #13](https://github.com/SergeyRassohin/Forest-Keeper/pull/13), merge `6a494534a49960b79fdf64e5e2b8436c32011688`; [CI merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39452965438). Этап 4 принят через PR #15. Stage 5 принят через PR #22. Перед Stage 6–7 подготовлен отдельный **Stage 5.1: фирменный Web UI и галерея**, ожидающий review/CI и отдельного разрешения на merge. Полный путь «свой файл → конфликт → Decision → похожий случай → рекомендация» пока **заблокирован отсутствующими модулями**, см. [критерии готовности](docs/deployment/review-readiness.md). Зелёный health означает готовность инфраструктуры, а не наличие всех бизнес-функций.
+Этап 3 принят через [PR #13](https://github.com/SergeyRassohin/Forest-Keeper/pull/13), merge `6a494534a49960b79fdf64e5e2b8436c32011688`; [CI merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39452965438). Этап 4 принят через PR #15. Stage 5 принят через PR #22. Перед Stage 6–7 реализован отдельный **Stage 5.1: фирменный Web UI и галерея**; результаты проверок, CI и отдельное разрешение на merge фиксируются в его PR. Полный путь «свой файл → конфликт → Decision → похожий случай → рекомендация» пока **заблокирован отсутствующими модулями**, см. [критерии готовности](docs/deployment/review-readiness.md). Зелёный health означает готовность инфраструктуры, а не наличие всех бизнес-функций.
 
 ## Что можно проверить сейчас
 

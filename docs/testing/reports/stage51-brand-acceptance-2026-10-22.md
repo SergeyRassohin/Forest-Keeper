@@ -43,6 +43,15 @@ Backend app, migrations, canonical enums, lifecycles, evidence storage, API и X
 
 ## Финальная локальная автоматическая проверка
 
-**689 уникальных тестов PASS:**200 backend unit,437 integration/API,34 frontend component,11 HTTPS browser,6 model/artifact utility и1 end-to-end gallery scenario. В галерее18 настоящих PNG,18 Axe WCAG2/2.1 A/AA проверок без нарушений и90 viewport checks PASS. Повторные прогоны исправлений и focused independent tests к этому числу не прибавляются.
+**689 уникальных тестов PASS:** 200 backend unit, 437 integration/API, 34 frontend component, 11 HTTPS browser, 6 model/artifact utility и 1 end-to-end gallery scenario. В галерее 18 настоящих PNG, 18 Axe WCAG2/2.1 A/AA проверок без нарушений и 90 viewport checks PASS. Повторные прогоны исправлений и focused independent tests к этому числу не прибавляются.
 
 Снимки: source commit `b3d4423131dcd4e2c07536e7dc05e742015b8c2d`, frontend/src tree `19d0850606bfd3a3fb341d155cb2633d562cb096`. Точные Docker image IDs и served JS/CSS/brand/PNG SHA-256 сохранены в [manifest](../../../frontend/public/interface/manifest.json). Галерея получена после исправления disabled styles; снимки соответствуют финальному application source. Отдельные последующие documentation/evidence commits не меняют это дерево.
+
+`worktree_dirty=true` в manifest отражает ещё не закоммиченные результаты галереи/документацию во время capture. Съёмка отдельно требует чистые committed frontend/src, brand, index и Vite config; delivered JS/CSS/assets побайтно сверены с локальной сборкой, source tree совпадает с HEAD. Это не снимки модифицированного неподтверждённого application source.
+
+## Повторная проверка 23 октября 2026
+
+На окончательном образе с включённой галереей повторены `check.sh` (200 backend unit,34 frontend,6 artifact; lint/format/mypy/build/typecheck/doc+gallery checks), все SAST/SCA/secrets/negative gates и production smoke — PASS. Повторные проверки не увеличивают число уникальных тестов. Final browser/visual retest выполнен отдельной независимой review-сессией; его отчёт и точный CI добавляются в пакет PR.
+
+
+Независимый финальный [visual/product/browser retest 23 октября](stage51-brand-independent-2026-10-23.md) — **PASS, блокирующих замечаний нет**: все 18 PNG вручную, 19 Axe-анализов и 95 viewport checks (приложение+страница), 17 focused component tests из 34 и повторные 11/11 browser E2E на окончательном образе. Отчёт отделяет два неблокирующих наблюдения принятого UI от регрессий Stage 5.1; полный console-clean baseline не заявляется. Backend behavior и архитектурные границы подтверждены независимым gate. Внешняя публикация остаётся BLOCKED / NOT VERIFIED; точный финальный SHA/CI и разрешение владельца фиксируются в PR.
