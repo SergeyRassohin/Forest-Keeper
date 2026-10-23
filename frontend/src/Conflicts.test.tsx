@@ -21,7 +21,7 @@ it('shows raw normalized values provenance and honest human boundary, escaping h
   expect(screen.getByRole('region', { name: 'Источники нормализации' })).toHaveTextContent('norm-A');
   expect(screen.getByRole('region', { name: 'Источники нормализации' })).toHaveTextContent('norm-B');
   expect(screen.getByRole('region', { name: 'Источники нормализации' })).toHaveTextContent('Профиль: profile-B v1');
-  expect(screen.getByText('Решение человека ещё не принято. Human Review будет доступен на следующем этапе.')).toBeVisible();
+  expect(screen.getByText('Решение сохраняется отдельно от найденного расхождения. Исходные системы не изменяются.')).toBeVisible();
   expect(screen.queryByRole('button', { name: 'Проверить конфликты' })).not.toBeInTheDocument();
   expect(screen.queryByRole('button', { name: /Выбрать значение|Исправить|Принять рекомендацию/ })).not.toBeInTheDocument();
 });

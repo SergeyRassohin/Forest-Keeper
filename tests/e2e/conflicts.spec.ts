@@ -53,7 +53,8 @@ test('detects explains and persists conflicts from two browser imports without b
   const origins = detail.getByRole('region', { name: 'Источники нормализации', exact: true });
   for (const id of ids) await expect(origins).toContainText(id);
   await expect(origins).toContainText('v1'); await expect(origins).toContainText('fk-normalization/1');
-  await expect(detail).toContainText('Решение человека ещё не принято');
+  await expect(detail).toContainText('Решение сохраняется отдельно от найденного расхождения.');
+  await expect(detail.getByRole('button', { name: 'Начать рассмотрение', exact: true })).toHaveCount(0);
   await expect(detail.getByRole('button', { name: /Исправить|Выбрать|Принять/ })).toHaveCount(0);
   const before = await (await page.request.get('/api/v1/conflicts/' + mismatch.id)).json();
   await page.reload();

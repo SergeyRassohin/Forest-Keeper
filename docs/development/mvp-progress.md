@@ -111,3 +111,8 @@ PR #22 объединён владельцем в main: `6235dd6a18f8cbb8aeceac2
 
 
 Stage 5.1: **689 уникальных тестов PASS**, 18 реальных PNG, 18 WCAG/90 viewport checks. [Acceptance и brand checklist](../testing/reports/stage51-brand-acceptance-2026-10-22.md); [независимый retest 23 октября](../testing/reports/stage51-brand-independent-2026-10-23.md) — PASS без блокирующих замечаний, в том числе 11/11 E2E финального образа. Внешняя публикация не подтверждена; final-head CI и отдельное разрешение на merge — в PR.
+
+
+## Stage 6 — Human Review + Decision Registry, 23 октября 2026
+
+Реализованы канонические outcomes, атомарные immutable Decisions, superseding history, scope/RBAC, version token, idempotency, API и Web UI. Stage 5.1 принят владельцем через PR #24, main `04793d9`, exact CI `39908239589` SUCCESS. Stage 6 пока не принят: отдельный PR и зелёный CI merge commit обязательны. Отчёт и проверки фиксируются отдельно. Stage 7 не начат; #18/#20 не закрываются.

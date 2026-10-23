@@ -12,7 +12,27 @@ class LoginRequest(BaseModel):
     password: SecretStr = Field(min_length=1, max_length=128)
 
 
-class UserCreate(BaseModel):
+class DomainScope(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    data_domains: list[str] = Field(default_factory=list, max_length=32)
+
+    @field_validator("data_domains")
+    @classmethod
+    def validate_domains(cls, values: list[str]) -> list[str]:
+        if any(
+            not value
+            or value != value.strip()
+            or len(value) > 100
+            or any(ord(char) < 32 or 127 <= ord(char) < 160 for char in value)
+            for value in values
+        ):
+            raise ValueError("Invalid domain scope")
+        if "*" in values and values != ["*"]:
+            raise ValueError("Wildcard must be an explicit standalone grant")
+        return sorted(set(values))
+
+
+class UserCreate(DomainScope):
     model_config = ConfigDict(extra="forbid")
     login: str = Field(min_length=3, max_length=64, pattern=r"^[A-Za-z0-9_.@-]+$")
     full_name: str = Field(min_length=1, max_length=200)
@@ -35,6 +55,7 @@ class UserView(BaseModel):
     status: UserStatus
     roles: list[Role]
     permissions: list[str]
+    data_domains: list[str]
 
     @classmethod
     def of(cls, user: User) -> "UserView":
@@ -47,6 +68,7 @@ class UserView(BaseModel):
             status=UserStatus(user.status),
             roles=sorted(Role(role.role_code) for role in user.roles),
             permissions=permissions_for(user),
+            data_domains=list(user.data_domains or []),
         )
 
 

@@ -131,3 +131,8 @@ GitHub сохраняет историю запусков. Старые `failure
 ## Stage 5: принят в main — 22 октября 2026
 
 PR #22 объединён владельцем в main: `6235dd6a18f8cbb8aeceac2a7d052f5fca396482`; [CI точного merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39768647312). Этап 5 принят; 679 тестов и независимый runtime/security/product-intent retest PASS. Шаг Stage 5 из #20 завершён. Stage 6–7 — следующий отдельный этап; #18/#20 остаются открытыми. Полный MVP #18/#20 остаётся незавершённым.
+
+
+## Stage 6: фактический путь в отдельной ветке
+
+Import → Normalization → Matching → persisted Conflict → Human Review → immutable Decision → audit/history. Decision хранится в PostgreSQL; review path не вызывает AI/Redis jobs и не пишет в исходные системы. Авторизацию обеспечивает backend. Исправление создаёт новую запись со ссылкой на прежнюю. См. [реализованный workflow](../development/human-review.md).

@@ -55,3 +55,8 @@ Stage 5.1 не снимает блокеры Decision/AI полного MVP и �
 
 
 [Независимая проверка Stage 5.1](../testing/reports/stage51-brand-independent-2026-10-23.md) завершена 23 октября: приложение/галерея в репозитории PASS, блокирующих замечаний нет. 19 Axe/95 viewport checks и повторные 11 E2E PASS. Внешняя публикация §26.17–18 остаётся BLOCKED / NOT VERIFIED. Это не приёмка отсутствующих Decision/AI.
+
+
+## Stage 6: состояние отдельной ветки
+
+Human Review/Decision Registry реализованы отдельным PR по #25, с каноническими outcomes и immutable history. Для проверки именно этой ветки используйте [сценарий](../development/human-review.md). Приёмка требует независимого retest, final-head CI, отдельного разрешения владельца и CI точного merge commit; до этого Stage 6 не объявляется accepted. Similarity/recommendation/AI по #18/#20 остаются BLOCKED отсутствием runtime.

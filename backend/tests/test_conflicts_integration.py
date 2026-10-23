@@ -298,18 +298,23 @@ def test_read_permissions(client, role_tokens, role, path):
 
 
 @pytest.mark.parametrize("role", ["VIEWER", "REVIEWER", "DATA_OWNER", "ADMIN", "NO_ROLES"])
-def test_start_permission_origin_no_business_actions(client, role_tokens, role):
+def test_start_permission_origin_and_scoped_decision_authority(client, role_tokens, role):
     client.cookies.set(COOKIE_NAME, role_tokens[role])
     data = {"matching_run_id": str(uuid4())}
     response = client.post("/api/v1/conflict-runs", headers=ORIGIN, json=data)
     assert response.status_code == (403 if role in {"VIEWER", "NO_ROLES"} else 404)
     assert client.post("/api/v1/conflict-runs", json=data).status_code == 403
-    assert (
-        client.post(
-            "/api/v1/conflicts/" + str(uuid4()) + "/decisions", headers=ORIGIN, json={}
-        ).status_code
-        == 404
-    )
+    assert client.post(
+        "/api/v1/conflicts/" + str(uuid4()) + "/decisions",
+        headers=ORIGIN,
+        json={
+            "context_version": "a" * 64,
+            "idempotency_key": str(uuid4()),
+            "decision_type": "DEFERRED",
+            "reason": "No accessible case",
+            "confirmed": True,
+        },
+    ).status_code == (404 if role in {"REVIEWER", "DATA_OWNER"} else 403)
 
 
 def test_guards_pagination_filters_and_fresh_app_persistence(client, auth_env, role_tokens):

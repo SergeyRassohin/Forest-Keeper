@@ -1,3 +1,4 @@
+import { Decisions } from './Decisions';
 import { useCallback, useEffect, useState, type FormEvent } from 'react';
 import {
   currentUser,
@@ -132,6 +133,7 @@ export function App() {
   const [password, setPassword] = useState('');
   const [page, setPage] = useState('dashboard');
   const [conflictMatchingId, setConflictMatchingId] = useState('');
+  const [decisionId, setDecisionId] = useState('');
   const expire = useCallback(() => setUser(null), []);
 
   useEffect(() => {
@@ -164,6 +166,7 @@ export function App() {
       setUser(await signIn(login, password));
       setPage('dashboard');
       setConflictMatchingId('');
+      setDecisionId('');
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'Не удалось войти.');
     } finally {
@@ -190,6 +193,7 @@ export function App() {
     { key: 'imports', label: 'Импорт данных', caption: 'Источники и нормализация', permission: 'import.view' },
     { key: 'matching', label: 'Сопоставление', caption: 'Идентичность записей', permission: 'match.view' },
     { key: 'conflicts', label: 'Конфликты', caption: 'Расхождения значений', permission: 'conflict.view' },
+    { key: 'decisions', label: 'Реестр решений', caption: 'Подтверждённая история', permission: 'decision.view' },
     { key: 'users', label: 'Пользователи', caption: 'Администрирование', permission: 'user.view' },
   ];
   const currentSection = sections.find((item) => item.key === page);
@@ -214,14 +218,14 @@ export function App() {
 
   return <><a className="skip-link" href="#main-content">Перейти к содержимому</a><div className="app-frame">
     <aside className="app-sidebar">{brand}
-      <nav className="app-nav" aria-label="Разделы приложения">{sections.filter((item) => user.permissions.includes(item.permission)).map((item, index) => <button key={item.key} aria-current={page === item.key ? 'page' : undefined} onClick={() => setPage(item.key)}><span className="nav-index" aria-hidden="true">0{index + 1}</span>{item.label}</button>)}</nav>
+      <nav className="app-nav" aria-label="Разделы приложения">{sections.filter((item) => user.permissions.includes(item.permission)).map((item, index) => <button key={item.key} aria-current={page === item.key ? 'page' : undefined} onClick={() => { setPage(item.key); if (item.key === 'decisions') setDecisionId(''); }}><span className="nav-index" aria-hidden="true">0{index + 1}</span>{item.label}</button>)}</nav>
       <div className="sidebar-note">Источники сохраняются.<br />Основания доступны.<br />Решение принимает человек.</div>
     </aside>
     <div className="app-workspace">
       <header className="workspace-header"><span className="workspace-title"><small>Рабочее пространство</small>{currentSection?.caption ?? 'Обзор'}</span><span className="identity">{user.display_name}<small>{user.roles.join(' · ')}</small></span><button onClick={leave} disabled={busy}>Выйти</button></header>
       <div className="workspace-content" id="main-content" tabIndex={-1}>
         {error && <p className="shell" role="alert">{error}</p>}
-        {page === 'conflicts' && user.permissions.includes('conflict.view') ? <Conflicts user={user} onSessionExpired={expire} initialRunId={conflictMatchingId} /> : page === 'matching' && user.permissions.includes('match.view') ? <Matching user={user} onSessionExpired={expire} onConflicts={(id) => { setConflictMatchingId(id); setPage('conflicts'); }} /> : page === 'imports' && user.permissions.includes('import.view') ? <Imports user={user} onSessionExpired={expire} /> : page === 'users' && user.permissions.includes('user.view') ? <UserAdmin canManage={user.permissions.includes('user.manage') && user.permissions.includes('role.assign')} /> : user.permissions.includes('dashboard.view') ? <HealthDashboard onSessionExpired={expire} /> : <main className="shell"><p className="eyebrow">Права доступа</p><h1>Доступ не назначен</h1><p>Обратитесь к администратору для назначения роли.</p></main>}
+        {page === 'conflicts' && user.permissions.includes('conflict.view') ? <Conflicts user={user} onSessionExpired={expire} initialRunId={conflictMatchingId} onOpenDecision={(id) => { setDecisionId(id); setPage('decisions'); }} /> : page === 'matching' && user.permissions.includes('match.view') ? <Matching user={user} onSessionExpired={expire} onConflicts={(id) => { setConflictMatchingId(id); setPage('conflicts'); }} /> : page === 'imports' && user.permissions.includes('import.view') ? <Imports user={user} onSessionExpired={expire} /> : page === 'decisions' && user.permissions.includes('decision.view') ? <Decisions onSessionExpired={expire} initialId={decisionId} /> : page === 'users' && user.permissions.includes('user.view') ? <UserAdmin canManage={user.permissions.includes('user.manage') && user.permissions.includes('role.assign')} /> : user.permissions.includes('dashboard.view') ? <HealthDashboard onSessionExpired={expire} /> : <main className="shell"><p className="eyebrow">Права доступа</p><h1>Доступ не назначен</h1><p>Обратитесь к администратору для назначения роли.</p></main>}
       </div>
       <footer className="shell workspace-footer">Исходные данные сохраняются. Окончательное решение принимает человек.</footer>
     </div>

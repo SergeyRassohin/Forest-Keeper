@@ -42,12 +42,13 @@ def main() -> None:
         with path.open("x") as output:
             os.chmod(path, 0o600)
             with Session(engine) as session:
-                for role in (Role.ADMIN, Role.VIEWER, Role.REVIEWER):
+                for role in (Role.ADMIN, Role.VIEWER, Role.REVIEWER, Role.DATA_OWNER):
                     login = prefix + "_" + role.lower()
                     password = secrets.token_urlsafe(24)
                     session.add(
                         User(
                             login=login,
+                            data_domains=["*"],
                             full_name="E2E " + role,
                             password_hash=hash_password(password),
                             roles=[UserRole(role_code=role)],

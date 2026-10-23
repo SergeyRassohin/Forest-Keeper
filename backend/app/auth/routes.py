@@ -19,7 +19,7 @@ from app.auth.dependencies import (
     require_permission,
 )
 from app.auth.models import AuditEvent, AuthSession, User, UserRole
-from app.auth.schemas import LoginRequest, LoginResponse, UserCreate, UserView
+from app.auth.schemas import DomainScope, LoginRequest, LoginResponse, UserCreate, UserView
 from app.auth.security import dummy_hash, hash_password, token_digest, verify_password
 from app.common.errors import ApiError
 
@@ -145,6 +145,7 @@ def create_user(
         raise ApiError(403, "REAUTH_REQUIRED", "Для управления пользователями войдите повторно")
     user = User(
         login=body.login,
+        data_domains=body.data_domains,
         full_name=body.full_name,
         job_title=body.job_title,
         password_hash=hash_password(body.password.get_secret_value()),
@@ -160,11 +161,44 @@ def create_user(
                 user_id=actor.id,
                 object_type="User",
                 object_id=user.id,
-                payload={"roles": sorted(set(body.roles))},
+                payload={"roles": sorted(set(body.roles)), "data_domains": body.data_domains},
             )
         )
         session.commit()
     except IntegrityError as error:
         session.rollback()
         raise ApiError(409, "LOGIN_ALREADY_EXISTS", "Этот логин уже используется") from error
+    return UserView.of(user)
+
+
+@router.put(
+    "/users/{user_id}/data-scope",
+    response_model=UserView,
+    dependencies=[Depends(require_permission("role.assign"))],
+)
+def assign_scope(
+    user_id: UUID,
+    body: DomainScope,
+    request: Request,
+    session: Db,
+    actor: Annotated[User, Depends(require_permission("user.manage"))],
+) -> UserView:
+    record: AuthSession = request.state.auth_session
+    if datetime.now(UTC) - record.created_at > timedelta(minutes=5):
+        raise ApiError(403, "REAUTH_REQUIRED", "Для изменения области доступа войдите повторно")
+    user = session.scalar(select(User).where(User.id == user_id).with_for_update())
+    if user is None:
+        raise ApiError(404, "USER_NOT_FOUND", "Пользователь не найден")
+    previous = list(user.data_domains)
+    user.data_domains = body.data_domains
+    session.add(
+        AuditEvent(
+            event_type="DATA_SCOPE_ASSIGNED",
+            user_id=actor.id,
+            object_type="User",
+            object_id=user.id,
+            payload={"previous": previous, "data_domains": body.data_domains},
+        )
+    )
+    session.commit()
     return UserView.of(user)
