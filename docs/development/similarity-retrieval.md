@@ -95,7 +95,7 @@ credentials in a shell history. Production provider activation is a future accep
 
 RQ executes bounded batches (1..500, default100). PostgreSQL version/schema advisory locks
 serialize duplicate delivery; each committed batch persists items/vectors/progress atomically.
-Anti-join checkpoints catch late commits with older timestamps/UUIDs. A restart resumes
+Anti-join checkpoints catch late commits with older timestamps/UUIDs. Idle RQ dequeue waits at most the maintenance interval (30s), so recovery also runs without unrelated queued jobs. A restart resumes
 PROCESSING; operational failure records FAILED and a fresh run retries remaining items.
 CLI status exposes progress/checkpoint/error codes. Completed/failed/start/queue/configuration
 and activation events are sanitized audit facts. Old versions remain readable via trusted

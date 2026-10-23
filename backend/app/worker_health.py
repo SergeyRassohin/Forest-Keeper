@@ -8,8 +8,8 @@ from redis import Redis
 
 from app.common.config import Settings
 
-# RQ's idle BLPOP lasts worker_ttl - 15 seconds. The freshness limit must be
-# longer than this legitimate idle interval, as well as busy monitor heartbeats.
+# ForestWorker bounds idle BLPOP by its maintenance interval (30 seconds).
+# Keep a conservative freshness margin for busy monitor heartbeats and scheduling.
 WORKER_TTL_SECONDS = 120
 MAX_HEARTBEAT_AGE_SECONDS = 150
 

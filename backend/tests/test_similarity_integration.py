@@ -689,3 +689,82 @@ def test_pagination_ties_empty_offset_and_local_planner_settings(client, auth_en
             connection.scalar(text("SHOW jit")),
             connection.scalar(text("SHOW statement_timeout")),
         ) == original
+
+
+def test_idle_real_worker_indexes_new_decision_without_another_queue_job(client, auth_env):
+    import subprocess
+    import sys
+    import time
+    from pathlib import Path
+    from uuid import uuid4
+
+    from redis import Redis
+    from rq import Queue
+
+    index(auth_env)
+    case = real_case(client, auth_env)
+    review = begin(client, case)
+    queue_name = "idle-recovery-" + uuid4().hex
+    worker_name = queue_name + "-worker"
+    child_environment = {
+        **os.environ,
+        "FK_DATABASE_URL": auth_env.database_url.get_secret_value(),
+        "FK_REDIS_URL": auth_env.redis_url.get_secret_value(),
+        "FK_DEPLOYMENT_MODE": "test",
+        "FK_SIMILARITY_PROVIDER": "test",
+        "FK_SIMILARITY_ALLOW_TEST_PROVIDER": "true",
+        "FK_SIMILARITY_AUTOINDEX": "true",
+        "FK_IMPORT_QUEUE_NAME": queue_name,
+    }
+    code = (
+        "from redis import Redis; from rq import Queue; "
+        "from app.common.config import Settings; from app.worker import ForestWorker; "
+        "s=Settings(); r=Redis.from_url(s.redis_url.get_secret_value()); "
+        "ForestWorker([Queue(s.import_queue_name,connection=r)],connection=r,"
+        "name=" + repr(worker_name) + ",worker_ttl=120,maintenance_interval=1)"
+        ".work(max_jobs=1,max_idle_time=6,logging_level='ERROR')"
+    )
+    process = subprocess.Popen(
+        [sys.executable, "-c", code],
+        cwd=Path(__file__).resolve().parents[1],
+        env=child_environment,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    engine = make_engine(auth_env)
+    with Redis.from_url(auth_env.redis_url.get_secret_value()) as redis:
+        queue = Queue(queue_name, connection=redis)
+        try:
+            deadline = time.monotonic() + 5
+            while redis.hget("rq:worker:" + worker_name, "state") != b"idle":
+                assert process.poll() is None and time.monotonic() < deadline
+                time.sleep(0.02)
+            assert not queue.get_job_ids()
+            decision = save(client, case, selection(review))
+            process.communicate(timeout=8)
+            assert process.returncode == 0
+            with Session(engine) as session:
+                assert (
+                    session.scalar(
+                        select(DecisionEmbedding).where(
+                            DecisionEmbedding.decision_id == decision["decision_id"]
+                        )
+                    )
+                    is not None
+                ), "Idle maintenance must index without another enqueue"
+        finally:
+            if process.poll() is None:
+                process.terminate()
+                process.communicate(timeout=5)
+            for job_id in [
+                *queue.get_job_ids(),
+                *queue.finished_job_registry.get_job_ids(),
+                *queue.failed_job_registry.get_job_ids(),
+            ]:
+                from rq.job import Job
+
+                job = Job.fetch_many([job_id], connection=redis)[0]
+                if job:
+                    job.delete()
+            queue.delete(delete_jobs=True)
+            engine.dispose()

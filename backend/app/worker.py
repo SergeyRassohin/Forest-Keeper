@@ -13,6 +13,11 @@ from app.worker_health import WORKER_TTL_SECONDS, worker_identity
 
 
 class ForestWorker(Worker):
+    @property
+    def dequeue_timeout(self) -> int:
+        # Idle BLPOP must wake in time for recovery/autoindex maintenance.
+        return max(1, min(super().dequeue_timeout, self.maintenance_interval))
+
     def run_maintenance_tasks(self) -> None:
         super().run_maintenance_tasks()  # type: ignore[no-untyped-call]  # RQ's untyped hook.
         try:

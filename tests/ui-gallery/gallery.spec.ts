@@ -229,7 +229,11 @@ test('real product gallery, WCAG baseline and responsive Stage 1–7 path', asyn
   const precedent = history.find((r: { status: string }) => r.status === 'ACTIVE');
   await signOut(page); await signIn(page, 'DATA_OWNER');
   const next = await newRetrievalCase(page, '_next');
-  await expect.poll(async () => (await (await page.request.get('/api/v1/conflicts/' + next.conflict + '/similar-decisions')).json()).state, { timeout: 90000 }).toBe('READY');
+  await expect.poll(async () => {
+    const response = await page.request.get('/api/v1/conflicts/' + next.conflict + '/similar-decisions');
+    const result = await response.json();
+    return { status: response.status(), state: result.state, reason_code: result.reason_code };
+  }, { timeout: 90000 }).toMatchObject({ status: 200, state: 'READY' });
   const similar = page.getByRole('region', { name: 'Похожие прошлые решения', exact: true });
   await similar.getByRole('button', { name: 'Повторить поиск', exact: true }).click();
   await expect(similar).toContainText(precedent.id);
