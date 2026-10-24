@@ -1,5 +1,7 @@
 # Forest Keeper — Architecture v0.2
 
+**Актуально на 23 октября 2026:** Stage 0–6 приняты в `main` через PR #26 (merge `0ce2a14304d0cf28fcf90ec9cd3d6c23601ec852`, exact CI 39947944543 SUCCESS). Stage 7 Similar Decision Retrieval реализуется в отдельной ветке `codex/stage7-similar-decisions` по issue #27. Production embedding provider отключён; синтетический test provider не доказывает промышленное качество. Recommendation Engine, AI/LLM и write-back отсутствуют. #18/#20 остаются открытыми.
+
 ## 1. Общий принцип
 
 Forest Keeper — серверная корпоративная система с защищённым клиентским доступом.
@@ -46,7 +48,7 @@ Web Client — единственное поддерживаемое напра�
 
 ## Статус реализации
 
-Компоненты и потоки ниже — целевая архитектура MVP. В main приняты этапы 0–5.1: вход, импорт, нормализация, Matching, Conflict Engine и фирменный Web UI. Stage 6 реализует Human Review и Decision Registry отдельным модулем backend в отдельном PR; приёмка ещё требует разрешения владельца и CI merge commit. Recommendation/AI runtime отсутствуют. Актуальная [матрица готовности](../deployment/review-readiness.md) отделяет архитектурные требования от доступных функций.
+Компоненты и потоки ниже — целевая архитектура MVP. В main приняты этапы 0–6: вход, импорт, нормализация, Matching, Conflict Engine, Human Review, Decision Registry и фирменный Web UI. Stage 7 добавляет Similar Decision Retrieval в отдельном PR; его приёмка требует полного acceptance и зелёного CI точного финального HEAD. Recommendation/AI runtime отсутствуют. Актуальная [матрица готовности](../deployment/review-readiness.md) отделяет архитектурные требования от доступных функций.
 
 ## 3. Серверный контур
 

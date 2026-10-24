@@ -52,7 +52,7 @@ def test_interrupted_migration_rolls_back_and_repeats_safely(bootstrap_env):
             with engine.begin() as connection:
                 assert (
                     connection.scalar(text("SELECT version_num FROM alembic_version"))
-                    == "0007_decisions"
+                    == "0008_similarity"
                 )
     finally:
         engine.dispose()

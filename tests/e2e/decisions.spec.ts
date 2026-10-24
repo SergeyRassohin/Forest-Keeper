@@ -43,6 +43,9 @@ async function open(page: Page, fixture: { matching: string; conflict: string })
 }
 test('human confirmation receipt refresh correction immutable registry and read-only roles', async ({ page, browser }) => {
   test.setTimeout(180000); await login(page, 'DATA_OWNER'); const fixture = await prepare(page); await open(page, fixture);
+  const retrieval = await (await page.request.get('/api/v1/conflicts/' + fixture.conflict + '/similar-decisions')).json();
+  expect(retrieval.state).toBe('UNAVAILABLE');
+  await expect(page.getByRole('region', { name: 'Похожие прошлые решения', exact: true })).toContainText('Поиск временно недоступен');
   const evidenceBefore = await (await page.request.get('/api/v1/conflicts/' + fixture.conflict)).json();
   await page.getByRole('button', { name: 'Начать рассмотрение', exact: true }).click();
   await page.getByRole('radio', { name: /^Источник A:/ }).check();

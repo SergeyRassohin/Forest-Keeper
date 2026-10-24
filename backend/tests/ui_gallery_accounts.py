@@ -28,6 +28,7 @@ def main() -> None:
                 ("ADMIN", "Администратор демонстрации"),
                 ("REVIEWER", "Эксперт каталога"),
                 ("VIEWER", "Наблюдатель"),
+                ("DATA_OWNER", "Владелец демонстрационных данных"),
             ]:
                 user = session.scalar(select(User).where(User.login == data[role]["login"]))
                 if user is None:

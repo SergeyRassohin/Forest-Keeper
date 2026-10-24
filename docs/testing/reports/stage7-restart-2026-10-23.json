@@ -1,0 +1,25 @@
+{
+  "source_commit": "39fc33c21d9b6647eff00ee662cc404a11eadf59",
+  "project": "fk-stage7",
+  "first_conflict": "84ad4ddf-a98e-5012-ac8b-ad23fad237fb",
+  "new_conflict": "afeafb5e-7752-5500-923b-570ae6c69e78",
+  "decision_id": "2705a96d-e389-42b0-a257-b9aaca78984e",
+  "old_version": "50f2caeb-a180-5381-8a94-cf8ad5caf322",
+  "new_version": "571da90a-c182-565b-85b9-5e08b6705a01",
+  "actual_https": true,
+  "partial_checkpoint_before_restart": 1,
+  "postgres_redis_backend_frontend_restart": true,
+  "worker_recovered_partial_backfill": true,
+  "dual_versions_explicit_activation": true,
+  "duplicate_delivery_idempotent": true,
+  "same_results_after_full_restart": true,
+  "postgres_failure_sanitized_recovery": true,
+  "decision_facts_unchanged": true,
+  "old_vectors_retained": true,
+  "counts": {
+    "decisions": 4,
+    "vectors": 6,
+    "run_processed": 4
+  },
+  "passed": true
+}

@@ -1,6 +1,6 @@
 # Stage 6: Human Review
 
-Stage 6 реализован в отдельной ветке по [issue #25](https://github.com/SergeyRassohin/Forest-Keeper/issues/25). Приёмка требует отдельного разрешения владельца и зелёного CI точного merge commit. Базовая ветка main приняла Stage 5.1 через PR #24, merge `04793d9e3c00a73399388544d76f09a2758b45e1`, CI `39908239589` SUCCESS.
+Stage 6 принят владельцем по [issue #25](https://github.com/SergeyRassohin/Forest-Keeper/issues/25) через PR #26, main `0ce2a14304d0cf28fcf90ec9cd3d6c23601ec852`, exact merge CI `39947944543` SUCCESS. Stage 7 retrieval проверяется отдельно по #27; новые бизнес-права и AI не добавляются.
 
 Conflict фиксирует расхождение. Decision отдельно фиксирует действие человека над конкретным historical evidence. Evidence, raw/normalized values, matching и исходные системы не переписываются. Recommendation/AI/similarity/write-back не входят в этап.
 

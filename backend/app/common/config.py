@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from typing import Literal
 
 from pydantic import Field, SecretStr
 from pydantic_settings import (
@@ -40,3 +41,8 @@ class Settings(BaseSettings):
     import_max_expanded_bytes: int = Field(default=512_000_000, ge=1024)
     import_job_timeout: int = Field(default=900, ge=30, le=7200)
     import_queue_name: str = "forest-keeper"
+    deployment_mode: Literal["production", "development", "test"] = "production"
+    similarity_provider: Literal["unavailable", "test"] = "unavailable"
+    similarity_allow_test_provider: bool = False
+    similarity_autoindex: bool = False
+    similarity_reads_per_minute: int = Field(default=120, ge=1, le=600)

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { HumanReview } from './HumanReview';
+import { SimilarDecisions } from './SimilarDecisions';
 import { StatusBadge, EmptyState, DataValue, Identifier } from './ui';
 import { requestJson as api, SessionExpired, type User } from './api';
 
@@ -8,12 +9,12 @@ type Row = { id: string; entity_id: string; matching_run_id: string; attribute_c
 type Value = { source_name: string; source_id: string; source_record_key: string; raw_record_id: string; entity_id: string; filename: string; file_hash: string; source_position: unknown; presence: string; value: { raw_value: unknown; raw_value_omitted: boolean; normalized_value: unknown; unit: string | null; quality_status: string; normalization_rule: unknown } | null };
 type Detail = Row & { match_candidate_id: string; values_snapshot: Value[]; normalization_origins: { analysis_id: string; source_id: string; profile_id: string; profile_version: string; mapping_hash: string; engine_version: string }[]; basis: { reason_code: string; engine_version: string; config_hash: string; matching_profile_hash: string; matching_evidence: unknown; normalization_context: unknown }; based_on_previous_profile: boolean };
 
-export function Conflicts({ user, onSessionExpired, initialRunId = '', onOpenDecision }: { user: User; onSessionExpired: () => void; initialRunId?: string; onOpenDecision?: (id: string) => void }) {
+export function Conflicts({ user, onSessionExpired, initialRunId = '', initialConflictId = '', onOpenDecision }: { user: User; onSessionExpired: () => void; initialRunId?: string; initialConflictId?: string; onOpenDecision?: (id: string, conflictId: string, matchingId: string) => void }) {
   const [loaded, setLoaded] = useState(false);
   const [matching, setMatching] = useState(initialRunId);
   const [matchingRuns, setMatchingRuns] = useState<{ id: string; status: string }[]>([]);
   const [rows, setRows] = useState<Row[]>([]);
-  const [detailId, setDetailId] = useState('');
+  const [detailId, setDetailId] = useState(initialConflictId);
   const [detail, setDetail] = useState<Detail | null>(null);
   const [runs, setRuns] = useState<Run[]>([]);
   const [filter, setFilter] = useState('');
@@ -89,7 +90,8 @@ export function Conflicts({ user, onSessionExpired, initialRunId = '', onOpenDec
       <p className="muted">Авторитетный источник не задан. Нормализованное значение не является истиной. Forest Codex не настроен.</p>
       <section aria-label="Источники нормализации"><h3>Оба запуска нормализации</h3><div className="comparison-grid">{detail.normalization_origins.map((origin) => <div key={origin.analysis_id}><p>Профиль v{origin.profile_version} · {origin.engine_version}</p><Identifier>Запуск: {origin.analysis_id} · Источник: {origin.source_id}</Identifier><details><summary>Версия и контрольная сумма профиля</summary><Identifier>Профиль: {origin.profile_id} v{origin.profile_version} · SHA-256: {origin.mapping_hash}</Identifier></details></div>)}</div></section>
       <details><summary>Технические идентификаторы, Basis и основания идентичности</summary><p>Conflict ID: <Identifier>{detail.id}</Identifier></p><p>MatchCandidate: <Identifier>{detail.match_candidate_id}</Identifier></p><p>Алгоритм: {detail.basis.engine_version} · Config: <Identifier>{detail.basis.config_hash}</Identifier></p><p>Matching profile: <Identifier>{detail.basis.matching_profile_hash}</Identifier></p><pre>{JSON.stringify(detail.basis, null, 2)}</pre></details>
-      {user.permissions.includes('decision.view') && <HumanReview key={detail.id} conflictId={detail.id} onSessionExpired={onSessionExpired} onSaved={() => setRevision((value) => value + 1)} onOpenDecision={onOpenDecision} />}
+      {user.permissions.includes('decision.view') && <SimilarDecisions key={'similar-' + detail.id} conflictId={detail.id} onSessionExpired={onSessionExpired} onOpenDecision={onOpenDecision ? (id) => onOpenDecision(id, detail.id, detail.matching_run_id) : undefined} />}
+      {user.permissions.includes('decision.view') && <HumanReview key={detail.id} conflictId={detail.id} onSessionExpired={onSessionExpired} onSaved={() => setRevision((value) => value + 1)} onOpenDecision={onOpenDecision ? (id) => onOpenDecision(id, detail.id, detail.matching_run_id) : undefined} />}
     </section>}
   </main>;
 }

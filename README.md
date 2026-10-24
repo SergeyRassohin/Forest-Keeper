@@ -1,5 +1,7 @@
 # Forest Keeper
 
+**Актуально на 23 октября 2026:** Stage 0–6 приняты в `main` через PR #26 (merge `0ce2a14304d0cf28fcf90ec9cd3d6c23601ec852`, exact CI 39947944543 SUCCESS). Stage 7 Similar Decision Retrieval реализуется в отдельной ветке `codex/stage7-similar-decisions` по issue #27. Production embedding provider отключён; синтетический test provider не доказывает промышленное качество. Recommendation Engine, AI/LLM и write-back отсутствуют. #18/#20 остаются открытыми.
+
 Forest Keeper помогает сравнить данные из разных корпоративных систем и разобрать расхождения. Например, одна и та же деталь может иметь разные названия, единицы измерения или значения в 1С и Excel. Продукт сохраняет исходные записи, показывает основания сравнения и оставляет спорное решение человеку.
 
 Целевой результат: подтверждённое решение сохраняется в истории и помогает предложить решение следующего похожего случая. Это направление продукта; доступность функций текущей версии указана ниже.
@@ -19,7 +21,7 @@ Forest Keeper разворачивается внутри инфраструкт
 
 ## Что доступно в проверяемой версии
 
-Проверяемая версия — `main`, в которой приняты этапы 0–5.1 (PR #24). Stage 6 реализуется отдельным PR по #25 и требует приёмки владельца. Matching объединён через [PR #15](https://github.com/SergeyRassohin/Forest-Keeper/pull/15), merge `bea0d55c92540744657feac863084cde131a7f43`; [CI merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39595762080). В main также включены изменения PR #19. Инструкция получает основную ветку; сохраняйте точный SHA проверки.
+Основная версия — `main`, где приняты этапы 0–6 (PR #26). Stage 7 реализуется отдельным PR по #27. Matching объединён через [PR #15](https://github.com/SergeyRassohin/Forest-Keeper/pull/15), merge `bea0d55c92540744657feac863084cde131a7f43`; [CI merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39595762080). В main также включены изменения PR #19. Инструкция получает основную ветку; сохраняйте точный SHA проверки.
 
 | Возможность | Статус |
 | --- | --- |
@@ -28,7 +30,7 @@ Forest Keeper разворачивается внутри инфраструкт
 | Нормализация по объявленному профилю, качество значений, история правил | Реализовано, этап 3 принят |
 | Matching: совпадение / требует проверки / не совпадает | Реализовано в main, этап 4 принят; независимый retest и CI merge commit PASS |
 | Conflict Engine | Реализован в main, этап 5 принят; persisted OPEN conflicts, Basis/provenance и read-only UI |
-| Human Review + Decision Registry | Реализовано в ветке Stage 6; [сценарий и ограничения](docs/development/human-review.md), отдельная приёмка/merge ожидаются |
+| Human Review + Decision Registry | Принято в main через PR #26; [сценарий и ограничения](docs/development/human-review.md) |
 | Поиск прошлого Decision, рекомендации, AI inference | Не реализовано в main |
 | Получение и проверка pinned Qwen artifacts | [Команды и точные ссылки](docs/ai/model-downloads.md); это подготовка файлов, без запуска AI |
 | Корпоративный установщик, лицензирование, Update Service | Последующие этапы |
@@ -102,10 +104,12 @@ Forest Keeper разворачивается внутри инфраструкт
 
 ## Stage 5: принят в main — 22 октября 2026
 
-PR #22 объединён владельцем в main: `6235dd6a18f8cbb8aeceac2a7d052f5fca396482`; [CI точного merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39768647312). Этап 5 принят; 679 тестов и независимый runtime/security/product-intent retest PASS. Шаг Stage 5 из #20 завершён. Stage 6–7 — следующий отдельный этап; #18/#20 остаются открытыми. Полный MVP #18/#20 остаётся незавершённым.
+PR #22 объединён владельцем в main: `6235dd6a18f8cbb8aeceac2a7d052f5fca396482`; [CI точного merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39768647312). Этап 5 принят; 679 тестов и независимый runtime/security/product-intent retest PASS. Шаг Stage 5 из #20 завершён. Stage 6 принят через PR #26; Stage 7 проверяется отдельно по #27; #18/#20 остаются открытыми. Полный MVP #18/#20 остаётся незавершённым.
 
 ## Stage 5.1: интерфейс и реальные экраны
 
 В ветке Stage 5.1 обновлены вход, навигация, импорт и исходные записи, нормализация, сопоставление, конфликты и администрирование. [Галерея из настоящего приложения](frontend/public/interface/index.html) доступна после сборки по `/interface/`; [снимки и manifest](frontend/public/interface/) можно просмотреть прямо в GitHub. [Правила оформления и воспроизведение](docs/development/ui-brand-guidelines.md), [инструкция страницы сайта](docs/site/interface.md).
 
 Данные демонстрации синтетические. Галерея отделяет реализованные функции от следующих этапов. Публикация на прежнем внешнем домене требует доступа к проекту сайта; исходники страницы подготовлены здесь. Stage 5.1 не добавляет бизнес-решения, AI и запись в системы-источники.
+
+Подробнее: [Stage 7 Similar Decision Retrieval](docs/development/similarity-retrieval.md). Поиск прошлых решений не предлагает и не сохраняет новое решение.

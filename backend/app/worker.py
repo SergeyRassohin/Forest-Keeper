@@ -8,10 +8,16 @@ from app.conflicts.jobs import recover_runs as recover_conflicts
 from app.imports.jobs import recover_imports
 from app.matching.jobs import recover_runs as recover_matching
 from app.normalization.jobs import recover_runs
+from app.similarity.jobs import recover_indexes
 from app.worker_health import WORKER_TTL_SECONDS, worker_identity
 
 
 class ForestWorker(Worker):
+    @property
+    def dequeue_timeout(self) -> int:
+        # Idle BLPOP must wake in time for recovery/autoindex maintenance.
+        return max(1, min(super().dequeue_timeout, self.maintenance_interval))
+
     def run_maintenance_tasks(self) -> None:
         super().run_maintenance_tasks()  # type: ignore[no-untyped-call]  # RQ's untyped hook.
         try:
@@ -19,6 +25,7 @@ class ForestWorker(Worker):
             recover_runs(settings, self.connection)
             recover_matching(settings, self.connection)
             recover_conflicts(settings, self.connection)
+            recover_indexes(settings, self.connection)
         except Exception:
             # Database failures can include credentials or raw input in their text.
             logging.getLogger(__name__).warning("BACKGROUND_RECOVERY_UNAVAILABLE")
@@ -32,6 +39,7 @@ def main() -> None:
         recover_runs(settings, connection)
         recover_matching(settings, connection)
         recover_conflicts(settings, connection)
+        recover_indexes(settings, connection)
         ForestWorker(
             [Queue(settings.import_queue_name, connection=connection)],
             connection=connection,

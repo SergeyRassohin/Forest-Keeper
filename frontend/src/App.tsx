@@ -133,6 +133,7 @@ export function App() {
   const [password, setPassword] = useState('');
   const [page, setPage] = useState('dashboard');
   const [conflictMatchingId, setConflictMatchingId] = useState('');
+  const [conflictId, setConflictId] = useState('');
   const [decisionId, setDecisionId] = useState('');
   const expire = useCallback(() => setUser(null), []);
 
@@ -166,6 +167,7 @@ export function App() {
       setUser(await signIn(login, password));
       setPage('dashboard');
       setConflictMatchingId('');
+      setConflictId('');
       setDecisionId('');
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'Не удалось войти.');
@@ -225,7 +227,7 @@ export function App() {
       <header className="workspace-header"><span className="workspace-title"><small>Рабочее пространство</small>{currentSection?.caption ?? 'Обзор'}</span><span className="identity">{user.display_name}<small>{user.roles.join(' · ')}</small></span><button onClick={leave} disabled={busy}>Выйти</button></header>
       <div className="workspace-content" id="main-content" tabIndex={-1}>
         {error && <p className="shell" role="alert">{error}</p>}
-        {page === 'conflicts' && user.permissions.includes('conflict.view') ? <Conflicts user={user} onSessionExpired={expire} initialRunId={conflictMatchingId} onOpenDecision={(id) => { setDecisionId(id); setPage('decisions'); }} /> : page === 'matching' && user.permissions.includes('match.view') ? <Matching user={user} onSessionExpired={expire} onConflicts={(id) => { setConflictMatchingId(id); setPage('conflicts'); }} /> : page === 'imports' && user.permissions.includes('import.view') ? <Imports user={user} onSessionExpired={expire} /> : page === 'decisions' && user.permissions.includes('decision.view') ? <Decisions onSessionExpired={expire} initialId={decisionId} /> : page === 'users' && user.permissions.includes('user.view') ? <UserAdmin canManage={user.permissions.includes('user.manage') && user.permissions.includes('role.assign')} /> : user.permissions.includes('dashboard.view') ? <HealthDashboard onSessionExpired={expire} /> : <main className="shell"><p className="eyebrow">Права доступа</p><h1>Доступ не назначен</h1><p>Обратитесь к администратору для назначения роли.</p></main>}
+        {page === 'conflicts' && user.permissions.includes('conflict.view') ? <Conflicts user={user} onSessionExpired={expire} initialRunId={conflictMatchingId} initialConflictId={conflictId} onOpenDecision={(id, caseId, matchingId) => { setConflictId(caseId); setConflictMatchingId(matchingId); setDecisionId(id); setPage('decisions'); }} /> : page === 'matching' && user.permissions.includes('match.view') ? <Matching user={user} onSessionExpired={expire} onConflicts={(id) => { setConflictMatchingId(id); setConflictId(''); setPage('conflicts'); }} /> : page === 'imports' && user.permissions.includes('import.view') ? <Imports user={user} onSessionExpired={expire} /> : page === 'decisions' && user.permissions.includes('decision.view') ? <Decisions onSessionExpired={expire} initialId={decisionId} onReturnConflict={conflictId ? () => setPage('conflicts') : undefined} /> : page === 'users' && user.permissions.includes('user.view') ? <UserAdmin canManage={user.permissions.includes('user.manage') && user.permissions.includes('role.assign')} /> : user.permissions.includes('dashboard.view') ? <HealthDashboard onSessionExpired={expire} /> : <main className="shell"><p className="eyebrow">Права доступа</p><h1>Доступ не назначен</h1><p>Обратитесь к администратору для назначения роли.</p></main>}
       </div>
       <footer className="shell workspace-footer">Исходные данные сохраняются. Окончательное решение принимает человек.</footer>
     </div>

@@ -37,7 +37,7 @@ ORIGIN = {"Origin": "https://localhost:8443"}
 MATRIX = canonical_matrix()
 
 
-def isolated_environment():
+def isolated_environment(*, preserve_schema=False):
     base = Settings()
     engine = make_engine(base)
     schema = "auth_test_" + uuid4().hex
@@ -68,8 +68,9 @@ def isolated_environment():
         if keys:
             redis.delete(*keys)
         redis.close()
-        with engine.begin() as connection:
-            connection.execute(DropSchema(schema, cascade=True))
+        if not preserve_schema:
+            with engine.begin() as connection:
+                connection.execute(DropSchema(schema, cascade=True))
         engine.dispose()
 
 

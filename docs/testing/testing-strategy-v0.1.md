@@ -84,3 +84,7 @@ Prompt injection, poisoned data, data leakage, forbidden action attempts.
 
 ## Release gate
 Изменение не попадает в релиз при провале обязательных тестов, migration validation, build/lint/type checks или наличии Critical security-проблемы без документированного исключения.
+
+## Stage 7 acceptance
+
+Issue #27 requires actual import→Decision→new Conflict→pgvector retrieval, unrelated/below-threshold cases, all compatibility fields, scope/IDOR, unavailable Registry/review, snapshot concurrency, bounded query abuse, backfill retry/checkpoint/restart, dual versions, migration guards and all Stage1–6 regressions. `tests.benchmark_similarity` uses 100/1k/10k actual persisted synthetic Decision rows with guards enabled, not Conflict queue counts. Browser/gallery exercises real HTTPS plus Axe/five viewports. Independent review and exact-final-HEAD CI precede READY TO MERGE; no merge without owner instruction. [Policies](../development/similarity-retrieval.md).

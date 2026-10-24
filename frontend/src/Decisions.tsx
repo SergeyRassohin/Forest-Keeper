@@ -27,7 +27,7 @@ export function DecisionCard({ decision, title = 'Сохранённое реш�
   </article>;
 }
 
-export function Decisions({ onSessionExpired, initialId = '' }: { onSessionExpired: () => void; initialId?: string }) {
+export function Decisions({ onSessionExpired, initialId = '', onReturnConflict }: { onSessionExpired: () => void; initialId?: string; onReturnConflict?: () => void }) {
   const [items, setItems] = useState<Decision[]>([]);
   const [selected, setSelected] = useState(initialId);
   const [detail, setDetail] = useState<Decision | null>(null);
@@ -65,6 +65,7 @@ export function Decisions({ onSessionExpired, initialId = '' }: { onSessionExpir
   }, [selected, outcome, status, attribute, businessKey, offset, historyOffset, onSessionExpired]);
   function clearDetail() { setSelected(''); setDetail(null); setHistoryOffset(0); setOffset(0); }
   return <main className="shell" aria-label="Реестр решений">
+    {onReturnConflict && <button onClick={onReturnConflict}>Вернуться к текущему конфликту</button>}
     <p className="eyebrow">Подтверждённая история</p><h1>Реестр решений</h1>
     <p>Кто, что и почему решил. Исправления сохраняются новыми записями; предыдущие решения остаются в истории.</p>
     {error && <p role="alert">{error}</p>}

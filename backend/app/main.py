@@ -19,6 +19,7 @@ from app.decisions.routes import router as decision_router
 from app.imports.routes import router as import_router
 from app.matching.routes import router as matching_router
 from app.normalization.routes import router as normalization_router
+from app.similarity.routes import router as similarity_router
 
 
 def create_app(settings: Settings | None = None, checker: HealthChecker | None = None) -> FastAPI:
@@ -52,6 +53,7 @@ def create_app(settings: Settings | None = None, checker: HealthChecker | None =
     app.include_router(matching_router)
     app.include_router(conflict_router)
     app.include_router(decision_router)
+    app.include_router(similarity_router)
 
     @app.exception_handler(ApiError)
     async def api_error(request: Request, error: ApiError) -> JSONResponse:
@@ -120,7 +122,7 @@ def create_app(settings: Settings | None = None, checker: HealthChecker | None =
 
     @app.get("/api/v1/version", dependencies=[Depends(require_permission("update.view"))])
     def version() -> dict[str, str]:
-        return {"name": "Forest Keeper", "version": "0.1.0", "stage": "human-review"}
+        return {"name": "Forest Keeper", "version": "0.1.0", "stage": "similarity-retrieval"}
 
     return app
 

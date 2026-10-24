@@ -41,8 +41,8 @@ NEW→QUEUED→PROCESSING→COMPLETED/FAILED, не вводя новый биз�
 
 Severity LOW — нейтральный технический default, не оценка бизнес-риска. Причина сохранена
 в config snapshot. Никакой production severity policy или «истины» не выводится.
-Conflict создаётся только OPEN. Все mutations и удаления Conflict запрещены DB guard;
-будущий Stage 6/7 должен отдельной миграцией разрешить канонические переходы с Decision.
+Conflict создаётся только OPEN. Исходные evidence и удаления защищены DB guard;
+принятый Stage 6 отдельной миграцией 0007 разрешает только канонические переходы с Decision.
 
 ## Evidence и историчность
 
