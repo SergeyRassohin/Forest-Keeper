@@ -1,0 +1,23 @@
+{
+  "version": "stage8-demo-unanimous-v1",
+  "approval": {
+    "status": "APPROVED",
+    "date": "2026-10-25",
+    "reference": "Repository owner in this chat: Согласен со всеми пунктами.",
+    "proposal_commit": "1ade99f325d1710ea3d0a9734f55ac7aad3fa7b2",
+    "proposal_sha256": "9d4dd635a4366ea762c1f92a5e37f2271cbf0b4bdfdf9274a6c2f5b67b712585"
+  },
+  "demonstration_only": true,
+  "minimum_groups": 5,
+  "maximum_precedents": 20,
+  "group_weight": 1,
+  "agreement": 1,
+  "maximum_disagreement": 0,
+  "dominance_margin": 1,
+  "similarity_threshold": 0.85,
+  "confidence_unit": "INDEPENDENT_PROVENANCE_GROUPS",
+  "grouping": "connected-any-file-raw-key-semantic-current-v1",
+  "permitted_action": "SELECT_VALUE",
+  "audit_max_bytes": 65536,
+  "request_budget_ms": 1500
+}

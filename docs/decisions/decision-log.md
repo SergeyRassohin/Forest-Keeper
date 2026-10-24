@@ -277,3 +277,42 @@ Stage 7 CI idle recovery correction (23 October 2026): cap ForestWorker blocking
 Owner approval: **pending**. Approved policy version/content digest/reference: **none**. No positive recommendation business logic is implemented or enabled by this entry. Any change after approval requires a new version and explicit rationale/fixtures; independent review is required before Stage 8 acceptance.
 
 Entry gate: Stage 7 accepted by owner via PR #28, main merge `c927af513d29d83bd53b1b6522efccb42b5a1341`, exact merge CI 40079346518 SUCCESS. Actual numbering is Stage 6 Human Review+Registry, Stage 7 retrieval, Stage 8 recommendations, next Stage 9 AI/LLM. Historical roadmap numbers remain historical; #17/#18/#20 remain open.
+
+
+## Accepted Stage 8 policy — 25 October 2026
+
+The repository owner explicitly approved all eight product-policy points in this chat:
+**«Согласен со всеми пунктами.»** This follows the complete plain-language explanation
+of minimum five independent provenance groups, conservative correlation, unanimity/zero
+contradiction, explicit source correspondence, SELECT_VALUE-only proposed actions,
+absolute-group evidence strength, complete <=20 evidence window and demonstration-only
+positive recommendations. This is approval to implement Stage 8, not merge authorization.
+
+Approved policy: `stage8-demo-unanimous-v1`. Architecture proposal reviewed at
+commit `1ade99f325d1710ea3d0a9734f55ac7aad3fa7b2`, content SHA-256
+`9d4dd635a4366ea762c1f92a5e37f2271cbf0b4bdfdf9274a6c2f5b67b712585`.
+The earlier pending entry/report is retained as historical provenance, superseded by this
+explicit owner approval. Runtime policy is versioned in
+`backend/app/recommendations/policies/demo-unanimous-v1.json`.
+
+Minimum=5 groups; weight=1 per group; agreement=100%; contradictory outcomes/groups=0;
+dominance margin=1. Similarity retains Stage 7 inclusive0.85 gate, never confidence.
+Pool >20 above-threshold precedents abstains, no hidden pagination. Confidence=number
+of independent supporting groups only when recommended, unit INDEPENDENT_PROVENANCE_GROUPS;
+otherwise null. Full correlation graph includes current-case sentinel: any shared input
+file hash/raw/business-key/semantic evidence joins a component; current component gives
+no support. ENTER_VALUE remains historical context only. Source roles need an explicit
+trusted scoped/versioned map, never A/B/name/type heuristics or implicit authority.
+Production positive synthetic recommendations remain forbidden. Audit receipt cap64KiB,
+shared120reads/min and total1500ms protective budget preserve the proposed bounded design.
+
+Implement stateless deterministic service plus bounded append-only audit receipts first;
+no new SQL schema/state machine or permission. New human Decisions may retain a validated
+receipt snapshot in their immutable JSON context. Existing manual Human Review stays the
+sole commit path and works without recommendations/provider/Redis. Atomic optional receipt
+validation requires the reviewed cooperating-write gate/fresh authorization/idempotent replay
+protocol and its independent race/load/recovery tests; an approved design is not proof of
+its implementation. No unaccepted Rule/authority/Codex or model runtime is invented.
+
+Full issue #29 acceptance, independent verification and green exact-final-HEAD push/PR CI
+remain mandatory before READY TO MERGE. Do not merge or close #17/#18/#20; Stage 9 is excluded.
