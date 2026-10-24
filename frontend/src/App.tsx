@@ -13,6 +13,7 @@ import { UserAdmin } from './UserAdmin';
 import { Imports } from './Imports';
 import { Conflicts } from './Conflicts';
 import { Matching } from './Matching';
+import { ThemeSwitch } from './ThemeSwitch';
 
 const labels = {
   api: 'API',
@@ -213,7 +214,7 @@ export function App() {
     <p className="login-footnote">Доступ определяется вашей ролью. Исходные данные сохраняются.</p>
   </section>;
 
-  if (!user) return <><a className="skip-link" href="#main-content">Перейти к содержимому</a><main className="login-layout" id="main-content">
+  if (!user) return <><a className="skip-link" href="#main-content">Перейти к содержимому</a><header className="login-controls"><ThemeSwitch /></header><main className="login-layout" id="main-content">
     <aside className="login-brand" aria-label="Forest Keeper">{brand}<div><p className="brand-tagline">Ясность там, где данные расходятся.</p><p>Два источника. Объяснимое сравнение. Решение остаётся за человеком.</p></div><p>FOREST KEEPER · WEB CLIENT</p></aside>
     {checking ? <section className="login-panel" role="status"><h1>Проверяем сессию…</h1><p>Подключаем ваше рабочее пространство.</p></section> : failure ? <section className="login-panel"><h1>Подключение недоступно</h1><p role="alert">Не удалось подключиться к серверу.</p><button onClick={() => { setChecking(true); setFailure(false); setRetry(retry + 1); }}>Повторить</button></section> : signInForm}
   </main></>;
@@ -224,7 +225,7 @@ export function App() {
       <div className="sidebar-note">Источники сохраняются.<br />Основания доступны.<br />Решение принимает человек.</div>
     </aside>
     <div className="app-workspace">
-      <header className="workspace-header"><span className="workspace-title"><small>Рабочее пространство</small>{currentSection?.caption ?? 'Обзор'}</span><span className="identity">{user.display_name}<small>{user.roles.join(' · ')}</small></span><button onClick={leave} disabled={busy}>Выйти</button></header>
+      <header className="workspace-header"><span className="workspace-title"><small>Рабочее пространство</small>{currentSection?.caption ?? 'Обзор'}</span><span className="identity">{user.display_name}<small>{user.roles.join(' · ')}</small></span><ThemeSwitch /><button onClick={leave} disabled={busy}>Выйти</button></header>
       <div className="workspace-content" id="main-content" tabIndex={-1}>
         {error && <p className="shell" role="alert">{error}</p>}
         {page === 'conflicts' && user.permissions.includes('conflict.view') ? <Conflicts user={user} onSessionExpired={expire} initialRunId={conflictMatchingId} initialConflictId={conflictId} onOpenDecision={(id, caseId, matchingId) => { setConflictId(caseId); setConflictMatchingId(matchingId); setDecisionId(id); setPage('decisions'); }} /> : page === 'matching' && user.permissions.includes('match.view') ? <Matching user={user} onSessionExpired={expire} onConflicts={(id) => { setConflictMatchingId(id); setConflictId(''); setPage('conflicts'); }} /> : page === 'imports' && user.permissions.includes('import.view') ? <Imports user={user} onSessionExpired={expire} /> : page === 'decisions' && user.permissions.includes('decision.view') ? <Decisions onSessionExpired={expire} initialId={decisionId} onReturnConflict={conflictId ? () => setPage('conflicts') : undefined} /> : page === 'users' && user.permissions.includes('user.view') ? <UserAdmin canManage={user.permissions.includes('user.manage') && user.permissions.includes('role.assign')} /> : user.permissions.includes('dashboard.view') ? <HealthDashboard onSessionExpired={expire} /> : <main className="shell"><p className="eyebrow">Права доступа</p><h1>Доступ не назначен</h1><p>Обратитесь к администратору для назначения роли.</p></main>}

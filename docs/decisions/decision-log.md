@@ -316,3 +316,16 @@ its implementation. No unaccepted Rule/authority/Codex or model runtime is inven
 
 Full issue #29 acceptance, independent verification and green exact-final-HEAD push/PR CI
 remain mandatory before READY TO MERGE. Do not merge or close #17/#18/#20; Stage 9 is excluded.
+
+
+### 2026-10-25 — Stage 8 mandatory light/dark Web Client amendment
+
+Issue #29 §14 (updated 2026-10-24T21:32:34Z) and the user's instruction «Продолжи
+разработку с учётом правок в тз» add a shared light/dark theme control on all screens,
+including login. Persist presentation preference locally, honor system theme before an
+explicit choice, apply safely before first paint and preserve active forms/context/routes.
+Browser storage failure must not break the application. Shared tokens, readable states,
+visible keyboard focus and reduced-motion apply to both themes. Real browser/gallery/Axe/
+responsive acceptance must cover both themes; no backend permission/evidence changes.
+This is an additive Stage 8 requirement; the approved numerical recommendation policy
+and the immutable historical proposal digest are unchanged.
