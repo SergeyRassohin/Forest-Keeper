@@ -57,3 +57,7 @@ Preflight auth не должна оставлять устаревшую identit
 Можно подготовить draft PR с этим proposal/Decision Log и исправлением current-status docs. Конкретные будущие module/API/schema/file changes перечислены; `tests/ui-gallery/gallery.spec.ts` — действительный gallery path. Пути документов раскрыты до repository paths; preflight transaction закрывается до новой gated transaction с fresh ORM state; обход advisory gate прямыми operator SQL явно ограничен quiesce. Эти заключительные уточнения проверены в указанном digest proposal.
 
 Следующий gate — **OWNER_APPROVAL_REQUIRED**, привязанный к конкретному commit/digest policy package. После approval потребуются реализация, новые самостоятельные tests/evidence, independent final review и зелёный exact-final-HEAD CI; затем только READY TO MERGE без автоматического merge. #17/#18/#20 и future Stage 9 не закрываются данным предложением.
+
+## Final document delta acknowledgment
+
+Финальный просмотр подтвердил proposal SHA-256 `9d4dd635a4366ea762c1f92a5e37f2271cbf0b4bdfdf9274a6c2f5b67b712585`: уточнены repository paths, закрытие preflight transaction и fresh ORM state после gate, а также quiesce для operator SQL вне lock protocol. Ранее указанная необходимость этих уточнений устранена. **Proposal-only review: PASS / OWNER_APPROVAL_REQUIRED.** Численная политика не утверждена reviewer; business/runtime acceptance не проводилась и этим отчётом не подразумевается.
