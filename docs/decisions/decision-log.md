@@ -329,3 +329,25 @@ visible keyboard focus and reduced-motion apply to both themes. Real browser/gal
 responsive acceptance must cover both themes; no backend permission/evidence changes.
 This is an additive Stage 8 requirement; the approved numerical recommendation policy
 and the immutable historical proposal digest are unchanged.
+
+
+### 2026-10-25 — Stage 8 physical representation / no-schema refinement
+
+RecommendationResult is a stateless API outcome (RECOMMENDED/ABSTAINED/UNAVAILABLE),
+not a new Conflict/Decision state or a replacement for canonical Recommendation lifecycle
+CURRENT/STALE/SUPERSEDED. Bounded immutable RECOMMENDATION_EVALUATED AuditEvents preserve
+provenance and act as actor/case-bound receipts. No Recommendation SQL table or migration
+is introduced. Reference means the displayed recommendation, not an automatic acceptance;
+MATCHED/OVERRIDDEN is derived from the actual human-selected current references.
+
+New Decisions may add `context_snapshot.recommendation` with nested schema
+`recommendation-receipt-v1`; the existing outer schema_version=1 is preserved (including its
+DB constraint), as this is additive provenance rather than reinterpretation of evidence.
+Absent optional references are excluded from request hashing to preserve historical retries.
+Exact committed reference replay is authorized and checked before new evaluation/rate/Redis;
+new evaluations consume the existing shared read quota outside the exclusive gate.
+All cooperating updates use schema/database-scoped shared gate; only new optional-reference
+confirmation needs exclusive gate, fresh auth/ORM and bounded recomputation. A connection
+SQL hook applies remaining monotonic budget before every SQL, with cleanup at transaction end.
+Audit integrity validates basis digest, event type/actor/case/reference and aware timestamp.
+No advisory-lock claim is made against DB superuser/direct SQL outside the quiesce protocol.

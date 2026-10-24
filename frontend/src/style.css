@@ -47,6 +47,7 @@ label { display: grid; gap: var(--space-2); font-size: .82rem; font-weight: 550;
 form label { margin: 0; }
 input, select, textarea { min-height: var(--control-height); color: var(--text-primary); background: var(--surface); border: 1px solid var(--control-border); border-radius: var(--radius-sm); padding: .7rem .85rem; width: 100%; min-width: 0; max-width: 100%; font-size: .875rem; }
 input:disabled, select:disabled, textarea:disabled { background: var(--surface-muted); color: var(--text-secondary); }
+input::placeholder, textarea::placeholder { color: var(--text-secondary); opacity: 1; }
 input[type='checkbox'] { width: 1.15rem; min-height: 1.15rem; accent-color: var(--brand-primary); }
 input[type='file']::file-selector-button { background: var(--surface-muted); color: var(--brand-primary); border: 0; border-radius: .3rem; padding: .4rem .65rem; margin-right: .75rem; font: inherit; }
 textarea { min-height: 100px; resize: vertical; }
@@ -160,3 +161,6 @@ dialog::backdrop { background: #07110dcc; }
 .decision-timeline li, .decision-card, .decision-receipt { min-width: 0; }
 .decision-timeline button { max-width: 100%; }
 @media(max-width:760px) { .workspace-header { flex-wrap: wrap; } .workspace-title { flex: 1; } .theme-switch { order: 1; } .workspace-header > button { order: 1; margin-left: auto; } }
+
+.recommendation-panel { border-top: 1px solid var(--border); padding-top: var(--space-5); margin-block: var(--space-5); min-width: 0; }
+.recommendation-panel > .source-card { margin-block: var(--space-3); }

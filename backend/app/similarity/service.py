@@ -135,7 +135,14 @@ def compatible_pool(actor: User, case: Conflict, features: dict[str, Any]) -> An
 
 
 def retrieval(
-    session: Session, actor: User, case: Conflict, settings: Settings, limit: int, offset: int
+    session: Session,
+    actor: User,
+    case: Conflict,
+    settings: Settings,
+    limit: int,
+    offset: int,
+    *,
+    prepare_query: bool = True,
 ) -> dict[str, Any]:
     state = session.get(RetrievalState, 1)
     version = (
@@ -185,6 +192,9 @@ def retrieval(
     result["query_context"] = features
     query_cache = session.get(QueryEmbedding, (version.id, feature_hash))
     if query_cache is None:
+        if not prepare_query:
+            result.update(state="INDEXING", reason_code="QUERY_CONTEXT_PENDING")
+            return result
         from app.similarity.jobs import request_query
 
         try:

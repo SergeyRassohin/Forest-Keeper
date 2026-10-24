@@ -1,6 +1,6 @@
 # Forest Keeper
 
-**Актуально на 24 октября 2026:** Stage 0–7 приняты в `main`. Stage 7 — [PR #28](https://github.com/SergeyRassohin/Forest-Keeper/pull/28), merge `c927af513d29d83bd53b1b6522efccb42b5a1341`, [CI точного merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/40079346518). Production embedding provider отключён; synthetic test provider не доказывает промышленное качество. Stage 8 Recommendation Engine начат по [issue #29](https://github.com/SergeyRassohin/Forest-Keeper/issues/29): пока архитектурное предложение, численная policy ожидает одобрения владельца. Recommendation runtime, AI/LLM и write-back отсутствуют; #17/#18/#20 открыты.
+**Актуально на 25 октября 2026:** Stage 0–7 приняты в `main`. Stage 7 — [PR #28](https://github.com/SergeyRassohin/Forest-Keeper/pull/28), merge `c927af513d29d83bd53b1b6522efccb42b5a1341`, [CI точного merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/40079346518). Production embedding provider отключён; synthetic test provider не доказывает промышленное качество. Stage 8 Recommendation Engine начат по [issue #29](https://github.com/SergeyRassohin/Forest-Keeper/issues/29): владелец утвердил численную policy 25 октября; реализация и приёмка в отдельном PR #30 продолжаются. Recommendation runtime, AI/LLM и write-back отсутствуют; #17/#18/#20 открыты.
 
 Forest Keeper помогает сравнить данные из разных корпоративных систем и разобрать расхождения. Например, одна и та же деталь может иметь разные названия, единицы измерения или значения в 1С и Excel. Продукт сохраняет исходные записи, показывает основания сравнения и оставляет спорное решение человеку.
 
@@ -32,7 +32,7 @@ Forest Keeper разворачивается внутри инфраструкт
 | Conflict Engine | Реализован в main, этап 5 принят; persisted OPEN conflicts, Basis/provenance и read-only UI |
 | Human Review + Decision Registry | Принято в main через PR #26; [сценарий и ограничения](docs/development/human-review.md) |
 | Поиск прошлого Decision | Stage 7 принят через PR #28; положительный путь только в явном synthetic test режиме, production provider отключён |
-| Рекомендации | Stage 8: [архитектура и policy на согласование](docs/development/stage8-recommendation-proposal.md); runtime пока отсутствует |
+| Рекомендации | Stage 8 реализуется в PR #30 по утверждённой policy; [контракт и ограничения](docs/development/recommendations.md). В main пока отсутствует |
 | AI inference | Не реализовано; следующий Stage 9 |
 | Получение и проверка pinned Qwen artifacts | [Команды и точные ссылки](docs/ai/model-downloads.md); это подготовка файлов, без запуска AI |
 | Корпоративный установщик, лицензирование, Update Service | Последующие этапы |
@@ -117,3 +117,5 @@ PR #22 объединён владельцем в main: `6235dd6a18f8cbb8aeceac2
 Данные демонстрации синтетические. Галерея отделяет реализованные функции от следующих этапов. Публикация на прежнем внешнем домене требует доступа к проекту сайта; исходники страницы подготовлены здесь. Stage 5.1 не добавляет бизнес-решения, AI и запись в системы-источники.
 
 Подробнее: [Stage 7 Similar Decision Retrieval](docs/development/similarity-retrieval.md). Поиск прошлых решений не предлагает и не сохраняет новое решение.
+
+Светлая и тёмная темы входят в Stage 8: переключатель доступен также до входа. Выбор хранится только в браузере; до ручного выбора учитывается системная тема. Переключение сохраняет открытый экран и текст форм. При обновлении страницы восстанавливаются маршрут и IDs карточки; несохранённый текст после перезагрузки не сохраняется. Тема не передаётся как бизнес-данные. Реальные снимки обеих тем проходят отдельную accessibility/responsive приёмку.

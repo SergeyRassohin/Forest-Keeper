@@ -11,6 +11,8 @@ from sqlalchemy.orm import Session
 
 from app.auth.models import AuditEvent, User
 from app.auth.policy import permits
+from app.common.basis_lock import Budget
+from app.common.config import Settings
 from app.common.errors import ApiError
 from app.conflicts.models import Conflict
 from app.decisions.models import Decision, DecisionType
@@ -313,15 +315,22 @@ def begin_review(
     return review_context(session, case, actor)
 
 
-def save_decision(
-    session: Session, case: Conflict, actor: User, body: CreateDecision, request_id: UUID
-) -> tuple[dict[str, Any], bool]:
-    require(actor, "decision.create")
-    if body.decision_type == DecisionType.INSUFFICIENT_DATA:
-        require(actor, "decision.insufficient_data")
-    if body.supersedes_decision_id:
-        require(actor, "decision.supersede")
-    request_hash = digest(body.model_dump(mode="json"))
+def request_fingerprint(body: CreateDecision) -> str:
+    # Preserve historical manual retry hashes when the new optional field is absent.
+    return digest(
+        body.model_dump(
+            mode="json",
+            exclude={"recommendation_reference"}
+            if body.recommendation_reference is None
+            else set(),
+        )
+    )
+
+
+def retry_receipt(
+    session: Session, case: Conflict, actor: User, body: CreateDecision
+) -> dict[str, Any] | None:
+    request_hash = request_fingerprint(body)
     existing = session.scalar(
         select(Decision).where(
             Decision.user_id == actor.id,
@@ -336,13 +345,48 @@ def save_decision(
                 "IDEMPOTENCY_KEY_REUSED",
                 "Этот ключ отправки уже использован с другим содержимым",
             )
-        return receipt(session, existing, case), False
+        return receipt(session, existing, case)
+    return None
+
+
+def save_decision(
+    session: Session,
+    case: Conflict,
+    actor: User,
+    body: CreateDecision,
+    request_id: UUID,
+    *,
+    recommendation_settings: Settings | None = None,
+    recommendation_budget: Budget | None = None,
+) -> tuple[dict[str, Any], bool]:
+    require(actor, "decision.create")
+    if body.decision_type == DecisionType.INSUFFICIENT_DATA:
+        require(actor, "decision.insufficient_data")
+    if body.supersedes_decision_id:
+        require(actor, "decision.supersede")
+    if body.recommendation_reference is not None:
+        require(actor, "recommendation.accept_as_decision")
+    request_hash = request_fingerprint(body)
+    existing_receipt = retry_receipt(session, case, actor, body)
+    if existing_receipt is not None:
+        return existing_receipt, False
     check_version(case, body.context_version)
     check_predecessor(case, body.supersedes_decision_id, actor)
     if case.status != "IN_REVIEW":
         raise ApiError(409, "REVIEW_NOT_STARTED", "Сначала начните рассмотрение этого конфликта")
     selected = resolve_value(body, case.values_snapshot)
     snapshot = historical_context(session, case)
+    recommendation_context = None
+    if body.recommendation_reference is not None:
+        from app.recommendations.audit import validate_reference
+
+        if recommendation_settings is None or recommendation_budget is None:
+            raise ApiError(409, "STALE_RECOMMENDATION", "Перечитайте рекомендацию")
+        recommendation_context = validate_reference(
+            session, actor, case, body, recommendation_settings, recommendation_budget
+        )
+        snapshot["recommendation"] = recommendation_context
+        recommendation_budget.arm(session)
     identifier = uuid4()
     evidence_hash = digest(frozen_evidence(case))
     audit(
@@ -366,6 +410,7 @@ def save_decision(
         evidence_hash=evidence_hash,
         context_version=body.context_version,
         schema_version=1,
+        recommendation=recommendation_context,
     )
     # The Decision links an already persisted audit event in this same transaction.
     session.flush()
@@ -420,6 +465,8 @@ def save_decision(
         decision_id=identifier,
         version=case.review_version,
     )
+    if recommendation_budget is not None:
+        recommendation_budget.prepare_commit(session)
     session.commit()  # Decision, head, lifecycle and audit are one durable PostgreSQL transaction.
     return receipt(session, row, case), True
 

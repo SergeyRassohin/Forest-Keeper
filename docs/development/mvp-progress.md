@@ -1,6 +1,6 @@
 # MVP: состояние реализации
 
-**Актуально на 24 октября 2026:** Stage 0–7 приняты в `main`. Stage 7 — [PR #28](https://github.com/SergeyRassohin/Forest-Keeper/pull/28), merge `c927af513d29d83bd53b1b6522efccb42b5a1341`, [CI точного merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/40079346518). Production embedding provider отключён; synthetic test provider не доказывает промышленное качество. Stage 8 Recommendation Engine начат по [issue #29](https://github.com/SergeyRassohin/Forest-Keeper/issues/29): пока архитектурное предложение, численная policy ожидает одобрения владельца. Recommendation runtime, AI/LLM и write-back отсутствуют; #17/#18/#20 открыты.
+**Актуально на 25 октября 2026:** Stage 0–7 приняты в `main`. Stage 7 — [PR #28](https://github.com/SergeyRassohin/Forest-Keeper/pull/28), merge `c927af513d29d83bd53b1b6522efccb42b5a1341`, [CI точного merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/40079346518). Production embedding provider отключён; synthetic test provider не доказывает промышленное качество. Stage 8 Recommendation Engine начат по [issue #29](https://github.com/SergeyRassohin/Forest-Keeper/issues/29): владелец утвердил численную policy 25 октября; реализация и приёмка в отдельном PR #30 продолжаются. Recommendation runtime, AI/LLM и write-back отсутствуют; #17/#18/#20 открыты.
 
 ## Итерация 1 — этап 0
 
@@ -133,3 +133,7 @@ Stage 6: [acceptance и ограничения](../testing/reports/stage6-human-
 От принятого Stage 7 main создана `codex/stage8-recommendations`. [Архитектура, точная предлагаемая численная policy, source mapping, evidence grouping, API/schema/files и реестр всех 14 спорных вопросов](stage8-recommendation-proposal.md) подготовлены до business-code. Статус **OWNER_APPROVAL_REQUIRED**, не acceptance. До утверждения владельцем policy положительных рекомендаций не реализуется/не включается.
 
 Фактическая нумерация: объединённый Human Review + Registry = Stage 6; retrieval = Stage 7 (старый 8); recommendation = Stage 8 (старый 9); AI/LLM integration = следующий Stage 9 (старый 10). Historical reports сохраняют свои названия. Правила/Codex #17, полный MVP #18/#20 и merge этого PR не принимаются автоматически.
+
+### Stage 8 — owner approval и дополнение тем, 25 октября 2026
+
+Владелец согласовал все восемь пунктов политики в чате: «Согласен со всеми пунктами.». Это разрешение на реализацию, без merge. [Decision Log](../decisions/decision-log.md) фиксирует version/hash исходного предложения. Issue #29 §14 добавил общий light/dark переключатель; пользователь явно поручил учесть правки ТЗ. Ветка и draft PR #30 сохранены. Реализуются deterministic API/evidence/audit/manual-confirmation bridge, обе темы и URL восстановление карточки. [Текущий контракт](recommendations.md). Исторические proposal/review документы сохраняют прежний pending статус как состояние на дату их создания; новый approval имеет приоритет. Полный acceptance и exact-final-HEAD CI ещё не завершены.

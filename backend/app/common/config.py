@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from typing import Literal
+from typing import Any, Literal
 
 from pydantic import Field, SecretStr
 from pydantic_settings import (
@@ -46,3 +46,5 @@ class Settings(BaseSettings):
     similarity_allow_test_provider: bool = False
     similarity_autoindex: bool = False
     similarity_reads_per_minute: int = Field(default=120, ge=1, le=600)
+    recommendation_enabled: bool = False
+    recommendation_source_map: dict[str, Any] = Field(default_factory=dict)

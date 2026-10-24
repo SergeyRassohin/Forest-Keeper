@@ -16,6 +16,7 @@ class BeginReview(BaseModel):
 
 class CreateDecision(BeginReview):
     idempotency_key: UUID
+    recommendation_reference: UUID | None = None
     decision_type: DecisionType
     selected_source_id: UUID | None = None
     selected_value_id: UUID | None = None

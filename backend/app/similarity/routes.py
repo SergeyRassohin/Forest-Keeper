@@ -4,13 +4,14 @@ from uuid import UUID
 
 from fastapi import APIRouter, Depends, Query, Request
 from pydantic import BaseModel, ConfigDict, Field
-from redis.exceptions import RedisError
 from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 
 from app.auth.dependencies import Cache, Config, Db
 from app.auth.models import User
+from app.common.basis_lock import Budget
 from app.common.errors import ApiError
+from app.common.retrieval_rate import read_budget
 from app.decisions.routes import access, authenticated, record_rejection
 from app.decisions.service import case_for
 from app.similarity.service import retrieval
@@ -25,10 +26,14 @@ class RetrievalQuery(BaseModel):
 
 
 def snapshot_actor(request: Request, session: Db, settings: Config) -> User:
+    request.state.retrieval_deadline = time.monotonic() + 1.5
+    request.state.retrieval_budget = Budget(deadline=request.state.retrieval_deadline)
     # Establish the snapshot before authentication and every later retrieval SELECT.
     try:
         session.connection(execution_options={"isolation_level": "REPEATABLE READ"})
         session.execute(text("SET TRANSACTION READ ONLY"))
+        if request.url.path.endswith("/recommendation"):
+            request.state.retrieval_budget.arm(session)
         session.execute(text("SET LOCAL statement_timeout = '1500ms'"))
     except SQLAlchemyError:
         session.rollback()
@@ -52,24 +57,7 @@ def similar(
     try:
         access(actor, "conflict.view", request, session)
         access(actor, "decision.view", request, session)
-        try:
-            key = (
-                settings.auth_rate_prefix
-                + "similarity:"
-                + str(actor.id)
-                + ":"
-                + str(int(time.time() // 60))
-            )
-            with cache.pipeline() as pipeline:
-                pipeline.incr(key)
-                pipeline.expire(key, 120, nx=True)
-                count, _ = pipeline.execute()
-            if count > settings.similarity_reads_per_minute:
-                raise ApiError(
-                    429, "RETRIEVAL_RATE_LIMITED", "Слишком много запросов поиска. Повторите позже"
-                )
-        except RedisError:
-            raise ApiError(503, "RETRIEVAL_UNAVAILABLE", "Поиск временно недоступен") from None
+        read_budget(cache, settings, actor)
         return retrieval(
             session,
             actor,
