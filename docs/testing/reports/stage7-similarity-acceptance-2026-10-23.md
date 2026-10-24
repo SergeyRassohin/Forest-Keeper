@@ -58,6 +58,12 @@ The refreshed [isolated real HTTPS restart proof](stage7-restart-idle-fix-2026-1
 
 All responses passed; concurrent p95≤1s meets the stated NFR in this synthetic profile on a 4-CPU quota shared host. Exact compatible search and the partial integrity index are visible in the 10k plan; no ANN/HNSW recall claim. Report includes top-N 1/5/20, indexing throughput, process peak RSS, artifact/Decision/B-tree sizes and first-query preparation latency. Initial failed optimization runs are not acceptance numbers. The first benchmark query does not flush OS/PostgreSQL caches. A separate [PostgreSQL shared-buffer cold measurement](stage7-cold-cache-2026-10-23.json) restarts only the owned PostgreSQL process: first top 20 query over 10k compatible Decisions **0.313s**, then top 1/5/20 warm **0.229/0.108/0.122s**. OS filesystem cache is deliberately retained on the shared host. 100k actual Decision capacity and production semantic/provider quality remain unverified.
 
+## Security audit follow-up — 24 October 2026, Europe/Moscow
+
+Exact 08fc40f CI stopped at SCA after filelock 4.1.1 was reported with six advisories: CVE-2026-112906,112940,112914,112913,112937,112907. All require 4.2.1. The lock update changes only filelock's version and pinned PyPI distribution hashes. Its dependency path is dev-only pip-audit→cachecontrol[filecache]→filelock; Docker's `--no-dev` runtime excludes it. Exported production requirements are byte-identical before/after this update.
+
+Fresh Python/npm audit reports zero known vulnerabilities; fresh `check.sh` passes 256 unit/49 component tests and all lint/type/build/gallery checks. Independent lock/production-closure review passes. No audit exemption or test weakening. Existing runtime/browser/restart/capacity evidence covers unchanged production dependencies and application code; final CI repeats the complete gates. The failed 08fc run is historical evidence, not final approval.
+
 ## Merge boundary
 
 No merge is authorized by this report. READY TO MERGE requires completed gates, independent review without blockers and successful CI for the exact final HEAD. Owner approval is required before merge; exact merge-commit CI is a later gate. Issues #27/#18/#20 remain open; full MVP acceptance and external-site publication are not claimed.
