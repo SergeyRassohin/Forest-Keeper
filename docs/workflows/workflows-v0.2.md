@@ -39,8 +39,12 @@ Observer не блокирует исходные системы.
 
 ## Stage 6: реализованный human workflow
 
-Conflict evidence → явное начало рассмотрения → допустимый outcome + reason → подтверждение → атомарный Decision/lifecycle/audit → receipt → Registry/history. Исправление — новый Decision с supersedes, без переписывания старого. [Пошаговый сценарий](../development/human-review.md). Similar Decision Retrieval/recommendation/AI/write-back остаются Stage 7+.
+Conflict evidence → явное начало рассмотрения → допустимый outcome + reason → подтверждение → атомарный Decision/lifecycle/audit → receipt → Registry/history. Исправление — новый Decision с supersedes, без переписывания старого. [Пошаговый сценарий](../development/human-review.md). Bounded retrieval принят отдельно как Stage 7; recommendation runtime/AI/write-back отсутствуют.
 
-## Stage 7 retrieval branch (issue #27)
+## Stage 7 bounded retrieval — принят в main через PR #28
 
 New Conflict → scope/permission → versioned structured context → background query preparation if absent → scoped eligibility/compatibility → complete active pgvector representation → exact cosine top-N → real historical Decision IDs → human reads actual history. No proposed action and no automatic Decision. Production provider unavailable is explicit and preserves Registry/review. [Workflow and recovery](../development/similarity-retrieval.md).
+
+## Stage 8 Recommendation Engine — предложение по issue #29
+
+[Архитектура и численная demo policy](../development/stage8-recommendation-proposal.md) подготовлены до реализации. Owner approval policy ожидается; это ещё не работающий recommendation workflow. Фактический Stage 6 объединил Human Review + Registry; нынешние Stage 7/8/9 соответствуют старым roadmap 8/9/10. Следующий Stage 9 — AI/LLM integration, не часть текущего Stage 8.

@@ -1,6 +1,6 @@
 # Forest Keeper
 
-**Актуально на 23 октября 2026:** Stage 0–6 приняты в `main` через PR #26 (merge `0ce2a14304d0cf28fcf90ec9cd3d6c23601ec852`, exact CI 39947944543 SUCCESS). Stage 7 Similar Decision Retrieval реализуется в отдельной ветке `codex/stage7-similar-decisions` по issue #27. Production embedding provider отключён; синтетический test provider не доказывает промышленное качество. Recommendation Engine, AI/LLM и write-back отсутствуют. #18/#20 остаются открытыми.
+**Актуально на 24 октября 2026:** Stage 0–7 приняты в `main`. Stage 7 — [PR #28](https://github.com/SergeyRassohin/Forest-Keeper/pull/28), merge `c927af513d29d83bd53b1b6522efccb42b5a1341`, [CI точного merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/40079346518). Production embedding provider отключён; synthetic test provider не доказывает промышленное качество. Stage 8 Recommendation Engine начат по [issue #29](https://github.com/SergeyRassohin/Forest-Keeper/issues/29): пока архитектурное предложение, численная policy ожидает одобрения владельца. Recommendation runtime, AI/LLM и write-back отсутствуют; #17/#18/#20 открыты.
 
 Forest Keeper помогает сравнить данные из разных корпоративных систем и разобрать расхождения. Например, одна и та же деталь может иметь разные названия, единицы измерения или значения в 1С и Excel. Продукт сохраняет исходные записи, показывает основания сравнения и оставляет спорное решение человеку.
 
@@ -21,7 +21,7 @@ Forest Keeper разворачивается внутри инфраструкт
 
 ## Что доступно в проверяемой версии
 
-Основная версия — `main`, где приняты этапы 0–6 (PR #26). Stage 7 реализуется отдельным PR по #27. Matching объединён через [PR #15](https://github.com/SergeyRassohin/Forest-Keeper/pull/15), merge `bea0d55c92540744657feac863084cde131a7f43`; [CI merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39595762080). В main также включены изменения PR #19. Инструкция получает основную ветку; сохраняйте точный SHA проверки.
+Основная версия — `main`, где приняты этапы 0–7 (Stage 6 — PR #26, Stage 7 — PR #28). Stage 8 готовится отдельным PR по #29. Matching объединён через [PR #15](https://github.com/SergeyRassohin/Forest-Keeper/pull/15), merge `bea0d55c92540744657feac863084cde131a7f43`; [CI merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39595762080). В main также включены изменения PR #19. Инструкция получает основную ветку; сохраняйте точный SHA проверки.
 
 | Возможность | Статус |
 | --- | --- |
@@ -31,11 +31,15 @@ Forest Keeper разворачивается внутри инфраструкт
 | Matching: совпадение / требует проверки / не совпадает | Реализовано в main, этап 4 принят; независимый retest и CI merge commit PASS |
 | Conflict Engine | Реализован в main, этап 5 принят; persisted OPEN conflicts, Basis/provenance и read-only UI |
 | Human Review + Decision Registry | Принято в main через PR #26; [сценарий и ограничения](docs/development/human-review.md) |
-| Поиск прошлого Decision, рекомендации, AI inference | Не реализовано в main |
+| Поиск прошлого Decision | Stage 7 принят через PR #28; положительный путь только в явном synthetic test режиме, production provider отключён |
+| Рекомендации | Stage 8: [архитектура и policy на согласование](docs/development/stage8-recommendation-proposal.md); runtime пока отсутствует |
+| AI inference | Не реализовано; следующий Stage 9 |
 | Получение и проверка pinned Qwen artifacts | [Команды и точные ссылки](docs/ai/model-downloads.md); это подготовка файлов, без запуска AI |
 | Корпоративный установщик, лицензирование, Update Service | Последующие этапы |
 
 Этап 3 принят через [PR #13](https://github.com/SergeyRassohin/Forest-Keeper/pull/13), merge `6a494534a49960b79fdf64e5e2b8436c32011688`; [CI merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39452965438). Этап 4 принят через PR #15. Stage 5 принят через PR #22. Перед Stage 6–7 реализован отдельный **Stage 5.1: фирменный Web UI и галерея**; результаты проверок, CI и отдельное разрешение на merge фиксируются в его PR. Полный путь «свой файл → конфликт → Decision → похожий случай → рекомендация» пока **заблокирован отсутствующими модулями**, см. [критерии готовности](docs/deployment/review-readiness.md). Зелёный health означает готовность инфраструктуры, а не наличие всех бизнес-функций.
+
+Нумерация: фактический Stage 6 объединил Human Review + Registry; Stage 7 = retrieval, Stage 8 = recommendations, следующий Stage 9 = AI/LLM. Старые roadmap stages 8/9/10 соответствуют нынешним 7/8/9. Исторические документы не перенумеровываются задним числом.
 
 ## Что можно проверить сейчас
 
@@ -104,7 +108,7 @@ Forest Keeper разворачивается внутри инфраструкт
 
 ## Stage 5: принят в main — 22 октября 2026
 
-PR #22 объединён владельцем в main: `6235dd6a18f8cbb8aeceac2a7d052f5fca396482`; [CI точного merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39768647312). Этап 5 принят; 679 тестов и независимый runtime/security/product-intent retest PASS. Шаг Stage 5 из #20 завершён. Stage 6 принят через PR #26; Stage 7 проверяется отдельно по #27; #18/#20 остаются открытыми. Полный MVP #18/#20 остаётся незавершённым.
+PR #22 объединён владельцем в main: `6235dd6a18f8cbb8aeceac2a7d052f5fca396482`; [CI точного merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39768647312). Этап 5 принят; 679 тестов и независимый runtime/security/product-intent retest PASS. Шаг Stage 5 из #20 завершён. Stage 6 принят через PR #26, Stage 7 — через PR #28; #18/#20 остаются открытыми. Полный MVP #18/#20 остаётся незавершённым.
 
 ## Stage 5.1: интерфейс и реальные экраны
 

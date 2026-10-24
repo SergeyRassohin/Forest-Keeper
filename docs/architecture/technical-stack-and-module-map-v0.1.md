@@ -1,8 +1,8 @@
 # Forest Keeper — Technical Stack & Module Map v0.1
 
-**Актуально на 23 октября 2026:** Stage 0–6 приняты в `main` через PR #26 (merge `0ce2a14304d0cf28fcf90ec9cd3d6c23601ec852`, exact CI 39947944543 SUCCESS). Stage 7 Similar Decision Retrieval реализуется в отдельной ветке `codex/stage7-similar-decisions` по issue #27. Production embedding provider отключён; синтетический test provider не доказывает промышленное качество. Recommendation Engine, AI/LLM и write-back отсутствуют. #18/#20 остаются открытыми.
+**Актуально на 24 октября 2026:** Stage 0–7 приняты в `main`. Stage 7 — [PR #28](https://github.com/SergeyRassohin/Forest-Keeper/pull/28), merge `c927af513d29d83bd53b1b6522efccb42b5a1341`, [CI точного merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/40079346518). Production embedding provider отключён; synthetic test provider не доказывает промышленное качество. Stage 8 Recommendation Engine начат по [issue #29](https://github.com/SergeyRassohin/Forest-Keeper/issues/29): пока архитектурное предложение, численная policy ожидает одобрения владельца. Recommendation runtime, AI/LLM и write-back отсутствуют; #17/#18/#20 открыты.
 
-Статус: обязательная техническая база для MVP. Это целевая карта модулей, не перечень уже реализованных функций. Текущий main: приняты этапы 0–6, включая Human Review и Decision Registry; [статус и блокеры](../deployment/review-readiness.md).
+Статус: обязательная техническая база для MVP. Это целевая карта модулей, не перечень уже реализованных функций. Текущий main: приняты этапы 0–7, включая Human Review, Decision Registry и bounded retrieval; [статус и блокеры](../deployment/review-readiness.md).
 
 ## 1. Архитектурный стиль
 

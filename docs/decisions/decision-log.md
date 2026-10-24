@@ -264,3 +264,16 @@ and Decision saves do not inherit the retrieval timeout.
 The PostgreSQL17 capacity gate exposed underestimation of the cross-table effective-head join. Retrieval now materializes narrow scoped eligibility once, joins artifact metadata once, scores once and loads full historical JSON only for top-N. Its read transaction locally prefers hash joins and disables JIT startup; ordinary API/migration connections keep their defaults. The 1500ms protective statement deadline permits rare outliers while the measured p95 target remains <=1s at10sessions. Null-free predecessor exclusion preserves superseded policy. Actual vectors satisfy coverage directly; immutable skip checkpoints are consulted only for missing representations.
 
 Stage 7 CI idle recovery correction (23 October 2026): cap ForestWorker blocking dequeue by maintenance_interval (minimum1s), preserving120s worker TTL/150s readiness margin. RQ default idle105s could postpone nominal30s autoindex past90s retrieval acceptance. New real idle-worker regression fails before correction and passes afterwards without unrelated queue traffic. Decision save remains independent of Redis/retrieval jobs; no lifecycle, permission, provider or scoring change.
+
+
+## Proposed decisions — not accepted
+
+### 2026-10-24 — Stage 8 architecture and numerical demo policy (issue #29)
+
+**PROPOSED / OWNER_APPROVAL_REQUIRED.** Issue #29 §6.7 requires numerical policy approval before business-logic implementation; §13 requires the architecture/Decision Log proposal first. The user instruction to start Stage 8 authorizes preparing this proposal, not inventing approval of previously unspecified thresholds.
+
+[Concrete architecture/policy proposal v1](../development/stage8-recommendation-proposal.md) records every contested choice, exact planned file/API/schema changes, golden fixtures and all 14 Stage 7 carry-over dispositions. Proposed demo policy: complete <=20 eligible above-threshold pool, >=5 independent provenance groups, unit group weight, 100% agreement/zero contradiction, explicit approved source correspondence; ENTER_VALUE remains contextual. Confidence is an absolute independent-group count, never probability or synthetic score. Production remains fail-closed. Proposed stateless service plus bounded audit receipt has no new SQL table/migration; existing human-confirmed Decision POST is the only write path. These are proposals, not current runtime behavior.
+
+Owner approval: **pending**. Approved policy version/content digest/reference: **none**. No positive recommendation business logic is implemented or enabled by this entry. Any change after approval requires a new version and explicit rationale/fixtures; independent review is required before Stage 8 acceptance.
+
+Entry gate: Stage 7 accepted by owner via PR #28, main merge `c927af513d29d83bd53b1b6522efccb42b5a1341`, exact merge CI 40079346518 SUCCESS. Actual numbering is Stage 6 Human Review+Registry, Stage 7 retrieval, Stage 8 recommendations, next Stage 9 AI/LLM. Historical roadmap numbers remain historical; #17/#18/#20 remain open.

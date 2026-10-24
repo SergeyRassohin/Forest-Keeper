@@ -1,6 +1,6 @@
 # Forest Keeper — Architecture v0.2
 
-**Актуально на 23 октября 2026:** Stage 0–6 приняты в `main` через PR #26 (merge `0ce2a14304d0cf28fcf90ec9cd3d6c23601ec852`, exact CI 39947944543 SUCCESS). Stage 7 Similar Decision Retrieval реализуется в отдельной ветке `codex/stage7-similar-decisions` по issue #27. Production embedding provider отключён; синтетический test provider не доказывает промышленное качество. Recommendation Engine, AI/LLM и write-back отсутствуют. #18/#20 остаются открытыми.
+**Актуально на 24 октября 2026:** Stage 0–7 приняты в `main`. Stage 7 — [PR #28](https://github.com/SergeyRassohin/Forest-Keeper/pull/28), merge `c927af513d29d83bd53b1b6522efccb42b5a1341`, [CI точного merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/40079346518). Production embedding provider отключён; synthetic test provider не доказывает промышленное качество. Stage 8 Recommendation Engine начат по [issue #29](https://github.com/SergeyRassohin/Forest-Keeper/issues/29): пока архитектурное предложение, численная policy ожидает одобрения владельца. Recommendation runtime, AI/LLM и write-back отсутствуют; #17/#18/#20 открыты.
 
 ## 1. Общий принцип
 
@@ -48,7 +48,7 @@ Web Client — единственное поддерживаемое напра�
 
 ## Статус реализации
 
-Компоненты и потоки ниже — целевая архитектура MVP. В main приняты этапы 0–6: вход, импорт, нормализация, Matching, Conflict Engine, Human Review, Decision Registry и фирменный Web UI. Stage 7 добавляет Similar Decision Retrieval в отдельном PR; его приёмка требует полного acceptance и зелёного CI точного финального HEAD. Recommendation/AI runtime отсутствуют. Актуальная [матрица готовности](../deployment/review-readiness.md) отделяет архитектурные требования от доступных функций.
+Компоненты и потоки ниже — целевая архитектура MVP. В main приняты этапы 0–7: вход, импорт, нормализация, Matching, Conflict Engine, Human Review, Decision Registry, фирменный Web UI и bounded Similar Decision Retrieval (PR #28). Production provider выключен. Stage 8 Recommendation Engine пока на стадии [предложения архитектуры и policy](../development/stage8-recommendation-proposal.md), без runtime; AI также отсутствует. Актуальная [матрица готовности](../deployment/review-readiness.md) отделяет архитектурные требования от доступных функций.
 
 ## 3. Серверный контур
 

@@ -1,6 +1,6 @@
 # MVP: состояние реализации
 
-**Актуально на 23 октября 2026:** Stage 0–6 приняты в `main` через PR #26 (merge `0ce2a14304d0cf28fcf90ec9cd3d6c23601ec852`, exact CI 39947944543 SUCCESS). Stage 7 Similar Decision Retrieval реализуется в отдельной ветке `codex/stage7-similar-decisions` по issue #27. Production embedding provider отключён; синтетический test provider не доказывает промышленное качество. Recommendation Engine, AI/LLM и write-back отсутствуют. #18/#20 остаются открытыми.
+**Актуально на 24 октября 2026:** Stage 0–7 приняты в `main`. Stage 7 — [PR #28](https://github.com/SergeyRassohin/Forest-Keeper/pull/28), merge `c927af513d29d83bd53b1b6522efccb42b5a1341`, [CI точного merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/40079346518). Production embedding provider отключён; synthetic test provider не доказывает промышленное качество. Stage 8 Recommendation Engine начат по [issue #29](https://github.com/SergeyRassohin/Forest-Keeper/issues/29): пока архитектурное предложение, численная policy ожидает одобрения владельца. Recommendation runtime, AI/LLM и write-back отсутствуют; #17/#18/#20 открыты.
 
 ## Итерация 1 — этап 0
 
@@ -101,7 +101,7 @@ GitHub читаем и понятен
 
 ## Stage 5: принят в main — 22 октября 2026
 
-PR #22 объединён владельцем в main: `6235dd6a18f8cbb8aeceac2a7d052f5fca396482`; [CI точного merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39768647312). Этап 5 принят; 679 тестов и независимый runtime/security/product-intent retest PASS. Шаг Stage 5 из #20 завершён. Stage 6 принят через PR #26; Stage 7 проверяется отдельно по #27; #18/#20 остаются открытыми. Полный MVP #18/#20 остаётся незавершённым.
+PR #22 объединён владельцем в main: `6235dd6a18f8cbb8aeceac2a7d052f5fca396482`; [CI точного merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39768647312). Этап 5 принят; 679 тестов и независимый runtime/security/product-intent retest PASS. Шаг Stage 5 из #20 завершён. Stage 6 принят через PR #26, Stage 7 — через PR #28; #18/#20 остаются открытыми. Полный MVP #18/#20 остаётся незавершённым.
 
 Исторический авторский прогон: 677 тестов. Финальная независимая проверка: **679 PASS**, false/missed=0, capacity и restart PASS. [Acceptance report с завершённым merge gate](../testing/reports/stage5-conflicts-acceptance-2026-10-21.md).
 
@@ -117,13 +117,19 @@ Stage 5.1: **689 уникальных тестов PASS**, 18 реальных P
 
 ## Stage 6 — Human Review + Decision Registry, 23 октября 2026
 
-Реализованы канонические outcomes, атомарные immutable Decisions, superseding history, scope/RBAC, version token, idempotency, API и Web UI. Stage 5.1 принят владельцем через PR #24, main `04793d9`, exact CI `39908239589` SUCCESS. Stage 6 принят: PR #26, main `0ce2a14304d0cf28fcf90ec9cd3d6c23601ec852`, exact merge CI 39947944543 SUCCESS. Stage 7 начат отдельной веткой по issue #27; #18/#20 не закрываются.
+Реализованы канонические outcomes, атомарные immutable Decisions, superseding history, scope/RBAC, version token, idempotency, API и Web UI. Stage 5.1 принят владельцем через PR #24, main `04793d9`, exact CI `39908239589` SUCCESS. Stage 6 принят: PR #26, main `0ce2a14304d0cf28fcf90ec9cd3d6c23601ec852`, exact merge CI 39947944543 SUCCESS. Stage 7 впоследствии принят через PR #28; #18/#20 не закрываются.
 
 
 Stage 6: [acceptance и ограничения](../testing/reports/stage6-human-review-acceptance-2026-10-23.md), [независимый retest](../testing/reports/stage6-human-review-independent-2026-10-23.md), [restart proof](../testing/reports/stage6-restart-2026-10-23.json), [capacity](../testing/reports/stage6-capacity-2026-10-23.json). Локально PASS: 234 unit + 469 integration + 43 component + 13 browser; production/security и 23 Axe/115 responsive checks. Это исторические результаты принятого Stage 6; владелец выполнил merge через PR #26, exact merge CI 39947944543 SUCCESS.
 
-## Stage 7 — отдельная ветка, issue #27
+## Stage 7 — принят в main через PR #28, 24 октября 2026
 
-Реализованы [Similar Decision Retrieval и его ограничения](similarity-retrieval.md): versioned pgvector artifacts, фоновые backfill/query embedding, scoped exact search, API и Web UI. [Acceptance](../testing/reports/stage7-similarity-acceptance-2026-10-23.md), [независимое ревью](../testing/reports/stage7-similarity-independent-2026-10-23.md), [10k capacity](../testing/reports/stage7-capacity-2026-10-23.json) и [real HTTPS restart](../testing/reports/stage7-restart-idle-fix-2026-10-23.json) зафиксированы. PASS: 256 unit, 509 integration, 49 component, 13 browser, 27 Axe/135 responsive, production/security gates; 21 independent targeted cases. p95 при 10k Decisions/10 читателях: 0.841s. Test provider доступен только при явном opt-in на синтетических данных; production возвращает UNAVAILABLE. READY TO MERGE требует зелёного exact-final-HEAD CI и финального acknowledgment reviewer в PR. Merge не разрешён; #27/#18/#20 остаются открытыми.
+Реализованы [Similar Decision Retrieval и его ограничения](similarity-retrieval.md): versioned pgvector artifacts, фоновые backfill/query embedding, scoped exact search, API и Web UI. [Acceptance](../testing/reports/stage7-similarity-acceptance-2026-10-23.md), [независимое ревью](../testing/reports/stage7-similarity-independent-2026-10-23.md), [10k capacity](../testing/reports/stage7-capacity-2026-10-23.json) и [real HTTPS restart](../testing/reports/stage7-restart-idle-fix-2026-10-23.json) зафиксированы. PASS: 256 unit, 509 integration, 49 component, 13 browser, 27 Axe/135 responsive, production/security gates; 21 independent targeted cases. p95 при 10k Decisions/10 читателях: 0.841s. Test provider доступен только при явном opt-in на синтетических данных; production возвращает UNAVAILABLE. Владелец выполнил merge PR #28: `c927af513d29d83bd53b1b6522efccb42b5a1341`; exact merge CI 40079346518 SUCCESS. Issue #27 закрыта после принятия, #18/#20 остаются открытыми.
 
-24 октября 2026: свежий SCA выявил advisories в dev-only filelock 4.1.1; lock обновлён до 4.2.1, повторный аудит чистый. Production dependency export не изменился. Подробности и финальный CI gate — в отчёте Stage 7; merge не выполняется.
+24 октября 2026: свежий SCA выявил advisories в dev-only filelock 4.1.1; lock обновлён до 4.2.1, повторный аудит чистый. Production dependency export не изменился. Подробности — в историческом отчёте Stage 7 и PR #28; последующий owner merge и его CI указаны выше.
+
+## Stage 8 — архитектурное предложение, issue #29
+
+От принятого Stage 7 main создана `codex/stage8-recommendations`. [Архитектура, точная предлагаемая численная policy, source mapping, evidence grouping, API/schema/files и реестр всех 14 спорных вопросов](stage8-recommendation-proposal.md) подготовлены до business-code. Статус **OWNER_APPROVAL_REQUIRED**, не acceptance. До утверждения владельцем policy положительных рекомендаций не реализуется/не включается.
+
+Фактическая нумерация: объединённый Human Review + Registry = Stage 6; retrieval = Stage 7 (старый 8); recommendation = Stage 8 (старый 9); AI/LLM integration = следующий Stage 9 (старый 10). Historical reports сохраняют свои названия. Правила/Codex #17, полный MVP #18/#20 и merge этого PR не принимаются автоматически.

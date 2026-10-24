@@ -1,6 +1,6 @@
 # Forest Keeper — блок-схема процесса и CI
 
-**Актуально на 23 октября 2026:** Stage 0–6 приняты в `main` через PR #26 (merge `0ce2a14304d0cf28fcf90ec9cd3d6c23601ec852`, exact CI 39947944543 SUCCESS). Stage 7 Similar Decision Retrieval реализуется в отдельной ветке `codex/stage7-similar-decisions` по issue #27. Production embedding provider отключён; синтетический test provider не доказывает промышленное качество. Recommendation Engine, AI/LLM и write-back отсутствуют. #18/#20 остаются открытыми.
+**Актуально на 24 октября 2026:** Stage 0–7 приняты в `main`. Stage 7 — [PR #28](https://github.com/SergeyRassohin/Forest-Keeper/pull/28), merge `c927af513d29d83bd53b1b6522efccb42b5a1341`, [CI точного merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/40079346518). Production embedding provider отключён; synthetic test provider не доказывает промышленное качество. Stage 8 Recommendation Engine начат по [issue #29](https://github.com/SergeyRassohin/Forest-Keeper/issues/29): пока архитектурное предложение, численная policy ожидает одобрения владельца. Recommendation runtime, AI/LLM и write-back отсутствуют; #17/#18/#20 открыты.
 
 Актуально для `main` после принятия Stage 5 по ТЗ в [issue #21](https://github.com/SergeyRassohin/Forest-Keeper/issues/21).
 
@@ -21,10 +21,10 @@ flowchart LR
     F -->|отклонено NOT_MATCHED| G
     H --> I["Conflict + evidence + provenance"]
     I --> J["Human Review<br/>Stage 6"]
-    J --> K["Decision Registry<br/>Stage 7 · immutable history"]
-    K --> L["Similar Decision Retrieval<br/>Stage 8 / pgvector"]
-    L --> M["Deterministic Recommendation<br/>Stage 9"]
-    M --> N["Qwen explanation<br/>Stage 10, optional"]
+    J --> K["Decision Registry<br/>Stage 6 · immutable history"]
+    K --> L["Similar Decision Retrieval<br/>Stage 7 / pgvector · test only"]
+    L --> M["Deterministic Recommendation<br/>Stage 8 · proposal"]
+    M --> N["Qwen explanation<br/>Stage 9 · future"]
     N --> O["Новый похожий случай"]
     O --> L
 
@@ -32,11 +32,12 @@ flowchart LR
     classDef next fill:#fff0c2,stroke:#bf8700,color:#111;
     classDef future fill:#eaeef2,stroke:#57606a,color:#111;
 
-    class A,B,C,D,D1,E,F,G,H,I done;
-    class J,K,L,M,N,O future;
+    class A,B,C,D,D1,E,F,G,H,I,J,K,L done;
+    class M next;
+    class N,O future;
 ```
 
-**Текущий статус:** этапы 0–6 приняты в main, включая Human Review и Decision Registry через PR #26 (exact merge CI 39947944543 SUCCESS). PR #22 объединён владельцем в main: `6235dd6a18f8cbb8aeceac2a7d052f5fca396482`; [CI точного merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39768647312). Этап 5 принят; 679 тестов и независимый runtime/security/product-intent retest PASS. Шаг Stage 5 из #20 завершён. Stage 6 принят через PR #26; Stage 7 проверяется отдельно по #27; #18/#20 остаются открытыми. Только подтверждённые MATCHED identities создают business Conflict; отклонённые пары не анализируются как одна сущность. Stage 7 retrieval проверяется отдельно; production semantic provider/recommendation/AI полного MVP ещё отсутствуют.
+**Текущий статус:** этапы 0–7 приняты в main: Human Review + Registry через PR #26, bounded retrieval через PR #28 (exact merge CI 40079346518 SUCCESS). PR #22 объединён владельцем в main: `6235dd6a18f8cbb8aeceac2a7d052f5fca396482`; [CI точного merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39768647312). Этап 5 принят; 679 тестов и независимый runtime/security/product-intent retest PASS. Шаг Stage 5 из #20 завершён. Stage 6 принят через PR #26, Stage 7 — через PR #28; #18/#20 остаются открытыми. Только подтверждённые MATCHED identities создают business Conflict; отклонённые пары не анализируются как одна сущность. Stage 7 принят как bounded retrieval; production semantic provider/recommendation/AI полного MVP ещё отсутствуют.
 
 ### Граница ответственности этапов
 
@@ -132,13 +133,15 @@ GitHub сохраняет историю запусков. Старые `failure
 
 ## Stage 5: принят в main — 22 октября 2026
 
-PR #22 объединён владельцем в main: `6235dd6a18f8cbb8aeceac2a7d052f5fca396482`; [CI точного merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39768647312). Этап 5 принят; 679 тестов и независимый runtime/security/product-intent retest PASS. Шаг Stage 5 из #20 завершён. Stage 6 принят через PR #26; Stage 7 проверяется отдельно по #27; #18/#20 остаются открытыми. Полный MVP #18/#20 остаётся незавершённым.
+PR #22 объединён владельцем в main: `6235dd6a18f8cbb8aeceac2a7d052f5fca396482`; [CI точного merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39768647312). Этап 5 принят; 679 тестов и независимый runtime/security/product-intent retest PASS. Шаг Stage 5 из #20 завершён. Stage 6 принят через PR #26, Stage 7 — через PR #28; #18/#20 остаются открытыми. Полный MVP #18/#20 остаётся незавершённым.
 
 
 ## Stage 6: фактический путь, принятый в main
 
 Import → Normalization → Matching → persisted Conflict → Human Review → immutable Decision → audit/history. Decision хранится в PostgreSQL; review path не вызывает AI/Redis jobs и не пишет в исходные системы. Авторизацию обеспечивает backend. Исправление создаёт новую запись со ссылкой на прежнюю. См. [реализованный workflow](../development/human-review.md).
 
-## Stage 7: фактическая граница отдельной ветки
+## Stage 7: фактическая граница принятого bounded retrieval
 
 New Conflict → scoped context → background query vector → eligible resolved Decision pool → compatibility filters → complete active pgvector version → cosine top-N → actual Decision/history. `Similarity != Recommendation != Decision`. Production provider unavailable; deterministic test vectors only in explicit synthetic test/development configuration. [Описание](../development/similarity-retrieval.md).
+
+Stage 8 Recommendation Engine пока имеет [предложение архитектуры и численной policy](../development/stage8-recommendation-proposal.md); implementation/owner approval/acceptance ещё не завершены. Следующий фактический Stage 9 — AI/LLM. Старые roadmap номера не меняют исторические отчёты.
