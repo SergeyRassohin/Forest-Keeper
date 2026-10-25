@@ -129,11 +129,11 @@ class ClauseCode(StrEnum):
 
 class Clause(StrictModel):
     code: ClauseCode
-    decision_ids: Ids
+    decision_ids: Annotated[list[UUID], Field(max_length=1)]
 
 
 class GeneratedClauses(StrictModel):
-    clauses: Annotated[list[Clause], Field(min_length=3, max_length=6)]
+    clauses: Annotated[list[Clause], Field(min_length=3, max_length=3)]
 
 
 class Explanation(GeneratedClauses):
@@ -147,12 +147,40 @@ class Explanation(GeneratedClauses):
 def explanation_schema(facts: Facts) -> dict[str, Any]:
     """Grammar constrains copying, while validation independently distrusts model output."""
     schema = GeneratedClauses.model_json_schema()
-    ids = [str(value) for value in facts.supporting_decision_ids + facts.contradictory_decision_ids]
-    citations = schema["$defs"]["Clause"]["properties"]["decision_ids"]
-    if ids:
-        citations["items"] = {"type": "string", "enum": ids}
-    else:
-        citations["maxItems"] = 0
+    evidence_code = (
+        "SUPPORT"
+        if facts.status == "RECOMMENDED"
+        else "CONTRADICTION"
+        if facts.contradictory_decision_ids
+        else "ABSTENTION"
+    )
+    ids = [
+        str(value)
+        for value in (
+            facts.supporting_decision_ids
+            if facts.status == "RECOMMENDED"
+            else facts.contradictory_decision_ids
+        )
+    ]
+    variants = []
+    for code in ("CURRENT_CONTEXT", evidence_code, "LIMITATION"):
+        references: dict[str, Any] = {"type": "array", "maxItems": 0}
+        if code in {"SUPPORT", "CONTRADICTION"}:
+            references = {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 1,
+                "items": {"type": "string", "enum": ids},
+            }
+        variants.append(
+            {
+                "type": "object",
+                "additionalProperties": False,
+                "required": ["code", "decision_ids"],
+                "properties": {"code": {"const": code}, "decision_ids": references},
+            }
+        )
+    schema["properties"]["clauses"]["items"] = {"oneOf": variants}
     return schema
 
 
