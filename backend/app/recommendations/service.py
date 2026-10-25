@@ -172,7 +172,16 @@ def evaluate(
     basis["source_mapping_version"] = mapping.version
     # No embedding calculation, job enqueue, internal HTTP or hidden pagination here.
     budget.arm(session)
-    retrieved = retrieval(session, actor, case, settings, 20, 0, prepare_query=False)
+    retrieved = retrieval(
+        session,
+        actor,
+        case,
+        settings,
+        20,
+        0,
+        prepare_query=False,
+        prepared_features=current.features,
+    )
     budget.arm(session)
     result.retrieval_version = retrieved["retrieval_version"]
     result.embedding_model = retrieved["embedding_model"]

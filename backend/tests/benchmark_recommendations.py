@@ -112,7 +112,7 @@ def run():
 
                 event.listen(client.app.state.engine, "before_cursor_execute", capture)
 
-                def measure(endpoint, field, expected):
+                def measure(endpoint, field, expected, expected_reason=None):
                     def read(token):
                         observations = []
                         for _ in range(5):
@@ -121,25 +121,35 @@ def run():
                                 endpoint, headers={"Cookie": COOKIE_NAME + "=" + token}
                             )
                             seconds = time.monotonic() - started
-                            assert response.status_code == 200, response.text
                             payload = response.json()
-                            assert payload[field] == expected, payload
-                            observations.append((seconds, payload.get("reason_code", expected)))
+                            valid = (
+                                response.status_code == 200
+                                and payload.get(field) == expected
+                                and (
+                                    expected_reason is None
+                                    or payload.get("reason_code") == expected_reason
+                                )
+                            )
+                            outcome = payload.get("reason_code") or payload.get("error", {}).get(
+                                "code", "HTTP_" + str(response.status_code)
+                            )
+                            observations.append((seconds, outcome, valid))
                         return observations
 
                     with ThreadPoolExecutor(10) as pool:
                         observations = [row for group in pool.map(read, tokens) for row in group]
                     times = [row[0] for row in observations]
                     p95 = percentile(times, 0.95)
+                    failures = sum(not row[2] for row in observations)
                     return {
                         "requests": len(times),
                         "sessions": 10,
                         "p50_seconds": percentile(times, 0.5),
                         "p95_seconds": p95,
                         "max_seconds": round(max(times), 6),
-                        "failures": 0,
-                        "outcomes": dict(Counter(reason for _, reason in observations)),
-                        "passed": p95 <= 1,
+                        "failures": failures,
+                        "outcomes": dict(Counter(row[1] for row in observations)),
+                        "passed": p95 <= 1 and failures == 0,
                     }
 
                 recommendation_endpoint = f"/api/v1/conflicts/{query}/recommendation"
@@ -167,9 +177,6 @@ def run():
                         ]:
                             connection.execute(text("ANALYZE " + table))
                     assert similar(client, query)["state"] == "READY"
-                    baseline = measure(baseline_endpoint, "state", "READY")
-                    recommendation = measure(recommendation_endpoint, "status", "ABSTAINED")
-                    assert recommendation["outcomes"] == {"EVIDENCE_WINDOW_EXCEEDED": 50}
                     with engine.begin() as connection:
                         connection.execute(text("SET LOCAL enable_nestloop=off; SET LOCAL jit=off"))
                         plan = [
@@ -185,6 +192,21 @@ def run():
                         vectors = connection.scalar(
                             select(func.count()).select_from(DecisionEmbedding)
                         )
+                        integrity_statistics = [
+                            dict(row)
+                            for row in connection.execute(
+                                text(
+                                    "SELECT relname,relpages,reltuples FROM pg_class "
+                                    "WHERE relnamespace=current_schema()::regnamespace "
+                                    "AND relname IN "
+                                    "('decision_embeddings', 'ix_embedding_integrity')"
+                                )
+                            ).mappings()
+                        ]
+                    baseline = measure(baseline_endpoint, "state", "READY")
+                    recommendation = measure(
+                        recommendation_endpoint, "status", "ABSTAINED", "EVIDENCE_WINDOW_EXCEEDED"
+                    )
                     row = {
                         "decision_rows": count,
                         "vector_rows": vectors,
@@ -198,6 +220,8 @@ def run():
                             resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024, 2
                         ),
                         "query_plan": plan,
+                        "plan_profile": "Warm ranking limit5 before concurrency; no cold claim",
+                        "integrity_statistics": integrity_statistics,
                     }
                     results.append(row)
                     print(

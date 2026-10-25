@@ -143,6 +143,7 @@ def retrieval(
     offset: int,
     *,
     prepare_query: bool = True,
+    prepared_features: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     state = session.get(RetrievalState, 1)
     version = (
@@ -179,7 +180,13 @@ def retrieval(
             next(k for k, v in REVISIONS.items() if v == version.config["revision"])
         ):
             raise ProviderError("UNSUPPORTED_VERSION")
-        features = context(historical_context(session, case, include_review=False))
+        # Private same-snapshot reuse by RecommendationService; public routes
+        # never accept feature/policy overrides and keep building their context.
+        features = (
+            prepared_features
+            if prepared_features is not None
+            else context(historical_context(session, case, include_review=False))
+        )
         if not features["synthetic"]:
             raise ProviderError("SYNTHETIC_ONLY")
     except (ProviderError, StopIteration, KeyError, TypeError) as error:
@@ -256,6 +263,7 @@ def retrieval(
             DecisionEmbedding.version_id == version.id,
             integrity_predicate,
         )
+        .order_by(DecisionEmbedding.version_id, DecisionEmbedding.decision_id)
         .cte("corrupt_artifacts")
         .prefix_with("MATERIALIZED")
     )
