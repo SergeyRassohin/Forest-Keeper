@@ -1,5 +1,5 @@
 {
-  "source_commit": "751b7353887566841e53e29ed41e27bc2eb33b55",
+  "source_commit": "cd5116c4569389658bb046c197db45221c593ccd",
   "project": "fk-stage8",
   "actual_https": true,
   "five_independent_real_file_pairs": true,
@@ -18,22 +18,22 @@
   "provider_unavailable_manual_save": true,
   "registry_independent": true,
   "decisions": [
-    "da2e7cbc-afba-48be-a1dd-78ae44734c69",
-    "1628d163-258a-4104-8328-1b8fd70478e1",
-    "5fedf9fc-8337-4dea-a611-b108b03a94d4",
-    "0730e8c3-5bb7-47e0-a396-cbe060f315dc",
-    "40999006-eaf1-45fe-9c55-9b4f134471dc",
-    "f239b7dc-0ed5-468c-ab32-d07253958a68",
-    "b770a088-b2b9-4042-a2c1-1cdf5ab0158a",
-    "57f0c1e1-d2fd-45c6-903a-7a140e49bd7b",
-    "5c67662d-ec0e-4f63-93b6-302f9ba2fddf"
+    "f80a9904-8778-4dd9-a788-ce06a41ef6cc",
+    "6dfad5b1-9103-4158-a2ad-702eb98e2549",
+    "26cba8fb-9c38-46c4-8dc4-a38c29894912",
+    "679f7c71-2b4b-4462-8441-e1671e7fdae4",
+    "bc9d1a1d-7b94-4c3b-82e1-5836b8a3ec7b",
+    "af718c9f-dbc0-437a-a822-959d95449d77",
+    "9bc5db17-3683-433e-a32b-b5f29561d8f0",
+    "67f3a1ed-efef-4767-a948-90df1071bb3d",
+    "975977cd-5ce3-4571-a8d0-b2b39c29f61c"
   ],
   "passed": true,
-  "backend_source_tree": "8802b1b203bddafd18a39fdc92f39b4676935213",
+  "backend_source_tree": "0a79a1e89317b3bd3ff5da81bf64168ae1fde191",
   "frontend_source_tree": "cf5309eac8b8f2929c98b975eadf966da3243282",
   "images": {
-    "backend": "sha256:b096c0b07229e26ade4a4addbfe8e7cd93d3e8c0477d44e1252a2858c5ef489d",
-    "frontend": "sha256:fdc753811a96cd96942f4bd4275b4f49048dd38762664c65f5c72c44b0708dc2"
+    "frontend": "sha256:fdc753811a96cd96942f4bd4275b4f49048dd38762664c65f5c72c44b0708dc2",
+    "backend": "sha256:e1026957c7a784285bb9d14c480ba09c4ca7f06ddbb3fafe30d3c3d9f96696f9"
   },
   "limitations": [
     "Owned synthetic HTTPS fixture, not independent external MVP acceptance.",

@@ -1,7 +1,7 @@
 # Stage 8 — deterministic Recommendation Engine
 
 Scope: [issue #29](https://github.com/SergeyRassohin/Forest-Keeper/issues/29), including §14 light/dark themes.
-**In development in PR #30; not accepted in main or READY TO MERGE yet.**
+**Implemented in PR #30; not merged into main. Acceptance evidence is linked below; final delivery requires green push and PR CI on the exact final HEAD.**
 Owner approved all eight product-policy points in this chat on 25 October 2026:
 «Согласен со всеми пунктами.». [Decision Log](../decisions/decision-log.md) records approval,
 the exact [historical architecture proposal](stage8-recommendation-proposal.md) commit/digest
@@ -140,9 +140,9 @@ in both modes and all five existing responsive widths. Real Stage8 browser path 
 imports five independent file pairs, confirms actual Decisions, retrieves/proposes current
 value, visits actual precedent and returns/reloads the same dark-themed route, preserves
 the draft during theme changes, confirms through the existing dialog, then exercises manual
-override and contradictory subsequent history. These are required checks, not a PASS claim.
+override and contradictory subsequent history. [Acceptance results](../testing/reports/stage8-acceptance-2026-10-25.md) record actual executions and their limits.
 
-## Acceptance still required
+## Acceptance and delivery gate
 
 All issue #29 §11 gates, independent source/security/product review and targeted tests,
 100/1k/10k actual-history performance at10sessions, real HTTPS restart/error recovery,
