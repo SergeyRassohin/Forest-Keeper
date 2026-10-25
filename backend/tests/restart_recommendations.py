@@ -109,8 +109,7 @@ def run():
     def case():
         key = prefix + "-" + str(len(cases))
         subject = (
-            "Forest Keeper synthetic material bolt steel durable reference provenance "
-            "group sample precision compatible independent item " + key
+            " ".join(["cohort" + identifier.hex[:16]] * 5) + " material bolt steel reference " + key
         )
         csv = f"id,name,mass,price,date\n{key},{subject},12.5 kg,10,2026-01-01\n".encode()
         xml = (
@@ -363,6 +362,14 @@ def run():
         assert next_rec["retrieval_version"] == str(version_id)
         assert receipt["decision_id"] in next_rec["supporting_decision_ids"]
         stale_payload = body(begin_next, next_rec["audit_reference"])
+        # A previous version must first cover the newly confirmed history;
+        # activating a genuinely incomplete version is correctly forbidden.
+        with Session(engine) as session:
+            previous = start_run(session, settings, "test-v1")
+            previous.status = "QUEUED"
+            session.commit()
+            previous_id = previous.id
+        execute_index(previous_id, settings)
         command(
             "exec",
             "-T",
