@@ -189,6 +189,10 @@ def evaluate(
             if retrieved["state"] in {"UNAVAILABLE", "INDEXING"}
             else Outcome.ABSTAINED,
         )
+    # A known oversized pool already forbids an action; avoid additional
+    # completeness work whose result cannot change that bounded abstention.
+    if retrieved["total_above_threshold"] > POLICY["maximum_precedents"]:
+        return finish("EVIDENCE_WINDOW_EXCEEDED")
     # Stage 7 permits explicit non-INDEXED checkpoints for retrieval. A ready
     # action needs stronger completeness: an unrepresented compatible outcome
     # might contradict the visible five. Check only scoped narrow metadata,
@@ -205,8 +209,6 @@ def evaluate(
     if session.scalar(select(exists(unrepresented.with_only_columns(Decision.id)))):
         return finish("INDEX_COVERAGE_UNCERTAIN", Outcome.UNAVAILABLE)
     basis["complete_compatible_vector_coverage"] = True
-    if retrieved["total_above_threshold"] > POLICY["maximum_precedents"]:
-        return finish("EVIDENCE_WINDOW_EXCEEDED")
     ids = [UUID(str(item["decision_id"])) for item in retrieved["results"]]
     records = cast(
         list[tuple[Decision, Conflict]],
