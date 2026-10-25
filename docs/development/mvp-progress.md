@@ -128,9 +128,9 @@ Stage 6: [acceptance и ограничения](../testing/reports/stage6-human-
 
 24 октября 2026: свежий SCA выявил advisories в dev-only filelock 4.1.1; lock обновлён до 4.2.1, повторный аудит чистый. Production dependency export не изменился. Подробности — в историческом отчёте Stage 7 и PR #28; последующий owner merge и его CI указаны выше.
 
-## Stage 8 — архитектурное предложение, issue #29
+## Stage 8 — исходное архитектурное предложение от 24 октября (история), issue #29
 
-От принятого Stage 7 main создана `codex/stage8-recommendations`. [Архитектура, точная предлагаемая численная policy, source mapping, evidence grouping, API/schema/files и реестр всех 14 спорных вопросов](stage8-recommendation-proposal.md) подготовлены до business-code. Статус **OWNER_APPROVAL_REQUIRED**, не acceptance. До утверждения владельцем policy положительных рекомендаций не реализуется/не включается.
+От принятого Stage 7 main создана `codex/stage8-recommendations`. [Архитектура, точная предлагаемая численная policy, source mapping, evidence grouping, API/schema/files и реестр всех 14 спорных вопросов](stage8-recommendation-proposal.md) подготовлены до business-code. На 24 октября статус был **OWNER_APPROVAL_REQUIRED**, не acceptance; positive policy не реализовывалась до согласования25 октября, зафиксированного ниже.
 
 Фактическая нумерация: объединённый Human Review + Registry = Stage 6; retrieval = Stage 7 (старый 8); recommendation = Stage 8 (старый 9); AI/LLM integration = следующий Stage 9 (старый 10). Historical reports сохраняют свои названия. Правила/Codex #17, полный MVP #18/#20 и merge этого PR не принимаются автоматически.
 

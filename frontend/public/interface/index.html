@@ -18,177 +18,759 @@
 <section class="intro">
 <div>
 <h2>Что уже работает</h2>
-<p>Вход и роли, импорт CSV/XLSX/XML, нормализация, сопоставление, проверка идентичности экспертом, конфликты, рассмотрение человеком, неизменяемый реестр решений, история происхождения значений и тестовый поиск похожих прошлых решений.</p>
+<p>Вход и роли, импорт CSV/XLSX/XML, нормализация, сопоставление, проверка идентичности экспертом, конфликты, рассмотрение человеком, неизменяемый реестр решений, история происхождения значений и тестовый поиск похожих прошлых решений. Объяснимое предложение на пяти независимых группах показано только в явно обозначенном демонстрационном режиме; решение подтверждает человек.</p>
 </div>
 <div>
 <h2>Следующие этапы</h2>
-<p>Показан поиск прошлых решений на синтетических данных с явным тестовым провайдером. Production semantic provider, рекомендации, AI и запись изменений во внешние системы ещё не реализованы.</p>
+<p>Промышленное семантическое качество поиска и рекомендаций пока не подтверждено. AI/LLM и запись изменений во внешние системы не реализованы. При недостаточных или противоречивых основаниях приложение воздерживается от предложения.</p>
 </div>
 </section>
-<p class="note">Это реальные снимки тестового стенда, а не концепты. Данные вымышленные. Состояния ожидания и ошибки связи воспроизведены управляемым тестом и явно подписаны.</p>
+<p class="note">Это реальные снимки тестового стенда, данные вымышленные. Основные экраны показаны в светлой и тёмной темах на широком и узком экране. Состояния ожидания и ошибки связи воспроизведены управляемым тестом и явно подписаны.</p>
 <section class="gallery" aria-label="Реальные экраны">
 <article><a href="01-login.png"><img loading="lazy" src="01-login.png"
-alt="Вход в рабочее пространство — реальный экран Forest Keeper" width="1440"></a>
+alt="Вход в рабочее пространство · Светлая — реальный экран Forest Keeper" width="1440"></a>
 <div><span class="tag">Работает сейчас · демонстрационные данные</span>
-<h2>Вход в рабочее пространство</h2>
+<h2>Вход в рабочее пространство · Светлая</h2>
 <p>Защищённая браузерная сессия. Доступ к действиям определяется назначенными ролями.</p>
 <a href="01-login.png">Открыть полный экран ↗</a></div></article>
-<article><a href="02-overview.png"><img loading="lazy" src="02-overview.png"
-alt="Готовность среды — реальный экран Forest Keeper" width="1440"></a>
+<article><a href="01-login-mobile.png"><img loading="lazy" src="01-login-mobile.png"
+alt="Вход в рабочее пространство · Светлая · Узкий экран — реальный экран Forest Keeper" width="390"></a>
 <div><span class="tag">Работает сейчас · демонстрационные данные</span>
-<h2>Готовность среды</h2>
+<h2>Вход в рабочее пространство · Светлая · Узкий экран</h2>
+<p>Защищённая браузерная сессия. Доступ к действиям определяется назначенными ролями.</p>
+<a href="01-login-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="01-login-dark.png"><img loading="lazy" src="01-login-dark.png"
+alt="Вход в рабочее пространство · Тёмная — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Вход в рабочее пространство · Тёмная</h2>
+<p>Защищённая браузерная сессия. Доступ к действиям определяется назначенными ролями.</p>
+<a href="01-login-dark.png">Открыть полный экран ↗</a></div></article>
+<article><a href="01-login-dark-mobile.png"><img loading="lazy" src="01-login-dark-mobile.png"
+alt="Вход в рабочее пространство · Тёмная · Узкий экран — реальный экран Forest Keeper" width="390"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Вход в рабочее пространство · Тёмная · Узкий экран</h2>
+<p>Защищённая браузерная сессия. Доступ к действиям определяется назначенными ролями.</p>
+<a href="01-login-dark-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="02-overview.png"><img loading="lazy" src="02-overview.png"
+alt="Готовность среды · Светлая — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Готовность среды · Светлая</h2>
 <p>Настоящий ответ сервера: состояние API, PostgreSQL и Redis. Здесь нет выдуманных показателей качества данных.</p>
 <a href="02-overview.png">Открыть полный экран ↗</a></div></article>
-<article><a href="03-import.png"><img loading="lazy" src="03-import.png"
-alt="Источники и импорт — реальный экран Forest Keeper" width="1440"></a>
+<article><a href="02-overview-mobile.png"><img loading="lazy" src="02-overview-mobile.png"
+alt="Готовность среды · Светлая · Узкий экран — реальный экран Forest Keeper" width="390"></a>
 <div><span class="tag">Работает сейчас · демонстрационные данные</span>
-<h2>Источники и импорт</h2>
+<h2>Готовность среды · Светлая · Узкий экран</h2>
+<p>Настоящий ответ сервера: состояние API, PostgreSQL и Redis. Здесь нет выдуманных показателей качества данных.</p>
+<a href="02-overview-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="02-overview-dark.png"><img loading="lazy" src="02-overview-dark.png"
+alt="Готовность среды · Тёмная — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Готовность среды · Тёмная</h2>
+<p>Настоящий ответ сервера: состояние API, PostgreSQL и Redis. Здесь нет выдуманных показателей качества данных.</p>
+<a href="02-overview-dark.png">Открыть полный экран ↗</a></div></article>
+<article><a href="02-overview-dark-mobile.png"><img loading="lazy" src="02-overview-dark-mobile.png"
+alt="Готовность среды · Тёмная · Узкий экран — реальный экран Forest Keeper" width="390"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Готовность среды · Тёмная · Узкий экран</h2>
+<p>Настоящий ответ сервера: состояние API, PostgreSQL и Redis. Здесь нет выдуманных показателей качества данных.</p>
+<a href="02-overview-dark-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="03-import.png"><img loading="lazy" src="03-import.png"
+alt="Источники и импорт · Светлая — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Источники и импорт · Светлая</h2>
 <p>Загрузка CSV, XLSX и XML с сохранением оригинала. Пустая таблица объясняет, с чего начать.</p>
 <a href="03-import.png">Открыть полный экран ↗</a></div></article>
-<article><a href="04-import-detail.png"><img loading="lazy" src="04-import-detail.png"
-alt="Оригинал и записи — реальный экран Forest Keeper" width="1440"></a>
+<article><a href="03-import-mobile.png"><img loading="lazy" src="03-import-mobile.png"
+alt="Источники и импорт · Светлая · Узкий экран — реальный экран Forest Keeper" width="390"></a>
 <div><span class="tag">Работает сейчас · демонстрационные данные</span>
-<h2>Оригинал и записи</h2>
+<h2>Источники и импорт · Светлая · Узкий экран</h2>
+<p>Загрузка CSV, XLSX и XML с сохранением оригинала. Пустая таблица объясняет, с чего начать.</p>
+<a href="03-import-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="03-import-dark.png"><img loading="lazy" src="03-import-dark.png"
+alt="Источники и импорт · Тёмная — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Источники и импорт · Тёмная</h2>
+<p>Загрузка CSV, XLSX и XML с сохранением оригинала. Пустая таблица объясняет, с чего начать.</p>
+<a href="03-import-dark.png">Открыть полный экран ↗</a></div></article>
+<article><a href="03-import-dark-mobile.png"><img loading="lazy" src="03-import-dark-mobile.png"
+alt="Источники и импорт · Тёмная · Узкий экран — реальный экран Forest Keeper" width="390"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Источники и импорт · Тёмная · Узкий экран</h2>
+<p>Загрузка CSV, XLSX и XML с сохранением оригинала. Пустая таблица объясняет, с чего начать.</p>
+<a href="03-import-dark-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="04-import-detail.png"><img loading="lazy" src="04-import-detail.png"
+alt="Оригинал и записи · Светлая — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Оригинал и записи · Светлая</h2>
 <p>Сохранённый файл, исходные поля и происхождение каждой записи. Данные в источнике не изменяются.</p>
 <a href="04-import-detail.png">Открыть полный экран ↗</a></div></article>
-<article><a href="18-raw-records.png"><img loading="lazy" src="18-raw-records.png"
-alt="Исходные записи и их поля — реальный экран Forest Keeper" width="1440"></a>
+<article><a href="04-import-detail-mobile.png"><img loading="lazy" src="04-import-detail-mobile.png"
+alt="Оригинал и записи · Светлая · Узкий экран — реальный экран Forest Keeper" width="390"></a>
 <div><span class="tag">Работает сейчас · демонстрационные данные</span>
-<h2>Исходные записи и их поля</h2>
+<h2>Оригинал и записи · Светлая · Узкий экран</h2>
+<p>Сохранённый файл, исходные поля и происхождение каждой записи. Данные в источнике не изменяются.</p>
+<a href="04-import-detail-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="04-import-detail-dark.png"><img loading="lazy" src="04-import-detail-dark.png"
+alt="Оригинал и записи · Тёмная — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Оригинал и записи · Тёмная</h2>
+<p>Сохранённый файл, исходные поля и происхождение каждой записи. Данные в источнике не изменяются.</p>
+<a href="04-import-detail-dark.png">Открыть полный экран ↗</a></div></article>
+<article><a href="04-import-detail-dark-mobile.png"><img loading="lazy" src="04-import-detail-dark-mobile.png"
+alt="Оригинал и записи · Тёмная · Узкий экран — реальный экран Forest Keeper" width="390"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Оригинал и записи · Тёмная · Узкий экран</h2>
+<p>Сохранённый файл, исходные поля и происхождение каждой записи. Данные в источнике не изменяются.</p>
+<a href="04-import-detail-dark-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="18-raw-records.png"><img loading="lazy" src="18-raw-records.png"
+alt="Исходные записи и их поля · Светлая — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Исходные записи и их поля · Светлая</h2>
 <p>Структурированный просмотр значений без стены JSON. Видны ключ, позиция и исходные поля.</p>
 <a href="18-raw-records.png">Открыть полный экран ↗</a></div></article>
-<article><a href="05-normalization.png"><img loading="lazy" src="05-normalization.png"
-alt="Исходное → сопоставимое — реальный экран Forest Keeper" width="1440"></a>
+<article><a href="18-raw-records-mobile.png"><img loading="lazy" src="18-raw-records-mobile.png"
+alt="Исходные записи и их поля · Светлая · Узкий экран — реальный экран Forest Keeper" width="390"></a>
 <div><span class="tag">Работает сейчас · демонстрационные данные</span>
-<h2>Исходное → сопоставимое</h2>
+<h2>Исходные записи и их поля · Светлая · Узкий экран</h2>
+<p>Структурированный просмотр значений без стены JSON. Видны ключ, позиция и исходные поля.</p>
+<a href="18-raw-records-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="18-raw-records-dark.png"><img loading="lazy" src="18-raw-records-dark.png"
+alt="Исходные записи и их поля · Тёмная — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Исходные записи и их поля · Тёмная</h2>
+<p>Структурированный просмотр значений без стены JSON. Видны ключ, позиция и исходные поля.</p>
+<a href="18-raw-records-dark.png">Открыть полный экран ↗</a></div></article>
+<article><a href="18-raw-records-dark-mobile.png"><img loading="lazy" src="18-raw-records-dark-mobile.png"
+alt="Исходные записи и их поля · Тёмная · Узкий экран — реальный экран Forest Keeper" width="390"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Исходные записи и их поля · Тёмная · Узкий экран</h2>
+<p>Структурированный просмотр значений без стены JSON. Видны ключ, позиция и исходные поля.</p>
+<a href="18-raw-records-dark-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="05-normalization.png"><img loading="lazy" src="05-normalization.png"
+alt="Исходное → сопоставимое · Светлая — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Исходное → сопоставимое · Светлая</h2>
 <p>Масса приводится к единой единице; исходное значение, качество и правило остаются доступными. Нормализация не объявляет значение истиной.</p>
 <a href="05-normalization.png">Открыть полный экран ↗</a></div></article>
-<article><a href="06-matching.png"><img loading="lazy" src="06-matching.png"
-alt="Какие записи относятся к одной сущности — реальный экран Forest Keeper" width="1440"></a>
+<article><a href="05-normalization-mobile.png"><img loading="lazy" src="05-normalization-mobile.png"
+alt="Исходное → сопоставимое · Светлая · Узкий экран — реальный экран Forest Keeper" width="390"></a>
 <div><span class="tag">Работает сейчас · демонстрационные данные</span>
-<h2>Какие записи относятся к одной сущности</h2>
+<h2>Исходное → сопоставимое · Светлая · Узкий экран</h2>
+<p>Масса приводится к единой единице; исходное значение, качество и правило остаются доступными. Нормализация не объявляет значение истиной.</p>
+<a href="05-normalization-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="05-normalization-dark.png"><img loading="lazy" src="05-normalization-dark.png"
+alt="Исходное → сопоставимое · Тёмная — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Исходное → сопоставимое · Тёмная</h2>
+<p>Масса приводится к единой единице; исходное значение, качество и правило остаются доступными. Нормализация не объявляет значение истиной.</p>
+<a href="05-normalization-dark.png">Открыть полный экран ↗</a></div></article>
+<article><a href="05-normalization-dark-mobile.png"><img loading="lazy" src="05-normalization-dark-mobile.png"
+alt="Исходное → сопоставимое · Тёмная · Узкий экран — реальный экран Forest Keeper" width="390"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Исходное → сопоставимое · Тёмная · Узкий экран</h2>
+<p>Масса приводится к единой единице; исходное значение, качество и правило остаются доступными. Нормализация не объявляет значение истиной.</p>
+<a href="05-normalization-dark-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="06-matching.png"><img loading="lazy" src="06-matching.png"
+alt="Какие записи относятся к одной сущности · Светлая — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Какие записи относятся к одной сущности · Светлая</h2>
 <p>Отдельно показаны совпадения, отклонённые пары и кандидаты для проверки. Оценка похожести сама по себе не подтверждает идентичность.</p>
 <a href="06-matching.png">Открыть полный экран ↗</a></div></article>
-<article><a href="07-match-detail.png"><img loading="lazy" src="07-match-detail.png"
-alt="Основания совпадения — реальный экран Forest Keeper" width="1440"></a>
+<article><a href="06-matching-mobile.png"><img loading="lazy" src="06-matching-mobile.png"
+alt="Какие записи относятся к одной сущности · Светлая · Узкий экран — реальный экран Forest Keeper" width="390"></a>
 <div><span class="tag">Работает сейчас · демонстрационные данные</span>
-<h2>Основания совпадения</h2>
+<h2>Какие записи относятся к одной сущности · Светлая · Узкий экран</h2>
+<p>Отдельно показаны совпадения, отклонённые пары и кандидаты для проверки. Оценка похожести сама по себе не подтверждает идентичность.</p>
+<a href="06-matching-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="06-matching-dark.png"><img loading="lazy" src="06-matching-dark.png"
+alt="Какие записи относятся к одной сущности · Тёмная — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Какие записи относятся к одной сущности · Тёмная</h2>
+<p>Отдельно показаны совпадения, отклонённые пары и кандидаты для проверки. Оценка похожести сама по себе не подтверждает идентичность.</p>
+<a href="06-matching-dark.png">Открыть полный экран ↗</a></div></article>
+<article><a href="06-matching-dark-mobile.png"><img loading="lazy" src="06-matching-dark-mobile.png"
+alt="Какие записи относятся к одной сущности · Тёмная · Узкий экран — реальный экран Forest Keeper" width="390"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Какие записи относятся к одной сущности · Тёмная · Узкий экран</h2>
+<p>Отдельно показаны совпадения, отклонённые пары и кандидаты для проверки. Оценка похожести сама по себе не подтверждает идентичность.</p>
+<a href="06-matching-dark-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="07-match-detail.png"><img loading="lazy" src="07-match-detail.png"
+alt="Основания совпадения · Светлая — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Основания совпадения · Светлая</h2>
 <p>Обе исходные записи, нормализованные значения и вклад признаков доступны рядом. Подтверждение идентичности не выбирает правильную массу.</p>
 <a href="07-match-detail.png">Открыть полный экран ↗</a></div></article>
-<article><a href="08-conflicts.png"><img loading="lazy" src="08-conflicts.png"
-alt="Расхождения значений — реальный экран Forest Keeper" width="1440"></a>
+<article><a href="07-match-detail-mobile.png"><img loading="lazy" src="07-match-detail-mobile.png"
+alt="Основания совпадения · Светлая · Узкий экран — реальный экран Forest Keeper" width="390"></a>
 <div><span class="tag">Работает сейчас · демонстрационные данные</span>
-<h2>Расхождения значений</h2>
+<h2>Основания совпадения · Светлая · Узкий экран</h2>
+<p>Обе исходные записи, нормализованные значения и вклад признаков доступны рядом. Подтверждение идентичности не выбирает правильную массу.</p>
+<a href="07-match-detail-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="07-match-detail-dark.png"><img loading="lazy" src="07-match-detail-dark.png"
+alt="Основания совпадения · Тёмная — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Основания совпадения · Тёмная</h2>
+<p>Обе исходные записи, нормализованные значения и вклад признаков доступны рядом. Подтверждение идентичности не выбирает правильную массу.</p>
+<a href="07-match-detail-dark.png">Открыть полный экран ↗</a></div></article>
+<article><a href="07-match-detail-dark-mobile.png"><img loading="lazy" src="07-match-detail-dark-mobile.png"
+alt="Основания совпадения · Тёмная · Узкий экран — реальный экран Forest Keeper" width="390"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Основания совпадения · Тёмная · Узкий экран</h2>
+<p>Обе исходные записи, нормализованные значения и вклад признаков доступны рядом. Подтверждение идентичности не выбирает правильную массу.</p>
+<a href="07-match-detail-dark-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="08-conflicts.png"><img loading="lazy" src="08-conflicts.png"
+alt="Расхождения значений · Светлая — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Расхождения значений · Светлая</h2>
 <p>Список объяснимых конфликтов подтверждённых пар. Человеческие подписи сопровождают технические типы и статусы.</p>
 <a href="08-conflicts.png">Открыть полный экран ↗</a></div></article>
-<article><a href="09-conflict-detail.png"><img loading="lazy" src="09-conflict-detail.png"
-alt="Что не совпало и откуда взялись значения — реальный экран Forest Keeper" width="1440"></a>
+<article><a href="08-conflicts-mobile.png"><img loading="lazy" src="08-conflicts-mobile.png"
+alt="Расхождения значений · Светлая · Узкий экран — реальный экран Forest Keeper" width="390"></a>
 <div><span class="tag">Работает сейчас · демонстрационные данные</span>
-<h2>Что не совпало и откуда взялись значения</h2>
+<h2>Расхождения значений · Светлая · Узкий экран</h2>
+<p>Список объяснимых конфликтов подтверждённых пар. Человеческие подписи сопровождают технические типы и статусы.</p>
+<a href="08-conflicts-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="08-conflicts-dark.png"><img loading="lazy" src="08-conflicts-dark.png"
+alt="Расхождения значений · Тёмная — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Расхождения значений · Тёмная</h2>
+<p>Список объяснимых конфликтов подтверждённых пар. Человеческие подписи сопровождают технические типы и статусы.</p>
+<a href="08-conflicts-dark.png">Открыть полный экран ↗</a></div></article>
+<article><a href="08-conflicts-dark-mobile.png"><img loading="lazy" src="08-conflicts-dark-mobile.png"
+alt="Расхождения значений · Тёмная · Узкий экран — реальный экран Forest Keeper" width="390"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Расхождения значений · Тёмная · Узкий экран</h2>
+<p>Список объяснимых конфликтов подтверждённых пар. Человеческие подписи сопровождают технические типы и статусы.</p>
+<a href="08-conflicts-dark-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="09-conflict-detail.png"><img loading="lazy" src="09-conflict-detail.png"
+alt="Что не совпало и откуда взялись значения · Светлая — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Что не совпало и откуда взялись значения · Светлая</h2>
 <p>12500 g и 12.4 kg сравниваются как 12.5 и 12.4 kg. Видны два источника и контекст нормализации. Решение человека ещё не принято.</p>
 <a href="09-conflict-detail.png">Открыть полный экран ↗</a></div></article>
-<article><a href="17-provenance.png"><img loading="lazy" src="17-provenance.png"
-alt="От результата к исходной записи — реальный экран Forest Keeper" width="1440"></a>
+<article><a href="09-conflict-detail-mobile.png"><img loading="lazy" src="09-conflict-detail-mobile.png"
+alt="Что не совпало и откуда взялись значения · Светлая · Узкий экран — реальный экран Forest Keeper" width="390"></a>
 <div><span class="tag">Работает сейчас · демонстрационные данные</span>
-<h2>От результата к исходной записи</h2>
+<h2>Что не совпало и откуда взялись значения · Светлая · Узкий экран</h2>
+<p>12500 g и 12.4 kg сравниваются как 12.5 и 12.4 kg. Видны два источника и контекст нормализации. Решение человека ещё не принято.</p>
+<a href="09-conflict-detail-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="09-conflict-detail-dark.png"><img loading="lazy" src="09-conflict-detail-dark.png"
+alt="Что не совпало и откуда взялись значения · Тёмная — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Что не совпало и откуда взялись значения · Тёмная</h2>
+<p>12500 g и 12.4 kg сравниваются как 12.5 и 12.4 kg. Видны два источника и контекст нормализации. Решение человека ещё не принято.</p>
+<a href="09-conflict-detail-dark.png">Открыть полный экран ↗</a></div></article>
+<article><a href="09-conflict-detail-dark-mobile.png"><img loading="lazy" src="09-conflict-detail-dark-mobile.png"
+alt="Что не совпало и откуда взялись значения · Тёмная · Узкий экран — реальный экран Forest Keeper" width="390"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Что не совпало и откуда взялись значения · Тёмная · Узкий экран</h2>
+<p>12500 g и 12.4 kg сравниваются как 12.5 и 12.4 kg. Видны два источника и контекст нормализации. Решение человека ещё не принято.</p>
+<a href="09-conflict-detail-dark-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="17-provenance.png"><img loading="lazy" src="17-provenance.png"
+alt="От результата к исходной записи · Светлая — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>От результата к исходной записи · Светлая</h2>
 <p>По запросу раскрываются файл, контрольная сумма, позиция исходной записи и правило нормализации. Это реальные сохранённые сведения, а не макет.</p>
 <a href="17-provenance.png">Открыть полный экран ↗</a></div></article>
-<article><a href="10-empty.png"><img loading="lazy" src="10-empty.png"
-alt="Понятное пустое состояние — реальный экран Forest Keeper" width="1440"></a>
+<article><a href="17-provenance-mobile.png"><img loading="lazy" src="17-provenance-mobile.png"
+alt="От результата к исходной записи · Светлая · Узкий экран — реальный экран Forest Keeper" width="390"></a>
 <div><span class="tag">Работает сейчас · демонстрационные данные</span>
-<h2>Понятное пустое состояние</h2>
+<h2>От результата к исходной записи · Светлая · Узкий экран</h2>
+<p>По запросу раскрываются файл, контрольная сумма, позиция исходной записи и правило нормализации. Это реальные сохранённые сведения, а не макет.</p>
+<a href="17-provenance-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="17-provenance-dark.png"><img loading="lazy" src="17-provenance-dark.png"
+alt="От результата к исходной записи · Тёмная — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>От результата к исходной записи · Тёмная</h2>
+<p>По запросу раскрываются файл, контрольная сумма, позиция исходной записи и правило нормализации. Это реальные сохранённые сведения, а не макет.</p>
+<a href="17-provenance-dark.png">Открыть полный экран ↗</a></div></article>
+<article><a href="17-provenance-dark-mobile.png"><img loading="lazy" src="17-provenance-dark-mobile.png"
+alt="От результата к исходной записи · Тёмная · Узкий экран — реальный экран Forest Keeper" width="390"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>От результата к исходной записи · Тёмная · Узкий экран</h2>
+<p>По запросу раскрываются файл, контрольная сумма, позиция исходной записи и правило нормализации. Это реальные сохранённые сведения, а не макет.</p>
+<a href="17-provenance-dark-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="10-empty.png"><img loading="lazy" src="10-empty.png"
+alt="Понятное пустое состояние · Светлая — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Понятное пустое состояние · Светлая</h2>
 <p>Результат фильтра не подменяется вымышленными данными. RULE_VIOLATION пока не генерируется без утверждённого источника правил.</p>
 <a href="10-empty.png">Открыть полный экран ↗</a></div></article>
-<article><a href="11-users.png"><img loading="lazy" src="11-users.png"
-alt="Пользователи и роли — реальный экран Forest Keeper" width="1440"></a>
+<article><a href="10-empty-mobile.png"><img loading="lazy" src="10-empty-mobile.png"
+alt="Понятное пустое состояние · Светлая · Узкий экран — реальный экран Forest Keeper" width="390"></a>
 <div><span class="tag">Работает сейчас · демонстрационные данные</span>
-<h2>Пользователи и роли</h2>
+<h2>Понятное пустое состояние · Светлая · Узкий экран</h2>
+<p>Результат фильтра не подменяется вымышленными данными. RULE_VIOLATION пока не генерируется без утверждённого источника правил.</p>
+<a href="10-empty-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="10-empty-dark.png"><img loading="lazy" src="10-empty-dark.png"
+alt="Понятное пустое состояние · Тёмная — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Понятное пустое состояние · Тёмная</h2>
+<p>Результат фильтра не подменяется вымышленными данными. RULE_VIOLATION пока не генерируется без утверждённого источника правил.</p>
+<a href="10-empty-dark.png">Открыть полный экран ↗</a></div></article>
+<article><a href="10-empty-dark-mobile.png"><img loading="lazy" src="10-empty-dark-mobile.png"
+alt="Понятное пустое состояние · Тёмная · Узкий экран — реальный экран Forest Keeper" width="390"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Понятное пустое состояние · Тёмная · Узкий экран</h2>
+<p>Результат фильтра не подменяется вымышленными данными. RULE_VIOLATION пока не генерируется без утверждённого источника правил.</p>
+<a href="10-empty-dark-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="11-users.png"><img loading="lazy" src="11-users.png"
+alt="Пользователи и роли · Светлая — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Пользователи и роли · Светлая</h2>
 <p>Администратор управляет доступом. Роль ADMIN сама по себе не даёт полномочий подтверждать совпадения или принимать бизнес-решения.</p>
 <a href="11-users.png">Открыть полный экран ↗</a></div></article>
-<article><a href="12-matching-review.png"><img loading="lazy" src="12-matching-review.png"
-alt="Проверка идентичности экспертом — реальный экран Forest Keeper" width="1440"></a>
+<article><a href="11-users-mobile.png"><img loading="lazy" src="11-users-mobile.png"
+alt="Пользователи и роли · Светлая · Узкий экран — реальный экран Forest Keeper" width="390"></a>
 <div><span class="tag">Работает сейчас · демонстрационные данные</span>
-<h2>Проверка идентичности экспертом</h2>
+<h2>Пользователи и роли · Светлая · Узкий экран</h2>
+<p>Администратор управляет доступом. Роль ADMIN сама по себе не даёт полномочий подтверждать совпадения или принимать бизнес-решения.</p>
+<a href="11-users-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="11-users-dark.png"><img loading="lazy" src="11-users-dark.png"
+alt="Пользователи и роли · Тёмная — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Пользователи и роли · Тёмная</h2>
+<p>Администратор управляет доступом. Роль ADMIN сама по себе не даёт полномочий подтверждать совпадения или принимать бизнес-решения.</p>
+<a href="11-users-dark.png">Открыть полный экран ↗</a></div></article>
+<article><a href="11-users-dark-mobile.png"><img loading="lazy" src="11-users-dark-mobile.png"
+alt="Пользователи и роли · Тёмная · Узкий экран — реальный экран Forest Keeper" width="390"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Пользователи и роли · Тёмная · Узкий экран</h2>
+<p>Администратор управляет доступом. Роль ADMIN сама по себе не даёт полномочий подтверждать совпадения или принимать бизнес-решения.</p>
+<a href="11-users-dark-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="12-matching-review.png"><img loading="lazy" src="12-matching-review.png"
+alt="Проверка идентичности экспертом · Светлая — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Проверка идентичности экспертом · Светлая</h2>
 <p>Уже существующий matching review требует объяснения. Это проверка того, что записи относятся к одной сущности, а не разрешение конфликта значений.</p>
 <a href="12-matching-review.png">Открыть полный экран ↗</a></div></article>
-<article><a href="19-human-review.png"><img loading="lazy" src="19-human-review.png"
-alt="Решение по проверенным основаниям — реальный экран Forest Keeper" width="1440"></a>
+<article><a href="12-matching-review-mobile.png"><img loading="lazy" src="12-matching-review-mobile.png"
+alt="Проверка идентичности экспертом · Светлая · Узкий экран — реальный экран Forest Keeper" width="390"></a>
 <div><span class="tag">Работает сейчас · демонстрационные данные</span>
-<h2>Решение по проверенным основаниям</h2>
+<h2>Проверка идентичности экспертом · Светлая · Узкий экран</h2>
+<p>Уже существующий matching review требует объяснения. Это проверка того, что записи относятся к одной сущности, а не разрешение конфликта значений.</p>
+<a href="12-matching-review-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="12-matching-review-dark.png"><img loading="lazy" src="12-matching-review-dark.png"
+alt="Проверка идентичности экспертом · Тёмная — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Проверка идентичности экспертом · Тёмная</h2>
+<p>Уже существующий matching review требует объяснения. Это проверка того, что записи относятся к одной сущности, а не разрешение конфликта значений.</p>
+<a href="12-matching-review-dark.png">Открыть полный экран ↗</a></div></article>
+<article><a href="12-matching-review-dark-mobile.png"><img loading="lazy" src="12-matching-review-dark-mobile.png"
+alt="Проверка идентичности экспертом · Тёмная · Узкий экран — реальный экран Forest Keeper" width="390"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Проверка идентичности экспертом · Тёмная · Узкий экран</h2>
+<p>Уже существующий matching review требует объяснения. Это проверка того, что записи относятся к одной сущности, а не разрешение конфликта значений.</p>
+<a href="12-matching-review-dark-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="19-human-review.png"><img loading="lazy" src="19-human-review.png"
+alt="Решение по проверенным основаниям · Светлая — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Решение по проверенным основаниям · Светлая</h2>
 <p>Эксперт выбирает источник или другое допустимое значение, объясняет выбор. Авторитет источника автоматически не выдумывается.</p>
 <a href="19-human-review.png">Открыть полный экран ↗</a></div></article>
-<article><a href="20-decision-confirmation.png"><img loading="lazy" src="20-decision-confirmation.png"
-alt="Проверка перед сохранением — реальный экран Forest Keeper" width="1440"></a>
+<article><a href="19-human-review-mobile.png"><img loading="lazy" src="19-human-review-mobile.png"
+alt="Решение по проверенным основаниям · Светлая · Узкий экран — реальный экран Forest Keeper" width="390"></a>
 <div><span class="tag">Работает сейчас · демонстрационные данные</span>
-<h2>Проверка перед сохранением</h2>
+<h2>Решение по проверенным основаниям · Светлая · Узкий экран</h2>
+<p>Эксперт выбирает источник или другое допустимое значение, объясняет выбор. Авторитет источника автоматически не выдумывается.</p>
+<a href="19-human-review-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="19-human-review-dark.png"><img loading="lazy" src="19-human-review-dark.png"
+alt="Решение по проверенным основаниям · Тёмная — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Решение по проверенным основаниям · Тёмная</h2>
+<p>Эксперт выбирает источник или другое допустимое значение, объясняет выбор. Авторитет источника автоматически не выдумывается.</p>
+<a href="19-human-review-dark.png">Открыть полный экран ↗</a></div></article>
+<article><a href="19-human-review-dark-mobile.png"><img loading="lazy" src="19-human-review-dark-mobile.png"
+alt="Решение по проверенным основаниям · Тёмная · Узкий экран — реальный экран Forest Keeper" width="390"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Решение по проверенным основаниям · Тёмная · Узкий экран</h2>
+<p>Эксперт выбирает источник или другое допустимое значение, объясняет выбор. Авторитет источника автоматически не выдумывается.</p>
+<a href="19-human-review-dark-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="20-decision-confirmation.png"><img loading="lazy" src="20-decision-confirmation.png"
+alt="Проверка перед сохранением · Светлая — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Проверка перед сохранением · Светлая</h2>
 <p>Итог, значение, обоснование и версия контекста перед явным подтверждением. Записи во внешних системах не меняются.</p>
 <a href="20-decision-confirmation.png">Открыть полный экран ↗</a></div></article>
-<article><a href="21-decision-receipt.png"><img loading="lazy" src="21-decision-receipt.png"
-alt="Сервер подтвердил сохранение — реальный экран Forest Keeper" width="1440"></a>
+<article><a href="20-decision-confirmation-mobile.png"><img loading="lazy" src="20-decision-confirmation-mobile.png"
+alt="Проверка перед сохранением · Светлая · Узкий экран — реальный экран Forest Keeper" width="390"></a>
 <div><span class="tag">Работает сейчас · демонстрационные данные</span>
-<h2>Сервер подтвердил сохранение</h2>
+<h2>Проверка перед сохранением · Светлая · Узкий экран</h2>
+<p>Итог, значение, обоснование и версия контекста перед явным подтверждением. Записи во внешних системах не меняются.</p>
+<a href="20-decision-confirmation-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="20-decision-confirmation-dark.png"><img loading="lazy" src="20-decision-confirmation-dark.png"
+alt="Проверка перед сохранением · Тёмная — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Проверка перед сохранением · Тёмная</h2>
+<p>Итог, значение, обоснование и версия контекста перед явным подтверждением. Записи во внешних системах не меняются.</p>
+<a href="20-decision-confirmation-dark.png">Открыть полный экран ↗</a></div></article>
+<article><a href="20-decision-confirmation-dark-mobile.png"><img loading="lazy" src="20-decision-confirmation-dark-mobile.png"
+alt="Проверка перед сохранением · Тёмная · Узкий экран — реальный экран Forest Keeper" width="390"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Проверка перед сохранением · Тёмная · Узкий экран</h2>
+<p>Итог, значение, обоснование и версия контекста перед явным подтверждением. Записи во внешних системах не меняются.</p>
+<a href="20-decision-confirmation-dark-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="21-decision-receipt.png"><img loading="lazy" src="21-decision-receipt.png"
+alt="Сервер подтвердил сохранение · Светлая — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Сервер подтвердил сохранение · Светлая</h2>
 <p>Настоящий Decision ID, автор, время, значение и объяснение. Надпись появляется после успешного ответа сервера.</p>
 <a href="21-decision-receipt.png">Открыть полный экран ↗</a></div></article>
-<article><a href="22-decision-registry.png"><img loading="lazy" src="22-decision-registry.png"
-alt="Реестр решений — реальный экран Forest Keeper" width="1440"></a>
+<article><a href="21-decision-receipt-mobile.png"><img loading="lazy" src="21-decision-receipt-mobile.png"
+alt="Сервер подтвердил сохранение · Светлая · Узкий экран — реальный экран Forest Keeper" width="390"></a>
 <div><span class="tag">Работает сейчас · демонстрационные данные</span>
-<h2>Реестр решений</h2>
+<h2>Сервер подтвердил сохранение · Светлая · Узкий экран</h2>
+<p>Настоящий Decision ID, автор, время, значение и объяснение. Надпись появляется после успешного ответа сервера.</p>
+<a href="21-decision-receipt-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="21-decision-receipt-dark.png"><img loading="lazy" src="21-decision-receipt-dark.png"
+alt="Сервер подтвердил сохранение · Тёмная — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Сервер подтвердил сохранение · Тёмная</h2>
+<p>Настоящий Decision ID, автор, время, значение и объяснение. Надпись появляется после успешного ответа сервера.</p>
+<a href="21-decision-receipt-dark.png">Открыть полный экран ↗</a></div></article>
+<article><a href="21-decision-receipt-dark-mobile.png"><img loading="lazy" src="21-decision-receipt-dark-mobile.png"
+alt="Сервер подтвердил сохранение · Тёмная · Узкий экран — реальный экран Forest Keeper" width="390"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Сервер подтвердил сохранение · Тёмная · Узкий экран</h2>
+<p>Настоящий Decision ID, автор, время, значение и объяснение. Надпись появляется после успешного ответа сервера.</p>
+<a href="21-decision-receipt-dark-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="22-decision-registry.png"><img loading="lazy" src="22-decision-registry.png"
+alt="Реестр решений · Светлая — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Реестр решений · Светлая</h2>
 <p>Отдельные неизменяемые решения, фильтры и исторический контекст. Это память о действии человека, а не новая запись в исходной системе.</p>
 <a href="22-decision-registry.png">Открыть полный экран ↗</a></div></article>
-<article><a href="23-decision-history.png"><img loading="lazy" src="23-decision-history.png"
-alt="Исправление сохраняет историю — реальный экран Forest Keeper" width="1440"></a>
+<article><a href="22-decision-registry-mobile.png"><img loading="lazy" src="22-decision-registry-mobile.png"
+alt="Реестр решений · Светлая · Узкий экран — реальный экран Forest Keeper" width="390"></a>
 <div><span class="tag">Работает сейчас · демонстрационные данные</span>
-<h2>Исправление сохраняет историю</h2>
+<h2>Реестр решений · Светлая · Узкий экран</h2>
+<p>Отдельные неизменяемые решения, фильтры и исторический контекст. Это память о действии человека, а не новая запись в исходной системе.</p>
+<a href="22-decision-registry-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="22-decision-registry-dark.png"><img loading="lazy" src="22-decision-registry-dark.png"
+alt="Реестр решений · Тёмная — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Реестр решений · Тёмная</h2>
+<p>Отдельные неизменяемые решения, фильтры и исторический контекст. Это память о действии человека, а не новая запись в исходной системе.</p>
+<a href="22-decision-registry-dark.png">Открыть полный экран ↗</a></div></article>
+<article><a href="22-decision-registry-dark-mobile.png"><img loading="lazy" src="22-decision-registry-dark-mobile.png"
+alt="Реестр решений · Тёмная · Узкий экран — реальный экран Forest Keeper" width="390"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Реестр решений · Тёмная · Узкий экран</h2>
+<p>Отдельные неизменяемые решения, фильтры и исторический контекст. Это память о действии человека, а не новая запись в исходной системе.</p>
+<a href="22-decision-registry-dark-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="23-decision-history.png"><img loading="lazy" src="23-decision-history.png"
+alt="Исправление сохраняет историю · Светлая — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Исправление сохраняет историю · Светлая</h2>
 <p>Новое решение заменяет предыдущее. В истории видны оба автора, время, обоснования и явная связь между записями.</p>
 <a href="23-decision-history.png">Открыть полный экран ↗</a></div></article>
-<article><a href="24-similar-decisions.png"><img loading="lazy" src="24-similar-decisions.png"
-alt="Похожие прошлые решения — реальный экран Forest Keeper" width="1440"></a>
+<article><a href="23-decision-history-mobile.png"><img loading="lazy" src="23-decision-history-mobile.png"
+alt="Исправление сохраняет историю · Светлая · Узкий экран — реальный экран Forest Keeper" width="390"></a>
 <div><span class="tag">Работает сейчас · демонстрационные данные</span>
-<h2>Похожие прошлые решения</h2>
+<h2>Исправление сохраняет историю · Светлая · Узкий экран</h2>
+<p>Новое решение заменяет предыдущее. В истории видны оба автора, время, обоснования и явная связь между записями.</p>
+<a href="23-decision-history-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="23-decision-history-dark.png"><img loading="lazy" src="23-decision-history-dark.png"
+alt="Исправление сохраняет историю · Тёмная — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Исправление сохраняет историю · Тёмная</h2>
+<p>Новое решение заменяет предыдущее. В истории видны оба автора, время, обоснования и явная связь между записями.</p>
+<a href="23-decision-history-dark.png">Открыть полный экран ↗</a></div></article>
+<article><a href="23-decision-history-dark-mobile.png"><img loading="lazy" src="23-decision-history-dark-mobile.png"
+alt="Исправление сохраняет историю · Тёмная · Узкий экран — реальный экран Forest Keeper" width="390"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Исправление сохраняет историю · Тёмная · Узкий экран</h2>
+<p>Новое решение заменяет предыдущее. В истории видны оба автора, время, обоснования и явная связь между записями.</p>
+<a href="23-decision-history-dark-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="24-similar-decisions.png"><img loading="lazy" src="24-similar-decisions.png"
+alt="Похожие прошлые решения · Светлая — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Похожие прошлые решения · Светлая</h2>
 <p>Новый импорт находит настоящий Decision ID прошлого случая. Видны сходство, совпавшие признаки и исторические значения. Явно обозначен тестовый провайдер.</p>
 <a href="24-similar-decisions.png">Открыть полный экран ↗</a></div></article>
-<article><a href="25-precedent-detail.png"><img loading="lazy" src="25-precedent-detail.png"
-alt="От похожести к реальному решению — реальный экран Forest Keeper" width="1440"></a>
+<article><a href="24-similar-decisions-mobile.png"><img loading="lazy" src="24-similar-decisions-mobile.png"
+alt="Похожие прошлые решения · Светлая · Узкий экран — реальный экран Forest Keeper" width="390"></a>
 <div><span class="tag">Работает сейчас · демонстрационные данные</span>
-<h2>От похожести к реальному решению</h2>
+<h2>Похожие прошлые решения · Светлая · Узкий экран</h2>
+<p>Новый импорт находит настоящий Decision ID прошлого случая. Видны сходство, совпавшие признаки и исторические значения. Явно обозначен тестовый провайдер.</p>
+<a href="24-similar-decisions-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="24-similar-decisions-dark.png"><img loading="lazy" src="24-similar-decisions-dark.png"
+alt="Похожие прошлые решения · Тёмная — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Похожие прошлые решения · Тёмная</h2>
+<p>Новый импорт находит настоящий Decision ID прошлого случая. Видны сходство, совпавшие признаки и исторические значения. Явно обозначен тестовый провайдер.</p>
+<a href="24-similar-decisions-dark.png">Открыть полный экран ↗</a></div></article>
+<article><a href="24-similar-decisions-dark-mobile.png"><img loading="lazy" src="24-similar-decisions-dark-mobile.png"
+alt="Похожие прошлые решения · Тёмная · Узкий экран — реальный экран Forest Keeper" width="390"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Похожие прошлые решения · Тёмная · Узкий экран</h2>
+<p>Новый импорт находит настоящий Decision ID прошлого случая. Видны сходство, совпавшие признаки и исторические значения. Явно обозначен тестовый провайдер.</p>
+<a href="24-similar-decisions-dark-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="25-precedent-detail.png"><img loading="lazy" src="25-precedent-detail.png"
+alt="От похожести к реальному решению · Светлая — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>От похожести к реальному решению · Светлая</h2>
 <p>Открывается неизменяемый факт: автор, дата, выбранное человеком значение, обоснование и история. Поиск не предлагает действие для нового конфликта.</p>
 <a href="25-precedent-detail.png">Открыть полный экран ↗</a></div></article>
-<article><a href="26-no-precedent.png"><img loading="lazy" src="26-no-precedent.png"
-alt="Непохожий случай остаётся без прецедента — реальный экран Forest Keeper" width="1440"></a>
+<article><a href="25-precedent-detail-mobile.png"><img loading="lazy" src="25-precedent-detail-mobile.png"
+alt="От похожести к реальному решению · Светлая · Узкий экран — реальный экран Forest Keeper" width="390"></a>
 <div><span class="tag">Работает сейчас · демонстрационные данные</span>
-<h2>Непохожий случай остаётся без прецедента</h2>
+<h2>От похожести к реальному решению · Светлая · Узкий экран</h2>
+<p>Открывается неизменяемый факт: автор, дата, выбранное человеком значение, обоснование и история. Поиск не предлагает действие для нового конфликта.</p>
+<a href="25-precedent-detail-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="25-precedent-detail-dark.png"><img loading="lazy" src="25-precedent-detail-dark.png"
+alt="От похожести к реальному решению · Тёмная — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>От похожести к реальному решению · Тёмная</h2>
+<p>Открывается неизменяемый факт: автор, дата, выбранное человеком значение, обоснование и история. Поиск не предлагает действие для нового конфликта.</p>
+<a href="25-precedent-detail-dark.png">Открыть полный экран ↗</a></div></article>
+<article><a href="25-precedent-detail-dark-mobile.png"><img loading="lazy" src="25-precedent-detail-dark-mobile.png"
+alt="От похожести к реальному решению · Тёмная · Узкий экран — реальный экран Forest Keeper" width="390"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>От похожести к реальному решению · Тёмная · Узкий экран</h2>
+<p>Открывается неизменяемый факт: автор, дата, выбранное человеком значение, обоснование и история. Поиск не предлагает действие для нового конфликта.</p>
+<a href="25-precedent-detail-dark-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="26-no-precedent.png"><img loading="lazy" src="26-no-precedent.png"
+alt="Непохожий случай остаётся без прецедента · Светлая — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Непохожий случай остаётся без прецедента · Светлая</h2>
 <p>Совместимый атрибут и единица не делают керамическую трубу похожей на болт. Ни автоматического выбора, ни нового решения не появляется.</p>
 <a href="26-no-precedent.png">Открыть полный экран ↗</a></div></article>
-<article><a href="13-viewer.png"><img loading="lazy" src="13-viewer.png"
-alt="Просмотр без полномочий на изменение — реальный экран Forest Keeper" width="1440"></a>
+<article><a href="26-no-precedent-mobile.png"><img loading="lazy" src="26-no-precedent-mobile.png"
+alt="Непохожий случай остаётся без прецедента · Светлая · Узкий экран — реальный экран Forest Keeper" width="390"></a>
 <div><span class="tag">Работает сейчас · демонстрационные данные</span>
-<h2>Просмотр без полномочий на изменение</h2>
+<h2>Непохожий случай остаётся без прецедента · Светлая · Узкий экран</h2>
+<p>Совместимый атрибут и единица не делают керамическую трубу похожей на болт. Ни автоматического выбора, ни нового решения не появляется.</p>
+<a href="26-no-precedent-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="26-no-precedent-dark.png"><img loading="lazy" src="26-no-precedent-dark.png"
+alt="Непохожий случай остаётся без прецедента · Тёмная — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Непохожий случай остаётся без прецедента · Тёмная</h2>
+<p>Совместимый атрибут и единица не делают керамическую трубу похожей на болт. Ни автоматического выбора, ни нового решения не появляется.</p>
+<a href="26-no-precedent-dark.png">Открыть полный экран ↗</a></div></article>
+<article><a href="26-no-precedent-dark-mobile.png"><img loading="lazy" src="26-no-precedent-dark-mobile.png"
+alt="Непохожий случай остаётся без прецедента · Тёмная · Узкий экран — реальный экран Forest Keeper" width="390"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Непохожий случай остаётся без прецедента · Тёмная · Узкий экран</h2>
+<p>Совместимый атрибут и единица не делают керамическую трубу похожей на болт. Ни автоматического выбора, ни нового решения не появляется.</p>
+<a href="26-no-precedent-dark-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="31-recommendation-abstention.png"><img loading="lazy" src="31-recommendation-abstention.png"
+alt="Без достаточных оснований система воздерживается · Светлая — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Без достаточных оснований система воздерживается · Светлая</h2>
+<p>Есть понятный результат отказа. Доступны ручное рассмотрение и реальные исторические сведения; готовое значение не выдумывается.</p>
+<a href="31-recommendation-abstention.png">Открыть полный экран ↗</a></div></article>
+<article><a href="31-recommendation-abstention-mobile.png"><img loading="lazy" src="31-recommendation-abstention-mobile.png"
+alt="Без достаточных оснований система воздерживается · Светлая · Узкий экран — реальный экран Forest Keeper" width="390"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Без достаточных оснований система воздерживается · Светлая · Узкий экран</h2>
+<p>Есть понятный результат отказа. Доступны ручное рассмотрение и реальные исторические сведения; готовое значение не выдумывается.</p>
+<a href="31-recommendation-abstention-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="31-recommendation-abstention-dark.png"><img loading="lazy" src="31-recommendation-abstention-dark.png"
+alt="Без достаточных оснований система воздерживается · Тёмная — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Без достаточных оснований система воздерживается · Тёмная</h2>
+<p>Есть понятный результат отказа. Доступны ручное рассмотрение и реальные исторические сведения; готовое значение не выдумывается.</p>
+<a href="31-recommendation-abstention-dark.png">Открыть полный экран ↗</a></div></article>
+<article><a href="31-recommendation-abstention-dark-mobile.png"><img loading="lazy" src="31-recommendation-abstention-dark-mobile.png"
+alt="Без достаточных оснований система воздерживается · Тёмная · Узкий экран — реальный экран Forest Keeper" width="390"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Без достаточных оснований система воздерживается · Тёмная · Узкий экран</h2>
+<p>Есть понятный результат отказа. Доступны ручное рассмотрение и реальные исторические сведения; готовое значение не выдумывается.</p>
+<a href="31-recommendation-abstention-dark-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="28-recommendation.png"><img loading="lazy" src="28-recommendation.png"
+alt="Предложение на пяти независимых группах · Светлая — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Предложение на пяти независимых группах · Светлая</h2>
+<p>Пять отдельных загрузок и подтверждений человека. Система предлагает допустимое значение текущего источника, показывает реальные Decisions и число оснований без обещания вероятности.</p>
+<a href="28-recommendation.png">Открыть полный экран ↗</a></div></article>
+<article><a href="28-recommendation-mobile.png"><img loading="lazy" src="28-recommendation-mobile.png"
+alt="Предложение на пяти независимых группах · Светлая · Узкий экран — реальный экран Forest Keeper" width="390"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Предложение на пяти независимых группах · Светлая · Узкий экран</h2>
+<p>Пять отдельных загрузок и подтверждений человека. Система предлагает допустимое значение текущего источника, показывает реальные Decisions и число оснований без обещания вероятности.</p>
+<a href="28-recommendation-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="28-recommendation-dark.png"><img loading="lazy" src="28-recommendation-dark.png"
+alt="Предложение на пяти независимых группах · Тёмная — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Предложение на пяти независимых группах · Тёмная</h2>
+<p>Пять отдельных загрузок и подтверждений человека. Система предлагает допустимое значение текущего источника, показывает реальные Decisions и число оснований без обещания вероятности.</p>
+<a href="28-recommendation-dark.png">Открыть полный экран ↗</a></div></article>
+<article><a href="28-recommendation-dark-mobile.png"><img loading="lazy" src="28-recommendation-dark-mobile.png"
+alt="Предложение на пяти независимых группах · Тёмная · Узкий экран — реальный экран Forest Keeper" width="390"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Предложение на пяти независимых группах · Тёмная · Узкий экран</h2>
+<p>Пять отдельных загрузок и подтверждений человека. Система предлагает допустимое значение текущего источника, показывает реальные Decisions и число оснований без обещания вероятности.</p>
+<a href="28-recommendation-dark-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="29-recommendation-human-review.png"><img loading="lazy" src="29-recommendation-human-review.png"
+alt="Предложение проходит человеческое подтверждение · Светлая — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Предложение проходит человеческое подтверждение · Светлая</h2>
+<p>Переключение темы сохраняет выбор и несохранённое обоснование. Кнопка предложения лишь заполняет форму; окончательный Decision создаётся после отдельного подтверждения.</p>
+<a href="29-recommendation-human-review.png">Открыть полный экран ↗</a></div></article>
+<article><a href="29-recommendation-human-review-mobile.png"><img loading="lazy" src="29-recommendation-human-review-mobile.png"
+alt="Предложение проходит человеческое подтверждение · Светлая · Узкий экран — реальный экран Forest Keeper" width="390"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Предложение проходит человеческое подтверждение · Светлая · Узкий экран</h2>
+<p>Переключение темы сохраняет выбор и несохранённое обоснование. Кнопка предложения лишь заполняет форму; окончательный Decision создаётся после отдельного подтверждения.</p>
+<a href="29-recommendation-human-review-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="29-recommendation-human-review-dark.png"><img loading="lazy" src="29-recommendation-human-review-dark.png"
+alt="Предложение проходит человеческое подтверждение · Тёмная — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Предложение проходит человеческое подтверждение · Тёмная</h2>
+<p>Переключение темы сохраняет выбор и несохранённое обоснование. Кнопка предложения лишь заполняет форму; окончательный Decision создаётся после отдельного подтверждения.</p>
+<a href="29-recommendation-human-review-dark.png">Открыть полный экран ↗</a></div></article>
+<article><a href="29-recommendation-human-review-dark-mobile.png"><img loading="lazy" src="29-recommendation-human-review-dark-mobile.png"
+alt="Предложение проходит человеческое подтверждение · Тёмная · Узкий экран — реальный экран Forest Keeper" width="390"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Предложение проходит человеческое подтверждение · Тёмная · Узкий экран</h2>
+<p>Переключение темы сохраняет выбор и несохранённое обоснование. Кнопка предложения лишь заполняет форму; окончательный Decision создаётся после отдельного подтверждения.</p>
+<a href="29-recommendation-human-review-dark-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="30-recommendation-contradiction.png"><img loading="lazy" src="30-recommendation-contradiction.png"
+alt="Противоречивая практика остаётся человеку · Светлая — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Противоречивая практика остаётся человеку · Светлая</h2>
+<p>После самостоятельного выбора другого источника следующий запрос показывает противоречие. Старые Decisions сохранены; большинство не превращается в автоматический ответ.</p>
+<a href="30-recommendation-contradiction.png">Открыть полный экран ↗</a></div></article>
+<article><a href="30-recommendation-contradiction-mobile.png"><img loading="lazy" src="30-recommendation-contradiction-mobile.png"
+alt="Противоречивая практика остаётся человеку · Светлая · Узкий экран — реальный экран Forest Keeper" width="390"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Противоречивая практика остаётся человеку · Светлая · Узкий экран</h2>
+<p>После самостоятельного выбора другого источника следующий запрос показывает противоречие. Старые Decisions сохранены; большинство не превращается в автоматический ответ.</p>
+<a href="30-recommendation-contradiction-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="30-recommendation-contradiction-dark.png"><img loading="lazy" src="30-recommendation-contradiction-dark.png"
+alt="Противоречивая практика остаётся человеку · Тёмная — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Противоречивая практика остаётся человеку · Тёмная</h2>
+<p>После самостоятельного выбора другого источника следующий запрос показывает противоречие. Старые Decisions сохранены; большинство не превращается в автоматический ответ.</p>
+<a href="30-recommendation-contradiction-dark.png">Открыть полный экран ↗</a></div></article>
+<article><a href="30-recommendation-contradiction-dark-mobile.png"><img loading="lazy" src="30-recommendation-contradiction-dark-mobile.png"
+alt="Противоречивая практика остаётся человеку · Тёмная · Узкий экран — реальный экран Forest Keeper" width="390"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Противоречивая практика остаётся человеку · Тёмная · Узкий экран</h2>
+<p>После самостоятельного выбора другого источника следующий запрос показывает противоречие. Старые Decisions сохранены; большинство не превращается в автоматический ответ.</p>
+<a href="30-recommendation-contradiction-dark-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="13-viewer.png"><img loading="lazy" src="13-viewer.png"
+alt="Просмотр без полномочий на изменение · Светлая — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Просмотр без полномочий на изменение · Светлая</h2>
 <p>VIEWER видит разрешённые результаты и их основания. Запуск обработки и управление пользователями не отображаются.</p>
 <a href="13-viewer.png">Открыть полный экран ↗</a></div></article>
-<article><a href="27-retrieval-scope.png"><img loading="lazy" src="27-retrieval-scope.png"
-alt="Отзыв области данных действует сразу — реальный экран Forest Keeper" width="1440"></a>
+<article><a href="13-viewer-mobile.png"><img loading="lazy" src="13-viewer-mobile.png"
+alt="Просмотр без полномочий на изменение · Светлая · Узкий экран — реальный экран Forest Keeper" width="390"></a>
 <div><span class="tag">Работает сейчас · демонстрационные данные</span>
-<h2>Отзыв области данных действует сразу</h2>
+<h2>Просмотр без полномочий на изменение · Светлая · Узкий экран</h2>
+<p>VIEWER видит разрешённые результаты и их основания. Запуск обработки и управление пользователями не отображаются.</p>
+<a href="13-viewer-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="13-viewer-dark.png"><img loading="lazy" src="13-viewer-dark.png"
+alt="Просмотр без полномочий на изменение · Тёмная — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Просмотр без полномочий на изменение · Тёмная</h2>
+<p>VIEWER видит разрешённые результаты и их основания. Запуск обработки и управление пользователями не отображаются.</p>
+<a href="13-viewer-dark.png">Открыть полный экран ↗</a></div></article>
+<article><a href="13-viewer-dark-mobile.png"><img loading="lazy" src="13-viewer-dark-mobile.png"
+alt="Просмотр без полномочий на изменение · Тёмная · Узкий экран — реальный экран Forest Keeper" width="390"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Просмотр без полномочий на изменение · Тёмная · Узкий экран</h2>
+<p>VIEWER видит разрешённые результаты и их основания. Запуск обработки и управление пользователями не отображаются.</p>
+<a href="13-viewer-dark-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="27-retrieval-scope.png"><img loading="lazy" src="27-retrieval-scope.png"
+alt="Отзыв области данных действует сразу · Светлая — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Отзыв области данных действует сразу · Светлая</h2>
 <p>После явного отзыва доступа VIEWER не видит чужие конфликты и решения. Прямые запросы к similarity и Decision ID также отклоняются сервером.</p>
 <a href="27-retrieval-scope.png">Открыть полный экран ↗</a></div></article>
-<article><a href="14-permission.png"><img loading="lazy" src="14-permission.png"
-alt="Роль ещё не назначена — реальный экран Forest Keeper" width="1440"></a>
+<article><a href="27-retrieval-scope-mobile.png"><img loading="lazy" src="27-retrieval-scope-mobile.png"
+alt="Отзыв области данных действует сразу · Светлая · Узкий экран — реальный экран Forest Keeper" width="390"></a>
 <div><span class="tag">Работает сейчас · демонстрационные данные</span>
-<h2>Роль ещё не назначена</h2>
+<h2>Отзыв области данных действует сразу · Светлая · Узкий экран</h2>
+<p>После явного отзыва доступа VIEWER не видит чужие конфликты и решения. Прямые запросы к similarity и Decision ID также отклоняются сервером.</p>
+<a href="27-retrieval-scope-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="27-retrieval-scope-dark.png"><img loading="lazy" src="27-retrieval-scope-dark.png"
+alt="Отзыв области данных действует сразу · Тёмная — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Отзыв области данных действует сразу · Тёмная</h2>
+<p>После явного отзыва доступа VIEWER не видит чужие конфликты и решения. Прямые запросы к similarity и Decision ID также отклоняются сервером.</p>
+<a href="27-retrieval-scope-dark.png">Открыть полный экран ↗</a></div></article>
+<article><a href="27-retrieval-scope-dark-mobile.png"><img loading="lazy" src="27-retrieval-scope-dark-mobile.png"
+alt="Отзыв области данных действует сразу · Тёмная · Узкий экран — реальный экран Forest Keeper" width="390"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Отзыв области данных действует сразу · Тёмная · Узкий экран</h2>
+<p>После явного отзыва доступа VIEWER не видит чужие конфликты и решения. Прямые запросы к similarity и Decision ID также отклоняются сервером.</p>
+<a href="27-retrieval-scope-dark-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="14-permission.png"><img loading="lazy" src="14-permission.png"
+alt="Роль ещё не назначена · Светлая — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Роль ещё не назначена · Светлая</h2>
 <p>Понятный следующий шаг вместо пустого экрана. Авторизация и фактические разрешения проверяются сервером.</p>
 <a href="14-permission.png">Открыть полный экран ↗</a></div></article>
-<article><a href="15-loading.png"><img loading="lazy" src="15-loading.png"
-alt="Выполнение запроса — реальный экран Forest Keeper" width="1440"></a>
+<article><a href="14-permission-mobile.png"><img loading="lazy" src="14-permission-mobile.png"
+alt="Роль ещё не назначена · Светлая · Узкий экран — реальный экран Forest Keeper" width="390"></a>
 <div><span class="tag">Работает сейчас · демонстрационные данные</span>
-<h2>Выполнение запроса</h2>
+<h2>Роль ещё не назначена · Светлая · Узкий экран</h2>
+<p>Понятный следующий шаг вместо пустого экрана. Авторизация и фактические разрешения проверяются сервером.</p>
+<a href="14-permission-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="14-permission-dark.png"><img loading="lazy" src="14-permission-dark.png"
+alt="Роль ещё не назначена · Тёмная — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Роль ещё не назначена · Тёмная</h2>
+<p>Понятный следующий шаг вместо пустого экрана. Авторизация и фактические разрешения проверяются сервером.</p>
+<a href="14-permission-dark.png">Открыть полный экран ↗</a></div></article>
+<article><a href="14-permission-dark-mobile.png"><img loading="lazy" src="14-permission-dark-mobile.png"
+alt="Роль ещё не назначена · Тёмная · Узкий экран — реальный экран Forest Keeper" width="390"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Роль ещё не назначена · Тёмная · Узкий экран</h2>
+<p>Понятный следующий шаг вместо пустого экрана. Авторизация и фактические разрешения проверяются сервером.</p>
+<a href="14-permission-dark-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="15-loading.png"><img loading="lazy" src="15-loading.png"
+alt="Выполнение запроса · Светлая — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Выполнение запроса · Светлая</h2>
 <p>Настоящее состояние ожидания ответа; для демонстрации ответ намеренно задержан тестом.</p>
 <a href="15-loading.png">Открыть полный экран ↗</a></div></article>
-<article><a href="16-error.png"><img loading="lazy" src="16-error.png"
-alt="Восстановление после ошибки — реальный экран Forest Keeper" width="1440"></a>
+<article><a href="15-loading-mobile.png"><img loading="lazy" src="15-loading-mobile.png"
+alt="Выполнение запроса · Светлая · Узкий экран — реальный экран Forest Keeper" width="390"></a>
 <div><span class="tag">Работает сейчас · демонстрационные данные</span>
-<h2>Восстановление после ошибки</h2>
+<h2>Выполнение запроса · Светлая · Узкий экран</h2>
+<p>Настоящее состояние ожидания ответа; для демонстрации ответ намеренно задержан тестом.</p>
+<a href="15-loading-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="15-loading-dark.png"><img loading="lazy" src="15-loading-dark.png"
+alt="Выполнение запроса · Тёмная — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Выполнение запроса · Тёмная</h2>
+<p>Настоящее состояние ожидания ответа; для демонстрации ответ намеренно задержан тестом.</p>
+<a href="15-loading-dark.png">Открыть полный экран ↗</a></div></article>
+<article><a href="15-loading-dark-mobile.png"><img loading="lazy" src="15-loading-dark-mobile.png"
+alt="Выполнение запроса · Тёмная · Узкий экран — реальный экран Forest Keeper" width="390"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Выполнение запроса · Тёмная · Узкий экран</h2>
+<p>Настоящее состояние ожидания ответа; для демонстрации ответ намеренно задержан тестом.</p>
+<a href="15-loading-dark-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="16-error.png"><img loading="lazy" src="16-error.png"
+alt="Восстановление после ошибки · Светлая — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Восстановление после ошибки · Светлая</h2>
 <p>Симуляция потери соединения: читаемое сообщение, очищенный пароль и возможность повторить попытку.</p>
 <a href="16-error.png">Открыть полный экран ↗</a></div></article>
+<article><a href="16-error-mobile.png"><img loading="lazy" src="16-error-mobile.png"
+alt="Восстановление после ошибки · Светлая · Узкий экран — реальный экран Forest Keeper" width="390"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Восстановление после ошибки · Светлая · Узкий экран</h2>
+<p>Симуляция потери соединения: читаемое сообщение, очищенный пароль и возможность повторить попытку.</p>
+<a href="16-error-mobile.png">Открыть полный экран ↗</a></div></article>
+<article><a href="16-error-dark.png"><img loading="lazy" src="16-error-dark.png"
+alt="Восстановление после ошибки · Тёмная — реальный экран Forest Keeper" width="1440"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Восстановление после ошибки · Тёмная</h2>
+<p>Симуляция потери соединения: читаемое сообщение, очищенный пароль и возможность повторить попытку.</p>
+<a href="16-error-dark.png">Открыть полный экран ↗</a></div></article>
+<article><a href="16-error-dark-mobile.png"><img loading="lazy" src="16-error-dark-mobile.png"
+alt="Восстановление после ошибки · Тёмная · Узкий экран — реальный экран Forest Keeper" width="390"></a>
+<div><span class="tag">Работает сейчас · демонстрационные данные</span>
+<h2>Восстановление после ошибки · Тёмная · Узкий экран</h2>
+<p>Симуляция потери соединения: читаемое сообщение, очищенный пароль и возможность повторить попытку.</p>
+<a href="16-error-dark-mobile.png">Открыть полный экран ↗</a></div></article>
 </section>
 </main>
 <footer>Forest Keeper · Web Client. Источники сохраняются. Решение принимает человек. <a href="manifest.json">Происхождение снимков и результаты проверок</a>

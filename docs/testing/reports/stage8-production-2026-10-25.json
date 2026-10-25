@@ -1,0 +1,17 @@
+{
+  "source_commit": "751b7353887566841e53e29ed41e27bc2eb33b55",
+  "backend_source_tree": "8802b1b203bddafd18a39fdc92f39b4676935213",
+  "frontend_source_tree": "cf5309eac8b8f2929c98b975eadf966da3243282",
+  "images": {
+    "backend": "sha256:b096c0b07229e26ade4a4addbfe8e7cd93d3e8c0477d44e1252a2858c5ef489d",
+    "frontend": "sha256:fdc753811a96cd96942f4bd4275b4f49048dd38762664c65f5c72c44b0708dc2"
+  },
+  "profile": "compose.production.yaml, unique owned disposable project",
+  "checks": [
+    "PASS: two concurrent 100 MB HTTPS uploads, exact checksums, temporary files released",
+    "PASS: production config, HTTPS health, file secrets, non-root/read-only/resources",
+    "PASS: real RQ job; own worker healthy -> stale/unhealthy -> stopped -> restored healthy",
+    "PASS: PostgreSQL/Redis persistence after restart; no credential values in inspect/logs"
+  ],
+  "passed": true
+}

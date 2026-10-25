@@ -2,7 +2,7 @@
 
 **Актуально на 25 октября 2026:** Stage 0–7 приняты в `main`. Stage 7 — [PR #28](https://github.com/SergeyRassohin/Forest-Keeper/pull/28), merge `c927af513d29d83bd53b1b6522efccb42b5a1341`, [CI точного merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/40079346518). Production embedding provider отключён; synthetic test provider не доказывает промышленное качество. Stage 8 Recommendation Engine начат по [issue #29](https://github.com/SergeyRassohin/Forest-Keeper/issues/29): владелец утвердил численную policy 25 октября; реализация и приёмка в отдельном PR #30 продолжаются. В PR #30 реализован deterministic Recommendation runtime, приёмка продолжается; в main он пока отсутствует. AI/LLM и write-back не реализованы; #17/#18/#20 открыты.
 
-Состояние 24 октября 2026: `main` принял Stage 0–7 через PR #28; Stage 8 готовит предложение в `codex/stage8-recommendations`. Цель — самостоятельная проверка человеком, впервые увидевшим продукт, по [Quick Start](external-review-quickstart.md). Исходные требования: [#18](https://github.com/SergeyRassohin/Forest-Keeper/issues/18). Описание целевого поведения не заменяет работающую функцию.
+Состояние 25 октября 2026: `main` принял Stage 0–7 через PR #28; Stage 8 реализован в `codex/stage8-recommendations` и проходит отдельную приёмку PR #30. Цель — самостоятельная проверка человеком, впервые увидевшим продукт, по [Quick Start](external-review-quickstart.md). Исходные требования: [#18](https://github.com/SergeyRassohin/Forest-Keeper/issues/18). Описание целевого поведения не заменяет работающую функцию.
 
 | Проверка | Состояние main | Что предъявить для полной приёмки |
 | --- | --- | --- |
@@ -14,7 +14,7 @@
 | Human Review + Decision Registry | Stage 6 принят в main через PR #26 | Сохранённый Decision, actor/reason/context и immutable history |
 | Restart с сохранением Decision | Stage 6 PASS; merge CI main SUCCESS | Проверка того же ID после restart без удаления volumes |
 | Similar Decision | Stage 7 принят в main через PR #28, только synthetic test provider; production UNAVAILABLE | Реальная ссылка на прошлый Decision в явном test режиме, без industrial semantic claims |
-| Recommendation | Stage 8 proposal; policy ждёт одобрения, runtime отсутствует | Утверждённая policy + acceptance #29 + exact-final-HEAD CI + owner acceptance |
+| Recommendation | Stage 8 реализован в PR #30 по утверждённой policy; приёмка продолжается, в main отсутствует | Утверждённая policy + acceptance #29 + exact-final-HEAD CI + owner acceptance |
 | Pinned Qwen artifacts | Manifest и lock проверяются; есть downloader | Полная локальная SHA-256 проверка файлов |
 | LLM/embedding runtime + model-info | BLOCKED: нет поддерживаемого запуска | Точные ID/revisions; inference и 1024 dimensions smoke |
 | AI evidence / offline / LLM failure | BLOCKED: нет интеграции | Только реальные evidence IDs; офлайн-тест; работа истории без LLM |

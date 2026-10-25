@@ -1,7 +1,7 @@
 {
-  "captured_at": "2026-10-23T16:58:16.714Z",
-  "source_commit": "df597af278acfebff9a4afc472c7df2d9120714b",
-  "source_tree": "be3a27916937046f924c34d69ca63b4c89fd10cc",
+  "captured_at": "2026-10-25T08:40:27.768Z",
+  "source_commit": "751b7353887566841e53e29ed41e27bc2eb33b55",
+  "source_tree": "cf5309eac8b8f2929c98b975eadf966da3243282",
   "brand_assets": [
     {
       "file": "forest-keeper.svg",
@@ -14,17 +14,27 @@
   ],
   "worktree_dirty": true,
   "images": {
-    "frontend": "sha256:785c9674ba2a5f14bf3eccccb472e4ecabe0b2d75f20221c3bf6bbce62589771",
-    "backend": "sha256:dc4f0004240052f32ff79eea967074383079585977c955a5cd760519b078581c"
+    "frontend": "sha256:fdc753811a96cd96942f4bd4275b4f49048dd38762664c65f5c72c44b0708dc2",
+    "backend": "sha256:b096c0b07229e26ade4a4addbfe8e7cd93d3e8c0477d44e1252a2858c5ef489d"
   },
+  "presentation_assets": [
+    {
+      "file": "theme-init.js",
+      "sha256": "cdeed262c14f76633ddbc5b0f80d5f67ed840d2d29f2dd5a0e3f7d395920f8af"
+    }
+  ],
+  "themes": [
+    "light",
+    "dark"
+  ],
   "served_bundles": [
     {
-      "file": "/assets/index-C69aSQJU.js",
-      "sha256": "3bf40e9d2d8a9d985a5061b9ca5912594a3d5b48d603eef179b9db20affd39e8"
+      "file": "/assets/index-B6m4dbWi.js",
+      "sha256": "62c0bdfe00821127edf41b25cf251ab1844aae821e27e1420d6c2795e14edaf7"
     },
     {
-      "file": "/assets/index-DOJQvSuJ.css",
-      "sha256": "3343ca8076006984fb1002d8fda9af914e921d0bcf7aaffcc2bf476d6203103a"
+      "file": "/assets/index-BuZmQYh5.css",
+      "sha256": "c429be64d004481b1cf4128887344ba2d89fbfe6bfa166488207e4a1f4e54dd4"
     }
   ],
   "capture": "Real HTTPS Web Client and backend with owned synthetic data; no generated/mock product screenshots",
@@ -33,415 +43,2739 @@
   "captures": [
     {
       "file": "01-login.png",
-      "title": "Вход в рабочее пространство",
+      "screen": "01-login",
+      "theme": "light",
+      "title": "Вход в рабочее пространство · Светлая",
       "description": "Защищённая браузерная сессия. Доступ к действиям определяется назначенными ролями.",
-      "feature_status": "Реализовано · Stage 0–7 · синтетические данные",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "sha256": "44d5440f63d16c058d8242c3818a43a3a30a07d13eab7f7ff5785cd9ae6629e0"
+      "sha256": "90245a4d5849c65cf05ba6b7d6a6d21ce388838ac4c4a161b3e30ba0519b6ce5"
+    },
+    {
+      "file": "01-login-mobile.png",
+      "screen": "01-login",
+      "theme": "light",
+      "title": "Вход в рабочее пространство · Светлая · Узкий экран",
+      "description": "Защищённая браузерная сессия. Доступ к действиям определяется назначенными ролями.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "19bd17448f93ac2b4545e16935ab49bf1b8fa11b77b70ca4c81095cf20058109"
+    },
+    {
+      "file": "01-login-dark.png",
+      "screen": "01-login",
+      "theme": "dark",
+      "title": "Вход в рабочее пространство · Тёмная",
+      "description": "Защищённая браузерная сессия. Доступ к действиям определяется назначенными ролями.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "f228ee5ccd08a79dc63e9cc1282a290717c68793c793d9a4b9fac82d5520387a"
+    },
+    {
+      "file": "01-login-dark-mobile.png",
+      "screen": "01-login",
+      "theme": "dark",
+      "title": "Вход в рабочее пространство · Тёмная · Узкий экран",
+      "description": "Защищённая браузерная сессия. Доступ к действиям определяется назначенными ролями.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "6540e7f932eb783bf580c135d11a1aa681124ab4a93db28a9191b4cdcc6eb43b"
     },
     {
       "file": "02-overview.png",
-      "title": "Готовность среды",
+      "screen": "02-overview",
+      "theme": "light",
+      "title": "Готовность среды · Светлая",
       "description": "Настоящий ответ сервера: состояние API, PostgreSQL и Redis. Здесь нет выдуманных показателей качества данных.",
-      "feature_status": "Реализовано · Stage 0–7 · синтетические данные",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "sha256": "57e030087610cc46da5db8841752adfd2f8b1d15515cf0737fb792f28dc99166"
+      "sha256": "7c916a66cfae47455f2d5f6cd6f736e1e07653057c1bcd11010fc2b3c8ef7c12"
+    },
+    {
+      "file": "02-overview-mobile.png",
+      "screen": "02-overview",
+      "theme": "light",
+      "title": "Готовность среды · Светлая · Узкий экран",
+      "description": "Настоящий ответ сервера: состояние API, PostgreSQL и Redis. Здесь нет выдуманных показателей качества данных.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "138b419ac936297515a5e8beb891cee7ce04477c8791a98a49237fbf626a8e6e"
+    },
+    {
+      "file": "02-overview-dark.png",
+      "screen": "02-overview",
+      "theme": "dark",
+      "title": "Готовность среды · Тёмная",
+      "description": "Настоящий ответ сервера: состояние API, PostgreSQL и Redis. Здесь нет выдуманных показателей качества данных.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "74eb5072528b40cea35966505b6130d477f3401f5d85dfea407cfb8f29195235"
+    },
+    {
+      "file": "02-overview-dark-mobile.png",
+      "screen": "02-overview",
+      "theme": "dark",
+      "title": "Готовность среды · Тёмная · Узкий экран",
+      "description": "Настоящий ответ сервера: состояние API, PostgreSQL и Redis. Здесь нет выдуманных показателей качества данных.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "783d8c0a0bb5d3814f5baf8710a5119baf85a10ba5b3f08a6bb387c67f939283"
     },
     {
       "file": "03-import.png",
-      "title": "Источники и импорт",
+      "screen": "03-import",
+      "theme": "light",
+      "title": "Источники и импорт · Светлая",
       "description": "Загрузка CSV, XLSX и XML с сохранением оригинала. Пустая таблица объясняет, с чего начать.",
-      "feature_status": "Реализовано · Stage 0–7 · синтетические данные",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "sha256": "730a2c189c3e505db2400aa045a484669fd1520afb0912f812d96a4d69ff4a7f"
+      "sha256": "7dc9501c246d30a16d3a824e763afdec129912b93c6d1cd1bb7d6d0fcd4cc5a7"
+    },
+    {
+      "file": "03-import-mobile.png",
+      "screen": "03-import",
+      "theme": "light",
+      "title": "Источники и импорт · Светлая · Узкий экран",
+      "description": "Загрузка CSV, XLSX и XML с сохранением оригинала. Пустая таблица объясняет, с чего начать.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "03abe635a2dcca982416a0dfb59e5cd02b584813f3df20e518e56c3880c45a24"
+    },
+    {
+      "file": "03-import-dark.png",
+      "screen": "03-import",
+      "theme": "dark",
+      "title": "Источники и импорт · Тёмная",
+      "description": "Загрузка CSV, XLSX и XML с сохранением оригинала. Пустая таблица объясняет, с чего начать.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "d3dfa699dea0400b75e68b1095a60fa4189bb16826cfb743db6507000fe948d0"
+    },
+    {
+      "file": "03-import-dark-mobile.png",
+      "screen": "03-import",
+      "theme": "dark",
+      "title": "Источники и импорт · Тёмная · Узкий экран",
+      "description": "Загрузка CSV, XLSX и XML с сохранением оригинала. Пустая таблица объясняет, с чего начать.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "ec774c1d16d2431f62179983627eb2c4e725f9276f7eb152ffe7b7665e722f4e"
     },
     {
       "file": "04-import-detail.png",
-      "title": "Оригинал и записи",
+      "screen": "04-import-detail",
+      "theme": "light",
+      "title": "Оригинал и записи · Светлая",
       "description": "Сохранённый файл, исходные поля и происхождение каждой записи. Данные в источнике не изменяются.",
-      "feature_status": "Реализовано · Stage 0–7 · синтетические данные",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "sha256": "d16e56b38659ea0ba1099f5af68ea684e627b58b141731d423a282ba676d8c6a"
+      "sha256": "676abe43ef756ac579b2ac9465ffadb9d401383d9f8e8ed588a93e2e7ea512f8"
+    },
+    {
+      "file": "04-import-detail-mobile.png",
+      "screen": "04-import-detail",
+      "theme": "light",
+      "title": "Оригинал и записи · Светлая · Узкий экран",
+      "description": "Сохранённый файл, исходные поля и происхождение каждой записи. Данные в источнике не изменяются.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "3217a2c13efa3a893490fb1637753616828284c0b5347ee59a7f475479fa5d10"
+    },
+    {
+      "file": "04-import-detail-dark.png",
+      "screen": "04-import-detail",
+      "theme": "dark",
+      "title": "Оригинал и записи · Тёмная",
+      "description": "Сохранённый файл, исходные поля и происхождение каждой записи. Данные в источнике не изменяются.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "2d57f32ad88d1a1bcfcdf89920a2084721ef134af73877c391c2717592c1ca22"
+    },
+    {
+      "file": "04-import-detail-dark-mobile.png",
+      "screen": "04-import-detail",
+      "theme": "dark",
+      "title": "Оригинал и записи · Тёмная · Узкий экран",
+      "description": "Сохранённый файл, исходные поля и происхождение каждой записи. Данные в источнике не изменяются.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "37b6328536a19fd6091581aa6ad8d728b7fdb89a89776e89be455ce924342f5a"
     },
     {
       "file": "18-raw-records.png",
-      "title": "Исходные записи и их поля",
+      "screen": "18-raw-records",
+      "theme": "light",
+      "title": "Исходные записи и их поля · Светлая",
       "description": "Структурированный просмотр значений без стены JSON. Видны ключ, позиция и исходные поля.",
-      "feature_status": "Реализовано · Stage 0–7 · синтетические данные",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "sha256": "291576c485752bc18c83be48193c1f9c9efdb546a134a83326f67401711e6bf0"
+      "sha256": "55df58fb9f26f14267935d8d00cbc7cfef56e9032450099e51bee6620f5ba1ed"
+    },
+    {
+      "file": "18-raw-records-mobile.png",
+      "screen": "18-raw-records",
+      "theme": "light",
+      "title": "Исходные записи и их поля · Светлая · Узкий экран",
+      "description": "Структурированный просмотр значений без стены JSON. Видны ключ, позиция и исходные поля.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "31272fc1ed1fba0b658596de5b94b36a0a90159d10aa2003d466329f88ba0e6c"
+    },
+    {
+      "file": "18-raw-records-dark.png",
+      "screen": "18-raw-records",
+      "theme": "dark",
+      "title": "Исходные записи и их поля · Тёмная",
+      "description": "Структурированный просмотр значений без стены JSON. Видны ключ, позиция и исходные поля.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "8489e164b66ce213aef65ea26985b7524dde59040098c76429200e4fe12168f2"
+    },
+    {
+      "file": "18-raw-records-dark-mobile.png",
+      "screen": "18-raw-records",
+      "theme": "dark",
+      "title": "Исходные записи и их поля · Тёмная · Узкий экран",
+      "description": "Структурированный просмотр значений без стены JSON. Видны ключ, позиция и исходные поля.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "609b469e33f33f3a01ce9e4edf3de543106c4a981db3031afb6690bfc1f7a164"
     },
     {
       "file": "05-normalization.png",
-      "title": "Исходное → сопоставимое",
+      "screen": "05-normalization",
+      "theme": "light",
+      "title": "Исходное → сопоставимое · Светлая",
       "description": "Масса приводится к единой единице; исходное значение, качество и правило остаются доступными. Нормализация не объявляет значение истиной.",
-      "feature_status": "Реализовано · Stage 0–7 · синтетические данные",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "sha256": "3bca6404a5a2a342feca77733b64ff0eee8f0a79e4e3834e0c3e9710b8310f6e"
+      "sha256": "8c3e592169c892a4978612ed3eb789d8ec059112e42447e5f289389290f380cc"
+    },
+    {
+      "file": "05-normalization-mobile.png",
+      "screen": "05-normalization",
+      "theme": "light",
+      "title": "Исходное → сопоставимое · Светлая · Узкий экран",
+      "description": "Масса приводится к единой единице; исходное значение, качество и правило остаются доступными. Нормализация не объявляет значение истиной.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "5615402c72bd7e9c95cef3e05be2ad43f2b2106d55dfe71dde44e24ff32c1bb9"
+    },
+    {
+      "file": "05-normalization-dark.png",
+      "screen": "05-normalization",
+      "theme": "dark",
+      "title": "Исходное → сопоставимое · Тёмная",
+      "description": "Масса приводится к единой единице; исходное значение, качество и правило остаются доступными. Нормализация не объявляет значение истиной.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "9b25fd367ae7173e53f7d98593ea0c4962ae0ce819b433f3aec6b953f9adfb37"
+    },
+    {
+      "file": "05-normalization-dark-mobile.png",
+      "screen": "05-normalization",
+      "theme": "dark",
+      "title": "Исходное → сопоставимое · Тёмная · Узкий экран",
+      "description": "Масса приводится к единой единице; исходное значение, качество и правило остаются доступными. Нормализация не объявляет значение истиной.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "9135e83df351a1b59d0650a2b3ba9bf0cb71879f06c10228268c0ee3b0034f5e"
     },
     {
       "file": "06-matching.png",
-      "title": "Какие записи относятся к одной сущности",
+      "screen": "06-matching",
+      "theme": "light",
+      "title": "Какие записи относятся к одной сущности · Светлая",
       "description": "Отдельно показаны совпадения, отклонённые пары и кандидаты для проверки. Оценка похожести сама по себе не подтверждает идентичность.",
-      "feature_status": "Реализовано · Stage 0–7 · синтетические данные",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "sha256": "a7d44a6b89affa3a7c16b797083d8d9796adcb3b5a84fce6afb8daf2cf5370e7"
+      "sha256": "e7eaffacaaf1e6f0dcca41365ac9139747c19dde2508d6b135ee662b3c04813e"
+    },
+    {
+      "file": "06-matching-mobile.png",
+      "screen": "06-matching",
+      "theme": "light",
+      "title": "Какие записи относятся к одной сущности · Светлая · Узкий экран",
+      "description": "Отдельно показаны совпадения, отклонённые пары и кандидаты для проверки. Оценка похожести сама по себе не подтверждает идентичность.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "0ed5278258d6fe9938c4035c8546b1b78a71048563ba70411aa044d9267a8541"
+    },
+    {
+      "file": "06-matching-dark.png",
+      "screen": "06-matching",
+      "theme": "dark",
+      "title": "Какие записи относятся к одной сущности · Тёмная",
+      "description": "Отдельно показаны совпадения, отклонённые пары и кандидаты для проверки. Оценка похожести сама по себе не подтверждает идентичность.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "06b4cf93c91e0f1e133275a7f90919a22897c4d7a972295124d03b4c28686883"
+    },
+    {
+      "file": "06-matching-dark-mobile.png",
+      "screen": "06-matching",
+      "theme": "dark",
+      "title": "Какие записи относятся к одной сущности · Тёмная · Узкий экран",
+      "description": "Отдельно показаны совпадения, отклонённые пары и кандидаты для проверки. Оценка похожести сама по себе не подтверждает идентичность.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "1f90267e0ada5f33e4c3c59d42fc91e5c736ac208e51f00d6222e6b30713ddc0"
     },
     {
       "file": "07-match-detail.png",
-      "title": "Основания совпадения",
+      "screen": "07-match-detail",
+      "theme": "light",
+      "title": "Основания совпадения · Светлая",
       "description": "Обе исходные записи, нормализованные значения и вклад признаков доступны рядом. Подтверждение идентичности не выбирает правильную массу.",
-      "feature_status": "Реализовано · Stage 0–7 · синтетические данные",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "sha256": "35eac82d490b224f9b5f91d90b8db7e1a7d4068c3c4d5c1f500a7401997b20ba"
+      "sha256": "435834fd9ff51f1c509266e85452e7002b648cf4efdf293da6843f5f82a6d06a"
+    },
+    {
+      "file": "07-match-detail-mobile.png",
+      "screen": "07-match-detail",
+      "theme": "light",
+      "title": "Основания совпадения · Светлая · Узкий экран",
+      "description": "Обе исходные записи, нормализованные значения и вклад признаков доступны рядом. Подтверждение идентичности не выбирает правильную массу.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "1959880fd7afc490ab4c631df4818ff66fc1c0f22a1e75d15d6f147f84d1970e"
+    },
+    {
+      "file": "07-match-detail-dark.png",
+      "screen": "07-match-detail",
+      "theme": "dark",
+      "title": "Основания совпадения · Тёмная",
+      "description": "Обе исходные записи, нормализованные значения и вклад признаков доступны рядом. Подтверждение идентичности не выбирает правильную массу.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "3ff535a336952be1cd65b7c03b81a5eef7de5210c5ec272348e02dfb31487ad6"
+    },
+    {
+      "file": "07-match-detail-dark-mobile.png",
+      "screen": "07-match-detail",
+      "theme": "dark",
+      "title": "Основания совпадения · Тёмная · Узкий экран",
+      "description": "Обе исходные записи, нормализованные значения и вклад признаков доступны рядом. Подтверждение идентичности не выбирает правильную массу.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "edc110fdb13e8f559027501b03a388b26ac83c3a7ad070b25d953d45471853df"
     },
     {
       "file": "08-conflicts.png",
-      "title": "Расхождения значений",
+      "screen": "08-conflicts",
+      "theme": "light",
+      "title": "Расхождения значений · Светлая",
       "description": "Список объяснимых конфликтов подтверждённых пар. Человеческие подписи сопровождают технические типы и статусы.",
-      "feature_status": "Реализовано · Stage 0–7 · синтетические данные",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "sha256": "425bf17c1601bfc4f0ab80d190d38f0fde9f73a43ffed5b4c0721934d97d2027"
+      "sha256": "756eed1ea4939596d11b655315aebc38452de57dcaa32b228b2555cdeb947f58"
+    },
+    {
+      "file": "08-conflicts-mobile.png",
+      "screen": "08-conflicts",
+      "theme": "light",
+      "title": "Расхождения значений · Светлая · Узкий экран",
+      "description": "Список объяснимых конфликтов подтверждённых пар. Человеческие подписи сопровождают технические типы и статусы.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "3bde0a3b7a1d465186548a59f4b2ee7d3cd04ea7dcb8a99d0cbe6718a367e17f"
+    },
+    {
+      "file": "08-conflicts-dark.png",
+      "screen": "08-conflicts",
+      "theme": "dark",
+      "title": "Расхождения значений · Тёмная",
+      "description": "Список объяснимых конфликтов подтверждённых пар. Человеческие подписи сопровождают технические типы и статусы.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "fa4beab157a9bbc770333d864a3c888bf23391341796898981b3b88f97cd4336"
+    },
+    {
+      "file": "08-conflicts-dark-mobile.png",
+      "screen": "08-conflicts",
+      "theme": "dark",
+      "title": "Расхождения значений · Тёмная · Узкий экран",
+      "description": "Список объяснимых конфликтов подтверждённых пар. Человеческие подписи сопровождают технические типы и статусы.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "bfab266f4dbb9a7cdcabe9235273c968d9d84abe8165e54a5608b43543936c04"
     },
     {
       "file": "09-conflict-detail.png",
-      "title": "Что не совпало и откуда взялись значения",
+      "screen": "09-conflict-detail",
+      "theme": "light",
+      "title": "Что не совпало и откуда взялись значения · Светлая",
       "description": "12500 g и 12.4 kg сравниваются как 12.5 и 12.4 kg. Видны два источника и контекст нормализации. Решение человека ещё не принято.",
-      "feature_status": "Реализовано · Stage 0–7 · синтетические данные",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "sha256": "aa1b16a394d57daf2f7cfbd7440c873efcbd8e9189c41844e3bfa352d73e5a60"
+      "sha256": "f3ce5579fc268a2651f7372601fc697cb01e7160be764c1539380e3e5ef40eba"
+    },
+    {
+      "file": "09-conflict-detail-mobile.png",
+      "screen": "09-conflict-detail",
+      "theme": "light",
+      "title": "Что не совпало и откуда взялись значения · Светлая · Узкий экран",
+      "description": "12500 g и 12.4 kg сравниваются как 12.5 и 12.4 kg. Видны два источника и контекст нормализации. Решение человека ещё не принято.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "a423f4919e57a40b3f1dcf7b93db0f4e6365b217be9139b99c73d47faa2ceba9"
+    },
+    {
+      "file": "09-conflict-detail-dark.png",
+      "screen": "09-conflict-detail",
+      "theme": "dark",
+      "title": "Что не совпало и откуда взялись значения · Тёмная",
+      "description": "12500 g и 12.4 kg сравниваются как 12.5 и 12.4 kg. Видны два источника и контекст нормализации. Решение человека ещё не принято.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "463e1f8b3dcdb1a09681f4cbb1c80b7996a0e31cac8df3da83a9c05b88b656b5"
+    },
+    {
+      "file": "09-conflict-detail-dark-mobile.png",
+      "screen": "09-conflict-detail",
+      "theme": "dark",
+      "title": "Что не совпало и откуда взялись значения · Тёмная · Узкий экран",
+      "description": "12500 g и 12.4 kg сравниваются как 12.5 и 12.4 kg. Видны два источника и контекст нормализации. Решение человека ещё не принято.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "8fa0e9e25d1981c76c83c60330f2a3dfde603a6d0cb25b493e5a919f623d7c21"
     },
     {
       "file": "17-provenance.png",
-      "title": "От результата к исходной записи",
+      "screen": "17-provenance",
+      "theme": "light",
+      "title": "От результата к исходной записи · Светлая",
       "description": "По запросу раскрываются файл, контрольная сумма, позиция исходной записи и правило нормализации. Это реальные сохранённые сведения, а не макет.",
-      "feature_status": "Реализовано · Stage 0–7 · синтетические данные",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "sha256": "e00b8b541e0950883f44ef41ccf5399763ae86e2c305c27c857c6601fe549d9f"
+      "sha256": "52611fb94855d8356a70d04f3e20d143eeabb07b7eba08525f30cc9b931cc7c3"
+    },
+    {
+      "file": "17-provenance-mobile.png",
+      "screen": "17-provenance",
+      "theme": "light",
+      "title": "От результата к исходной записи · Светлая · Узкий экран",
+      "description": "По запросу раскрываются файл, контрольная сумма, позиция исходной записи и правило нормализации. Это реальные сохранённые сведения, а не макет.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "ec0fabd12b27cf459ee4b443b224e2174e674034076eb0413e0c3b241ba3485e"
+    },
+    {
+      "file": "17-provenance-dark.png",
+      "screen": "17-provenance",
+      "theme": "dark",
+      "title": "От результата к исходной записи · Тёмная",
+      "description": "По запросу раскрываются файл, контрольная сумма, позиция исходной записи и правило нормализации. Это реальные сохранённые сведения, а не макет.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "37c8ca0d3a8e99631978e10859a914bf9a0d821a60b6b21b18326a178df08450"
+    },
+    {
+      "file": "17-provenance-dark-mobile.png",
+      "screen": "17-provenance",
+      "theme": "dark",
+      "title": "От результата к исходной записи · Тёмная · Узкий экран",
+      "description": "По запросу раскрываются файл, контрольная сумма, позиция исходной записи и правило нормализации. Это реальные сохранённые сведения, а не макет.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "697c2a9f61b210f6d61c0f1ef0696a79d43476a9ebaf83fc425de6121e103ce3"
     },
     {
       "file": "10-empty.png",
-      "title": "Понятное пустое состояние",
+      "screen": "10-empty",
+      "theme": "light",
+      "title": "Понятное пустое состояние · Светлая",
       "description": "Результат фильтра не подменяется вымышленными данными. RULE_VIOLATION пока не генерируется без утверждённого источника правил.",
-      "feature_status": "Реализовано · Stage 0–7 · синтетические данные",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "sha256": "0abda4ecd5cd454aa7c9fd5c32ef2010e5d59072aab349ba1a19752117769190"
+      "sha256": "25eab94d241eba5b1f1cf606bf27927b68c6907845cc604f5b5b40acffbf9363"
+    },
+    {
+      "file": "10-empty-mobile.png",
+      "screen": "10-empty",
+      "theme": "light",
+      "title": "Понятное пустое состояние · Светлая · Узкий экран",
+      "description": "Результат фильтра не подменяется вымышленными данными. RULE_VIOLATION пока не генерируется без утверждённого источника правил.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "967465141df1fd6c7b09e79670c77354b9f961ea6d6bbe804ee5f10eddb0907b"
+    },
+    {
+      "file": "10-empty-dark.png",
+      "screen": "10-empty",
+      "theme": "dark",
+      "title": "Понятное пустое состояние · Тёмная",
+      "description": "Результат фильтра не подменяется вымышленными данными. RULE_VIOLATION пока не генерируется без утверждённого источника правил.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "c53cedb37ead28ed92e02695bac130324b87fb711371332cb502eaee07064018"
+    },
+    {
+      "file": "10-empty-dark-mobile.png",
+      "screen": "10-empty",
+      "theme": "dark",
+      "title": "Понятное пустое состояние · Тёмная · Узкий экран",
+      "description": "Результат фильтра не подменяется вымышленными данными. RULE_VIOLATION пока не генерируется без утверждённого источника правил.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "18a95c64c6cae014c7bf6238ab27157a1fca53fbef7497db1a57ca793a7af947"
     },
     {
       "file": "11-users.png",
-      "title": "Пользователи и роли",
+      "screen": "11-users",
+      "theme": "light",
+      "title": "Пользователи и роли · Светлая",
       "description": "Администратор управляет доступом. Роль ADMIN сама по себе не даёт полномочий подтверждать совпадения или принимать бизнес-решения.",
-      "feature_status": "Реализовано · Stage 0–7 · синтетические данные",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "sha256": "d83ed4e9c88f84a0e7016c7efc28aa8b3dccd53f4dd1b4deff8e2994f24b2a80"
+      "sha256": "7bcb49d3a7a68cf276b2816534a9be405ff95e65fb05fad286569c07b2325638"
+    },
+    {
+      "file": "11-users-mobile.png",
+      "screen": "11-users",
+      "theme": "light",
+      "title": "Пользователи и роли · Светлая · Узкий экран",
+      "description": "Администратор управляет доступом. Роль ADMIN сама по себе не даёт полномочий подтверждать совпадения или принимать бизнес-решения.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "7d54348aa628a1c0166487485483aacbefbed8e58e171b2fbb3f99dd1d23adfd"
+    },
+    {
+      "file": "11-users-dark.png",
+      "screen": "11-users",
+      "theme": "dark",
+      "title": "Пользователи и роли · Тёмная",
+      "description": "Администратор управляет доступом. Роль ADMIN сама по себе не даёт полномочий подтверждать совпадения или принимать бизнес-решения.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "dee80cf30b401ae5952d14141f3f7bca7dfc93426e6458272f5bd84fb8b4fc3b"
+    },
+    {
+      "file": "11-users-dark-mobile.png",
+      "screen": "11-users",
+      "theme": "dark",
+      "title": "Пользователи и роли · Тёмная · Узкий экран",
+      "description": "Администратор управляет доступом. Роль ADMIN сама по себе не даёт полномочий подтверждать совпадения или принимать бизнес-решения.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "a6e6a524af25d01a391435b23fad11ae153ea216d9ce31d5e525cafae02f84b5"
     },
     {
       "file": "12-matching-review.png",
-      "title": "Проверка идентичности экспертом",
+      "screen": "12-matching-review",
+      "theme": "light",
+      "title": "Проверка идентичности экспертом · Светлая",
       "description": "Уже существующий matching review требует объяснения. Это проверка того, что записи относятся к одной сущности, а не разрешение конфликта значений.",
-      "feature_status": "Реализовано · Stage 0–7 · синтетические данные",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "sha256": "c0518da148c1175eb3cbca56ee9a6c6deaff155e48f417ecb77959ebd0ede906"
+      "sha256": "bbcc0e3d00ffb244dcb3b374e2e47c492801d3a6b392b98cc09af6baa26113a4"
+    },
+    {
+      "file": "12-matching-review-mobile.png",
+      "screen": "12-matching-review",
+      "theme": "light",
+      "title": "Проверка идентичности экспертом · Светлая · Узкий экран",
+      "description": "Уже существующий matching review требует объяснения. Это проверка того, что записи относятся к одной сущности, а не разрешение конфликта значений.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "87862118cbadc83dcc2a6d94fa7bb118bb801e303f171c6d131257549ea97965"
+    },
+    {
+      "file": "12-matching-review-dark.png",
+      "screen": "12-matching-review",
+      "theme": "dark",
+      "title": "Проверка идентичности экспертом · Тёмная",
+      "description": "Уже существующий matching review требует объяснения. Это проверка того, что записи относятся к одной сущности, а не разрешение конфликта значений.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "ccf36eb00ea006c8bc0a228a5c143aec111e60cb7325ddc7475541891d367d20"
+    },
+    {
+      "file": "12-matching-review-dark-mobile.png",
+      "screen": "12-matching-review",
+      "theme": "dark",
+      "title": "Проверка идентичности экспертом · Тёмная · Узкий экран",
+      "description": "Уже существующий matching review требует объяснения. Это проверка того, что записи относятся к одной сущности, а не разрешение конфликта значений.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "303246ec8b6f231399967acece6da5345c1a02d3ab5eaacc3378ae3552b4a8f6"
     },
     {
       "file": "19-human-review.png",
-      "title": "Решение по проверенным основаниям",
+      "screen": "19-human-review",
+      "theme": "light",
+      "title": "Решение по проверенным основаниям · Светлая",
       "description": "Эксперт выбирает источник или другое допустимое значение, объясняет выбор. Авторитет источника автоматически не выдумывается.",
-      "feature_status": "Реализовано · Stage 0–7 · синтетические данные",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "sha256": "172cccf1883e92dad0828db3dd4d5b512ceec9139213cb7d63321b3faf12c944"
+      "sha256": "66f2c80467dede89efbc743816a3a5a26218057c5ead8108cc70a110caebcb00"
+    },
+    {
+      "file": "19-human-review-mobile.png",
+      "screen": "19-human-review",
+      "theme": "light",
+      "title": "Решение по проверенным основаниям · Светлая · Узкий экран",
+      "description": "Эксперт выбирает источник или другое допустимое значение, объясняет выбор. Авторитет источника автоматически не выдумывается.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "264c8ea7a99efdea0939d9194c6530978ea48422a09fff458265390bf5e39723"
+    },
+    {
+      "file": "19-human-review-dark.png",
+      "screen": "19-human-review",
+      "theme": "dark",
+      "title": "Решение по проверенным основаниям · Тёмная",
+      "description": "Эксперт выбирает источник или другое допустимое значение, объясняет выбор. Авторитет источника автоматически не выдумывается.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "3f1511d69ed1e35a25557e0620615467a373f607701cacd832458aa25d4aad37"
+    },
+    {
+      "file": "19-human-review-dark-mobile.png",
+      "screen": "19-human-review",
+      "theme": "dark",
+      "title": "Решение по проверенным основаниям · Тёмная · Узкий экран",
+      "description": "Эксперт выбирает источник или другое допустимое значение, объясняет выбор. Авторитет источника автоматически не выдумывается.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "5ad0a945a4bc04e977be4918727c34279e6e0704fa044c236424e31c2d2edbac"
     },
     {
       "file": "20-decision-confirmation.png",
-      "title": "Проверка перед сохранением",
+      "screen": "20-decision-confirmation",
+      "theme": "light",
+      "title": "Проверка перед сохранением · Светлая",
       "description": "Итог, значение, обоснование и версия контекста перед явным подтверждением. Записи во внешних системах не меняются.",
-      "feature_status": "Реализовано · Stage 0–7 · синтетические данные",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "sha256": "80508e5f17459e2ddfe17b13f37c6521470b68b06425e6d264bdee142e70cadc"
+      "sha256": "90d87324aed6be9e980e8257acead06ef5dca3df9054916623fd33520e83088a"
+    },
+    {
+      "file": "20-decision-confirmation-mobile.png",
+      "screen": "20-decision-confirmation",
+      "theme": "light",
+      "title": "Проверка перед сохранением · Светлая · Узкий экран",
+      "description": "Итог, значение, обоснование и версия контекста перед явным подтверждением. Записи во внешних системах не меняются.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "cb5ceb2a60a32c8493387cb9b7c70dd75d2b4b2883a2b74e368ebec86cf90524"
+    },
+    {
+      "file": "20-decision-confirmation-dark.png",
+      "screen": "20-decision-confirmation",
+      "theme": "dark",
+      "title": "Проверка перед сохранением · Тёмная",
+      "description": "Итог, значение, обоснование и версия контекста перед явным подтверждением. Записи во внешних системах не меняются.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "a5b59da4061188141bbfefe21c5efd9fa0bd3df15db4cf7c8e8352b0adbcef4e"
+    },
+    {
+      "file": "20-decision-confirmation-dark-mobile.png",
+      "screen": "20-decision-confirmation",
+      "theme": "dark",
+      "title": "Проверка перед сохранением · Тёмная · Узкий экран",
+      "description": "Итог, значение, обоснование и версия контекста перед явным подтверждением. Записи во внешних системах не меняются.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "da368fe986d4d68d039cc09a5877f094d802143b737d1bad3f2af7d7a59e6a2b"
     },
     {
       "file": "21-decision-receipt.png",
-      "title": "Сервер подтвердил сохранение",
+      "screen": "21-decision-receipt",
+      "theme": "light",
+      "title": "Сервер подтвердил сохранение · Светлая",
       "description": "Настоящий Decision ID, автор, время, значение и объяснение. Надпись появляется после успешного ответа сервера.",
-      "feature_status": "Реализовано · Stage 0–7 · синтетические данные",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "sha256": "6e7dce6dbf13358261803d773d1beed4d80055e8bb177005114a8cddd25dfe70"
+      "sha256": "856db63c5268da68ab8d78339f555c9f42d02414929ab03bd4d9b7dcbb219970"
+    },
+    {
+      "file": "21-decision-receipt-mobile.png",
+      "screen": "21-decision-receipt",
+      "theme": "light",
+      "title": "Сервер подтвердил сохранение · Светлая · Узкий экран",
+      "description": "Настоящий Decision ID, автор, время, значение и объяснение. Надпись появляется после успешного ответа сервера.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "bb65142e1bb9aca7cdc711b294ed80c47230a2dd61998f55de5b15fa32adcdfa"
+    },
+    {
+      "file": "21-decision-receipt-dark.png",
+      "screen": "21-decision-receipt",
+      "theme": "dark",
+      "title": "Сервер подтвердил сохранение · Тёмная",
+      "description": "Настоящий Decision ID, автор, время, значение и объяснение. Надпись появляется после успешного ответа сервера.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "50a8f210aa9d852fdc9141347dcc338f0e3c342c250c60115d4134208a9132b8"
+    },
+    {
+      "file": "21-decision-receipt-dark-mobile.png",
+      "screen": "21-decision-receipt",
+      "theme": "dark",
+      "title": "Сервер подтвердил сохранение · Тёмная · Узкий экран",
+      "description": "Настоящий Decision ID, автор, время, значение и объяснение. Надпись появляется после успешного ответа сервера.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "1cecd81f5f1ced27f64881b628d354fcee92d49c0d0a68b1aaffe85e56e7312b"
     },
     {
       "file": "22-decision-registry.png",
-      "title": "Реестр решений",
+      "screen": "22-decision-registry",
+      "theme": "light",
+      "title": "Реестр решений · Светлая",
       "description": "Отдельные неизменяемые решения, фильтры и исторический контекст. Это память о действии человека, а не новая запись в исходной системе.",
-      "feature_status": "Реализовано · Stage 0–7 · синтетические данные",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "sha256": "4cfb77e224bf897f3aacf151410e3755827bdcc5727d826150d1046d5fa9f9da"
+      "sha256": "98e70cebc2e62fe9eba9b5de964995f9363728995a39f0d503a106c5b0c59161"
+    },
+    {
+      "file": "22-decision-registry-mobile.png",
+      "screen": "22-decision-registry",
+      "theme": "light",
+      "title": "Реестр решений · Светлая · Узкий экран",
+      "description": "Отдельные неизменяемые решения, фильтры и исторический контекст. Это память о действии человека, а не новая запись в исходной системе.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "118ab6f7b930ab3eb01f36bbc16e18b99f8cd80b12fca76ef33aa1fed9d93cff"
+    },
+    {
+      "file": "22-decision-registry-dark.png",
+      "screen": "22-decision-registry",
+      "theme": "dark",
+      "title": "Реестр решений · Тёмная",
+      "description": "Отдельные неизменяемые решения, фильтры и исторический контекст. Это память о действии человека, а не новая запись в исходной системе.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "783bcaa57c31b86519931978e3ef38960a7bb5f98740524f37824dc7f4f9444d"
+    },
+    {
+      "file": "22-decision-registry-dark-mobile.png",
+      "screen": "22-decision-registry",
+      "theme": "dark",
+      "title": "Реестр решений · Тёмная · Узкий экран",
+      "description": "Отдельные неизменяемые решения, фильтры и исторический контекст. Это память о действии человека, а не новая запись в исходной системе.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "80b2bdeaa9516c74887faca1c7e02bff97e6270fdc18eb6adcb70b7617b6f9b1"
     },
     {
       "file": "23-decision-history.png",
-      "title": "Исправление сохраняет историю",
+      "screen": "23-decision-history",
+      "theme": "light",
+      "title": "Исправление сохраняет историю · Светлая",
       "description": "Новое решение заменяет предыдущее. В истории видны оба автора, время, обоснования и явная связь между записями.",
-      "feature_status": "Реализовано · Stage 0–7 · синтетические данные",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "sha256": "1d3983ca1bf83dbcfaa01d86be8b66d51d9ce3006308cbd200a4f6c3db0f615c"
+      "sha256": "d48592fb94bbbec361889233fa3ad70b91fde2456115f98f01442abf8b2b6d58"
+    },
+    {
+      "file": "23-decision-history-mobile.png",
+      "screen": "23-decision-history",
+      "theme": "light",
+      "title": "Исправление сохраняет историю · Светлая · Узкий экран",
+      "description": "Новое решение заменяет предыдущее. В истории видны оба автора, время, обоснования и явная связь между записями.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "8b9f55e98b4cdc19f482a9b28f1364a9927e884e754177857c993933b8a691f7"
+    },
+    {
+      "file": "23-decision-history-dark.png",
+      "screen": "23-decision-history",
+      "theme": "dark",
+      "title": "Исправление сохраняет историю · Тёмная",
+      "description": "Новое решение заменяет предыдущее. В истории видны оба автора, время, обоснования и явная связь между записями.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "b475252aeb7486a8066804b585d28e9bd1180482ce51beddbbaeecb9dcbe20d3"
+    },
+    {
+      "file": "23-decision-history-dark-mobile.png",
+      "screen": "23-decision-history",
+      "theme": "dark",
+      "title": "Исправление сохраняет историю · Тёмная · Узкий экран",
+      "description": "Новое решение заменяет предыдущее. В истории видны оба автора, время, обоснования и явная связь между записями.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "6d6608ae7e27432dfc991b5ee2876643a5dc53b4ec2f2e3745be123dbe94fdb4"
     },
     {
       "file": "24-similar-decisions.png",
-      "title": "Похожие прошлые решения",
+      "screen": "24-similar-decisions",
+      "theme": "light",
+      "title": "Похожие прошлые решения · Светлая",
       "description": "Новый импорт находит настоящий Decision ID прошлого случая. Видны сходство, совпавшие признаки и исторические значения. Явно обозначен тестовый провайдер.",
-      "feature_status": "Реализовано · Stage 0–7 · синтетические данные",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "sha256": "1f235203ea88de913cb7e3a573fd22216c30cdc63265666e8818186ef67ac4b0"
+      "sha256": "7ad38c7cdd65f9f1c3cb3106b90f2305bb058b9151185ab54ccd73bb15adc334"
+    },
+    {
+      "file": "24-similar-decisions-mobile.png",
+      "screen": "24-similar-decisions",
+      "theme": "light",
+      "title": "Похожие прошлые решения · Светлая · Узкий экран",
+      "description": "Новый импорт находит настоящий Decision ID прошлого случая. Видны сходство, совпавшие признаки и исторические значения. Явно обозначен тестовый провайдер.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "ad77e8f18f15b776f3a491efd978f18596167915289da31d40eb66c2fd37330d"
+    },
+    {
+      "file": "24-similar-decisions-dark.png",
+      "screen": "24-similar-decisions",
+      "theme": "dark",
+      "title": "Похожие прошлые решения · Тёмная",
+      "description": "Новый импорт находит настоящий Decision ID прошлого случая. Видны сходство, совпавшие признаки и исторические значения. Явно обозначен тестовый провайдер.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "aa7e720acc5718c9c213782e26653bd0e3b0db6b31de93addcdd1e09cd973618"
+    },
+    {
+      "file": "24-similar-decisions-dark-mobile.png",
+      "screen": "24-similar-decisions",
+      "theme": "dark",
+      "title": "Похожие прошлые решения · Тёмная · Узкий экран",
+      "description": "Новый импорт находит настоящий Decision ID прошлого случая. Видны сходство, совпавшие признаки и исторические значения. Явно обозначен тестовый провайдер.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "7e739892e3cf64ce9e3276848c936fc19bfe4580aa97a43dd58a986f736fc0a0"
     },
     {
       "file": "25-precedent-detail.png",
-      "title": "От похожести к реальному решению",
+      "screen": "25-precedent-detail",
+      "theme": "light",
+      "title": "От похожести к реальному решению · Светлая",
       "description": "Открывается неизменяемый факт: автор, дата, выбранное человеком значение, обоснование и история. Поиск не предлагает действие для нового конфликта.",
-      "feature_status": "Реализовано · Stage 0–7 · синтетические данные",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "sha256": "68e43e5be613a796dea47f98fcb60bc02be2c22ed0c945e72280470b697ba3a1"
+      "sha256": "cc1b746476b6a7575b9d5f9929862574a3643280e9a9737f842180e2dda9f6a7"
+    },
+    {
+      "file": "25-precedent-detail-mobile.png",
+      "screen": "25-precedent-detail",
+      "theme": "light",
+      "title": "От похожести к реальному решению · Светлая · Узкий экран",
+      "description": "Открывается неизменяемый факт: автор, дата, выбранное человеком значение, обоснование и история. Поиск не предлагает действие для нового конфликта.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "652367187437f1fbcc9733be2ced5cdb43214446629f4bcc176b73461beefc6c"
+    },
+    {
+      "file": "25-precedent-detail-dark.png",
+      "screen": "25-precedent-detail",
+      "theme": "dark",
+      "title": "От похожести к реальному решению · Тёмная",
+      "description": "Открывается неизменяемый факт: автор, дата, выбранное человеком значение, обоснование и история. Поиск не предлагает действие для нового конфликта.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "93f59b5380f345ca84814a4dee8ce48866500085b6dfd09d47e75d94ea9efa1f"
+    },
+    {
+      "file": "25-precedent-detail-dark-mobile.png",
+      "screen": "25-precedent-detail",
+      "theme": "dark",
+      "title": "От похожести к реальному решению · Тёмная · Узкий экран",
+      "description": "Открывается неизменяемый факт: автор, дата, выбранное человеком значение, обоснование и история. Поиск не предлагает действие для нового конфликта.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "7b7cdc02e9183969d7ff43acde48b6a1a75a8838f0cb408042cc70d74b8b8b27"
     },
     {
       "file": "26-no-precedent.png",
-      "title": "Непохожий случай остаётся без прецедента",
+      "screen": "26-no-precedent",
+      "theme": "light",
+      "title": "Непохожий случай остаётся без прецедента · Светлая",
       "description": "Совместимый атрибут и единица не делают керамическую трубу похожей на болт. Ни автоматического выбора, ни нового решения не появляется.",
-      "feature_status": "Реализовано · Stage 0–7 · синтетические данные",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "sha256": "a0c57a4e1e11627119981e69c5c54ef6cd64fe689b4c5b3147925b67c24811e6"
+      "sha256": "5edc46a07d2c88efb4900a1081e2fe1fd4b1fcf389f3f2c26bd732d9a59f589e"
+    },
+    {
+      "file": "26-no-precedent-mobile.png",
+      "screen": "26-no-precedent",
+      "theme": "light",
+      "title": "Непохожий случай остаётся без прецедента · Светлая · Узкий экран",
+      "description": "Совместимый атрибут и единица не делают керамическую трубу похожей на болт. Ни автоматического выбора, ни нового решения не появляется.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "c128ee3ca969d6db24bf0ecc69a6009fd7192cc39c81cb97e21da84355c1ba54"
+    },
+    {
+      "file": "26-no-precedent-dark.png",
+      "screen": "26-no-precedent",
+      "theme": "dark",
+      "title": "Непохожий случай остаётся без прецедента · Тёмная",
+      "description": "Совместимый атрибут и единица не делают керамическую трубу похожей на болт. Ни автоматического выбора, ни нового решения не появляется.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "e88616e8f78f40ae6b122389c77c8a6f0757d40c9ade9e97faf61760d08c8683"
+    },
+    {
+      "file": "26-no-precedent-dark-mobile.png",
+      "screen": "26-no-precedent",
+      "theme": "dark",
+      "title": "Непохожий случай остаётся без прецедента · Тёмная · Узкий экран",
+      "description": "Совместимый атрибут и единица не делают керамическую трубу похожей на болт. Ни автоматического выбора, ни нового решения не появляется.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "b11d15b2f4db49395f3492e598d023974df2862e79a90eb81abfd07f3a351598"
+    },
+    {
+      "file": "31-recommendation-abstention.png",
+      "screen": "31-recommendation-abstention",
+      "theme": "light",
+      "title": "Без достаточных оснований система воздерживается · Светлая",
+      "description": "Есть понятный результат отказа. Доступны ручное рассмотрение и реальные исторические сведения; готовое значение не выдумывается.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "6d607fe9d60973efebce7bb01d7ba6acf295042424d0905e6076094b0b2af2de"
+    },
+    {
+      "file": "31-recommendation-abstention-mobile.png",
+      "screen": "31-recommendation-abstention",
+      "theme": "light",
+      "title": "Без достаточных оснований система воздерживается · Светлая · Узкий экран",
+      "description": "Есть понятный результат отказа. Доступны ручное рассмотрение и реальные исторические сведения; готовое значение не выдумывается.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "5fa20ea233b7f3143528b69cf4e9a11b0fdcf83e225c384ac6d99a358cf017c0"
+    },
+    {
+      "file": "31-recommendation-abstention-dark.png",
+      "screen": "31-recommendation-abstention",
+      "theme": "dark",
+      "title": "Без достаточных оснований система воздерживается · Тёмная",
+      "description": "Есть понятный результат отказа. Доступны ручное рассмотрение и реальные исторические сведения; готовое значение не выдумывается.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "c58c8df7c6e223f4b3d8d97a6d79ebb5678047451c492054e9919b3c6ae6ec7d"
+    },
+    {
+      "file": "31-recommendation-abstention-dark-mobile.png",
+      "screen": "31-recommendation-abstention",
+      "theme": "dark",
+      "title": "Без достаточных оснований система воздерживается · Тёмная · Узкий экран",
+      "description": "Есть понятный результат отказа. Доступны ручное рассмотрение и реальные исторические сведения; готовое значение не выдумывается.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "fe2c4a86e283eecb7afbb0b1858f847a072cdab9b904f97343e651d5ae75baac"
+    },
+    {
+      "file": "28-recommendation.png",
+      "screen": "28-recommendation",
+      "theme": "light",
+      "title": "Предложение на пяти независимых группах · Светлая",
+      "description": "Пять отдельных загрузок и подтверждений человека. Система предлагает допустимое значение текущего источника, показывает реальные Decisions и число оснований без обещания вероятности.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "9db3028c15df89fb77b6edca01a3e2eaf85a8133a3abc0b283847f5a2bb6c4d4"
+    },
+    {
+      "file": "28-recommendation-mobile.png",
+      "screen": "28-recommendation",
+      "theme": "light",
+      "title": "Предложение на пяти независимых группах · Светлая · Узкий экран",
+      "description": "Пять отдельных загрузок и подтверждений человека. Система предлагает допустимое значение текущего источника, показывает реальные Decisions и число оснований без обещания вероятности.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "a5ecd004662e423dd4cb576ef67cf57d50d0be2d239007632955d9fdc55b44a7"
+    },
+    {
+      "file": "28-recommendation-dark.png",
+      "screen": "28-recommendation",
+      "theme": "dark",
+      "title": "Предложение на пяти независимых группах · Тёмная",
+      "description": "Пять отдельных загрузок и подтверждений человека. Система предлагает допустимое значение текущего источника, показывает реальные Decisions и число оснований без обещания вероятности.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "a96ddb8ec22d48ccd5dc5ae97faaf7102fa39213aaf129306ce9638befbefcbc"
+    },
+    {
+      "file": "28-recommendation-dark-mobile.png",
+      "screen": "28-recommendation",
+      "theme": "dark",
+      "title": "Предложение на пяти независимых группах · Тёмная · Узкий экран",
+      "description": "Пять отдельных загрузок и подтверждений человека. Система предлагает допустимое значение текущего источника, показывает реальные Decisions и число оснований без обещания вероятности.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "eca51c82b26408945f80f4e5200b9d9d44a3a59af8d450f1084095120ebae110"
+    },
+    {
+      "file": "29-recommendation-human-review.png",
+      "screen": "29-recommendation-human-review",
+      "theme": "light",
+      "title": "Предложение проходит человеческое подтверждение · Светлая",
+      "description": "Переключение темы сохраняет выбор и несохранённое обоснование. Кнопка предложения лишь заполняет форму; окончательный Decision создаётся после отдельного подтверждения.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "7dc3f5454b1b2fbecf169ea781b9d5e19cfe9a62b0946df8c7a0fb594611f3fb"
+    },
+    {
+      "file": "29-recommendation-human-review-mobile.png",
+      "screen": "29-recommendation-human-review",
+      "theme": "light",
+      "title": "Предложение проходит человеческое подтверждение · Светлая · Узкий экран",
+      "description": "Переключение темы сохраняет выбор и несохранённое обоснование. Кнопка предложения лишь заполняет форму; окончательный Decision создаётся после отдельного подтверждения.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "5515af0b3e3be11f7baa309c961b9614bf955804569877b587c173a19f9f725d"
+    },
+    {
+      "file": "29-recommendation-human-review-dark.png",
+      "screen": "29-recommendation-human-review",
+      "theme": "dark",
+      "title": "Предложение проходит человеческое подтверждение · Тёмная",
+      "description": "Переключение темы сохраняет выбор и несохранённое обоснование. Кнопка предложения лишь заполняет форму; окончательный Decision создаётся после отдельного подтверждения.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "3c6eba6a306df34f66fa02e235837489dd19075f3a8491e119d573d061545605"
+    },
+    {
+      "file": "29-recommendation-human-review-dark-mobile.png",
+      "screen": "29-recommendation-human-review",
+      "theme": "dark",
+      "title": "Предложение проходит человеческое подтверждение · Тёмная · Узкий экран",
+      "description": "Переключение темы сохраняет выбор и несохранённое обоснование. Кнопка предложения лишь заполняет форму; окончательный Decision создаётся после отдельного подтверждения.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "7eac02cd1020c05748a2ce454cebc58f6090e30f163e6d5cac98d628da7daa4c"
+    },
+    {
+      "file": "30-recommendation-contradiction.png",
+      "screen": "30-recommendation-contradiction",
+      "theme": "light",
+      "title": "Противоречивая практика остаётся человеку · Светлая",
+      "description": "После самостоятельного выбора другого источника следующий запрос показывает противоречие. Старые Decisions сохранены; большинство не превращается в автоматический ответ.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "07d39465e3d4edaf868879d27eea3a1674a3d2fdc54ed26377df23a3d96a2b86"
+    },
+    {
+      "file": "30-recommendation-contradiction-mobile.png",
+      "screen": "30-recommendation-contradiction",
+      "theme": "light",
+      "title": "Противоречивая практика остаётся человеку · Светлая · Узкий экран",
+      "description": "После самостоятельного выбора другого источника следующий запрос показывает противоречие. Старые Decisions сохранены; большинство не превращается в автоматический ответ.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "11214b76f336c5fefd3c6fd7a79d0e6df60ff68b60878a69dcae7dea5b7d825f"
+    },
+    {
+      "file": "30-recommendation-contradiction-dark.png",
+      "screen": "30-recommendation-contradiction",
+      "theme": "dark",
+      "title": "Противоречивая практика остаётся человеку · Тёмная",
+      "description": "После самостоятельного выбора другого источника следующий запрос показывает противоречие. Старые Decisions сохранены; большинство не превращается в автоматический ответ.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "2235e50db0f3caab45bddf44777f3a8054e639156479d247748b3ca2edd07778"
+    },
+    {
+      "file": "30-recommendation-contradiction-dark-mobile.png",
+      "screen": "30-recommendation-contradiction",
+      "theme": "dark",
+      "title": "Противоречивая практика остаётся человеку · Тёмная · Узкий экран",
+      "description": "После самостоятельного выбора другого источника следующий запрос показывает противоречие. Старые Decisions сохранены; большинство не превращается в автоматический ответ.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "370fd3d3e2fd34e4bd096c38faf2244bbfe515753b062f2d2b1a7cc903273753"
     },
     {
       "file": "13-viewer.png",
-      "title": "Просмотр без полномочий на изменение",
+      "screen": "13-viewer",
+      "theme": "light",
+      "title": "Просмотр без полномочий на изменение · Светлая",
       "description": "VIEWER видит разрешённые результаты и их основания. Запуск обработки и управление пользователями не отображаются.",
-      "feature_status": "Реализовано · Stage 0–7 · синтетические данные",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "sha256": "a7cd473f82c95d5487a3420153d282c15f51057485c47d5349102b52da807660"
+      "sha256": "d18a38fcfaa25904248018d3fe8c626767dcd10aaa25302d85287fbb03b591ab"
+    },
+    {
+      "file": "13-viewer-mobile.png",
+      "screen": "13-viewer",
+      "theme": "light",
+      "title": "Просмотр без полномочий на изменение · Светлая · Узкий экран",
+      "description": "VIEWER видит разрешённые результаты и их основания. Запуск обработки и управление пользователями не отображаются.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "79cbf7fd3a8f2fec709f793bea5e379be07a533f78bd9b7787b6145fa8200801"
+    },
+    {
+      "file": "13-viewer-dark.png",
+      "screen": "13-viewer",
+      "theme": "dark",
+      "title": "Просмотр без полномочий на изменение · Тёмная",
+      "description": "VIEWER видит разрешённые результаты и их основания. Запуск обработки и управление пользователями не отображаются.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "a2ce5e0003868c387cf4a8c96c8b828b42f13f8a784651e875c1e4b51d739b21"
+    },
+    {
+      "file": "13-viewer-dark-mobile.png",
+      "screen": "13-viewer",
+      "theme": "dark",
+      "title": "Просмотр без полномочий на изменение · Тёмная · Узкий экран",
+      "description": "VIEWER видит разрешённые результаты и их основания. Запуск обработки и управление пользователями не отображаются.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "d8935f9749f74390e66eb1a698b0bf9636e721c6e0a5c7ad7e3a1ea83ca3ae37"
     },
     {
       "file": "27-retrieval-scope.png",
-      "title": "Отзыв области данных действует сразу",
+      "screen": "27-retrieval-scope",
+      "theme": "light",
+      "title": "Отзыв области данных действует сразу · Светлая",
       "description": "После явного отзыва доступа VIEWER не видит чужие конфликты и решения. Прямые запросы к similarity и Decision ID также отклоняются сервером.",
-      "feature_status": "Реализовано · Stage 0–7 · синтетические данные",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "sha256": "c8f2189016b27463db0386d38f7a6581732466fdc4ce5fce76e049cc143e25b4"
+      "sha256": "385ad9dc6fb4e7bb8f9c4c4c627bb60e707be0b043d359ee0833535c7b1da2a3"
+    },
+    {
+      "file": "27-retrieval-scope-mobile.png",
+      "screen": "27-retrieval-scope",
+      "theme": "light",
+      "title": "Отзыв области данных действует сразу · Светлая · Узкий экран",
+      "description": "После явного отзыва доступа VIEWER не видит чужие конфликты и решения. Прямые запросы к similarity и Decision ID также отклоняются сервером.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "2ca446a4af149c8bc7d4245b54b786c8b20b584d3485fdfa2a3c295a630459ba"
+    },
+    {
+      "file": "27-retrieval-scope-dark.png",
+      "screen": "27-retrieval-scope",
+      "theme": "dark",
+      "title": "Отзыв области данных действует сразу · Тёмная",
+      "description": "После явного отзыва доступа VIEWER не видит чужие конфликты и решения. Прямые запросы к similarity и Decision ID также отклоняются сервером.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "d04e2323cc3d381c42ff1d45315bb6f66996e988b88728faaa960e392ff673fd"
+    },
+    {
+      "file": "27-retrieval-scope-dark-mobile.png",
+      "screen": "27-retrieval-scope",
+      "theme": "dark",
+      "title": "Отзыв области данных действует сразу · Тёмная · Узкий экран",
+      "description": "После явного отзыва доступа VIEWER не видит чужие конфликты и решения. Прямые запросы к similarity и Decision ID также отклоняются сервером.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "84b5f3fb951f8af64053e25956c59eb12f58341823ba50f2c7cf126c73782ac0"
     },
     {
       "file": "14-permission.png",
-      "title": "Роль ещё не назначена",
+      "screen": "14-permission",
+      "theme": "light",
+      "title": "Роль ещё не назначена · Светлая",
       "description": "Понятный следующий шаг вместо пустого экрана. Авторизация и фактические разрешения проверяются сервером.",
-      "feature_status": "Реализовано · Stage 0–7 · синтетические данные",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "sha256": "e73c207762761322fcbb73ac6001ddaff8b2ccca520a479ccf2a6ac289b0dafc"
+      "sha256": "fb94fcc68754c8a78259e81571ad31cc8f0b8300ee2208bacd5573e3fbc38801"
+    },
+    {
+      "file": "14-permission-mobile.png",
+      "screen": "14-permission",
+      "theme": "light",
+      "title": "Роль ещё не назначена · Светлая · Узкий экран",
+      "description": "Понятный следующий шаг вместо пустого экрана. Авторизация и фактические разрешения проверяются сервером.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "7461aba33ebe389b45424643b3aa277c9f76e27820c5a2dd377e71ba7e759e7a"
+    },
+    {
+      "file": "14-permission-dark.png",
+      "screen": "14-permission",
+      "theme": "dark",
+      "title": "Роль ещё не назначена · Тёмная",
+      "description": "Понятный следующий шаг вместо пустого экрана. Авторизация и фактические разрешения проверяются сервером.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "785d6a27afa07e7a7ad9c3c1d4f10b23d3b052c1bcc781177032837c437bb382"
+    },
+    {
+      "file": "14-permission-dark-mobile.png",
+      "screen": "14-permission",
+      "theme": "dark",
+      "title": "Роль ещё не назначена · Тёмная · Узкий экран",
+      "description": "Понятный следующий шаг вместо пустого экрана. Авторизация и фактические разрешения проверяются сервером.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "02232f578e9fcae2fbd8e254fe2385429d003c66a55654f34589bbf520887b62"
     },
     {
       "file": "15-loading.png",
-      "title": "Выполнение запроса",
+      "screen": "15-loading",
+      "theme": "light",
+      "title": "Выполнение запроса · Светлая",
       "description": "Настоящее состояние ожидания ответа; для демонстрации ответ намеренно задержан тестом.",
-      "feature_status": "Реализовано · Stage 0–7 · синтетические данные",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "sha256": "416984087adc63248af3422f7ded4897367a2b87fd3b3ccb80c0b77da1cf108a"
+      "sha256": "8bebcbb72d4f04c457dc6cd81babeab58568506dedff824559d9ad5e21b86728"
+    },
+    {
+      "file": "15-loading-mobile.png",
+      "screen": "15-loading",
+      "theme": "light",
+      "title": "Выполнение запроса · Светлая · Узкий экран",
+      "description": "Настоящее состояние ожидания ответа; для демонстрации ответ намеренно задержан тестом.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "33d5b5ef8cd31ee95c728c738f936ecbbbe11b9ac54c04972b42775ed14c41e7"
+    },
+    {
+      "file": "15-loading-dark.png",
+      "screen": "15-loading",
+      "theme": "dark",
+      "title": "Выполнение запроса · Тёмная",
+      "description": "Настоящее состояние ожидания ответа; для демонстрации ответ намеренно задержан тестом.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "8300bc2d53aaa3fe3b42d2a8857478c4e4a9d3fbbe132fa83c7e58ce7e192376"
+    },
+    {
+      "file": "15-loading-dark-mobile.png",
+      "screen": "15-loading",
+      "theme": "dark",
+      "title": "Выполнение запроса · Тёмная · Узкий экран",
+      "description": "Настоящее состояние ожидания ответа; для демонстрации ответ намеренно задержан тестом.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "7f47b6b753e43cd514b68bcf37406050b3cde7ff8bdd0241366edaf9635bde53"
     },
     {
       "file": "16-error.png",
-      "title": "Восстановление после ошибки",
+      "screen": "16-error",
+      "theme": "light",
+      "title": "Восстановление после ошибки · Светлая",
       "description": "Симуляция потери соединения: читаемое сообщение, очищенный пароль и возможность повторить попытку.",
-      "feature_status": "Реализовано · Stage 0–7 · синтетические данные",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "sha256": "4f2825244b88fdc9d806dafacad9715867e6615f161deca90e9d403275f256be"
+      "sha256": "a9482c764a37cc20a5d2220bb97db5288c7951f3d85d12d6a820d2f337dbd268"
+    },
+    {
+      "file": "16-error-mobile.png",
+      "screen": "16-error",
+      "theme": "light",
+      "title": "Восстановление после ошибки · Светлая · Узкий экран",
+      "description": "Симуляция потери соединения: читаемое сообщение, очищенный пароль и возможность повторить попытку.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "8f972badeb04a5530cf6561c2d02dc6ef3fb2d10f05bb54ac81caae5a6a59e71"
+    },
+    {
+      "file": "16-error-dark.png",
+      "screen": "16-error",
+      "theme": "dark",
+      "title": "Восстановление после ошибки · Тёмная",
+      "description": "Симуляция потери соединения: читаемое сообщение, очищенный пароль и возможность повторить попытку.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "bbc1e03ddfae78c051f301562e8fec5e0f0305fbaa62de97f1e575d718a75cef"
+    },
+    {
+      "file": "16-error-dark-mobile.png",
+      "screen": "16-error",
+      "theme": "dark",
+      "title": "Восстановление после ошибки · Тёмная · Узкий экран",
+      "description": "Симуляция потери соединения: читаемое сообщение, очищенный пароль и возможность повторить попытку.",
+      "feature_status": "Реализовано · Stage 0–8 · демонстрационные данные",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "687125b0b87aa15396c168c60a8039559372ed021e3a3072cf429b533a0ae3e7"
     }
   ],
   "accessibility": [
     {
       "screen": "01-login",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "01-login",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": []
+    },
+    {
+      "screen": "01-login",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "01-login",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
       "violations": []
     },
     {
       "screen": "02-overview",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "02-overview",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": []
+    },
+    {
+      "screen": "02-overview",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "02-overview",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
       "violations": []
     },
     {
       "screen": "03-import",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "03-import",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": []
+    },
+    {
+      "screen": "03-import",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "03-import",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
       "violations": []
     },
     {
       "screen": "04-import-detail",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "04-import-detail",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": []
+    },
+    {
+      "screen": "04-import-detail",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "04-import-detail",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
       "violations": []
     },
     {
       "screen": "18-raw-records",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "18-raw-records",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": []
+    },
+    {
+      "screen": "18-raw-records",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "18-raw-records",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
       "violations": []
     },
     {
       "screen": "05-normalization",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "05-normalization",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": []
+    },
+    {
+      "screen": "05-normalization",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "05-normalization",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
       "violations": []
     },
     {
       "screen": "06-matching",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "06-matching",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": []
+    },
+    {
+      "screen": "06-matching",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "06-matching",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
       "violations": []
     },
     {
       "screen": "07-match-detail",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "07-match-detail",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": []
+    },
+    {
+      "screen": "07-match-detail",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "07-match-detail",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
       "violations": []
     },
     {
       "screen": "08-conflicts",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "08-conflicts",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": []
+    },
+    {
+      "screen": "08-conflicts",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "08-conflicts",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
       "violations": []
     },
     {
       "screen": "09-conflict-detail",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "09-conflict-detail",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": []
+    },
+    {
+      "screen": "09-conflict-detail",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "09-conflict-detail",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
       "violations": []
     },
     {
       "screen": "17-provenance",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "17-provenance",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": []
+    },
+    {
+      "screen": "17-provenance",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "17-provenance",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
       "violations": []
     },
     {
       "screen": "10-empty",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "10-empty",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": []
+    },
+    {
+      "screen": "10-empty",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "10-empty",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
       "violations": []
     },
     {
       "screen": "11-users",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "11-users",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": []
+    },
+    {
+      "screen": "11-users",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "11-users",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
       "violations": []
     },
     {
       "screen": "12-matching-review",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "12-matching-review",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": []
+    },
+    {
+      "screen": "12-matching-review",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "12-matching-review",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
       "violations": []
     },
     {
       "screen": "19-human-review",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "19-human-review",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": []
+    },
+    {
+      "screen": "19-human-review",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "19-human-review",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
       "violations": []
     },
     {
       "screen": "20-decision-confirmation",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "20-decision-confirmation",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": []
+    },
+    {
+      "screen": "20-decision-confirmation",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "20-decision-confirmation",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
       "violations": []
     },
     {
       "screen": "21-decision-receipt",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "21-decision-receipt",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": []
+    },
+    {
+      "screen": "21-decision-receipt",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "21-decision-receipt",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
       "violations": []
     },
     {
       "screen": "22-decision-registry",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "22-decision-registry",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": []
+    },
+    {
+      "screen": "22-decision-registry",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "22-decision-registry",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
       "violations": []
     },
     {
       "screen": "23-decision-history",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "23-decision-history",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": []
+    },
+    {
+      "screen": "23-decision-history",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "23-decision-history",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
       "violations": []
     },
     {
       "screen": "24-similar-decisions",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "24-similar-decisions",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": []
+    },
+    {
+      "screen": "24-similar-decisions",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "24-similar-decisions",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
       "violations": []
     },
     {
       "screen": "25-precedent-detail",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "25-precedent-detail",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": []
+    },
+    {
+      "screen": "25-precedent-detail",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "25-precedent-detail",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
       "violations": []
     },
     {
       "screen": "26-no-precedent",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "26-no-precedent",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": []
+    },
+    {
+      "screen": "26-no-precedent",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "26-no-precedent",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": []
+    },
+    {
+      "screen": "31-recommendation-abstention",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "31-recommendation-abstention",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": []
+    },
+    {
+      "screen": "31-recommendation-abstention",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "31-recommendation-abstention",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": []
+    },
+    {
+      "screen": "28-recommendation",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "28-recommendation",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": []
+    },
+    {
+      "screen": "28-recommendation",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "28-recommendation",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": []
+    },
+    {
+      "screen": "29-recommendation-human-review",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "29-recommendation-human-review",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": []
+    },
+    {
+      "screen": "29-recommendation-human-review",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "29-recommendation-human-review",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": []
+    },
+    {
+      "screen": "30-recommendation-contradiction",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "30-recommendation-contradiction",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": []
+    },
+    {
+      "screen": "30-recommendation-contradiction",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "30-recommendation-contradiction",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
       "violations": []
     },
     {
       "screen": "13-viewer",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "13-viewer",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": []
+    },
+    {
+      "screen": "13-viewer",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "13-viewer",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
       "violations": []
     },
     {
       "screen": "27-retrieval-scope",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "27-retrieval-scope",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": []
+    },
+    {
+      "screen": "27-retrieval-scope",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "27-retrieval-scope",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
       "violations": []
     },
     {
       "screen": "14-permission",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "14-permission",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": []
+    },
+    {
+      "screen": "14-permission",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "14-permission",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
       "violations": []
     },
     {
       "screen": "15-loading",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "15-loading",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": []
+    },
+    {
+      "screen": "15-loading",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "15-loading",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
       "violations": []
     },
     {
       "screen": "16-error",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "16-error",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": []
+    },
+    {
+      "screen": "16-error",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "violations": []
+    },
+    {
+      "screen": "16-error",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
       "violations": []
     }
   ],
   "responsive": [
     {
       "screen": "01-login",
+      "theme": "light",
       "width": 1920,
       "height": 1080,
       "viewport": 1920,
@@ -450,6 +2784,7 @@
     },
     {
       "screen": "01-login",
+      "theme": "light",
       "width": 1440,
       "height": 900,
       "viewport": 1440,
@@ -458,6 +2793,7 @@
     },
     {
       "screen": "01-login",
+      "theme": "light",
       "width": 1280,
       "height": 800,
       "viewport": 1280,
@@ -466,6 +2802,7 @@
     },
     {
       "screen": "01-login",
+      "theme": "light",
       "width": 1024,
       "height": 768,
       "viewport": 1024,
@@ -474,6 +2811,52 @@
     },
     {
       "screen": "01-login",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "01-login",
+      "theme": "dark",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "01-login",
+      "theme": "dark",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "01-login",
+      "theme": "dark",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "01-login",
+      "theme": "dark",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "01-login",
+      "theme": "dark",
       "width": 390,
       "height": 844,
       "viewport": 390,
@@ -482,6 +2865,7 @@
     },
     {
       "screen": "02-overview",
+      "theme": "light",
       "width": 1920,
       "height": 1080,
       "viewport": 1920,
@@ -490,6 +2874,7 @@
     },
     {
       "screen": "02-overview",
+      "theme": "light",
       "width": 1440,
       "height": 900,
       "viewport": 1440,
@@ -498,6 +2883,7 @@
     },
     {
       "screen": "02-overview",
+      "theme": "light",
       "width": 1280,
       "height": 800,
       "viewport": 1280,
@@ -506,6 +2892,7 @@
     },
     {
       "screen": "02-overview",
+      "theme": "light",
       "width": 1024,
       "height": 768,
       "viewport": 1024,
@@ -514,6 +2901,52 @@
     },
     {
       "screen": "02-overview",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "02-overview",
+      "theme": "dark",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "02-overview",
+      "theme": "dark",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "02-overview",
+      "theme": "dark",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "02-overview",
+      "theme": "dark",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "02-overview",
+      "theme": "dark",
       "width": 390,
       "height": 844,
       "viewport": 390,
@@ -522,6 +2955,7 @@
     },
     {
       "screen": "03-import",
+      "theme": "light",
       "width": 1920,
       "height": 1080,
       "viewport": 1920,
@@ -530,6 +2964,7 @@
     },
     {
       "screen": "03-import",
+      "theme": "light",
       "width": 1440,
       "height": 900,
       "viewport": 1440,
@@ -538,6 +2973,7 @@
     },
     {
       "screen": "03-import",
+      "theme": "light",
       "width": 1280,
       "height": 800,
       "viewport": 1280,
@@ -546,6 +2982,7 @@
     },
     {
       "screen": "03-import",
+      "theme": "light",
       "width": 1024,
       "height": 768,
       "viewport": 1024,
@@ -554,6 +2991,52 @@
     },
     {
       "screen": "03-import",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "03-import",
+      "theme": "dark",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "03-import",
+      "theme": "dark",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "03-import",
+      "theme": "dark",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "03-import",
+      "theme": "dark",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "03-import",
+      "theme": "dark",
       "width": 390,
       "height": 844,
       "viewport": 390,
@@ -562,6 +3045,7 @@
     },
     {
       "screen": "04-import-detail",
+      "theme": "light",
       "width": 1920,
       "height": 1080,
       "viewport": 1920,
@@ -570,6 +3054,7 @@
     },
     {
       "screen": "04-import-detail",
+      "theme": "light",
       "width": 1440,
       "height": 900,
       "viewport": 1440,
@@ -578,6 +3063,7 @@
     },
     {
       "screen": "04-import-detail",
+      "theme": "light",
       "width": 1280,
       "height": 800,
       "viewport": 1280,
@@ -586,6 +3072,7 @@
     },
     {
       "screen": "04-import-detail",
+      "theme": "light",
       "width": 1024,
       "height": 768,
       "viewport": 1024,
@@ -594,6 +3081,52 @@
     },
     {
       "screen": "04-import-detail",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "04-import-detail",
+      "theme": "dark",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "04-import-detail",
+      "theme": "dark",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "04-import-detail",
+      "theme": "dark",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "04-import-detail",
+      "theme": "dark",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "04-import-detail",
+      "theme": "dark",
       "width": 390,
       "height": 844,
       "viewport": 390,
@@ -602,6 +3135,7 @@
     },
     {
       "screen": "18-raw-records",
+      "theme": "light",
       "width": 1920,
       "height": 1080,
       "viewport": 1920,
@@ -610,6 +3144,7 @@
     },
     {
       "screen": "18-raw-records",
+      "theme": "light",
       "width": 1440,
       "height": 900,
       "viewport": 1440,
@@ -618,6 +3153,7 @@
     },
     {
       "screen": "18-raw-records",
+      "theme": "light",
       "width": 1280,
       "height": 800,
       "viewport": 1280,
@@ -626,6 +3162,7 @@
     },
     {
       "screen": "18-raw-records",
+      "theme": "light",
       "width": 1024,
       "height": 768,
       "viewport": 1024,
@@ -634,6 +3171,52 @@
     },
     {
       "screen": "18-raw-records",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "18-raw-records",
+      "theme": "dark",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "18-raw-records",
+      "theme": "dark",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "18-raw-records",
+      "theme": "dark",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "18-raw-records",
+      "theme": "dark",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "18-raw-records",
+      "theme": "dark",
       "width": 390,
       "height": 844,
       "viewport": 390,
@@ -642,6 +3225,7 @@
     },
     {
       "screen": "05-normalization",
+      "theme": "light",
       "width": 1920,
       "height": 1080,
       "viewport": 1920,
@@ -650,6 +3234,7 @@
     },
     {
       "screen": "05-normalization",
+      "theme": "light",
       "width": 1440,
       "height": 900,
       "viewport": 1440,
@@ -658,6 +3243,7 @@
     },
     {
       "screen": "05-normalization",
+      "theme": "light",
       "width": 1280,
       "height": 800,
       "viewport": 1280,
@@ -666,6 +3252,7 @@
     },
     {
       "screen": "05-normalization",
+      "theme": "light",
       "width": 1024,
       "height": 768,
       "viewport": 1024,
@@ -674,6 +3261,52 @@
     },
     {
       "screen": "05-normalization",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "05-normalization",
+      "theme": "dark",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "05-normalization",
+      "theme": "dark",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "05-normalization",
+      "theme": "dark",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "05-normalization",
+      "theme": "dark",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "05-normalization",
+      "theme": "dark",
       "width": 390,
       "height": 844,
       "viewport": 390,
@@ -682,6 +3315,7 @@
     },
     {
       "screen": "06-matching",
+      "theme": "light",
       "width": 1920,
       "height": 1080,
       "viewport": 1920,
@@ -690,6 +3324,7 @@
     },
     {
       "screen": "06-matching",
+      "theme": "light",
       "width": 1440,
       "height": 900,
       "viewport": 1440,
@@ -698,6 +3333,7 @@
     },
     {
       "screen": "06-matching",
+      "theme": "light",
       "width": 1280,
       "height": 800,
       "viewport": 1280,
@@ -706,6 +3342,7 @@
     },
     {
       "screen": "06-matching",
+      "theme": "light",
       "width": 1024,
       "height": 768,
       "viewport": 1024,
@@ -714,6 +3351,52 @@
     },
     {
       "screen": "06-matching",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "06-matching",
+      "theme": "dark",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "06-matching",
+      "theme": "dark",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "06-matching",
+      "theme": "dark",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "06-matching",
+      "theme": "dark",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "06-matching",
+      "theme": "dark",
       "width": 390,
       "height": 844,
       "viewport": 390,
@@ -722,6 +3405,7 @@
     },
     {
       "screen": "07-match-detail",
+      "theme": "light",
       "width": 1920,
       "height": 1080,
       "viewport": 1920,
@@ -730,6 +3414,7 @@
     },
     {
       "screen": "07-match-detail",
+      "theme": "light",
       "width": 1440,
       "height": 900,
       "viewport": 1440,
@@ -738,6 +3423,7 @@
     },
     {
       "screen": "07-match-detail",
+      "theme": "light",
       "width": 1280,
       "height": 800,
       "viewport": 1280,
@@ -746,6 +3432,7 @@
     },
     {
       "screen": "07-match-detail",
+      "theme": "light",
       "width": 1024,
       "height": 768,
       "viewport": 1024,
@@ -754,6 +3441,52 @@
     },
     {
       "screen": "07-match-detail",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "07-match-detail",
+      "theme": "dark",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "07-match-detail",
+      "theme": "dark",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "07-match-detail",
+      "theme": "dark",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "07-match-detail",
+      "theme": "dark",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "07-match-detail",
+      "theme": "dark",
       "width": 390,
       "height": 844,
       "viewport": 390,
@@ -762,6 +3495,7 @@
     },
     {
       "screen": "08-conflicts",
+      "theme": "light",
       "width": 1920,
       "height": 1080,
       "viewport": 1920,
@@ -770,6 +3504,7 @@
     },
     {
       "screen": "08-conflicts",
+      "theme": "light",
       "width": 1440,
       "height": 900,
       "viewport": 1440,
@@ -778,6 +3513,7 @@
     },
     {
       "screen": "08-conflicts",
+      "theme": "light",
       "width": 1280,
       "height": 800,
       "viewport": 1280,
@@ -786,6 +3522,7 @@
     },
     {
       "screen": "08-conflicts",
+      "theme": "light",
       "width": 1024,
       "height": 768,
       "viewport": 1024,
@@ -794,6 +3531,52 @@
     },
     {
       "screen": "08-conflicts",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "08-conflicts",
+      "theme": "dark",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "08-conflicts",
+      "theme": "dark",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "08-conflicts",
+      "theme": "dark",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "08-conflicts",
+      "theme": "dark",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "08-conflicts",
+      "theme": "dark",
       "width": 390,
       "height": 844,
       "viewport": 390,
@@ -802,6 +3585,7 @@
     },
     {
       "screen": "09-conflict-detail",
+      "theme": "light",
       "width": 1920,
       "height": 1080,
       "viewport": 1920,
@@ -810,6 +3594,7 @@
     },
     {
       "screen": "09-conflict-detail",
+      "theme": "light",
       "width": 1440,
       "height": 900,
       "viewport": 1440,
@@ -818,6 +3603,7 @@
     },
     {
       "screen": "09-conflict-detail",
+      "theme": "light",
       "width": 1280,
       "height": 800,
       "viewport": 1280,
@@ -826,6 +3612,7 @@
     },
     {
       "screen": "09-conflict-detail",
+      "theme": "light",
       "width": 1024,
       "height": 768,
       "viewport": 1024,
@@ -834,6 +3621,52 @@
     },
     {
       "screen": "09-conflict-detail",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "09-conflict-detail",
+      "theme": "dark",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "09-conflict-detail",
+      "theme": "dark",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "09-conflict-detail",
+      "theme": "dark",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "09-conflict-detail",
+      "theme": "dark",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "09-conflict-detail",
+      "theme": "dark",
       "width": 390,
       "height": 844,
       "viewport": 390,
@@ -842,6 +3675,7 @@
     },
     {
       "screen": "17-provenance",
+      "theme": "light",
       "width": 1920,
       "height": 1080,
       "viewport": 1920,
@@ -850,6 +3684,7 @@
     },
     {
       "screen": "17-provenance",
+      "theme": "light",
       "width": 1440,
       "height": 900,
       "viewport": 1440,
@@ -858,6 +3693,7 @@
     },
     {
       "screen": "17-provenance",
+      "theme": "light",
       "width": 1280,
       "height": 800,
       "viewport": 1280,
@@ -866,6 +3702,7 @@
     },
     {
       "screen": "17-provenance",
+      "theme": "light",
       "width": 1024,
       "height": 768,
       "viewport": 1024,
@@ -874,6 +3711,52 @@
     },
     {
       "screen": "17-provenance",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "17-provenance",
+      "theme": "dark",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "17-provenance",
+      "theme": "dark",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "17-provenance",
+      "theme": "dark",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "17-provenance",
+      "theme": "dark",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "17-provenance",
+      "theme": "dark",
       "width": 390,
       "height": 844,
       "viewport": 390,
@@ -882,6 +3765,7 @@
     },
     {
       "screen": "10-empty",
+      "theme": "light",
       "width": 1920,
       "height": 1080,
       "viewport": 1920,
@@ -890,6 +3774,7 @@
     },
     {
       "screen": "10-empty",
+      "theme": "light",
       "width": 1440,
       "height": 900,
       "viewport": 1440,
@@ -898,6 +3783,7 @@
     },
     {
       "screen": "10-empty",
+      "theme": "light",
       "width": 1280,
       "height": 800,
       "viewport": 1280,
@@ -906,6 +3792,7 @@
     },
     {
       "screen": "10-empty",
+      "theme": "light",
       "width": 1024,
       "height": 768,
       "viewport": 1024,
@@ -914,6 +3801,52 @@
     },
     {
       "screen": "10-empty",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "10-empty",
+      "theme": "dark",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "10-empty",
+      "theme": "dark",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "10-empty",
+      "theme": "dark",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "10-empty",
+      "theme": "dark",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "10-empty",
+      "theme": "dark",
       "width": 390,
       "height": 844,
       "viewport": 390,
@@ -922,6 +3855,7 @@
     },
     {
       "screen": "11-users",
+      "theme": "light",
       "width": 1920,
       "height": 1080,
       "viewport": 1920,
@@ -930,6 +3864,7 @@
     },
     {
       "screen": "11-users",
+      "theme": "light",
       "width": 1440,
       "height": 900,
       "viewport": 1440,
@@ -938,6 +3873,7 @@
     },
     {
       "screen": "11-users",
+      "theme": "light",
       "width": 1280,
       "height": 800,
       "viewport": 1280,
@@ -946,6 +3882,7 @@
     },
     {
       "screen": "11-users",
+      "theme": "light",
       "width": 1024,
       "height": 768,
       "viewport": 1024,
@@ -954,6 +3891,52 @@
     },
     {
       "screen": "11-users",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "11-users",
+      "theme": "dark",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "11-users",
+      "theme": "dark",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "11-users",
+      "theme": "dark",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "11-users",
+      "theme": "dark",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "11-users",
+      "theme": "dark",
       "width": 390,
       "height": 844,
       "viewport": 390,
@@ -962,6 +3945,7 @@
     },
     {
       "screen": "12-matching-review",
+      "theme": "light",
       "width": 1920,
       "height": 1080,
       "viewport": 1920,
@@ -970,6 +3954,7 @@
     },
     {
       "screen": "12-matching-review",
+      "theme": "light",
       "width": 1440,
       "height": 900,
       "viewport": 1440,
@@ -978,6 +3963,7 @@
     },
     {
       "screen": "12-matching-review",
+      "theme": "light",
       "width": 1280,
       "height": 800,
       "viewport": 1280,
@@ -986,6 +3972,7 @@
     },
     {
       "screen": "12-matching-review",
+      "theme": "light",
       "width": 1024,
       "height": 768,
       "viewport": 1024,
@@ -994,6 +3981,52 @@
     },
     {
       "screen": "12-matching-review",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "12-matching-review",
+      "theme": "dark",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "12-matching-review",
+      "theme": "dark",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "12-matching-review",
+      "theme": "dark",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "12-matching-review",
+      "theme": "dark",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "12-matching-review",
+      "theme": "dark",
       "width": 390,
       "height": 844,
       "viewport": 390,
@@ -1002,6 +4035,7 @@
     },
     {
       "screen": "19-human-review",
+      "theme": "light",
       "width": 1920,
       "height": 1080,
       "viewport": 1920,
@@ -1010,6 +4044,7 @@
     },
     {
       "screen": "19-human-review",
+      "theme": "light",
       "width": 1440,
       "height": 900,
       "viewport": 1440,
@@ -1018,6 +4053,7 @@
     },
     {
       "screen": "19-human-review",
+      "theme": "light",
       "width": 1280,
       "height": 800,
       "viewport": 1280,
@@ -1026,6 +4062,7 @@
     },
     {
       "screen": "19-human-review",
+      "theme": "light",
       "width": 1024,
       "height": 768,
       "viewport": 1024,
@@ -1034,6 +4071,52 @@
     },
     {
       "screen": "19-human-review",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "19-human-review",
+      "theme": "dark",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "19-human-review",
+      "theme": "dark",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "19-human-review",
+      "theme": "dark",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "19-human-review",
+      "theme": "dark",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "19-human-review",
+      "theme": "dark",
       "width": 390,
       "height": 844,
       "viewport": 390,
@@ -1042,6 +4125,7 @@
     },
     {
       "screen": "20-decision-confirmation",
+      "theme": "light",
       "width": 1920,
       "height": 1080,
       "viewport": 1920,
@@ -1050,6 +4134,7 @@
     },
     {
       "screen": "20-decision-confirmation",
+      "theme": "light",
       "width": 1440,
       "height": 900,
       "viewport": 1440,
@@ -1058,6 +4143,7 @@
     },
     {
       "screen": "20-decision-confirmation",
+      "theme": "light",
       "width": 1280,
       "height": 800,
       "viewport": 1280,
@@ -1066,6 +4152,7 @@
     },
     {
       "screen": "20-decision-confirmation",
+      "theme": "light",
       "width": 1024,
       "height": 768,
       "viewport": 1024,
@@ -1074,6 +4161,52 @@
     },
     {
       "screen": "20-decision-confirmation",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "20-decision-confirmation",
+      "theme": "dark",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "20-decision-confirmation",
+      "theme": "dark",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "20-decision-confirmation",
+      "theme": "dark",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "20-decision-confirmation",
+      "theme": "dark",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "20-decision-confirmation",
+      "theme": "dark",
       "width": 390,
       "height": 844,
       "viewport": 390,
@@ -1082,6 +4215,7 @@
     },
     {
       "screen": "21-decision-receipt",
+      "theme": "light",
       "width": 1920,
       "height": 1080,
       "viewport": 1920,
@@ -1090,6 +4224,7 @@
     },
     {
       "screen": "21-decision-receipt",
+      "theme": "light",
       "width": 1440,
       "height": 900,
       "viewport": 1440,
@@ -1098,6 +4233,7 @@
     },
     {
       "screen": "21-decision-receipt",
+      "theme": "light",
       "width": 1280,
       "height": 800,
       "viewport": 1280,
@@ -1106,6 +4242,7 @@
     },
     {
       "screen": "21-decision-receipt",
+      "theme": "light",
       "width": 1024,
       "height": 768,
       "viewport": 1024,
@@ -1114,6 +4251,52 @@
     },
     {
       "screen": "21-decision-receipt",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "21-decision-receipt",
+      "theme": "dark",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "21-decision-receipt",
+      "theme": "dark",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "21-decision-receipt",
+      "theme": "dark",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "21-decision-receipt",
+      "theme": "dark",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "21-decision-receipt",
+      "theme": "dark",
       "width": 390,
       "height": 844,
       "viewport": 390,
@@ -1122,6 +4305,7 @@
     },
     {
       "screen": "22-decision-registry",
+      "theme": "light",
       "width": 1920,
       "height": 1080,
       "viewport": 1920,
@@ -1130,6 +4314,7 @@
     },
     {
       "screen": "22-decision-registry",
+      "theme": "light",
       "width": 1440,
       "height": 900,
       "viewport": 1440,
@@ -1138,6 +4323,7 @@
     },
     {
       "screen": "22-decision-registry",
+      "theme": "light",
       "width": 1280,
       "height": 800,
       "viewport": 1280,
@@ -1146,6 +4332,7 @@
     },
     {
       "screen": "22-decision-registry",
+      "theme": "light",
       "width": 1024,
       "height": 768,
       "viewport": 1024,
@@ -1154,6 +4341,52 @@
     },
     {
       "screen": "22-decision-registry",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "22-decision-registry",
+      "theme": "dark",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "22-decision-registry",
+      "theme": "dark",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "22-decision-registry",
+      "theme": "dark",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "22-decision-registry",
+      "theme": "dark",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "22-decision-registry",
+      "theme": "dark",
       "width": 390,
       "height": 844,
       "viewport": 390,
@@ -1162,6 +4395,7 @@
     },
     {
       "screen": "23-decision-history",
+      "theme": "light",
       "width": 1920,
       "height": 1080,
       "viewport": 1920,
@@ -1170,6 +4404,7 @@
     },
     {
       "screen": "23-decision-history",
+      "theme": "light",
       "width": 1440,
       "height": 900,
       "viewport": 1440,
@@ -1178,6 +4413,7 @@
     },
     {
       "screen": "23-decision-history",
+      "theme": "light",
       "width": 1280,
       "height": 800,
       "viewport": 1280,
@@ -1186,6 +4422,7 @@
     },
     {
       "screen": "23-decision-history",
+      "theme": "light",
       "width": 1024,
       "height": 768,
       "viewport": 1024,
@@ -1194,6 +4431,52 @@
     },
     {
       "screen": "23-decision-history",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "23-decision-history",
+      "theme": "dark",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "23-decision-history",
+      "theme": "dark",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "23-decision-history",
+      "theme": "dark",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "23-decision-history",
+      "theme": "dark",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "23-decision-history",
+      "theme": "dark",
       "width": 390,
       "height": 844,
       "viewport": 390,
@@ -1202,6 +4485,7 @@
     },
     {
       "screen": "24-similar-decisions",
+      "theme": "light",
       "width": 1920,
       "height": 1080,
       "viewport": 1920,
@@ -1210,6 +4494,7 @@
     },
     {
       "screen": "24-similar-decisions",
+      "theme": "light",
       "width": 1440,
       "height": 900,
       "viewport": 1440,
@@ -1218,6 +4503,7 @@
     },
     {
       "screen": "24-similar-decisions",
+      "theme": "light",
       "width": 1280,
       "height": 800,
       "viewport": 1280,
@@ -1226,6 +4512,7 @@
     },
     {
       "screen": "24-similar-decisions",
+      "theme": "light",
       "width": 1024,
       "height": 768,
       "viewport": 1024,
@@ -1234,6 +4521,52 @@
     },
     {
       "screen": "24-similar-decisions",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "24-similar-decisions",
+      "theme": "dark",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "24-similar-decisions",
+      "theme": "dark",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "24-similar-decisions",
+      "theme": "dark",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "24-similar-decisions",
+      "theme": "dark",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "24-similar-decisions",
+      "theme": "dark",
       "width": 390,
       "height": 844,
       "viewport": 390,
@@ -1242,6 +4575,7 @@
     },
     {
       "screen": "25-precedent-detail",
+      "theme": "light",
       "width": 1920,
       "height": 1080,
       "viewport": 1920,
@@ -1250,6 +4584,7 @@
     },
     {
       "screen": "25-precedent-detail",
+      "theme": "light",
       "width": 1440,
       "height": 900,
       "viewport": 1440,
@@ -1258,6 +4593,7 @@
     },
     {
       "screen": "25-precedent-detail",
+      "theme": "light",
       "width": 1280,
       "height": 800,
       "viewport": 1280,
@@ -1266,6 +4602,7 @@
     },
     {
       "screen": "25-precedent-detail",
+      "theme": "light",
       "width": 1024,
       "height": 768,
       "viewport": 1024,
@@ -1274,6 +4611,52 @@
     },
     {
       "screen": "25-precedent-detail",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "25-precedent-detail",
+      "theme": "dark",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "25-precedent-detail",
+      "theme": "dark",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "25-precedent-detail",
+      "theme": "dark",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "25-precedent-detail",
+      "theme": "dark",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "25-precedent-detail",
+      "theme": "dark",
       "width": 390,
       "height": 844,
       "viewport": 390,
@@ -1282,6 +4665,7 @@
     },
     {
       "screen": "26-no-precedent",
+      "theme": "light",
       "width": 1920,
       "height": 1080,
       "viewport": 1920,
@@ -1290,6 +4674,7 @@
     },
     {
       "screen": "26-no-precedent",
+      "theme": "light",
       "width": 1440,
       "height": 900,
       "viewport": 1440,
@@ -1298,6 +4683,7 @@
     },
     {
       "screen": "26-no-precedent",
+      "theme": "light",
       "width": 1280,
       "height": 800,
       "viewport": 1280,
@@ -1306,6 +4692,7 @@
     },
     {
       "screen": "26-no-precedent",
+      "theme": "light",
       "width": 1024,
       "height": 768,
       "viewport": 1024,
@@ -1314,6 +4701,412 @@
     },
     {
       "screen": "26-no-precedent",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "26-no-precedent",
+      "theme": "dark",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "26-no-precedent",
+      "theme": "dark",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "26-no-precedent",
+      "theme": "dark",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "26-no-precedent",
+      "theme": "dark",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "26-no-precedent",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "31-recommendation-abstention",
+      "theme": "light",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "31-recommendation-abstention",
+      "theme": "light",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "31-recommendation-abstention",
+      "theme": "light",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "31-recommendation-abstention",
+      "theme": "light",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "31-recommendation-abstention",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "31-recommendation-abstention",
+      "theme": "dark",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "31-recommendation-abstention",
+      "theme": "dark",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "31-recommendation-abstention",
+      "theme": "dark",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "31-recommendation-abstention",
+      "theme": "dark",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "31-recommendation-abstention",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "28-recommendation",
+      "theme": "light",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "28-recommendation",
+      "theme": "light",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "28-recommendation",
+      "theme": "light",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "28-recommendation",
+      "theme": "light",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "28-recommendation",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "28-recommendation",
+      "theme": "dark",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "28-recommendation",
+      "theme": "dark",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "28-recommendation",
+      "theme": "dark",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "28-recommendation",
+      "theme": "dark",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "28-recommendation",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "29-recommendation-human-review",
+      "theme": "light",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "29-recommendation-human-review",
+      "theme": "light",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "29-recommendation-human-review",
+      "theme": "light",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "29-recommendation-human-review",
+      "theme": "light",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "29-recommendation-human-review",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "29-recommendation-human-review",
+      "theme": "dark",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "29-recommendation-human-review",
+      "theme": "dark",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "29-recommendation-human-review",
+      "theme": "dark",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "29-recommendation-human-review",
+      "theme": "dark",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "29-recommendation-human-review",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "30-recommendation-contradiction",
+      "theme": "light",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "30-recommendation-contradiction",
+      "theme": "light",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "30-recommendation-contradiction",
+      "theme": "light",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "30-recommendation-contradiction",
+      "theme": "light",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "30-recommendation-contradiction",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "30-recommendation-contradiction",
+      "theme": "dark",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "30-recommendation-contradiction",
+      "theme": "dark",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "30-recommendation-contradiction",
+      "theme": "dark",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "30-recommendation-contradiction",
+      "theme": "dark",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "30-recommendation-contradiction",
+      "theme": "dark",
       "width": 390,
       "height": 844,
       "viewport": 390,
@@ -1322,6 +5115,7 @@
     },
     {
       "screen": "13-viewer",
+      "theme": "light",
       "width": 1920,
       "height": 1080,
       "viewport": 1920,
@@ -1330,6 +5124,7 @@
     },
     {
       "screen": "13-viewer",
+      "theme": "light",
       "width": 1440,
       "height": 900,
       "viewport": 1440,
@@ -1338,6 +5133,7 @@
     },
     {
       "screen": "13-viewer",
+      "theme": "light",
       "width": 1280,
       "height": 800,
       "viewport": 1280,
@@ -1346,6 +5142,7 @@
     },
     {
       "screen": "13-viewer",
+      "theme": "light",
       "width": 1024,
       "height": 768,
       "viewport": 1024,
@@ -1354,6 +5151,52 @@
     },
     {
       "screen": "13-viewer",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "13-viewer",
+      "theme": "dark",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "13-viewer",
+      "theme": "dark",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "13-viewer",
+      "theme": "dark",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "13-viewer",
+      "theme": "dark",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "13-viewer",
+      "theme": "dark",
       "width": 390,
       "height": 844,
       "viewport": 390,
@@ -1362,6 +5205,7 @@
     },
     {
       "screen": "27-retrieval-scope",
+      "theme": "light",
       "width": 1920,
       "height": 1080,
       "viewport": 1920,
@@ -1370,6 +5214,7 @@
     },
     {
       "screen": "27-retrieval-scope",
+      "theme": "light",
       "width": 1440,
       "height": 900,
       "viewport": 1440,
@@ -1378,6 +5223,7 @@
     },
     {
       "screen": "27-retrieval-scope",
+      "theme": "light",
       "width": 1280,
       "height": 800,
       "viewport": 1280,
@@ -1386,6 +5232,7 @@
     },
     {
       "screen": "27-retrieval-scope",
+      "theme": "light",
       "width": 1024,
       "height": 768,
       "viewport": 1024,
@@ -1394,6 +5241,52 @@
     },
     {
       "screen": "27-retrieval-scope",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "27-retrieval-scope",
+      "theme": "dark",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "27-retrieval-scope",
+      "theme": "dark",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "27-retrieval-scope",
+      "theme": "dark",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "27-retrieval-scope",
+      "theme": "dark",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "27-retrieval-scope",
+      "theme": "dark",
       "width": 390,
       "height": 844,
       "viewport": 390,
@@ -1402,6 +5295,7 @@
     },
     {
       "screen": "14-permission",
+      "theme": "light",
       "width": 1920,
       "height": 1080,
       "viewport": 1920,
@@ -1410,6 +5304,7 @@
     },
     {
       "screen": "14-permission",
+      "theme": "light",
       "width": 1440,
       "height": 900,
       "viewport": 1440,
@@ -1418,6 +5313,7 @@
     },
     {
       "screen": "14-permission",
+      "theme": "light",
       "width": 1280,
       "height": 800,
       "viewport": 1280,
@@ -1426,6 +5322,7 @@
     },
     {
       "screen": "14-permission",
+      "theme": "light",
       "width": 1024,
       "height": 768,
       "viewport": 1024,
@@ -1434,6 +5331,52 @@
     },
     {
       "screen": "14-permission",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "14-permission",
+      "theme": "dark",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "14-permission",
+      "theme": "dark",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "14-permission",
+      "theme": "dark",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "14-permission",
+      "theme": "dark",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "14-permission",
+      "theme": "dark",
       "width": 390,
       "height": 844,
       "viewport": 390,
@@ -1442,6 +5385,7 @@
     },
     {
       "screen": "15-loading",
+      "theme": "light",
       "width": 1920,
       "height": 1080,
       "viewport": 1920,
@@ -1450,6 +5394,7 @@
     },
     {
       "screen": "15-loading",
+      "theme": "light",
       "width": 1440,
       "height": 900,
       "viewport": 1440,
@@ -1458,6 +5403,7 @@
     },
     {
       "screen": "15-loading",
+      "theme": "light",
       "width": 1280,
       "height": 800,
       "viewport": 1280,
@@ -1466,6 +5412,7 @@
     },
     {
       "screen": "15-loading",
+      "theme": "light",
       "width": 1024,
       "height": 768,
       "viewport": 1024,
@@ -1474,6 +5421,52 @@
     },
     {
       "screen": "15-loading",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "15-loading",
+      "theme": "dark",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "15-loading",
+      "theme": "dark",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "15-loading",
+      "theme": "dark",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "15-loading",
+      "theme": "dark",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "15-loading",
+      "theme": "dark",
       "width": 390,
       "height": 844,
       "viewport": 390,
@@ -1482,6 +5475,7 @@
     },
     {
       "screen": "16-error",
+      "theme": "light",
       "width": 1920,
       "height": 1080,
       "viewport": 1920,
@@ -1490,6 +5484,7 @@
     },
     {
       "screen": "16-error",
+      "theme": "light",
       "width": 1440,
       "height": 900,
       "viewport": 1440,
@@ -1498,6 +5493,7 @@
     },
     {
       "screen": "16-error",
+      "theme": "light",
       "width": 1280,
       "height": 800,
       "viewport": 1280,
@@ -1506,6 +5502,7 @@
     },
     {
       "screen": "16-error",
+      "theme": "light",
       "width": 1024,
       "height": 768,
       "viewport": 1024,
@@ -1514,6 +5511,52 @@
     },
     {
       "screen": "16-error",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "viewport": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "screen": "16-error",
+      "theme": "dark",
+      "width": 1920,
+      "height": 1080,
+      "viewport": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "screen": "16-error",
+      "theme": "dark",
+      "width": 1440,
+      "height": 900,
+      "viewport": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "screen": "16-error",
+      "theme": "dark",
+      "width": 1280,
+      "height": 800,
+      "viewport": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "screen": "16-error",
+      "theme": "dark",
+      "width": 1024,
+      "height": 768,
+      "viewport": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "screen": "16-error",
+      "theme": "dark",
       "width": 390,
       "height": 844,
       "viewport": 390,

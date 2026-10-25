@@ -1,5 +1,5 @@
 {
-  "source_commit": "4ece3639722bad307dc421a3d0e0716299b5013b",
+  "source_commit": "751b7353887566841e53e29ed41e27bc2eb33b55",
   "project": "fk-stage8",
   "actual_https": true,
   "five_independent_real_file_pairs": true,
@@ -18,26 +18,26 @@
   "provider_unavailable_manual_save": true,
   "registry_independent": true,
   "decisions": [
-    "02907da3-cf51-43b7-9f03-b28397e5c4ba",
-    "a179e65b-83c9-4ed5-93e7-275cede6b7ab",
-    "68e6471c-dafa-47c6-b121-6d451c960e88",
-    "8727a396-1a56-4dbc-a0ef-34b2c40418d5",
-    "3112f40b-ce4f-4b11-98f2-9f130801dbff",
-    "eb3a6f2d-932f-4304-a8da-42de29cc281f",
-    "d03e9b76-148e-47f4-8fc1-55caba9a08fe",
-    "644da46b-17b9-4272-8c80-c7ba83f233f7",
-    "96513c5a-eb56-45c9-985b-d867ead8ff70"
+    "da2e7cbc-afba-48be-a1dd-78ae44734c69",
+    "1628d163-258a-4104-8328-1b8fd70478e1",
+    "5fedf9fc-8337-4dea-a611-b108b03a94d4",
+    "0730e8c3-5bb7-47e0-a396-cbe060f315dc",
+    "40999006-eaf1-45fe-9c55-9b4f134471dc",
+    "f239b7dc-0ed5-468c-ab32-d07253958a68",
+    "b770a088-b2b9-4042-a2c1-1cdf5ab0158a",
+    "57f0c1e1-d2fd-45c6-903a-7a140e49bd7b",
+    "5c67662d-ec0e-4f63-93b6-302f9ba2fddf"
   ],
   "passed": true,
-  "backend_source_tree": "6d70e0dd8af6a6eda4beea376b08acf58030b7af",
-  "frontend_source_tree": "69048c1a186d15b3f6524f0d71839309db815775",
+  "backend_source_tree": "8802b1b203bddafd18a39fdc92f39b4676935213",
+  "frontend_source_tree": "cf5309eac8b8f2929c98b975eadf966da3243282",
   "images": {
-    "backend": "sha256:d9ccb641d4d8d21debaaca1def5eb5125c3b537af3e485bd461d71deab34fa58",
-    "frontend": "sha256:031c8dc6407d6d913d9094715d78727eaddaf926b0dd322787c80bad54ba3a60"
+    "backend": "sha256:b096c0b07229e26ade4a4addbfe8e7cd93d3e8c0477d44e1252a2858c5ef489d",
+    "frontend": "sha256:fdc753811a96cd96942f4bd4275b4f49048dd38762664c65f5c72c44b0708dc2"
   },
   "limitations": [
     "Owned synthetic HTTPS fixture, not independent external MVP acceptance.",
     "No production semantic quality or fully cold-cache claim.",
-    "All business facts/files/volumes retained; temporary operator revoked; default production fail-closed restored."
+    "Business facts/files/volumes retained; temporary operator revoked; default production fail-closed restored."
   ]
 }
