@@ -41,7 +41,8 @@ def percentile(values, fraction):
 def run():
     if os.getenv("FK_TEST_INTEGRATION") != "1":
         raise SystemExit("Disposable owned schema opt-in required")
-    environment = isolated_environment()
+    keep_fixture = os.getenv("FK_KEEP_RECOMMENDATION_BENCH") == "1"
+    environment = isolated_environment(preserve_schema=keep_fixture)
     base = next(environment)
     results = []
     try:
@@ -82,6 +83,21 @@ def run():
                 client.cookies.set(COOKIE_NAME, tokens[0])
                 cases = Cases(client)
                 query = cases.prepared()
+                if keep_fixture:
+                    private = Path("/tmp/fk-stage8-capacity-debug.json")
+                    private.write_text(
+                        json.dumps(
+                            {
+                                "database_url": settings.database_url.get_secret_value(),
+                                "redis_url": settings.redis_url.get_secret_value(),
+                                "auth_rate_prefix": settings.auth_rate_prefix,
+                                "query": query,
+                                "tokens": tokens,
+                                "mapping": settings.recommendation_source_map,
+                            }
+                        )
+                    )
+                    private.chmod(0o600)
                 plans = {}
 
                 def capture(connection, cursor, statement, parameters, context, executemany):
@@ -112,7 +128,6 @@ def run():
                         observations = [row for group in pool.map(read, tokens) for row in group]
                     times = [row[0] for row in observations]
                     p95 = percentile(times, 0.95)
-                    assert p95 <= 1, {"endpoint": endpoint, "p95": p95}
                     return {
                         "requests": len(times),
                         "sessions": 10,
@@ -121,6 +136,7 @@ def run():
                         "max_seconds": round(max(times), 6),
                         "failures": 0,
                         "outcomes": dict(Counter(reason for _, reason in observations)),
+                        "passed": p95 <= 1,
                     }
 
                 recommendation_endpoint = f"/api/v1/conflicts/{query}/recommendation"
@@ -210,9 +226,15 @@ def run():
             "RSS is Python process peak, not total server/container memory.",
         ],
         "results": results,
-        "passed": True,
+        "passed": all(
+            measurement["passed"]
+            for row in results
+            for measurement in row.values()
+            if isinstance(measurement, dict) and "passed" in measurement
+        ),
     }
     Path("/tmp/fk-stage8-performance.json").write_text(json.dumps(report, indent=2) + "\n")
+    assert report["passed"], "NFR p95 <= 1 second failed; full report retained for diagnosis"
     return report
 
 
