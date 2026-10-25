@@ -379,18 +379,27 @@ def test_unseen_twenty_first_precedent_is_not_silently_ignored(client):
     assert result["supporting_decision_ids"] == [] and result["confidence"] is None
 
 
-def test_compatible_skipped_outcome_prevents_positive_even_when_retrieval_is_ready(client):
+@pytest.mark.parametrize("attribute", ["mass", "price"])
+def test_skipped_outcome_blocks_only_compatible_history_when_retrieval_is_ready(client, attribute):
     from unittest.mock import patch
 
     from app.decisions.service import historical_context
     from app.similarity.models import IndexItem
+    from tests.test_imports import upload
 
     cases = Cases(client)
     query = cases.prepared()
-    skipped = cases.case()
+    def input_file(caller, source, name, payload):
+        if attribute == "price" and name == "material.csv":
+            payload = payload.replace(b",12.5 kg,10,", b",12.4 kg,11,")
+        return upload(caller, source, name, payload)
+
+    with patch("tests.recommendation_fixtures.upload", side_effect=input_file):
+        skipped = cases.case()
 
     def legacy_context(*args, **kwargs):
         snapshot = deepcopy(historical_context(*args, **kwargs))
+        assert snapshot["conflict"]["attribute_code"] == attribute
         snapshot["subject"].pop("display_name")
         return snapshot
 
@@ -408,10 +417,14 @@ def test_compatible_skipped_outcome_prevents_positive_even_when_retrieval_is_rea
     retrieved = similar(client, query)
     assert retrieved["state"] == "READY" and retrieved["total_above_threshold"] == 5
     result = recommendation(client, query)
-    assert result["status"] == "UNAVAILABLE"
-    assert result["reason_code"] == "INDEX_COVERAGE_UNCERTAIN"
-    assert result["supporting_decision_ids"] == [] and result["confidence"] is None
-    assert result["evidence"] == []
+    if attribute == "mass":
+        assert result["status"] == "UNAVAILABLE"
+        assert result["reason_code"] == "INDEX_COVERAGE_UNCERTAIN"
+        assert result["supporting_decision_ids"] == [] and result["confidence"] is None
+        assert result["evidence"] == []
+    else:
+        assert result["status"] == "RECOMMENDED" and result["confidence"] == 5
+        assert sixth["decision_id"] not in result["supporting_decision_ids"]
 
 
 def test_manual_historical_correction_cannot_be_copied_to_another_case(client):

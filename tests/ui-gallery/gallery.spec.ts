@@ -28,8 +28,20 @@ async function capture(page: Page, file: string, title: string, description: str
   if (!output) throw new Error('FK_GALLERY_OUTPUT is required; use capture-ui-gallery.sh');
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.evaluate(() => document.fonts.ready);
-  for (const theme of ['light', 'dark'] as const) {
+  async function chooseTheme(theme: 'light' | 'dark') {
+    // Native modal dialogs correctly make the shared shell inert. Use the
+    // actual cancel/reopen controls around a theme change, preserving the draft
+    // and confirmation focus instead of bypassing the browser's modal boundary.
+    const reopen = await page.locator('dialog[open]').count() > 0;
+    if (reopen) await page.getByRole('button', { name: 'Вернуться к проверке', exact: true }).click();
     await page.getByRole('button', { name: theme === 'light' ? 'Светлая тема' : 'Тёмная тема', exact: true }).click();
+    if (reopen) {
+      await page.getByRole('button', { name: 'Проверить перед сохранением', exact: true }).click();
+      await expect(page.getByRole('dialog').getByRole('button', { name: 'Сохранить решение', exact: true })).toBeFocused();
+    }
+  }
+  for (const theme of ['light', 'dark'] as const) {
+    await chooseTheme(theme);
     await expect(page.locator('html')).toHaveAttribute('data-theme', theme);
     for (const viewport of viewports) {
       await page.setViewportSize(viewport);
@@ -51,7 +63,7 @@ async function capture(page: Page, file: string, title: string, description: str
     }
   }
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.getByRole('button', { name: 'Светлая тема', exact: true }).click();
+  await chooseTheme('light');
 }
 async function importSource(page: Page, side: 'a' | 'b', suffix = '', unrelated = false) {
   await page.getByRole('button', { name: 'Импорт данных', exact: true }).click();
