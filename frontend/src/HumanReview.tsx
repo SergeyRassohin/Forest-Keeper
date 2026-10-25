@@ -122,7 +122,7 @@ export function HumanReview({ conflictId, onSessionExpired, onSaved, onOpenDecis
           {['ENTER_VALUE', 'INSUFFICIENT_DATA', 'DEFERRED'].filter((action) => context.allowed_actions.includes(action)).map((action) => <label className="role-choice" key={action}><input type="radio" name={'outcome-' + conflictId} value={action} checked={choice === action} onChange={() => { setAppliedRecommendation(null); setChoice(action); }} />{action === 'ENTER_VALUE' ? 'Указать другое значение' : outcomeLabels.get(action)}</label>)}
         </fieldset>
         {outcome === 'ENTER_VALUE' && <label>Подтверждённое значение{context.correction_policy.unit ? ' (' + context.correction_policy.unit + ')' : ''}<input value={value} maxLength={context.correction_policy.max_length} disabled={busy || !!pending} onChange={(event) => setValue(event.target.value)} required /><span className="muted">{context.correction_policy.kind === 'date' ? 'Дата в формате ГГГГ-ММ-ДД.' : 'Введите каноническое значение. Исходные записи сохранятся без изменений.'}</span></label>}
-        <label>Обоснование решения<textarea required maxLength={2000} value={reason} disabled={busy || !!pending} onChange={(event) => setReason(event.target.value)} /></label>
+        <label><span id={'review-reason-' + conflictId}>Обоснование решения</span><textarea aria-labelledby={'review-reason-' + conflictId} required maxLength={2000} value={reason} disabled={busy || !!pending} onChange={(event) => setReason(event.target.value)} /></label>
         <p className="muted">Версия evidence: <Identifier>{context.evidence_hash}</Identifier></p>
         <button className="primary" disabled={busy || !!pending || !canConfirm}>Проверить перед сохранением</button>
       </form>}
