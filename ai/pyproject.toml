@@ -1,0 +1,22 @@
+[project]
+name = "forest-keeper-local-ai"
+version = "0.1.0"
+requires-python = ">=3.13,<3.14"
+dependencies = [
+  "fastapi==0.162.0",
+  "uvicorn==0.54.0",
+  "sentence-transformers==6.2.0",
+  "transformers==5.20.2",
+  "torch==2.14.1+cpu",
+]
+
+[tool.uv]
+package = false
+
+[tool.uv.sources]
+torch = { index = "pytorch-cpu" }
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true

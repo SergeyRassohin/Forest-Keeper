@@ -54,7 +54,11 @@ is proposed. A migration requires an explicit additive design if this assessment
 
 Qwen real-model development mode is labelled `LOCAL_QWEN_DEMO`, distinct from synthetic
 hash vectors and from accepted production semantics. Production retrieval remains blocked
-until a versioned, independently checked semantic acceptance record exists. Existing
+until a versioned, independently checked semantic acceptance record exists. In this
+development implementation production is hard-disabled even if flags/service claims say
+otherwise. Any later activation record must bind human label/dataset/split/metric code,
+approved target, model/artifact/preprocessing/runtime, retrieval/policy hashes and explicit
+owner approval; client flags or a model health response can never authorize activation. Existing
 `stage8-demo-unanimous-v1` may operate only in explicit test/development mode; no production
 positive recommendation is enabled. Its five independent groups/unanimity/correlation/source
 mapping rules stay unchanged. Two cases can demonstrate real retrieval, not bypass the
@@ -63,11 +67,19 @@ five-group recommendation requirement; positive E2E uses five independent histor
 LLM consumes only backend-authorized facts and selected valid precedent references, never
 DB credentials/SQL/tools/source network access. Structured output contains evidence IDs and
 bounded factual clause codes, the exact deterministic status/action and context fingerprint.
+Empty/vacuous outputs are invalid: required clauses must explain the current case, the
+actual support/abstention reason and its limitations; a generic warning alone is insufficient.
 Backend checks every reference against the supplied allowlist and every factual clause against
 the deterministic evidence. Russian/English explanation is rendered from those validated
 clauses; arbitrary generated prose and unsupported factual claims are rejected. This deliberately
 limits generation to grounded explanation rather than pretending that a JSON schema can prove
 arbitrary free text true. Actual Qwen generation remains mandatory for runtime acceptance.
+
+Embedding internal contract: `POST /internal/ai/embed` accepts a bounded batch of
+versioned canonical features with explicit document/query purpose and returns1024 finite
+normalized floats per item plus exact model/preprocessing identity. Public backend never
+registers this path. Fixed allowlisted local URLs only; no redirects/environment proxy,
+client-supplied URLs or network downloads.
 
 Internal AI service owns `/internal/ai/{recommend,explain,health,model-info}`. `recommend`
 only explains the supplied deterministic proposal; it cannot choose business truth. These
@@ -75,7 +87,7 @@ routes are absent from public backend and reverse proxy. Services use a private 
 network, no published AI ports and a file-backed service capability checked in constant time;
 this is not an end-user bearer API. The model runtime has no database/import-file mount.
 
-Proposed public API addition, using existing cookie+Origin and `conflict.view` plus
+Proposed public API addition, using existing cookie+Origin and `conflict.view`, `decision.view` and
 `recommendation.view`, without new permissions:
 
 - `POST /api/v1/conflicts/{id}/ai-explanation`: explicit bounded asynchronous request,202
@@ -86,10 +98,20 @@ Proposed public API addition, using existing cookie+Origin and `conflict.view` p
   unchanged. Explanation does not authorize form prefill/commit or enter Decision evidence
   as a new assertion of truth. Existing current review token and human confirmation remain.
 
-RQ uses a separate bounded AI queue/worker to avoid blocking imports/manual workflows.
+RQ uses separate bounded embedding and LLM queues/workers to avoid blocking imports/manual
+workflows. BOTH Qwen query preparation AND historical backfill/recovery route to the embedding
+queue; no heavy inference executes on the import worker. Existing synthetic test scheduling
+remains unchanged. Qwen backfill yields after bounded checkpoint batches and resumes through
+AI-worker maintenance; both worker types expose queue-specific heartbeat/health and bounded
+restart recovery. Global queue admission8 and one active request per actor are atomic in
+Redis, with idempotent handles, bounded wait expiry and cancellation/stale invalidation.
+A crashed worker cannot retain an actor admission indefinitely; reconcile job state/TTL.
+Per-actor/session admission applies to user query/explanation work. Operator backfill uses
+a bounded server-work namespace, not a fabricated user. Backfill yields to query work at
+each bounded checkpoint so historical indexing cannot starve interactive preparation.
 Job arguments contain IDs/digests, not raw prompts. Redis-derived results have bounded TTL,
 size and actor/session binding; Redis unavailable means explanation unavailable, not failure
-of manual Decision. Before input and before delivery, verify fresh auth/scope, current
+of manual Decision. Before input and before delivery, verify all three permissions, fresh auth/scope, current
 Conflict/Decision heads, retrieval/model/prompt/policy/source-map digests. Stale or revoked
 work is discarded. Snapshot transactions close before long inference; no SQL/gate lock is
 held across model generation. In-flight local inference may finish after revocation, but its
@@ -102,14 +124,18 @@ light/dark, keyboard focus and mobile/desktop layout. No hidden LLM request on G
 
 ## Hardware, operational resource budgets and offline supply
 
-Observed candidate cloud host:5 schedulable CPU,about33GiB RAM, no nvidia-smi/GPU found;
+Observed candidate: `nproc` reports5, but actual cgroup CPU quota is400000/100000=4 CPUs
+and memory.max34359738368=32GiB (host free reportsabout33GiB). No nvidia-smi/GPU found;
 about10GiB disk free before downloads. This is an inventory, not a supported AI profile.
 Weights occupy about6.22GB plus tokenizer/config; Python dependencies, llama build, KV cache,
 containers and temporary download space need additional capacity. Reclaim disposable build
 cache where needed; never delete business volumes or previous stage work.
 
 Initial protective development budgets, not quality thresholds or latency promises:
-LLM one generation/3 CPU threads, embedding one batch/1 thread, input JSON<=32KiB,
+LLM one generation/2 CPU threads (CPU quota2), embedding one batch/1 thread (quota0.75),
+with at least1.25 CPU quota capacity left for core/OS (not exclusive affinity reservation).
+Measure core NFR under concurrent AI load rather than infer isolation from thread counts.
+Input JSON<=32KiB,
 embedding batch<=8 and bounded tokens, LLM generated<=256 tokens, total configured context
 32768, provider deadline120s, job deadline180s, bounded pending queue8/actor one active job,
 result TTL15min. Refuse overload explicitly. Tighten limits based on measurements; never
@@ -119,8 +145,11 @@ until actual cold/warm startup, load and memory results exist. GPU is unverified
 
 Build/download may use the managed proxy with CA verification. Customer runtime has no
 external egress, proxy credentials, telemetry or download-on-demand. Images/models installed
-before startup; disable Hub/Transformers online behavior, telemetry and remote code. Internal
-AI-only bridge has no external route, no DB peers and no published ports; external DNS and
+before startup; disable Hub/Transformers online behavior, telemetry and remote code. Model containers attach ONLY to the internal AI bridge; a dedicated AI worker can join
+core PostgreSQL/Redis and AI bridges, without generic outbound proxy. Core services never
+require AI health for startup. Model containers use explicit loopback upstream DNS
+(`dns: [127.0.0.1]`) so embedded service discovery remains local without external forwarding.
+The AI-only bridge has no external route, no DB peers and no published ports; external DNS and
 HTTP denial are tested rather than inferred from environment flags. Read-only/non-root,
 dropped capabilities, CPU/RAM/PID limits and exact health/model-info apply to AI services.
 
@@ -159,22 +188,29 @@ contradictory cases. The runtime five-history demo is not this quality set.
 
 Split by entity/source/provenance family (not random row):50 development cases for prompt/
 preprocessing choices and150 sealed evaluation cases, with no shared file/key/semantic clones
-across partitions. Human-approved labels/label version and dataset digest are frozen before
+across partitions. Eligibility/permission/time/version filters defining the gold denominator, human-approved
+labels/label version and dataset digest are frozen before
 measurement. No training/model-weight changes. Independent reviewer checks split leakage,
 label provenance and metric implementation. A generated fixture is only a candidate until a
 human approves its labels; do not report AI-authored labels as human gold.
 
 Proposed acceptance targets for owner consideration:
 
-- precision@5>=0.95, calculated over returned compatible above-threshold results (at most5,
-  without padding), micro-aggregated across queries; empty retrieval gives no false precision.
+- returned-result precision@5>=0.95: true positives / all returned compatible above-threshold
+  results (at most5, without padding), micro-aggregated. This is not fixed-K precision:
+  also report conventional per-query TP/5 separately, without claiming it passed95%.
+  If the positive evaluation partition returns zero results, acceptance FAILS rather than
+  treating an undefined precision as100%. Report per-query retrieval coverage and counts.
 - recall@5>=0.90 over the positive set with1–5 labelled relevant precedents/query;
   abstention/missed positives count as misses. Report macro/micro and denominator counts.
 - zero incompatible/cross-scope returned records, zero false-positive results for labelled
   no-match queries and zero harmful positive proposals on the adversarial safety set.
 - LLM:100% delivered citations belong to supplied authorized evidence;100% delivered action/
   facts agree with deterministic policy,0 unsupported delivered clauses; report rejected/
-  unavailable outputs separately, never count them as successful explanations.
+  unavailable outputs separately, never count them as successful explanations. The zero-delivered
+  case FAILS runtime acceptance; always report eligible requests, successful completions,
+  rejected/unavailable/timeouts and completion coverage. A production completion target
+  requires owner approval, not a vacuous100% citation claim.
 
 These are proposed targets, not measured achievements. Existing0.85 similarity threshold
 and five-group policy stay unchanged; Qwen compatibility is measured, not assumed. Any new
