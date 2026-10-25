@@ -34,6 +34,7 @@ export FK_GALLERY_OUTPUT="$fixture_root/screenshots"
 mkdir -p "$FK_GALLERY_OUTPUT"
 project="fk-gallery-$(python3 -c 'import uuid; print(uuid.uuid4().hex[:12])')"
 override="$fixture_root/compose.yaml"
+export FK_GALLERY_SOURCE_DECLARATION=$(cd backend && FK_TEST_INTEGRATION=1 uv run --frozen python -m tests.ui_gallery_accounts declaration)
 python3 - "$override" <<'PY'
 import json, os, sys
 port=int(os.environ['FK_GALLERY_PORT'])
@@ -46,6 +47,8 @@ with open(sys.argv[1], 'w') as out:
         out.write(f'  {service}:\n    image: {json.dumps(backend)}\n    environment:\n      FK_ALLOWED_ORIGINS: {json.dumps(origin)}\n')
         # Only this unique disposable synthetic gallery project enables the test provider.
         out.write('      FK_DEPLOYMENT_MODE: test\n      FK_SIMILARITY_PROVIDER: test\n      FK_SIMILARITY_ALLOW_TEST_PROVIDER: "true"\n      FK_SIMILARITY_AUTOINDEX: "true"\n')
+        out.write('      FK_RECOMMENDATION_ENABLED: "true"\n')
+        out.write('      FK_RECOMMENDATION_SOURCE_MAP: '+json.dumps(os.environ['FK_GALLERY_SOURCE_DECLARATION'])+'\n')
         if service == 'backend': out.write('    ports: !override []\n')
     out.write(f'  frontend:\n    image: {json.dumps(frontend)}\n    ports: !override ["127.0.0.1:{port}:8443"]\n')
     out.write('  postgres:\n    ports: !override ["127.0.0.1::5432"]\n  redis:\n    ports: !override ["127.0.0.1::6379"]\n')

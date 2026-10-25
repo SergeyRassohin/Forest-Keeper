@@ -16,11 +16,13 @@ from app.auth.dependencies import (
     CurrentUser,
     Db,
     check_origin,
+    current_user,
     require_permission,
 )
 from app.auth.models import AuditEvent, AuthSession, User, UserRole
 from app.auth.schemas import DomainScope, LoginRequest, LoginResponse, UserCreate, UserView
 from app.auth.security import dummy_hash, hash_password, token_digest, verify_password
+from app.common.basis_lock import basis_lock
 from app.common.errors import ApiError
 
 router = APIRouter(prefix="/api/v1", tags=["authentication"])
@@ -112,6 +114,10 @@ def me(user: CurrentUser) -> UserView:
 
 @router.post("/auth/logout", status_code=204, response_class=Response)
 def logout(request: Request, response: Response, user: CurrentUser, session: Db) -> None:
+    session.rollback()
+    session.expunge_all()
+    basis_lock(session)
+    user = current_user(request, session, request.app.state.settings)
     record: AuthSession = request.state.auth_session
     record.revoked_at = datetime.now(UTC)
     audit(session, "AUTH_LOGOUT", user.id, user.id)
@@ -186,6 +192,14 @@ def assign_scope(
     record: AuthSession = request.state.auth_session
     if datetime.now(UTC) - record.created_at > timedelta(minutes=5):
         raise ApiError(403, "REAUTH_REQUIRED", "Для изменения области доступа войдите повторно")
+    session.rollback()
+    session.expunge_all()
+    basis_lock(session)
+    actor = current_user(request, session, request.app.state.settings)
+    from app.decisions.service import require
+
+    require(actor, "user.manage")
+    require(actor, "role.assign")
     user = session.scalar(select(User).where(User.id == user_id).with_for_update())
     if user is None:
         raise ApiError(404, "USER_NOT_FOUND", "Пользователь не найден")

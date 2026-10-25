@@ -1,12 +1,12 @@
 # Forest Keeper: инструкция внешнему проверяющему
 
-**Актуально на 23 октября 2026:** Stage 0–6 приняты в `main` через PR #26 (merge `0ce2a14304d0cf28fcf90ec9cd3d6c23601ec852`, exact CI 39947944543 SUCCESS). Stage 7 Similar Decision Retrieval реализуется в отдельной ветке `codex/stage7-similar-decisions` по issue #27. Production embedding provider отключён; синтетический test provider не доказывает промышленное качество. Recommendation Engine, AI/LLM и write-back отсутствуют. #18/#20 остаются открытыми.
+**Актуально на 25 октября 2026:** Stage 0–7 приняты в `main`. Stage 7 — [PR #28](https://github.com/SergeyRassohin/Forest-Keeper/pull/28), merge `c927af513d29d83bd53b1b6522efccb42b5a1341`, [CI точного merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/40079346518). Production embedding provider отключён; synthetic test provider не доказывает промышленное качество. Stage 8 Recommendation Engine реализован по [issue #29](https://github.com/SergeyRassohin/Forest-Keeper/issues/29) и утверждённой владельцем policy в отдельном [PR #30](https://github.com/SergeyRassohin/Forest-Keeper/pull/30). Результаты приёмки и ограничения зафиксированы в `docs/testing/reports/stage8-acceptance-2026-10-25.md`; статус CI итогового commit указан в PR. В main Stage 8 пока отсутствует; слияние требует решения владельца. AI/LLM и write-back не реализованы; #17/#18/#20 открыты.
 
 ## 1. Что это за продукт и что вы проверяете
 
 Forest Keeper — приложение для сравнения данных из разных источников. Оно должно находить записи об одной сущности, показывать различия и помогать человеку выбрать обоснованное решение. Источники остаются без изменений. Пример бизнес-сценария: сравнить выгрузки номенклатуры из 1С и Excel, заметить расхождение массы одной детали и сохранить решение специалиста.
 
-Основная ветка main позволяет проверить **вход → два источника → импорт → нормализацию → сопоставление → ручную проверку идентичности → конфликты и Basis → сохранность после перезапуска**. Этапы 0–6 приняты, включая Human Review и Decision Registry. Similarity Stage 7 проверяется в отдельной ветке, AI-рекомендации пока отсутствуют. Полный критерий MVP остаётся обязательным: [готовность и блокеры](review-readiness.md).
+Основная ветка main позволяет проверить **вход → два источника → импорт → нормализацию → сопоставление → ручную проверку идентичности → конфликты и Basis → сохранность после перезапуска**. Этапы 0–7 приняты, включая Human Review, Decision Registry и bounded retrieval. Production provider отключён, рекомендации Stage 8 и AI пока отсутствуют. Полный критерий MVP остаётся обязательным: [готовность и блокеры](review-readiness.md).
 
 Короткий словарь:
 
@@ -211,7 +211,7 @@ ID пакета / запуска / Decision, если существует:
 
 ## Stage 5: принят в main — 22 октября 2026
 
-PR #22 объединён владельцем в main: `6235dd6a18f8cbb8aeceac2a7d052f5fca396482`; [CI точного merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39768647312). Этап 5 принят; 679 тестов и независимый runtime/security/product-intent retest PASS. Шаг Stage 5 из #20 завершён. Stage 6 принят через PR #26; Stage 7 проверяется отдельно по #27; #18/#20 остаются открытыми. Полный MVP #18/#20 остаётся незавершённым.
+PR #22 объединён владельцем в main: `6235dd6a18f8cbb8aeceac2a7d052f5fca396482`; [CI точного merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39768647312). Этап 5 принят; 679 тестов и независимый runtime/security/product-intent retest PASS. Шаг Stage 5 из #20 завершён. Stage 6 принят через PR #26, Stage 7 — через PR #28; #18/#20 остаются открытыми. Полный MVP #18/#20 остаётся незавершённым.
 
 ### Проверка конфликтов в main
 
@@ -254,8 +254,8 @@ docker compose up -d --wait --wait-timeout 180 worker
 8. Войдите VIEWER и ADMIN без бизнес-роли: решения читаются в разрешённом scope, формы принятия нет. Прямой POST также запрещён сервером. Отзовите scope у REVIEWER: открытый ранее case больше не сохраняется/не читается.
 9. На собственном тестовом стенде перезапустите PostgreSQL/Redis/backend (не удаляйте volumes). Сравните ID, value, reason и обе записи истории. Raw/Basis и исходные файлы должны остаться прежними.
 
-[Подробные ограничения и recovery](../development/decision-registry.md). Не пытайтесь выполнять downgrade с существующими Decisions: он намеренно запрещён, чтобы не уничтожить историю. Stage 7 с поиском похожих случаев проверяется отдельно по #27; AI и write-back не реализованы.
+[Подробные ограничения и recovery](../development/decision-registry.md). Не пытайтесь выполнять downgrade с существующими Decisions: он намеренно запрещён, чтобы не уничтожить историю. Stage 7 с поиском похожих случаев принят через PR #28; production provider, рекомендации и AI не реализованы.
 
-## Stage 7: безопасная проверка retrieval в отдельной ветке
+## Stage 7: безопасная проверка принятого bounded retrieval
 
 Production по умолчанию покажет «Поиск временно недоступен», сохраняя Human Review и Registry. Положительный синтетический путь запускается только в отдельном disposable test environment с явными flags и server-operator CLI, см. [инструкцию Stage 7](../development/similarity-retrieval.md). Не включайте test provider для customer data. `bash scripts/capture-ui-gallery.sh` создаёт собственный изолированный проект, выполняет два импорта/реальное решение/повторный похожий импорт и проверяет actual Decision ID, unrelated case, VIEWER и отзыв scope. Это не доказывает production embedding/AI readiness.

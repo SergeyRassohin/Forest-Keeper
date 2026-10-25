@@ -12,7 +12,9 @@ from sqlalchemy.orm import Session, aliased, defer
 
 from app.auth.dependencies import Config, Db, current_user
 from app.auth.models import AuditEvent, User
+from app.common.basis_lock import Budget, basis_lock
 from app.common.errors import ApiError
+from app.common.retrieval_rate import read_budget
 from app.decisions.models import Decision, DecisionStatus, DecisionType
 from app.decisions.schemas import BeginReview, CreateDecision
 from app.decisions.service import (
@@ -20,6 +22,7 @@ from app.decisions.service import (
     case_for,
     decision_view,
     require,
+    retry_receipt,
     review_context,
     save_decision,
     successor_id,
@@ -104,6 +107,16 @@ def failed(request: Request, session: Session, error: Exception) -> ApiError:
     return result
 
 
+def gated_actor(
+    request: Request, session: Session, *, exclusive: bool = False, budget: Budget | None = None
+) -> User:
+    # Drop the preflight snapshot and cached user/roles before waiting and fresh auth.
+    session.rollback()
+    session.expunge_all()
+    basis_lock(session, exclusive=exclusive, budget=budget)
+    return authenticated(request, session, request.app.state.settings)
+
+
 @router.get("/conflicts/{conflict_id}/review-context")
 def context(conflict_id: UUID, request: Request, session: Db, actor: Actor) -> dict[str, Any]:
     access(actor, "conflict.view", request, session)
@@ -125,6 +138,9 @@ def start(
 ) -> dict[str, Any]:
     access(actor, "conflict.review.start", request, session)
     try:
+        case_for(session, conflict_id, actor)
+        actor = gated_actor(request, session)
+        access(actor, "conflict.review.start", request, session)
         result = begin_review(
             session,
             case_for(session, conflict_id, actor, lock=True),
@@ -149,12 +165,34 @@ def create(
 ) -> dict[str, Any]:
     access(actor, "decision.create", request, session)
     try:
+        budget = Budget() if body.recommendation_reference is not None else None
+        preflight_case = case_for(session, conflict_id, actor)
+        if body.recommendation_reference is not None:
+            access(actor, "recommendation.accept_as_decision", request, session)
+        if body.supersedes_decision_id:
+            access(actor, "decision.supersede", request, session)
+        if body.decision_type == DecisionType.INSUFFICIENT_DATA:
+            access(actor, "decision.insufficient_data", request, session)
+        if body.recommendation_reference is not None:
+            replay = retry_receipt(session, preflight_case, actor, body)
+            if replay is not None:
+                response.status_code = 200
+                response.headers["X-Request-ID"] = str(request.state.decision_request_id)
+                return replay
+            # Charge a new evaluation before entering the exclusive database transaction.
+            read_budget(request.app.state.redis, request.app.state.settings, actor)
+        actor = gated_actor(
+            request, session, exclusive=body.recommendation_reference is not None, budget=budget
+        )
+        access(actor, "decision.create", request, session)
         result, created = save_decision(
             session,
             case_for(session, conflict_id, actor, lock=True),
             actor,
             body,
             request.state.decision_request_id,
+            recommendation_settings=request.app.state.settings,
+            recommendation_budget=budget,
         )
         response.status_code = 201 if created else 200
         response.headers["X-Request-ID"] = str(request.state.decision_request_id)

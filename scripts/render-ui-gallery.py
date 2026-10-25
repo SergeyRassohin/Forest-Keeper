@@ -10,12 +10,13 @@ def render(folder: Path) -> None:
     data = json.loads((folder / "manifest.json").read_text())
     cards = []
     for item in data["captures"]:
+        width = int(item["viewport"]["width"])
         file, title, description = (
             html.escape(item[key], quote=True) for key in ["file", "title", "description"]
         )
         cards.append(
             f'''<article><a href="{file}"><img loading="lazy" src="{file}"
-alt="{title} — реальный экран Forest Keeper" width="1440"></a>
+alt="{title} — реальный экран Forest Keeper" width="{width}"></a>
 <div><span class="tag">Работает сейчас · демонстрационные данные</span>
 <h2>{title}</h2>
 <p>{description}</p>

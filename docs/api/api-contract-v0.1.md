@@ -267,7 +267,7 @@ Enums: VALUE_MISMATCH/MISSING/DUPLICATE/RULE_VIOLATION/ANOMALY;
 OPEN/IN_REVIEW/RESOLVED/INSUFFICIENT_DATA; LOW/MEDIUM/HIGH/CRITICAL.
 Stage 5 создаёт только OPEN/LOW. LOW — нейтральный technical default, не бизнес-риск.
 RULE_VIOLATION/ANOMALY generation выключен до пригодных versioned rule/detector.
-Stage 6+ Decision/recommendation endpoints ниже — целевой контракт, пока не реализован.
+Примеры Decision/recommendation ниже исторические. Фактический Human Review Stage 6 и отдельная реализация Stage 8 описаны в актуальных разделах в конце документа; исторические DTO не являются текущим wire contract.
 
 ---
 
@@ -566,8 +566,41 @@ Read pagination limit1..100, offset0..1000000; matching/analysis private respons
 
 ## Stage 6: реализованный Human Review API
 
-Актуальные POST/GET endpoints, DTO, ошибки, scope и pagination описаны в [Decision Registry](../development/decision-registry.md#api). Decision PATCH/DELETE отсутствуют. Cookie + Origin; actor только из сессии. Create требует version token, UUID idempotency_key, reason и explicit confirmed=true. Результат возвращается после атомарного commit. Старый target recommendation API не реализован; фактический Stage 7 similarity GET описан ниже.
+Актуальные POST/GET endpoints, DTO, ошибки, scope и pagination описаны в [Decision Registry](../development/decision-registry.md#api). Decision PATCH/DELETE отсутствуют. Cookie + Origin; actor только из сессии. Create требует version token, UUID idempotency_key, reason и explicit confirmed=true. Результат возвращается после атомарного commit. Старый target recommendation DTO заменён контрактом Stage 8 ниже; Stage 7 similarity GET сохраняет прежний контракт.
 
 ## Stage 7: реализованный similarity GET (issue #27)
 
-`GET /api/v1/conflicts/{id}/similar-decisions?limit=5&offset=0`: cookie authentication, conflict.view + decision.view + explicit data_domains. Limit 1..20, offset 0..100, other query fields rejected422. Earlier target min_similarity override is superseded: threshold>=0.85 is immutable versioned server configuration. Full response/state/reason/security contract: [Similarity Retrieval](../development/similarity-retrieval.md#api-и-ui). Unavailable counts are null; no recommendation/action/write endpoint.
+`GET /api/v1/conflicts/{id}/similar-decisions?limit=5&offset=0`: cookie authentication, conflict.view + decision.view + explicit data_domains. Limit 1..20, offset 0..100, other query fields rejected422. Earlier target min_similarity override is superseded: threshold>=0.85 is immutable versioned server configuration. Full response/state/reason/security contract: [Similarity Retrieval](../development/similarity-retrieval.md#api-и-ui). Unavailable counts are null; этот retrieval endpoint не возвращает готового действия и не записывает Decision.
+
+## Stage 8: deterministic recommendation API (PR #30, приёмка продолжается)
+
+`GET /api/v1/conflicts/{id}/recommendation` использует cookie-session, существующие
+`conflict.view`, `decision.view`, `recommendation.view` и domain scope. Любой query
+override →422. Нет доступа к объекту / неизвестный UUID → одинаковый404. Ответ
+private/no-store. Auth и evidence читаются в единой read-only REPEATABLE READ snapshot.
+
+`status` результата — `RECOMMENDED | ABSTAINED | UNAVAILABLE`, а не lifecycle
+Conflict/Decision/Recommendation. `recommended_action` = `SELECT_VALUE` только для
+положительного test/demo результата; source/value IDs всегда из текущего Conflict.
+`confidence` = число независимых provenance-групп (5..20), unit
+`INDEPENDENT_PROVENANCE_GROUPS`; это не вероятность и не cosine similarity.
+При отказе action/source/value/confidence = null, supporting_decision_ids = [].
+Reason, объяснение, scoped evidence с действительными Decision IDs, противоречия,
+ограничения, quality_provenance, policy/model/retrieval/mapping versions,
+review_context_version, context_fingerprint, generated_at и audit_reference описаны
+в [фактическом контракте](../development/recommendations.md).
+Rules/Template/Codex = NOT_CONFIGURED; authority = NOT_DEFINED. Production fail-closed.
+
+GET не меняет бизнес-факты и не запускает embedding/RQ; допускается отдельный bounded
+append-only audit receipt после закрытия read-only snapshot. Общий со Stage 7 лимит
+120 authenticated reads/min/actor; protective total SQL/lock budget1500ms.
+
+Существующий `POST /conflicts/{id}/decisions` принимает необязательный
+`recommendation_reference: UUID`. Только при его наличии нужно дополнительное
+существующее permission `recommendation.accept_as_decision`; сервер заново проверяет
+receipt/политику/evidence/token под transaction gate, stale →409. Ручные reason,
+confirmed=true, версия, idempotency key и все прежние права обязательны.
+Точный committed retry возвращает прежний receipt даже при недоступном Redis.
+Без reference ручное сохранение независимо от Recommendation/embedding.
+Новый Decision может содержать additive context_snapshot.recommendation; старые
+факты не переписываются. PATCH/DELETE и автоматического Decision нет.

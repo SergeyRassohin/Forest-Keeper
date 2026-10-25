@@ -36,6 +36,47 @@ def main() -> None:
         raise SystemExit("UI gallery is stale: capture the current committed frontend source")
     if len(data["captures"]) < 16 or not data["accessibility"] or not data["responsive"]:
         raise SystemExit("Incomplete UI gallery")
+    if data.get("themes") != ["light", "dark"]:
+        raise SystemExit("Gallery must prove both supported themes")
+    for screen in {item["screen"] for item in data["captures"]}:
+        captured = {
+            (item["theme"], item["viewport"]["width"])
+            for item in data["captures"]
+            if item["screen"] == screen
+        }
+        if not {(theme, width) for theme in ("light", "dark") for width in (1440, 390)} <= captured:
+            raise SystemExit("Missing desktop/mobile theme evidence: " + screen)
+        audited = {
+            (item["theme"], item["viewport"]["width"])
+            for item in data["accessibility"]
+            if item["screen"] == screen
+        }
+        if not captured <= audited:
+            raise SystemExit("Missing theme accessibility evidence: " + screen)
+        responsive = {
+            (item["theme"], item["width"])
+            for item in data["responsive"]
+            if item["screen"] == screen
+        }
+        if (
+            not {
+                (theme, width)
+                for theme in ("light", "dark")
+                for width in (1920, 1440, 1280, 1024, 390)
+            }
+            <= responsive
+        ):
+            raise SystemExit("Missing responsive theme evidence: " + screen)
+    presentation = data.get("presentation_assets", [])
+    if (
+        len(presentation) != 1
+        or presentation[0]["file"] != "theme-init.js"
+        or (
+            hashlib.sha256((ROOT / "frontend/public/theme-init.js").read_bytes()).hexdigest()
+            != presentation[0]["sha256"]
+        )
+    ):
+        raise SystemExit("Missing or stale early theme initialization evidence")
     for item in data["captures"]:
         path = folder / item["file"]
         if path.parent != folder or path.suffix != ".png":

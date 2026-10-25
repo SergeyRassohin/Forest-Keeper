@@ -3,7 +3,7 @@
 Implementation scope: [issue #27](https://github.com/SergeyRassohin/Forest-Keeper/issues/27).
 Stage 6 was accepted in main via PR #26, merge `0ce2a14304d0cf28fcf90ec9cd3d6c23601ec852`,
 exact merge CI [39947944543](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39947944543).
-This separate Stage 7 branch implements the old roadmap's Stage 8. It does not merge itself.
+Stage 7 was subsequently accepted by the owner through PR #28, merge `c927af513d29d83bd53b1b6522efccb42b5a1341`; exact merge CI 40079346518 passed. It implements the old roadmap's Stage 8. Actual Stage 8 Recommendation Engine is now a separate [proposal](stage8-recommendation-proposal.md) under issue #29, pending policy approval. Historical Stage 7 reports retain their original source/date.
 
 ## Product and eligibility
 

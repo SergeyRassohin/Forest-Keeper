@@ -135,7 +135,15 @@ def compatible_pool(actor: User, case: Conflict, features: dict[str, Any]) -> An
 
 
 def retrieval(
-    session: Session, actor: User, case: Conflict, settings: Settings, limit: int, offset: int
+    session: Session,
+    actor: User,
+    case: Conflict,
+    settings: Settings,
+    limit: int,
+    offset: int,
+    *,
+    prepare_query: bool = True,
+    prepared_features: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     state = session.get(RetrievalState, 1)
     version = (
@@ -172,7 +180,13 @@ def retrieval(
             next(k for k, v in REVISIONS.items() if v == version.config["revision"])
         ):
             raise ProviderError("UNSUPPORTED_VERSION")
-        features = context(historical_context(session, case, include_review=False))
+        # Private same-snapshot reuse by RecommendationService; public routes
+        # never accept feature/policy overrides and keep building their context.
+        features = (
+            prepared_features
+            if prepared_features is not None
+            else context(historical_context(session, case, include_review=False))
+        )
         if not features["synthetic"]:
             raise ProviderError("SYNTHETIC_ONLY")
     except (ProviderError, StopIteration, KeyError, TypeError) as error:
@@ -185,6 +199,9 @@ def retrieval(
     result["query_context"] = features
     query_cache = session.get(QueryEmbedding, (version.id, feature_hash))
     if query_cache is None:
+        if not prepare_query:
+            result.update(state="INDEXING", reason_code="QUERY_CONTEXT_PENDING")
+            return result
         from app.similarity.jobs import request_query
 
         try:
@@ -246,9 +263,35 @@ def retrieval(
             DecisionEmbedding.version_id == version.id,
             integrity_predicate,
         )
+        .order_by(DecisionEmbedding.version_id, DecisionEmbedding.decision_id)
         .cte("corrupt_artifacts")
         .prefix_with("MATERIALIZED")
     )
+    # Newly written heap pages can make the planner price an empty partial
+    # integrity index as if it required thousands of heap fetches. Isolate this
+    # exact scoped check and prefer its index, then restore ordinary planning
+    # before ranking. Errors roll back these transaction-local settings.
+    previous_seqscan = session.scalar(text("SELECT current_setting('enable_seqscan')"))
+    session.execute(text("SET LOCAL enable_seqscan=off"))
+    corrupt_vector = session.scalar(
+        select(
+            select(func.count())
+            .select_from(corrupt_ids)
+            .where(
+                corrupt_ids.c.decision_id.in_(
+                    compatible_pool(actor, case, features).with_only_columns(Decision.id)
+                )
+            )
+            .scalar_subquery()
+            > 0
+        ).prefix_with("/* scoped_retrieval_integrity */")
+    )
+    session.execute(
+        text("SELECT set_config('enable_seqscan', :value, true)"), {"value": previous_seqscan}
+    )
+    if not isinstance(corrupt_vector, bool):
+        result["reason_code"] = "INDEX_INTEGRITY_FAILURE"
+        return result
     distance = cast(
         DecisionEmbedding.embedding.op("OPERATOR(public.<=>)")(
             cast(literal(query_vector, type_=Vector()), Vector())
@@ -309,11 +352,7 @@ def retrieval(
             select(func.count()).select_from(scoped).scalar_subquery().label("before_count"),
             aggregate.c.after_count,
             aggregate.c.missing,
-            exists(
-                select(corrupt_ids.c.decision_id).where(
-                    corrupt_ids.c.decision_id.in_(select(compatible.c.id))
-                )
-            ).label("corrupt_vector"),
+            literal(corrupt_vector).label("corrupt_vector"),
             aggregate.c.corrupt_features,
         )
         .select_from(aggregate)

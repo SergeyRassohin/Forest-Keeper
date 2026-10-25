@@ -1,0 +1,43 @@
+{
+  "source_commit": "cd5116c4569389658bb046c197db45221c593ccd",
+  "project": "fk-stage8",
+  "actual_https": true,
+  "five_independent_real_file_pairs": true,
+  "reference_survives_full_restart": true,
+  "human_confirmed_receipt": true,
+  "unchanged_history_after_restart": true,
+  "partial_checkpoint_recovered": true,
+  "explicit_activation": true,
+  "version_change_rejects_stale_reference": true,
+  "manual_save_after_stale": true,
+  "postgres_failure_sanitized_recovery": true,
+  "redis_failure_manual_save": true,
+  "redis_failure_exact_reference_retry": true,
+  "second_restart_stable": true,
+  "default_configuration_fail_closed": true,
+  "provider_unavailable_manual_save": true,
+  "registry_independent": true,
+  "decisions": [
+    "f80a9904-8778-4dd9-a788-ce06a41ef6cc",
+    "6dfad5b1-9103-4158-a2ad-702eb98e2549",
+    "26cba8fb-9c38-46c4-8dc4-a38c29894912",
+    "679f7c71-2b4b-4462-8441-e1671e7fdae4",
+    "bc9d1a1d-7b94-4c3b-82e1-5836b8a3ec7b",
+    "af718c9f-dbc0-437a-a822-959d95449d77",
+    "9bc5db17-3683-433e-a32b-b5f29561d8f0",
+    "67f3a1ed-efef-4767-a948-90df1071bb3d",
+    "975977cd-5ce3-4571-a8d0-b2b39c29f61c"
+  ],
+  "passed": true,
+  "backend_source_tree": "0a79a1e89317b3bd3ff5da81bf64168ae1fde191",
+  "frontend_source_tree": "cf5309eac8b8f2929c98b975eadf966da3243282",
+  "images": {
+    "frontend": "sha256:fdc753811a96cd96942f4bd4275b4f49048dd38762664c65f5c72c44b0708dc2",
+    "backend": "sha256:e1026957c7a784285bb9d14c480ba09c4ca7f06ddbb3fafe30d3c3d9f96696f9"
+  },
+  "limitations": [
+    "Owned synthetic HTTPS fixture, not independent external MVP acceptance.",
+    "No production semantic quality or fully cold-cache claim.",
+    "Business facts/files/volumes retained; temporary operator revoked; default production fail-closed restored."
+  ]
+}

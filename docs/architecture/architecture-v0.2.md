@@ -1,6 +1,6 @@
 # Forest Keeper — Architecture v0.2
 
-**Актуально на 23 октября 2026:** Stage 0–6 приняты в `main` через PR #26 (merge `0ce2a14304d0cf28fcf90ec9cd3d6c23601ec852`, exact CI 39947944543 SUCCESS). Stage 7 Similar Decision Retrieval реализуется в отдельной ветке `codex/stage7-similar-decisions` по issue #27. Production embedding provider отключён; синтетический test provider не доказывает промышленное качество. Recommendation Engine, AI/LLM и write-back отсутствуют. #18/#20 остаются открытыми.
+**Актуально на 25 октября 2026:** Stage 0–7 приняты в `main`. Stage 7 — [PR #28](https://github.com/SergeyRassohin/Forest-Keeper/pull/28), merge `c927af513d29d83bd53b1b6522efccb42b5a1341`, [CI точного merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/40079346518). Production embedding provider отключён; synthetic test provider не доказывает промышленное качество. Stage 8 Recommendation Engine реализован по [issue #29](https://github.com/SergeyRassohin/Forest-Keeper/issues/29) и утверждённой владельцем policy в отдельном [PR #30](https://github.com/SergeyRassohin/Forest-Keeper/pull/30). Результаты приёмки и ограничения зафиксированы в `docs/testing/reports/stage8-acceptance-2026-10-25.md`; статус CI итогового commit указан в PR. В main Stage 8 пока отсутствует; слияние требует решения владельца. AI/LLM и write-back не реализованы; #17/#18/#20 открыты.
 
 ## 1. Общий принцип
 
@@ -48,7 +48,7 @@ Web Client — единственное поддерживаемое напра�
 
 ## Статус реализации
 
-Компоненты и потоки ниже — целевая архитектура MVP. В main приняты этапы 0–6: вход, импорт, нормализация, Matching, Conflict Engine, Human Review, Decision Registry и фирменный Web UI. Stage 7 добавляет Similar Decision Retrieval в отдельном PR; его приёмка требует полного acceptance и зелёного CI точного финального HEAD. Recommendation/AI runtime отсутствуют. Актуальная [матрица готовности](../deployment/review-readiness.md) отделяет архитектурные требования от доступных функций.
+Компоненты и потоки ниже — целевая архитектура MVP. В main приняты этапы 0–7: вход, импорт, нормализация, Matching, Conflict Engine, Human Review, Decision Registry, фирменный Web UI и bounded Similar Decision Retrieval (PR #28). Production provider выключен. Stage 8 Recommendation Engine реализуется отдельно в PR #30 по утверждённой policy; [контракт и ограничения](../development/recommendations.md). В main его пока нет; AI отсутствует. Актуальная [матрица готовности](../deployment/review-readiness.md) отделяет архитектурные требования от доступных функций.
 
 ## 3. Серверный контур
 

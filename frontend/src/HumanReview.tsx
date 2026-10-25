@@ -1,15 +1,17 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { requestJson as api, SessionExpired } from './api';
 import { type Receipt, type ReviewContext, type Decision, outcomeLabels } from './decisionTypes';
 import { DecisionCard } from './Decisions';
+import { Recommendation } from './Recommendation';
+import type { RecommendationResult } from './recommendationTypes';
 import { DataValue, Identifier, StatusBadge } from './ui';
 
 type Submission = { context_version: string; idempotency_key: string; decision_type: string;
-  selected_source_id?: string; selected_value_id?: string; corrected_value?: string;
+  selected_source_id?: string; selected_value_id?: string; recommendation_reference?: string; corrected_value?: string;
   corrected_unit?: string | null; reason: string; confirmed: true; supersedes_decision_id: string | null };
 
-export function HumanReview({ conflictId, onSessionExpired, onSaved, onOpenDecision }: {
-  conflictId: string; onSessionExpired: () => void; onSaved: () => void; onOpenDecision?: (id: string) => void;
+export function HumanReview({ conflictId, onSessionExpired, onSaved, onOpenDecision, showRecommendations = false, canAcceptRecommendation = false }: {
+  conflictId: string; onSessionExpired: () => void; onSaved: () => void; onOpenDecision?: (id: string) => void; showRecommendations?: boolean; canAcceptRecommendation?: boolean;
 }) {
   const [context, setContext] = useState<ReviewContext | null>(null);
   const [history, setHistory] = useState<Decision[]>([]);
@@ -27,6 +29,9 @@ export function HumanReview({ conflictId, onSessionExpired, onSaved, onOpenDecis
   const confirmedSubmission = useRef<Submission | null>(null);
   const confirmButton = useRef<HTMLButtonElement>(null);
   const [retryLoad, setRetryLoad] = useState(0);
+  const [appliedRecommendation, setAppliedRecommendation] = useState<RecommendationResult | null>(null);
+  const invalidateRecommendation = useCallback(() => setAppliedRecommendation(null), []);
+  const changedContext = useCallback(() => { setAppliedRecommendation(null); setEditing(false); setChoice(''); setReason(''); setRetryLoad(value => value + 1); }, []);
   useEffect(() => {
     const controller = new AbortController();
     async function load() {
@@ -60,7 +65,7 @@ export function HumanReview({ conflictId, onSessionExpired, onSaved, onOpenDecis
     setBusy(true); setError(''); setReceipt(null);
     try {
       const review = await api<ReviewContext>(`/conflicts/${conflictId}/review`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ context_version: context.context_version, supersedes_decision_id: context.current_decision?.id ?? null }) });
-      setContext(review); setEditing(true); setChoice(''); setValue(''); setReason(''); setPending(null); onSaved();
+      setAppliedRecommendation(null); setContext(review); setEditing(true); setChoice(''); setValue(''); setReason(''); setPending(null); onSaved();
     } catch (cause) { handleError(cause); setRetryLoad((number) => number + 1); }
     finally { setBusy(false); }
   }
@@ -75,13 +80,14 @@ export function HumanReview({ conflictId, onSessionExpired, onSaved, onOpenDecis
     return { context_version: context.context_version, idempotency_key: crypto.randomUUID(),
       decision_type: outcome, reason, confirmed: true, supersedes_decision_id: context.current_decision?.id ?? null,
       ...(selected ? { selected_source_id: selected.source_id, selected_value_id: selected.value_id } : {}),
+      ...(appliedRecommendation?.audit_reference && appliedRecommendation.review_context_version === context.context_version && selected?.value_id === appliedRecommendation.recommended_value_id ? { recommendation_reference: appliedRecommendation.audit_reference } : {}),
       ...(outcome === 'ENTER_VALUE' ? { corrected_value: value, corrected_unit: context.correction_policy.unit } : {}) };
   }
   async function send(body: Submission) {
     setBusy(true); setError(''); setPending(body);
     try {
       const result = await api<Receipt>(`/conflicts/${conflictId}/decisions`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-      setReceipt(result); setPending(null); setEditing(false); setConfirm(false); setChoice(''); setReason('');
+      setAppliedRecommendation(null); setReceipt(result); setPending(null); setEditing(false); setConfirm(false); setChoice(''); setReason('');
       setRetryLoad((number) => number + 1); onSaved();
     } catch (cause) {
       handleError(cause); setConfirm(false);
@@ -101,17 +107,22 @@ export function HumanReview({ conflictId, onSessionExpired, onSaved, onOpenDecis
     {receipt && <div className="decision-receipt" role="status"><h3>Решение сохранено</h3><p>{receipt.message}</p><p>Decision ID: <Identifier>{receipt.decision_id}</Identifier></p><StatusBadge value={receipt.conflict_status} /><DecisionCard decision={receipt.decision} title="Подтверждение сохранённого решения" />{onOpenDecision && <button onClick={() => onOpenDecision(receipt.decision_id)}>Открыть решение в реестре</button>}</div>}
     {pending && !busy && <div className="warning"><p>Ответ о сохранении не получен. Повторная отправка с тем же ключом вернёт сохранённое решение и не создаст дубль.</p><button onClick={() => void send(pending)}>Повторить сохранение</button></div>}
     {context && <>
+      {showRecommendations && <Recommendation key={context.context_version} conflictId={conflictId} contextVersion={context.context_version} currentValues={context.selectable_values} canUse={editing && canAcceptRecommendation && context.allowed_actions.includes('SELECT_VALUE')} disabled={busy || !!pending} onInvalidated={invalidateRecommendation} onContextChanged={changedContext} onSessionExpired={onSessionExpired} onOpenDecision={onOpenDecision} onUse={(result) => {
+        const selected = context.selectable_values.find(value => value.value_id === result.recommended_value_id && value.source_id === result.recommended_source_id);
+        if (selected && result.audit_reference && result.review_context_version === context.context_version && editing && canAcceptRecommendation) { setChoice('SOURCE:' + selected.value_id); setAppliedRecommendation(result); }
+      }} />}
       {context.current_decision && <DecisionCard decision={context.current_decision} title="Действующее решение по этому конфликту" />}
       {context.can_start_review && !editing && !pending && <button className="primary" disabled={busy} onClick={() => void startReview()}>{context.current_decision ? context.conflict_status === 'IN_REVIEW' ? 'Продолжить рассмотрение' : 'Пересмотреть решение' : 'Начать рассмотрение'}</button>}
       {!context.can_start_review && <p className="muted">Режим просмотра. Для сохранения решения нужны бизнес-права и доступ к области данных.</p>}
       {context.known_unknowns.length > 0 && <p className="warning">В контексте есть отсутствующие, неизвестные или некорректные значения. Они не предлагаются как подтверждённое значение.</p>}
+      {appliedRecommendation && <p className="notice">Предложение перенесено в форму. Укажите своё обоснование и подтвердите решение; выбор можно изменить.</p>}
       {editing && <form onSubmit={(event) => { event.preventDefault(); if (canConfirm && !pending && !busy) { confirmedSubmission.current = submission(); setConfirm(true); } }}>
         <fieldset disabled={busy || !!pending}><legend>Результат рассмотрения</legend>
-          {context.allowed_actions.includes('SELECT_VALUE') && context.selectable_values.map((item) => <label className="role-choice" key={item.value_id}><input type="radio" name={'outcome-' + conflictId} value={'SOURCE:' + item.value_id} checked={choice === 'SOURCE:' + item.value_id} onChange={() => setChoice('SOURCE:' + item.value_id)} />Источник {item.side}: {item.source_name} · {item.value} {item.unit}</label>)}
-          {['ENTER_VALUE', 'INSUFFICIENT_DATA', 'DEFERRED'].filter((action) => context.allowed_actions.includes(action)).map((action) => <label className="role-choice" key={action}><input type="radio" name={'outcome-' + conflictId} value={action} checked={choice === action} onChange={() => setChoice(action)} />{action === 'ENTER_VALUE' ? 'Указать другое значение' : outcomeLabels.get(action)}</label>)}
+          {context.allowed_actions.includes('SELECT_VALUE') && context.selectable_values.map((item) => <label className="role-choice" key={item.value_id}><input type="radio" name={'outcome-' + conflictId} value={'SOURCE:' + item.value_id} checked={choice === 'SOURCE:' + item.value_id} onChange={() => { setAppliedRecommendation(null); setChoice('SOURCE:' + item.value_id); }} />Источник {item.side}: {item.source_name} · {item.value} {item.unit}</label>)}
+          {['ENTER_VALUE', 'INSUFFICIENT_DATA', 'DEFERRED'].filter((action) => context.allowed_actions.includes(action)).map((action) => <label className="role-choice" key={action}><input type="radio" name={'outcome-' + conflictId} value={action} checked={choice === action} onChange={() => { setAppliedRecommendation(null); setChoice(action); }} />{action === 'ENTER_VALUE' ? 'Указать другое значение' : outcomeLabels.get(action)}</label>)}
         </fieldset>
         {outcome === 'ENTER_VALUE' && <label>Подтверждённое значение{context.correction_policy.unit ? ' (' + context.correction_policy.unit + ')' : ''}<input value={value} maxLength={context.correction_policy.max_length} disabled={busy || !!pending} onChange={(event) => setValue(event.target.value)} required /><span className="muted">{context.correction_policy.kind === 'date' ? 'Дата в формате ГГГГ-ММ-ДД.' : 'Введите каноническое значение. Исходные записи сохранятся без изменений.'}</span></label>}
-        <label>Обоснование решения<textarea required maxLength={2000} value={reason} disabled={busy || !!pending} onChange={(event) => setReason(event.target.value)} /></label>
+        <label><span id={'review-reason-' + conflictId}>Обоснование решения</span><textarea aria-labelledby={'review-reason-' + conflictId} required maxLength={2000} value={reason} disabled={busy || !!pending} onChange={(event) => setReason(event.target.value)} /></label>
         <p className="muted">Версия evidence: <Identifier>{context.evidence_hash}</Identifier></p>
         <button className="primary" disabled={busy || !!pending || !canConfirm}>Проверить перед сохранением</button>
       </form>}

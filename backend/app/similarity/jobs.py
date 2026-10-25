@@ -125,6 +125,9 @@ def request_query(case_id: UUID, version_id: UUID, context_hash: str, settings: 
 
 
 def activate_version(session: Session, identifier: UUID) -> None:
+    from app.common.basis_lock import basis_lock
+
+    basis_lock(session)
     state = session.get(RetrievalState, 1, with_for_update=True)
     if state is None or session.get(RetrievalVersion, identifier) is None:
         raise ProviderError("VERSION_NOT_FOUND")

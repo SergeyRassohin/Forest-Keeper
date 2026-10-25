@@ -2,6 +2,8 @@
 
 Статус: обязательный план реализации MVP.
 
+**Уточнение нумерации от 24 октября 2026:** исторические секции ниже сохраняют исходные номера. Фактический Stage 6 объединил Human Review + Decision Registry (PR #26); Stage 7 = Similar Decision Retrieval (PR #28, прежний Stage 8); Stage 8 = Recommendation Engine (issue #29, прежний Stage 9); следующий Stage 9 = AI/LLM integration (прежний Stage 10). Исходное [предложение Stage 8](stage8-recommendation-proposal.md) согласовано владельцем25 октября до реализации; [контракт](recommendations.md) и приёмка ведутся в PR #30. Исторический пример «5 случаев» сам по себе не является формулой confidence: действуют явно утверждённые group-count policy и ограничения demo.
+
 ## 1. Цель MVP
 
 MVP должен доказать один полный рабочий сценарий:

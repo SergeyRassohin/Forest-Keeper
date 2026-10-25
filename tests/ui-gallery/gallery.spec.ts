@@ -28,26 +28,42 @@ async function capture(page: Page, file: string, title: string, description: str
   if (!output) throw new Error('FK_GALLERY_OUTPUT is required; use capture-ui-gallery.sh');
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.evaluate(() => document.fonts.ready);
-  await page.setViewportSize({ width: 1440, height: 900 });
-  const accessibility = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
-  report.accessibility.push({ screen: file, violations: accessibility.violations.map(({ id, impact, description, nodes }) => ({ id, impact, description, targets: nodes.map((n) => n.target) })) });
-  expect(accessibility.violations, file + ' accessibility').toEqual([]);
-  for (const viewport of viewports) {
-    await page.setViewportSize(viewport);
-    const dimensions = await page.evaluate(() => ({ viewport: window.innerWidth, document: document.documentElement.scrollWidth }));
-    report.responsive.push({ screen: file, ...viewport, ...dimensions, passed: dimensions.document <= dimensions.viewport + 1 });
-    expect(dimensions.document, file + ' body overflow at ' + viewport.width).toBeLessThanOrEqual(dimensions.viewport + 1);
+  async function chooseTheme(theme: 'light' | 'dark') {
+    // Native modal dialogs correctly make the shared shell inert. Use the
+    // actual cancel/reopen controls around a theme change, preserving the draft
+    // and confirmation focus instead of bypassing the browser's modal boundary.
+    const reopen = await page.locator('dialog[open]').count() > 0;
+    if (reopen) await page.getByRole('button', { name: 'Вернуться к проверке', exact: true }).click();
+    await page.getByRole('button', { name: theme === 'light' ? 'Светлая тема' : 'Тёмная тема', exact: true }).click();
+    if (reopen) {
+      await page.getByRole('button', { name: 'Проверить перед сохранением', exact: true }).click();
+      await expect(page.getByRole('dialog').getByRole('button', { name: 'Сохранить решение', exact: true })).toBeFocused();
+    }
+  }
+  for (const theme of ['light', 'dark'] as const) {
+    await chooseTheme(theme);
+    await expect(page.locator('html')).toHaveAttribute('data-theme', theme);
+    for (const viewport of viewports) {
+      await page.setViewportSize(viewport);
+      const dimensions = await page.evaluate(() => ({ viewport: window.innerWidth, document: document.documentElement.scrollWidth }));
+      report.responsive.push({ screen: file, theme, ...viewport, ...dimensions, passed: dimensions.document <= dimensions.viewport + 1 });
+      expect(dimensions.document, file + '/' + theme + ' body overflow at ' + viewport.width).toBeLessThanOrEqual(dimensions.viewport + 1);
+      if (![1440, 390].includes(viewport.width)) continue;
+      const accessibility = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']).analyze();
+      report.accessibility.push({ screen: file, theme, viewport, violations: accessibility.violations.map(({ id, impact, description, nodes }) => ({ id, impact, description, targets: nodes.map(n => n.target) })) });
+      expect(accessibility.violations, file + '/' + theme + ' accessibility at ' + viewport.width).toEqual([]);
+      if (target) { await expect(target).toBeVisible(); await target.evaluate(element => element.scrollIntoView({ block: 'start', inline: 'nearest' })); }
+      else await page.evaluate(() => window.scrollTo(0, 0));
+      await page.mouse.move(0, 0);
+      const suffix = theme === 'dark' ? '-dark' : '';
+      const name = file + suffix + (viewport.width === 390 ? '-mobile' : '') + '.png';
+      const path = resolve(output, name);
+      await page.screenshot({ path, fullPage: false, animations: 'disabled' });
+      report.captures.push({ file: name, screen: file, theme, title: title + (theme === 'dark' ? ' · Тёмная' : ' · Светлая') + (viewport.width === 390 ? ' · Узкий экран' : ''), description, feature_status: 'Реализовано · Stage 0–8 · демонстрационные данные', viewport, sha256: createHash('sha256').update(readFileSync(path)).digest('hex') });
+    }
   }
   await page.setViewportSize({ width: 1440, height: 900 });
-  if (target) {
-    await expect(target).toBeVisible();
-    await target.evaluate((element) => element.scrollIntoView({ block: 'start', inline: 'nearest' }));
-  }
-  else await page.evaluate(() => window.scrollTo(0, 0));
-  await page.mouse.move(0, 0);
-  const path = resolve(output, file + '.png');
-  await page.screenshot({ path, fullPage: false, animations: 'disabled' });
-  report.captures.push({ file: file + '.png', title, description, feature_status: 'Реализовано · Stage 0–7 · синтетические данные', viewport: { width: 1440, height: 900 }, sha256: createHash('sha256').update(readFileSync(path)).digest('hex') });
+  await chooseTheme('light');
 }
 async function importSource(page: Page, side: 'a' | 'b', suffix = '', unrelated = false) {
   await page.getByRole('button', { name: 'Импорт данных', exact: true }).click();
@@ -107,7 +123,64 @@ async function newRetrievalCase(page: Page, suffix: string, unrelated = false) {
   return { matching: matching.id as string, conflict: conflict.id as string };
 }
 
-test('real product gallery, WCAG baseline and responsive Stage 1–7 path', async ({ page }) => {
+async function recommendationCase(page: Page, number: number) {
+  const key = accounts.prefix + '_rec_' + number;
+  const subject = 'Forest Keeper synthetic material bolt steel durable reference provenance group sample precision compatible independent item ' + key;
+  const payloads = [Buffer.from('id,name,mass,price,date\n' + key + ',' + subject + ',12.5 kg,10,2026-01-01\n'),
+    Buffer.from('<Выгрузка><Объект Тип="Справочник.Номенклатура" Ид="' + key + '"><Наименование>' + subject + '</Наименование><Масса>12.4 kg</Масса><Цена>10</Цена><Дата>2026-01-01</Дата></Объект></Выгрузка>')];
+  const normalized: string[] = [];
+  for (let side = 0; side < 2; side++) {
+    await page.getByRole('button', { name: 'Импорт данных', exact: true }).click();
+    await page.getByRole('combobox', { name: 'Источник', exact: true }).selectOption(accounts.recommendation_sources[side].source_id);
+    const name = side === 0 ? 'independent.csv' : 'independent.xml';
+    await page.getByLabel('Исходный файл', { exact: true }).setInputFiles({ name, mimeType: side === 0 ? 'text/csv' : 'application/xml', buffer: payloads[side] });
+    const uploaded = page.waitForResponse(r => r.url().endsWith('/api/v1/imports') && r.request().method() === 'POST');
+    await page.getByRole('button', { name: 'Загрузить', exact: true }).click();
+    expect((await uploaded).status()).toBe(201);
+    await expect(page.getByRole('region', { name: 'Карточка импорта', exact: true })).toContainText('Завершён');
+    const normalization = page.getByRole('region', { name: 'Нормализация', exact: true });
+    const started = page.waitForResponse(r => r.url().endsWith('/api/v1/analysis') && r.request().method() === 'POST');
+    await normalization.getByRole('button', { name: 'Нормализовать пакет', exact: true }).click();
+    normalized.push((await (await started).json()).id);
+    await expect(normalization.getByRole('status')).toContainText('Нормализация завершена');
+  }
+  await page.getByRole('button', { name: 'Сопоставление', exact: true }).click();
+  await page.getByRole('combobox', { name: 'Нормализация источника A', exact: true }).selectOption(normalized[0]);
+  await page.getByRole('combobox', { name: 'Нормализация источника B', exact: true }).selectOption(normalized[1]);
+  const matchingResponse = page.waitForResponse(r => r.url().endsWith('/api/v1/matching-runs') && r.request().method() === 'POST');
+  await page.getByRole('button', { name: 'Запустить сопоставление', exact: true }).click();
+  const matching = await (await matchingResponse).json();
+  await expect(page.getByRole('region', { name: 'Результат сопоставления', exact: true }).getByRole('status')).toContainText('Сопоставление завершено');
+  await page.getByRole('button', { name: 'Открыть конфликты сопоставления', exact: true }).click();
+  const generated = page.waitForResponse(r => r.url().endsWith('/api/v1/conflict-runs') && r.request().method() === 'POST');
+  await page.getByRole('button', { name: 'Проверить конфликты', exact: true }).click();
+  const execution = await (await generated).json();
+  await expect(page.getByRole('status').filter({ hasText: execution.id })).toContainText('COMPLETED');
+  const rows = await (await page.request.get('/api/v1/conflicts?matching_run_id=' + matching.id)).json();
+  expect(rows).toHaveLength(1);
+  await page.getByRole('button', { name: 'Открыть конфликт ' + rows[0].id, exact: true }).click();
+  return rows[0].id as string;
+}
+async function saveBrowserDecision(page: Page, conflictId: string, reason: string) {
+  await page.getByLabel('Обоснование решения', { exact: true }).fill(reason);
+  await page.getByRole('button', { name: 'Проверить перед сохранением', exact: true }).click();
+  const committed = page.waitForResponse(r => r.url().endsWith('/conflicts/' + conflictId + '/decisions') && r.request().method() === 'POST');
+  await page.getByRole('dialog').getByRole('button', { name: 'Сохранить решение', exact: true }).click();
+  const response = await committed;
+  expect(response.status()).toBe(201);
+  await expect(page.getByRole('heading', { name: 'Решение сохранено', exact: true })).toBeVisible();
+  return response.json();
+}
+async function waitRecommendation(page: Page, identifier: string, status: string) {
+  await expect.poll(async () => {
+    const response = await page.request.get('/api/v1/conflicts/' + identifier + '/recommendation');
+    const result = await response.json();
+    return { http: response.status(), status: result.status, reason: result.reason_code };
+  }, { timeout: 90000, intervals: [1000, 2000, 5000] }).toMatchObject({ http: 200, status });
+  await page.getByRole('button', { name: 'Обновить рекомендацию', exact: true }).click();
+}
+
+test('real product gallery, light/dark WCAG and responsive Stage 1–8 path', async ({ page }) => {
   test.setTimeout(600000);
   page.setDefaultTimeout(30000);
   if (process.env.FK_CAPTURE_UI !== '1' || !output) throw new Error('Explicit gallery opt-in is required');
@@ -124,6 +197,8 @@ test('real product gallery, WCAG baseline and responsive Stage 1–7 path', asyn
     bundles.push({ file: url, sha256 });
   }
   expect(bundles.length).toBeGreaterThanOrEqual(2);
+  const earlyTheme = await page.request.get('/theme-init.js');
+  expect(createHash('sha256').update(await earlyTheme.body()).digest('hex')).toBe(createHash('sha256').update(readFileSync(resolve(root, 'frontend/public/theme-init.js'))).digest('hex'));
   for (const asset of ['forest-keeper.svg', 'forest-dark.jpg']) {
     const response = await page.request.get('/brand/' + asset);
     expect(response.status()).toBe(200);
@@ -254,6 +329,63 @@ test('real product gallery, WCAG baseline and responsive Stage 1–7 path', asyn
   await similar.getByRole('button', { name: 'Повторить поиск', exact: true }).click();
   await expect(similar).toContainText('Похожих подтверждённых решений пока нет');
   await capture(page, '26-no-precedent', 'Непохожий случай остаётся без прецедента', 'Совместимый атрибут и единица не делают керамическую трубу похожей на болт. Ни автоматического выбора, ни нового решения не появляется.', similar);
+  // Five independent own-file pipelines. Source identities are operator-declared, not inferred from names.
+  const seedIds: string[] = [];
+  for (let index = 0; index < 5; index++) {
+    const identifier = await recommendationCase(page, index);
+    if (index === 0) {
+      await waitRecommendation(page, identifier, 'ABSTAINED');
+      await expect(page.getByRole('region', { name: 'Рекомендация Forest Keeper', exact: true })).toContainText('Нет обоснованной рекомендации');
+      await capture(page, '31-recommendation-abstention', 'Без достаточных оснований система воздерживается', 'Есть понятный результат отказа. Доступны ручное рассмотрение и реальные исторические сведения; готовое значение не выдумывается.', page.getByRole('region', { name: 'Рекомендация Forest Keeper', exact: true }));
+    }
+    await page.getByRole('button', { name: 'Начать рассмотрение', exact: true }).click();
+    await page.getByRole('radio', { name: /Источник [AB]: Stage 8 рабочий реестр/ }).check();
+    seedIds.push((await saveBrowserDecision(page, identifier, 'Отдельная проверка документа и массы, независимый пример ' + index)).decision_id);
+  }
+  const current = await recommendationCase(page, 5);
+  await waitRecommendation(page, current, 'RECOMMENDED');
+  const recommendation = page.getByRole('region', { name: 'Рекомендация Forest Keeper', exact: true });
+  await expect(recommendation).toContainText('5 согласованных независимых групп');
+  await expect(recommendation).toContainText('Демонстрационная рекомендация');
+  for (const id of seedIds) await expect(recommendation).toContainText(id);
+  await capture(page, '28-recommendation', 'Предложение на пяти независимых группах', 'Пять отдельных загрузок и подтверждений человека. Система предлагает допустимое значение текущего источника, показывает реальные Decisions и число оснований без обещания вероятности.', recommendation);
+  await page.getByRole('button', { name: 'Тёмная тема', exact: true }).click();
+  await recommendation.getByRole('button', { name: 'Посмотреть основание решения', exact: true }).first().click();
+  await expect(page.getByRole('article', { name: 'Карточка решения', exact: true })).toBeVisible();
+  await page.getByRole('button', { name: 'Вернуться к текущему конфликту', exact: true }).click();
+  const currentHash = new URL(page.url()).hash;
+  expect(currentHash).toContain(current);
+  await page.reload();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+  expect(new URL(page.url()).hash).toBe(currentHash);
+  await expect(page.getByRole('region', { name: 'Карточка конфликта', exact: true })).toBeVisible();
+  await expect(recommendation).toContainText('5 согласованных независимых групп');
+  await page.getByRole('button', { name: 'Начать рассмотрение', exact: true }).click();
+  await expect(recommendation.getByRole('button', { name: 'Использовать предложение в форме', exact: true })).toBeEnabled();
+  await recommendation.getByRole('button', { name: 'Использовать предложение в форме', exact: true }).click();
+  const humanReason = 'Самостоятельно проверил текущие значения и пять независимых исторических оснований.';
+  await page.getByLabel('Обоснование решения', { exact: true }).fill(humanReason);
+  await page.getByRole('button', { name: 'Светлая тема', exact: true }).click();
+  await page.getByRole('button', { name: 'Тёмная тема', exact: true }).click();
+  await expect(page.getByLabel('Обоснование решения', { exact: true })).toHaveValue(humanReason);
+  await expect(page.getByRole('radio', { name: /Источник [AB]: Stage 8 рабочий реестр/ })).toBeChecked();
+  await capture(page, '29-recommendation-human-review', 'Предложение проходит человеческое подтверждение', 'Переключение темы сохраняет выбор и несохранённое обоснование. Кнопка предложения лишь заполняет форму; окончательный Decision создаётся после отдельного подтверждения.', page.getByRole('region', { name: 'Рассмотрение конфликта', exact: true }).locator('form'));
+  const confirmed = await saveBrowserDecision(page, current, humanReason);
+  expect(confirmed.decision.context_snapshot.recommendation.relationship).toBe('MATCHED');
+  const override = await recommendationCase(page, 6);
+  await waitRecommendation(page, override, 'RECOMMENDED');
+  await page.getByRole('button', { name: 'Начать рассмотрение', exact: true }).click();
+  await expect(recommendation.getByRole('button', { name: 'Использовать предложение в форме', exact: true })).toBeEnabled();
+  await recommendation.getByRole('button', { name: 'Использовать предложение в форме', exact: true }).click();
+  await page.getByRole('radio', { name: /Источник [AB]: Stage 8 учётная система/ }).check();
+  const overridden = await saveBrowserDecision(page, override, 'Человек выбрал другой допустимый источник после проверки документа.');
+  expect(overridden.decision.selected_source_id).toBe(accounts.recommendation_sources[1].source_id);
+  expect(overridden.decision.context_snapshot.recommendation).toBeUndefined();
+  const contradictory = await recommendationCase(page, 7);
+  await waitRecommendation(page, contradictory, 'ABSTAINED');
+  await expect(recommendation).toContainText('История содержит разные исходы');
+  await expect(recommendation.getByRole('button', { name: 'Использовать предложение в форме' })).toHaveCount(0);
+  await capture(page, '30-recommendation-contradiction', 'Противоречивая практика остаётся человеку', 'После самостоятельного выбора другого источника следующий запрос показывает противоречие. Старые Decisions сохранены; большинство не превращается в автоматический ответ.', recommendation);
   await signOut(page); await signIn(page, 'VIEWER');
   await page.getByRole('button', { name: 'Конфликты', exact: true }).click();
   await page.getByRole('combobox', { name: 'Сопоставление для конфликтов', exact: true }).selectOption(matching.id);
@@ -274,6 +406,7 @@ test('real product gallery, WCAG baseline and responsive Stage 1–7 path', asyn
   await expect(scope).toContainText('Область доступа сохранена');
   await signOut(page); await signIn(page, 'VIEWER');
   expect((await page.request.get('/api/v1/conflicts/' + next.conflict + '/similar-decisions')).status()).toBe(404);
+  expect((await page.request.get('/api/v1/conflicts/' + current + '/recommendation')).status()).toBe(404);
   expect((await page.request.get('/api/v1/decisions/' + precedent.id)).status()).toBe(404);
   await page.getByRole('button', { name: 'Конфликты', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Конфликты не найдены', exact: true })).toBeVisible();
@@ -300,5 +433,5 @@ test('real product gallery, WCAG baseline and responsive Stage 1–7 path', asyn
   await capture(page, '16-error', 'Восстановление после ошибки', 'Симуляция потери соединения: читаемое сообщение, очищенный пароль и возможность повторить попытку.');
   await page.unroute('**/api/v1/auth/login');
   expect(errors).toEqual([]);
-  writeFileSync(resolve(output, 'manifest.json'), JSON.stringify({ captured_at: new Date().toISOString(), source_commit: execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim(), source_tree: execFileSync('git', ['rev-parse', 'HEAD:frontend/src'], { cwd: root, encoding: 'utf8' }).trim(), brand_assets: ['forest-keeper.svg', 'forest-dark.jpg'].map((file) => ({ file, sha256: createHash('sha256').update(readFileSync(resolve(root, 'frontend/public/brand', file))).digest('hex') })), worktree_dirty: execFileSync('git', ['status', '--porcelain'], { cwd: root, encoding: 'utf8' }).trim().length > 0, images: { frontend: process.env.FK_GALLERY_FRONTEND_IMAGE_ID, backend: process.env.FK_GALLERY_BACKEND_IMAGE_ID }, served_bundles: bundles, capture: 'Real HTTPS Web Client and backend with owned synthetic data; no generated/mock product screenshots', locale: 'ru-RU', timezone: 'Europe/Moscow', ...report }, null, 2));
+  writeFileSync(resolve(output, 'manifest.json'), JSON.stringify({ captured_at: new Date().toISOString(), source_commit: execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim(), source_tree: execFileSync('git', ['rev-parse', 'HEAD:frontend/src'], { cwd: root, encoding: 'utf8' }).trim(), brand_assets: ['forest-keeper.svg', 'forest-dark.jpg'].map((file) => ({ file, sha256: createHash('sha256').update(readFileSync(resolve(root, 'frontend/public/brand', file))).digest('hex') })), worktree_dirty: execFileSync('git', ['status', '--porcelain'], { cwd: root, encoding: 'utf8' }).trim().length > 0, images: { frontend: process.env.FK_GALLERY_FRONTEND_IMAGE_ID, backend: process.env.FK_GALLERY_BACKEND_IMAGE_ID }, presentation_assets: [{ file: 'theme-init.js', sha256: createHash('sha256').update(readFileSync(resolve(root, 'frontend/public/theme-init.js'))).digest('hex') }], themes: ['light', 'dark'], served_bundles: bundles, capture: 'Real HTTPS Web Client and backend with owned synthetic data; no generated/mock product screenshots', locale: 'ru-RU', timezone: 'Europe/Moscow', ...report }, null, 2));
 });

@@ -264,3 +264,90 @@ and Decision saves do not inherit the retrieval timeout.
 The PostgreSQL17 capacity gate exposed underestimation of the cross-table effective-head join. Retrieval now materializes narrow scoped eligibility once, joins artifact metadata once, scores once and loads full historical JSON only for top-N. Its read transaction locally prefers hash joins and disables JIT startup; ordinary API/migration connections keep their defaults. The 1500ms protective statement deadline permits rare outliers while the measured p95 target remains <=1s at10sessions. Null-free predecessor exclusion preserves superseded policy. Actual vectors satisfy coverage directly; immutable skip checkpoints are consulted only for missing representations.
 
 Stage 7 CI idle recovery correction (23 October 2026): cap ForestWorker blocking dequeue by maintenance_interval (minimum1s), preserving120s worker TTL/150s readiness margin. RQ default idle105s could postpone nominal30s autoindex past90s retrieval acceptance. New real idle-worker regression fails before correction and passes afterwards without unrelated queue traffic. Decision save remains independent of Redis/retrieval jobs; no lifecycle, permission, provider or scoring change.
+
+
+## Proposed decisions — not accepted
+
+### 2026-10-24 — Stage 8 architecture and numerical demo policy (issue #29)
+
+**PROPOSED / OWNER_APPROVAL_REQUIRED.** Issue #29 §6.7 requires numerical policy approval before business-logic implementation; §13 requires the architecture/Decision Log proposal first. The user instruction to start Stage 8 authorizes preparing this proposal, not inventing approval of previously unspecified thresholds.
+
+[Concrete architecture/policy proposal v1](../development/stage8-recommendation-proposal.md) records every contested choice, exact planned file/API/schema changes, golden fixtures and all 14 Stage 7 carry-over dispositions. Proposed demo policy: complete <=20 eligible above-threshold pool, >=5 independent provenance groups, unit group weight, 100% agreement/zero contradiction, explicit approved source correspondence; ENTER_VALUE remains contextual. Confidence is an absolute independent-group count, never probability or synthetic score. Production remains fail-closed. Proposed stateless service plus bounded audit receipt has no new SQL table/migration; existing human-confirmed Decision POST is the only write path. These are proposals, not current runtime behavior.
+
+Owner approval: **pending**. Approved policy version/content digest/reference: **none**. No positive recommendation business logic is implemented or enabled by this entry. Any change after approval requires a new version and explicit rationale/fixtures; independent review is required before Stage 8 acceptance.
+
+Entry gate: Stage 7 accepted by owner via PR #28, main merge `c927af513d29d83bd53b1b6522efccb42b5a1341`, exact merge CI 40079346518 SUCCESS. Actual numbering is Stage 6 Human Review+Registry, Stage 7 retrieval, Stage 8 recommendations, next Stage 9 AI/LLM. Historical roadmap numbers remain historical; #17/#18/#20 remain open.
+
+
+## Accepted Stage 8 policy — 25 October 2026
+
+The repository owner explicitly approved all eight product-policy points in this chat:
+**«Согласен со всеми пунктами.»** This follows the complete plain-language explanation
+of minimum five independent provenance groups, conservative correlation, unanimity/zero
+contradiction, explicit source correspondence, SELECT_VALUE-only proposed actions,
+absolute-group evidence strength, complete <=20 evidence window and demonstration-only
+positive recommendations. This is approval to implement Stage 8, not merge authorization.
+
+Approved policy: `stage8-demo-unanimous-v1`. Architecture proposal reviewed at
+commit `1ade99f325d1710ea3d0a9734f55ac7aad3fa7b2`, content SHA-256
+`9d4dd635a4366ea762c1f92a5e37f2271cbf0b4bdfdf9274a6c2f5b67b712585`.
+The earlier pending entry/report is retained as historical provenance, superseded by this
+explicit owner approval. Runtime policy is versioned in
+`backend/app/recommendations/policies/demo-unanimous-v1.json`.
+
+Minimum=5 groups; weight=1 per group; agreement=100%; contradictory outcomes/groups=0;
+dominance margin=1. Similarity retains Stage 7 inclusive0.85 gate, never confidence.
+Pool >20 above-threshold precedents abstains, no hidden pagination. Confidence=number
+of independent supporting groups only when recommended, unit INDEPENDENT_PROVENANCE_GROUPS;
+otherwise null. Full correlation graph includes current-case sentinel: any shared input
+file hash/raw/business-key/semantic evidence joins a component; current component gives
+no support. ENTER_VALUE remains historical context only. Source roles need an explicit
+trusted scoped/versioned map, never A/B/name/type heuristics or implicit authority.
+Production positive synthetic recommendations remain forbidden. Audit receipt cap64KiB,
+shared120reads/min and total1500ms protective budget preserve the proposed bounded design.
+
+Implement stateless deterministic service plus bounded append-only audit receipts first;
+no new SQL schema/state machine or permission. New human Decisions may retain a validated
+receipt snapshot in their immutable JSON context. Existing manual Human Review stays the
+sole commit path and works without recommendations/provider/Redis. Atomic optional receipt
+validation requires the reviewed cooperating-write gate/fresh authorization/idempotent replay
+protocol and its independent race/load/recovery tests; an approved design is not proof of
+its implementation. No unaccepted Rule/authority/Codex or model runtime is invented.
+
+Full issue #29 acceptance, independent verification and green exact-final-HEAD push/PR CI
+remain mandatory before READY TO MERGE. Do not merge or close #17/#18/#20; Stage 9 is excluded.
+
+
+### 2026-10-25 — Stage 8 mandatory light/dark Web Client amendment
+
+Issue #29 §14 (updated 2026-10-24T21:32:34Z) and the user's instruction «Продолжи
+разработку с учётом правок в тз» add a shared light/dark theme control on all screens,
+including login. Persist presentation preference locally, honor system theme before an
+explicit choice, apply safely before first paint and preserve active forms/context/routes.
+Browser storage failure must not break the application. Shared tokens, readable states,
+visible keyboard focus and reduced-motion apply to both themes. Real browser/gallery/Axe/
+responsive acceptance must cover both themes; no backend permission/evidence changes.
+This is an additive Stage 8 requirement; the approved numerical recommendation policy
+and the immutable historical proposal digest are unchanged.
+
+
+### 2026-10-25 — Stage 8 physical representation / no-schema refinement
+
+RecommendationResult is a stateless API outcome (RECOMMENDED/ABSTAINED/UNAVAILABLE),
+not a new Conflict/Decision state or a replacement for canonical Recommendation lifecycle
+CURRENT/STALE/SUPERSEDED. Bounded immutable RECOMMENDATION_EVALUATED AuditEvents preserve
+provenance and act as actor/case-bound receipts. No Recommendation SQL table or migration
+is introduced. Reference means the displayed recommendation, not an automatic acceptance;
+MATCHED/OVERRIDDEN is derived from the actual human-selected current references.
+
+New Decisions may add `context_snapshot.recommendation` with nested schema
+`recommendation-receipt-v1`; the existing outer schema_version=1 is preserved (including its
+DB constraint), as this is additive provenance rather than reinterpretation of evidence.
+Absent optional references are excluded from request hashing to preserve historical retries.
+Exact committed reference replay is authorized and checked before new evaluation/rate/Redis;
+new evaluations consume the existing shared read quota outside the exclusive gate.
+All cooperating updates use schema/database-scoped shared gate; only new optional-reference
+confirmation needs exclusive gate, fresh auth/ORM and bounded recomputation. A connection
+SQL hook applies remaining monotonic budget before every SQL, with cleanup at transaction end.
+Audit integrity validates basis digest, event type/actor/case/reference and aware timestamp.
+No advisory-lock claim is made against DB superuser/direct SQL outside the quiesce protocol.
