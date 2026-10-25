@@ -132,6 +132,10 @@ def verify_model_info(info: ModelInfo, component: str) -> None:
         or info.artifact_lock_sha256 != baseline.ARTIFACT_LOCK_SHA256
         or info.configured_context_tokens != baseline.CONTEXT_TOKENS
         or info.preprocessing_version != baseline.PREPROCESSING
+        or info.prompt_version != (baseline.PROMPT_VERSION if component == "llm" else None)
+        or info.prompt_sha256 != (baseline.PROMPT_SHA256 if component == "llm" else None)
+        or info.instruction_sha256
+        != (baseline.INSTRUCTION_SHA256 if component == "embedding" else None)
         or info.runtime_versions != baseline.component_versions(component)
         or info.dimensions != (baseline.DIMENSIONS if component == "embedding" else None)
     ):

@@ -83,6 +83,9 @@ class ModelInfo(StrictModel):
     dimensions: int | None
     configured_context_tokens: int
     preprocessing_version: str
+    prompt_version: str | None
+    prompt_sha256: Digest | None
+    instruction_sha256: Digest | None
     runtime_versions: dict[str, str]
     quality_provenance: Literal["LOCAL_QWEN_DEMO"] = "LOCAL_QWEN_DEMO"
     production_accepted: Literal[False] = False
@@ -136,6 +139,21 @@ class Explanation(StrictModel):
     action: Literal["SELECT_VALUE"] | None
     reason_code: Annotated[str, Field(pattern=r"^[A-Z][A-Z0-9_]{0,63}$")]
     clauses: Annotated[list[Clause], Field(min_length=3, max_length=6)]
+
+
+def explanation_schema(facts: Facts) -> dict[str, Any]:
+    """Grammar constrains copying, while validation independently distrusts model output."""
+    schema = Explanation.model_json_schema()
+    for name in ("conflict_id", "context_fingerprint", "status", "action", "reason_code"):
+        value = getattr(facts, name)
+        schema["properties"][name] = {"const": str(value) if isinstance(value, UUID) else value}
+    ids = [str(value) for value in facts.supporting_decision_ids + facts.contradictory_decision_ids]
+    citations = schema["$defs"]["Clause"]["properties"]["decision_ids"]
+    if ids:
+        citations["items"] = {"type": "string", "enum": ids}
+    else:
+        citations["maxItems"] = 0
+    return schema
 
 
 def validate_explanation(output: Explanation, facts: Facts) -> Explanation:
