@@ -74,6 +74,17 @@ CURRENT → STALE → SUPERSEDED.
 
 Recommendation не имеет состояния ACCEPTED. Согласие пользователя создаёт Decision.
 
+Реализация Stage 8 (отдельный PR #30, не принята): логический Recommendation
+представлен stateless RecommendationResult и bounded immutable AuditEvent receipt,
+без отдельной SQL-таблицы/миграции. API outcome RECOMMENDED/ABSTAINED/UNAVAILABLE
+не заменяет CURRENT/STALE/SUPERSEDED. Значимость receipt проверяется по fingerprint
+и повторному вычислению; история сохраняется append-only. Ссылка нового Decision
+хранится в additive context_snapshot.recommendation (nested schema
+recommendation-receipt-v1), outer schema_version=1 сохранён.
+[Принятое уточнение физической модели](../decisions/decision-log.md#2026-10-25--stage-8-physical-representation--no-schema-refinement),
+[контракт](../development/recommendations.md).
+
+
 ## Decision
 Поля: id; conflict_id; status; decision_type; selected_value; selected_source_id; reason; user_id; decided_at; context_snapshot; recommendation_id; supersedes_decision_id.
 

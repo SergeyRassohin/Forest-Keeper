@@ -314,7 +314,7 @@ def test_current_context_invalid_lineage_or_unconfigured_authority_fails_closed(
     assert result["recommended_action"] is None and result["confidence"] is None
 
 
-@pytest.mark.parametrize("field", ["basis", "generated_at"])
+@pytest.mark.parametrize("field", ["basis", "generated_at", "payload_array"])
 def test_corrupt_persisted_audit_receipt_is_sanitized_and_never_used(client, field):
     cases = Cases(client)
     query = cases.prepared()
@@ -323,7 +323,10 @@ def test_corrupt_persisted_audit_receipt_is_sanitized_and_never_used(client, fie
     with Session(client.app.state.engine) as session:
         event = session.get(AuditEvent, UUID(rec["audit_reference"]))
         payload = deepcopy(event.payload)
-        payload[field] = {"corrupt": True} if field == "basis" else "not-a-date"
+        if field == "payload_array":
+            payload = ["corrupt receipt payload"]
+        else:
+            payload[field] = {"corrupt": True} if field == "basis" else "not-a-date"
         # Deliberate storage corruption only in this disposable fixture schema.
         session.execute(text("ALTER TABLE audit_events DISABLE TRIGGER audit_append_only"))
         event.payload = payload
@@ -374,6 +377,41 @@ def test_unseen_twenty_first_precedent_is_not_silently_ignored(client):
     result = recommendation(client, query)
     assert result["reason_code"] == "EVIDENCE_WINDOW_EXCEEDED", result
     assert result["supporting_decision_ids"] == [] and result["confidence"] is None
+
+
+def test_compatible_skipped_outcome_prevents_positive_even_when_retrieval_is_ready(client):
+    from unittest.mock import patch
+
+    from app.decisions.service import historical_context
+    from app.similarity.models import IndexItem
+
+    cases = Cases(client)
+    query = cases.prepared()
+    skipped = cases.case()
+
+    def legacy_context(*args, **kwargs):
+        snapshot = deepcopy(historical_context(*args, **kwargs))
+        snapshot["subject"].pop("display_name")
+        return snapshot
+
+    # Simulate a persisted legacy context at its original creation boundary;
+    # append-only storage guards remain enabled. The sixth actual human outcome
+    # contradicts the five indexed outcomes but cannot be scored safely.
+    with patch("app.decisions.service.historical_context", side_effect=legacy_context):
+        sixth = cases.confirm(skipped, source=1)
+    index(cases.settings)
+    with Session(client.app.state.engine) as session:
+        checkpoint = session.scalar(
+            select(IndexItem).where(IndexItem.decision_id == UUID(sixth["decision_id"]))
+        )
+        assert checkpoint.reason == "INCOMPLETE_CONTEXT"
+    retrieved = similar(client, query)
+    assert retrieved["state"] == "READY" and retrieved["total_above_threshold"] == 5
+    result = recommendation(client, query)
+    assert result["status"] == "UNAVAILABLE"
+    assert result["reason_code"] == "INDEX_COVERAGE_UNCERTAIN"
+    assert result["supporting_decision_ids"] == [] and result["confidence"] is None
+    assert result["evidence"] == []
 
 
 def test_manual_historical_correction_cannot_be_copied_to_another_case(client):

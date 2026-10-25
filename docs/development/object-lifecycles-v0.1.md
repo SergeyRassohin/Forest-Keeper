@@ -213,6 +213,14 @@ stateDiagram-v2
 
 У Recommendation **нет состояния ACCEPTED**.
 
+Уточнение Stage 8 (PR #30): stateless API outcome RECOMMENDED/ABSTAINED/UNAVAILABLE
+не является lifecycle-state. Сохранённые audit receipts неизменяемы; актуальность
+проверяется fingerprint и повторным вычислением перед optional human acceptance.
+При stale reference сохранение с reference →409, ручной путь доступен независимо.
+Отдельной Recommendation SQL-таблицы и новых Conflict/Decision состояний нет.
+[Decision Log](../decisions/decision-log.md#2026-10-25--stage-8-physical-representation--no-schema-refinement).
+
+
 Если пользователь соглашается с рекомендацией, создаётся Decision, который может ссылаться на Recommendation и фиксировать, что рекомендованное действие было принято. Recommendation остаётся доказательным объектом, а не становится человеческим решением задним числом.
 
 ## Инварианты

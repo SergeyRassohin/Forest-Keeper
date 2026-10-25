@@ -23,6 +23,8 @@ from app.recommendations.service import Computed, evaluate
 def receipt_time(stored: AuditEvent, actor_id: UUID, conflict_id: UUID) -> datetime:
     try:
         payload = stored.payload
+        if not isinstance(payload, dict):
+            raise ValueError("Invalid receipt payload")
         fingerprint = payload["context_fingerprint"]
         basis = payload["basis"]
         stamp = datetime.fromisoformat(str(payload["generated_at"]))
@@ -87,6 +89,7 @@ def record(
         stored is None
         or stored.user_id != actor_id
         or stored.object_id != result.conflict_id
+        or not isinstance(stored.payload, dict)
         or stored.payload.get("context_fingerprint") != result.context_fingerprint
     ):
         raise ApiError(503, "AUDIT_UNAVAILABLE", "Не удалось сохранить основание рекомендации")

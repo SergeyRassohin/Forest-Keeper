@@ -6,6 +6,7 @@ from typing import Any, cast
 from uuid import UUID
 
 from pydantic import ValidationError
+from sqlalchemy import exists, select
 from sqlalchemy.orm import Session
 
 from app.auth.models import User
@@ -18,8 +19,9 @@ from app.decisions.validation import selectable
 from app.recommendations.evidence import EvidenceError, prepare, validate_lineage
 from app.recommendations.policy import POLICY, POLICY_HASH, aggregate
 from app.recommendations.schemas import Evidence, Outcome, RecommendationResult, SourceMap
+from app.similarity.models import DecisionEmbedding
 from app.similarity.provider import permitted
-from app.similarity.service import eligible, retrieval
+from app.similarity.service import compatible_pool, eligible, retrieval
 
 MESSAGES = {
     "UNANIMOUS_INDEPENDENT_PRECEDENTS": (
@@ -55,6 +57,10 @@ MESSAGES = {
         "перед использованием предложения."
     ),
     "INDEX_NOT_READY": "Индекс прошлых решений ещё не готов. Ручное рассмотрение доступно.",
+    "INDEX_COVERAGE_UNCERTAIN": (
+        "Часть совместимой истории не представлена в индексе. "
+        "Полнота оснований не подтверждена; рассмотрите случай вручную."
+    ),
     "QUERY_CONTEXT_PENDING": (
         "Контекст поиска ещё подготавливается. Откройте похожие решения и повторите проверку."
     ),
@@ -183,6 +189,22 @@ def evaluate(
             if retrieved["state"] in {"UNAVAILABLE", "INDEXING"}
             else Outcome.ABSTAINED,
         )
+    # Stage 7 permits explicit non-INDEXED checkpoints for retrieval. A ready
+    # action needs stronger completeness: an unrepresented compatible outcome
+    # might contradict the visible five. Check only scoped narrow metadata,
+    # including skips, without loading unbounded historical JSON or changing
+    # the public Stage 7 contract.
+    unrepresented = compatible_pool(actor, case, current.features).where(
+        ~exists(
+            select(DecisionEmbedding.id).where(
+                DecisionEmbedding.decision_id == Decision.id,
+                DecisionEmbedding.version_id == result.retrieval_version,
+            )
+        )
+    )
+    if session.scalar(select(exists(unrepresented.with_only_columns(Decision.id)))):
+        return finish("INDEX_COVERAGE_UNCERTAIN", Outcome.UNAVAILABLE)
+    basis["complete_compatible_vector_coverage"] = True
     if retrieved["total_above_threshold"] > POLICY["maximum_precedents"]:
         return finish("EVIDENCE_WINDOW_EXCEEDED")
     ids = [UUID(str(item["decision_id"])) for item in retrieved["results"]]

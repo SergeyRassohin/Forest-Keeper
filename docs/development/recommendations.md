@@ -79,6 +79,10 @@ One bounded Stage7 service invocation (limit20/offset0), no internal HTTP/pagina
 or RQ enqueue from recommendation GET. Query preparation remains Stage7 background work:
 the existing Similar Decisions UI requests its bounded query job; pending cache is explicit.
 Similarity and new recommendation reads share the existing actor120/min ceiling (not120 each).
+A Stage7 READY result alone is insufficient: every scoped compatible effective Decision
+must have an active-version vector. An explicit non-INDEXED skip cannot hide a possible
+contradiction; Stage8 returns UNAVAILABLE/INDEX_COVERAGE_UNCERTAIN without partial evidence.
+This stronger gate leaves the public Stage7 retrieval semantics unchanged.
 A monotonic1500ms protective deadline updates remaining statement/lock time before every SQL;
 it is distinct from the mandatory p95<=1s/10sessions engineering target. Migrations and ordinary
 manual Decision SQL keep their previous defaults. No capacity100k/cold-OS/industrial claim
