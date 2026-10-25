@@ -282,6 +282,27 @@ def test_artifact_lock_and_actual_byte_tampering_fail_closed(tmp_path, monkeypat
         baseline, "ARTIFACT_LOCK_SHA256", hashlib.sha256(lock.read_bytes()).hexdigest()
     )
     verify_component(root, lock, "embedding")
+    extra = root / "embedding/adapter_config.json"
+    extra.write_text('{"base_model_name_or_path":"unapproved"}')
+    with pytest.raises(AIError, match="AI_ARTIFACT_UNEXPECTED_FILE"):
+        verify_component(root, lock, "embedding")
+    extra.unlink()
     artifact.write_bytes(b"tampered verification file")
     with pytest.raises(AIError, match="AI_ARTIFACT_MISMATCH"):
         verify_component(root, lock, "embedding")
+
+
+def test_native_model_identity_is_rechecked_before_generation(monkeypatch):
+    from app.ai.runtime import LlamaEngine
+
+    engine = LlamaEngine.__new__(LlamaEngine)
+    engine.root = Path("/tmp/not-used-for-model-load")
+    engine.info = model_info("llm")
+    monkeypatch.setattr("app.ai.runtime.llama_identity", lambda root: False)
+
+    def forbidden(*args, **kwargs):
+        pytest.fail("Inference ran after the pinned native model was replaced")
+
+    monkeypatch.setattr("app.ai.runtime.native_request", forbidden)
+    with pytest.raises(AIError, match="AI_MODEL_IDENTITY_MISMATCH"):
+        engine.explain(facts())

@@ -1,5 +1,6 @@
 """Standalone isolated runtime. Never imported by the public backend application."""
 
+import asyncio
 import http.client
 import importlib
 import importlib.metadata
@@ -24,6 +25,7 @@ from app.ai.contracts import (
     EmbeddingRequest,
     Explanation,
     Facts,
+    GeneratedClauses,
     ModelInfo,
     embedding_text,
     explanation_schema,
@@ -76,9 +78,9 @@ class EmbeddingEngine:
             device="cpu",
             local_files_only=True,
             trust_remote_code=False,
-            model_kwargs={"dtype": "float32"},
+            model_kwargs={"dtype": "float32", "use_safetensors": True},
         )
-        if self.model.get_sentence_embedding_dimension() != baseline.DIMENSIONS:
+        if self.model.get_embedding_dimension() != baseline.DIMENSIONS:
             raise AIError("AI_INVALID_EMBEDDING")
         self.info = model_info("embedding")
 
@@ -184,6 +186,8 @@ class LlamaEngine:
 
     def explain(self, facts: Facts) -> Explanation:
         deadline = time.monotonic() + 120
+        if not self.ready():
+            raise AIError("AI_MODEL_IDENTITY_MISMATCH")
         messages = [
             {"role": "system", "content": baseline.SYSTEM_PROMPT},
             {"role": "user", "content": facts.model_dump_json()},
@@ -225,7 +229,22 @@ class LlamaEngine:
             choice = result["choices"][0]
             if choice.get("finish_reason") != "stop":
                 raise AIError("AI_INCOMPLETE_EXPLANATION")
-            output = Explanation.model_validate_json(choice["message"]["content"])
+            generated = GeneratedClauses.model_validate_json(choice["message"]["content"])
+            output = Explanation(
+                **{
+                    name: getattr(facts, name)
+                    for name in (
+                        "conflict_id",
+                        "context_fingerprint",
+                        "status",
+                        "action",
+                        "reason_code",
+                    )
+                },
+                clauses=generated.clauses,
+            )
+            if not self.ready():
+                raise AIError("AI_MODEL_IDENTITY_MISMATCH")
             return validate_explanation(output, facts)
         except (KeyError, IndexError, TypeError, ValidationError):
             raise AIError("AI_INVALID_RESPONSE") from None
@@ -234,6 +253,7 @@ class LlamaEngine:
 class PrivateBoundary:
     def __init__(self, app: ASGIApp, key: bytes):
         self.app, self.key = app, key
+        self.pending = asyncio.BoundedSemaphore(8)
 
     async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
         if scope["type"] != "http":
@@ -246,21 +266,39 @@ class PrivateBoundary:
                 scope, receive, send
             )
             return
+        try:
+            await asyncio.wait_for(self.pending.acquire(), timeout=0.01)
+        except TimeoutError:
+            await JSONResponse({"reason_code": "AI_BUSY"}, status_code=429)(scope, receive, send)
+            return
         parts, size = [], 0
-        while True:
-            message = await receive()
-            if message["type"] == "http.disconnect":
-                return
-            chunk = message.get("body", b"")
-            size += len(chunk)
-            if size > baseline.INPUT_BYTES:
-                await JSONResponse({"reason_code": "AI_INPUT_TOO_LARGE"}, status_code=413)(
-                    scope, receive, send
-                )
-                return
-            parts.append(chunk)
-            if not message.get("more_body", False):
-                break
+        try:
+            async with asyncio.timeout(5):
+                while True:
+                    message = await receive()
+                    if message["type"] == "http.disconnect":
+                        return
+                    chunk = message.get("body", b"")
+                    size += len(chunk)
+                    if size > baseline.INPUT_BYTES:
+                        await JSONResponse(
+                            {"reason_code": "AI_INPUT_TOO_LARGE"},
+                            status_code=413,
+                            headers={"Connection": "close"},
+                        )(scope, receive, send)
+                        return
+                    parts.append(chunk)
+                    if not message.get("more_body", False):
+                        break
+        except TimeoutError:
+            await JSONResponse(
+                {"reason_code": "AI_INPUT_TIMEOUT"},
+                status_code=408,
+                headers={"Connection": "close"},
+            )(scope, receive, send)
+            return
+        finally:
+            self.pending.release()
         delivered = False
 
         async def bounded_receive() -> dict[str, Any]:
@@ -290,8 +328,10 @@ def create_runtime(engine: RuntimeEngine, key: bytes) -> FastAPI:
             return JSONResponse({"reason_code": "AI_UNAVAILABLE"}, status_code=503)
         return {"status": "ok", "component": engine.info.component}
 
-    @app.get("/internal/ai/model-info")
-    def info() -> ModelInfo:
+    @app.get("/internal/ai/model-info", response_model=None)
+    def info() -> ModelInfo | JSONResponse:
+        if not engine.ready():
+            return JSONResponse({"reason_code": "AI_UNAVAILABLE"}, status_code=503)
         return engine.info
 
     @app.post("/internal/ai/embed", response_model=None)

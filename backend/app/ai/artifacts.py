@@ -25,6 +25,20 @@ def verify_component(root: Path, lock: Path, component: Literal["embedding", "ll
         directory = (root / component).resolve(strict=True)
         if (root / component).is_symlink():
             raise AIError("AI_ARTIFACT_PATH_INVALID")
+        allowed_files = {entry["path"] for entry in spec["files"]}
+        allowed_dirs = {
+            parent.as_posix()
+            for name in allowed_files
+            for parent in PurePosixPath(name).parents
+            if parent.as_posix() != "."
+        }
+        for candidate in directory.rglob("*"):
+            name = candidate.relative_to(directory).as_posix()
+            if candidate.is_symlink() or not (
+                (candidate.is_file() and name in allowed_files)
+                or (candidate.is_dir() and name in allowed_dirs)
+            ):
+                raise AIError("AI_ARTIFACT_UNEXPECTED_FILE")
         for entry in spec["files"]:
             relative = PurePosixPath(entry["path"])
             if relative.is_absolute() or ".." in relative.parts or not relative.parts:

@@ -132,21 +132,21 @@ class Clause(StrictModel):
     decision_ids: Ids
 
 
-class Explanation(StrictModel):
+class GeneratedClauses(StrictModel):
+    clauses: Annotated[list[Clause], Field(min_length=3, max_length=6)]
+
+
+class Explanation(GeneratedClauses):
     conflict_id: UUID
     context_fingerprint: Digest
     status: Literal["RECOMMENDED", "ABSTAINED", "UNAVAILABLE"]
     action: Literal["SELECT_VALUE"] | None
     reason_code: Annotated[str, Field(pattern=r"^[A-Z][A-Z0-9_]{0,63}$")]
-    clauses: Annotated[list[Clause], Field(min_length=3, max_length=6)]
 
 
 def explanation_schema(facts: Facts) -> dict[str, Any]:
     """Grammar constrains copying, while validation independently distrusts model output."""
-    schema = Explanation.model_json_schema()
-    for name in ("conflict_id", "context_fingerprint", "status", "action", "reason_code"):
-        value = getattr(facts, name)
-        schema["properties"][name] = {"const": str(value) if isinstance(value, UUID) else value}
+    schema = GeneratedClauses.model_json_schema()
     ids = [str(value) for value in facts.supporting_decision_ids + facts.contradictory_decision_ids]
     citations = schema["$defs"]["Clause"]["properties"]["decision_ids"]
     if ids:
