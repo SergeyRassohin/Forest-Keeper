@@ -319,10 +319,16 @@ def retrieval(
             select(func.count()).select_from(scoped).scalar_subquery().label("before_count"),
             aggregate.c.after_count,
             aggregate.c.missing,
-            exists(
-                select(corrupt_ids.c.decision_id).where(
-                    corrupt_ids.c.decision_id.in_(select(compatible.c.id))
-                )
+            # Price the complete (normally empty) partial-integrity index scan.
+            # EXISTS can favour an early-row sequential plan that rehashes every
+            # valid vector before discovering there are no corrupt rows.
+            # Only the same scoped boolean is exposed, never this internal count.
+            (
+                select(func.count())
+                .select_from(corrupt_ids)
+                .where(corrupt_ids.c.decision_id.in_(select(compatible.c.id)))
+                .scalar_subquery()
+                > 0
             ).label("corrupt_vector"),
             aggregate.c.corrupt_features,
         )

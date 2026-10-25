@@ -85,8 +85,12 @@ def run():
                 query = cases.prepared()
                 if keep_fixture:
                     private = Path("/tmp/fk-stage8-capacity-debug.json")
-                    private.write_text(
-                        json.dumps(
+                    descriptor = os.open(
+                        private, os.O_WRONLY | os.O_CREAT | os.O_TRUNC | os.O_NOFOLLOW, 0o600
+                    )
+                    os.fchmod(descriptor, 0o600)
+                    with os.fdopen(descriptor, "w") as output:
+                        json.dump(
                             {
                                 "database_url": settings.database_url.get_secret_value(),
                                 "redis_url": settings.redis_url.get_secret_value(),
@@ -94,10 +98,9 @@ def run():
                                 "query": query,
                                 "tokens": tokens,
                                 "mapping": settings.recommendation_source_map,
-                            }
+                            },
+                            output,
                         )
-                    )
-                    private.chmod(0o600)
                 plans = {}
 
                 def capture(connection, cursor, statement, parameters, context, executemany):

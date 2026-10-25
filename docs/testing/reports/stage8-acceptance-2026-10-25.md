@@ -46,8 +46,9 @@ Historical roadmap numbering is not rewritten.
 - Ruff/mypy70 source files, Bandit and frontend security ESLint PASS. Dependency scans
   report no known vulnerabilities; Git-history/tracked-tree gitleaks PASS. Deliberately unsafe
   B602/eval/PAT fixtures are rejected. Final-HEAD rerun/CI remains mandatory.
-- Both-theme gallery, full suite after review fixes, performance100/1k/10k, actual restart/
-  recovery, production hardening smoke and exact-final-HEAD GitHub push/PR CI: **pending**.
+- Actual HTTPS restart/recovery PASS on4ece363: [retained runtime evidence](stage8-runtime-2026-10-25.json), including exact receipt/history equality, partial recovery, activation/stale and PostgreSQL/Redis failures. Default production fail-closed and manual save/Registry remain available. Full production-profile smoke also passed all four upload/hardening/worker/persistence groups. A refreshed run after the early-abstention optimization remains scheduled.
+- The first10k concurrent recommendation benchmark missed the unchanged1s p95 gate (1.000041s), so it is explicitly not accepted. A redundant strict-coverage scan after an already conclusive >20 abstention was moved behind that early refusal; positive-path completeness is unchanged. Four positive/compatible-skip/incompatible-skip/oversized-pool regressions PASS22.38s. Fresh capacity run is pending.
+- Both-theme gallery, full suite after review fixes, refreshed runtime/production and exact-final-HEAD GitHub push/PR CI: **pending**.
 
 No earlier checkpoint or sum of repeated runs is presented as final acceptance.
 Reproducible commands and manual expectations: [test scenario](../stage8-acceptance.md).

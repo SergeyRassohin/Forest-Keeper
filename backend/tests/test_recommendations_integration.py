@@ -389,6 +389,7 @@ def test_skipped_outcome_blocks_only_compatible_history_when_retrieval_is_ready(
 
     cases = Cases(client)
     query = cases.prepared()
+
     def input_file(caller, source, name, payload):
         if attribute == "price" and name == "material.csv":
             payload = payload.replace(b",12.5 kg,10,", b",12.4 kg,11,")
@@ -425,6 +426,68 @@ def test_skipped_outcome_blocks_only_compatible_history_when_retrieval_is_ready(
     else:
         assert result["status"] == "RECOMMENDED" and result["confidence"] == 5
         assert sixth["decision_id"] not in result["supporting_decision_ids"]
+
+
+@pytest.mark.parametrize("attribute", ["mass", "price"])
+def test_integrity_boolean_blocks_compatible_corruption_without_leaking_other_history(
+    client, attribute
+):
+    from unittest.mock import patch
+
+    from app.similarity.models import DecisionEmbedding
+    from tests.test_imports import upload
+
+    cases = Cases(client)
+    query = cases.prepared()
+
+    def input_file(caller, source, name, payload):
+        if attribute == "price" and name == "material.csv":
+            payload = payload.replace(b",12.5 kg,10,", b",12.4 kg,11,")
+        return upload(caller, source, name, payload)
+
+    with patch("tests.recommendation_fixtures.upload", side_effect=input_file):
+        past = cases.case()
+    saved = cases.confirm(past)
+    index(cases.settings)
+    engine = client.app.state.engine
+    with Session(engine) as session:
+        assert session.scalar(text("SELECT current_schema()")).startswith("auth_test_")
+        artifact = session.scalar(
+            select(DecisionEmbedding).where(
+                DecisionEmbedding.decision_id == UUID(saved["decision_id"])
+            )
+        )
+        identifier, original = artifact.id, artifact.feature_hash
+        # Deliberate artifact corruption only in the disposable fixture schema.
+        session.execute(
+            text("ALTER TABLE decision_embeddings DISABLE TRIGGER retrieval_vector_immutable")
+        )
+        artifact.feature_hash = "0" * 64
+        session.flush()
+        session.execute(
+            text("ALTER TABLE decision_embeddings ENABLE TRIGGER retrieval_vector_immutable")
+        )
+        session.commit()
+    try:
+        result = recommendation(client, query)
+        if attribute == "mass":
+            assert result["status"] == "UNAVAILABLE"
+            assert result["reason_code"] == "INDEX_INTEGRITY_FAILURE"
+            assert result["evidence"] == [] and result["confidence"] is None
+        else:
+            assert result["status"] == "RECOMMENDED" and result["confidence"] == 5
+            assert saved["decision_id"] not in str(result)
+    finally:
+        with Session(engine) as session:
+            session.execute(
+                text("ALTER TABLE decision_embeddings DISABLE TRIGGER retrieval_vector_immutable")
+            )
+            session.get(DecisionEmbedding, identifier).feature_hash = original
+            session.flush()
+            session.execute(
+                text("ALTER TABLE decision_embeddings ENABLE TRIGGER retrieval_vector_immutable")
+            )
+            session.commit()
 
 
 def test_manual_historical_correction_cannot_be_copied_to_another_case(client):
