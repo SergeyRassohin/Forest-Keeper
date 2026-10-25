@@ -1,0 +1,180 @@
+"""Bounded AI input and output; generated free-form claims are never trusted."""
+
+import json
+import re
+from enum import StrEnum
+from typing import Annotated, Any, Literal, Protocol
+from uuid import UUID
+
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, model_validator
+
+from app.ai.baseline import INPUT_BYTES, QUERY_INSTRUCTION
+
+Digest = Annotated[str, Field(pattern=r"^[0-9a-f]{64}$")]
+Revision = Annotated[str, Field(pattern=r"^[0-9a-f]{40}$")]
+Short = Annotated[str, Field(max_length=64)]
+Ids = Annotated[list[UUID], Field(max_length=20)]
+
+
+class AIError(Exception):
+    """Fixed sanitized reason only, never input or model response text."""
+
+
+class StrictModel(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+
+class Observation(StrictModel):
+    value: Annotated[str, Field(max_length=512)] | None
+    presence: Short
+    quality: Short
+    source_type: Short
+    source_role: Short
+
+
+class SemanticContext(StrictModel):
+    domain: Short
+    entity_type: Short
+    subject: Annotated[str, Field(min_length=1, max_length=256)]
+    attribute_code: Short
+    conflict_type: Short
+    value_kind: Literal["quantity", "decimal", "string", "date"]
+    unit: Short
+    observations: Annotated[list[Observation], Field(min_length=1, max_length=8)]
+
+    @model_validator(mode="after")
+    def minimize_sensitive_input(self) -> "SemanticContext":
+        text = self.model_dump_json()
+        # A denylist supplements field minimization; it is not a perfect PII detector.
+        if re.search(
+            r"(?i)(?:password|passwd|api[_ -]?key|secret|bearer)\s*[:=]"
+            r"|[\w.+-]+@[\w.-]+\.[a-z]{2,}|\b(?:ghp_|github_pat_|sk-)[A-Za-z0-9_]"
+            r"|(?<!\w)\+\d[\d ()-]{8,}\d",
+            text,
+        ):
+            raise ValueError("SENSITIVE_INPUT")
+        return self
+
+
+def semantic_context(features: dict[str, Any]) -> SemanticContext:
+    """Explicit projection excludes reasons, selected outcome, raw payload and actor."""
+    fields = SemanticContext.model_fields
+    return SemanticContext.model_validate({k: features[k] for k in fields if k in features})
+
+
+class EmbeddingRequest(StrictModel):
+    purpose: Literal["document", "query"]
+    contexts: Annotated[list[SemanticContext], Field(min_length=1, max_length=8)]
+
+
+def embedding_text(context: SemanticContext, purpose: Literal["document", "query"]) -> str:
+    data = json.dumps(context.model_dump(), ensure_ascii=False, sort_keys=True, allow_nan=False)
+    if len(data.encode()) > INPUT_BYTES:
+        raise AIError("AI_INPUT_TOO_LARGE")
+    return "Instruct: " + QUERY_INSTRUCTION + "\nQuery: " + data if purpose == "query" else data
+
+
+class ModelInfo(StrictModel):
+    component: Literal["embedding", "llm"]
+    model_id: str
+    revision: Revision
+    artifact_sha256: Digest
+    artifact_lock_sha256: Digest
+    dimensions: int | None
+    configured_context_tokens: int
+    preprocessing_version: str
+    runtime_versions: dict[str, str]
+    quality_provenance: Literal["LOCAL_QWEN_DEMO"] = "LOCAL_QWEN_DEMO"
+    production_accepted: Literal[False] = False
+
+
+class EmbeddingResponse(StrictModel):
+    vectors: Annotated[list[list[StrictFloat]], Field(min_length=1, max_length=8)]
+    model: ModelInfo
+
+
+class Facts(StrictModel):
+    conflict_id: UUID
+    context_fingerprint: Digest
+    status: Literal["RECOMMENDED", "ABSTAINED", "UNAVAILABLE"]
+    reason_code: Annotated[str, Field(pattern=r"^[A-Z][A-Z0-9_]{0,63}$")]
+    action: Literal["SELECT_VALUE"] | None
+    supporting_decision_ids: Ids
+    contradictory_decision_ids: Ids
+    source_ids: Annotated[list[UUID], Field(max_length=8)]
+    value_ids: Annotated[list[UUID], Field(max_length=8)]
+    independent_groups: Annotated[int, Field(ge=0, le=20)]
+
+    @model_validator(mode="after")
+    def consistent_action(self) -> "Facts":
+        if (self.status == "RECOMMENDED") != (self.action == "SELECT_VALUE"):
+            raise ValueError("INCONSISTENT_ACTION")
+        if self.status == "RECOMMENDED" and (
+            self.independent_groups < 5 or not self.supporting_decision_ids
+        ):
+            raise ValueError("INSUFFICIENT_EVIDENCE")
+        return self
+
+
+class ClauseCode(StrEnum):
+    CURRENT_CONTEXT = "CURRENT_CONTEXT"
+    SUPPORT = "SUPPORT"
+    CONTRADICTION = "CONTRADICTION"
+    ABSTENTION = "ABSTENTION"
+    LIMITATION = "LIMITATION"
+
+
+class Clause(StrictModel):
+    code: ClauseCode
+    decision_ids: Ids
+
+
+class Explanation(StrictModel):
+    conflict_id: UUID
+    context_fingerprint: Digest
+    status: Literal["RECOMMENDED", "ABSTAINED", "UNAVAILABLE"]
+    action: Literal["SELECT_VALUE"] | None
+    reason_code: Annotated[str, Field(pattern=r"^[A-Z][A-Z0-9_]{0,63}$")]
+    clauses: Annotated[list[Clause], Field(min_length=3, max_length=6)]
+
+
+def validate_explanation(output: Explanation, facts: Facts) -> Explanation:
+    if any(
+        getattr(output, key) != getattr(facts, key)
+        for key in ("conflict_id", "context_fingerprint", "status", "action", "reason_code")
+    ):
+        raise AIError("AI_FACT_MISMATCH")
+    codes = [c.code for c in output.clauses]
+    required = {ClauseCode.CURRENT_CONTEXT, ClauseCode.LIMITATION}
+    required.add(
+        ClauseCode.SUPPORT
+        if facts.status == "RECOMMENDED"
+        else ClauseCode.CONTRADICTION
+        if facts.contradictory_decision_ids
+        else ClauseCode.ABSTENTION
+    )
+    if len(codes) != len(set(codes)) or not required.issubset(codes):
+        raise AIError("AI_INCOMPLETE_EXPLANATION")
+    for clause in output.clauses:
+        supplied = set(clause.decision_ids)
+        if clause.code == ClauseCode.SUPPORT:
+            if (
+                facts.status != "RECOMMENDED"
+                or not supplied
+                or not supplied.issubset(facts.supporting_decision_ids)
+            ):
+                raise AIError("AI_INVALID_CITATION")
+        elif clause.code == ClauseCode.CONTRADICTION:
+            if (
+                facts.status == "RECOMMENDED"
+                or not supplied
+                or not supplied.issubset(facts.contradictory_decision_ids)
+            ):
+                raise AIError("AI_INVALID_CITATION")
+        elif supplied or (clause.code == ClauseCode.ABSTENTION and facts.status == "RECOMMENDED"):
+            raise AIError("AI_FACT_MISMATCH")
+    return output
+
+
+class LLMProvider(Protocol):
+    def explain(self, facts: Facts) -> Explanation: ...
