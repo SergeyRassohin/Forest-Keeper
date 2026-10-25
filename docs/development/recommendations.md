@@ -84,7 +84,13 @@ must have an active-version vector. An explicit non-INDEXED skip cannot hide a p
 contradiction; Stage8 returns UNAVAILABLE/INDEX_COVERAGE_UNCERTAIN without partial evidence.
 This stronger gate leaves the public Stage7 retrieval semantics unchanged.
 A monotonic1500ms protective deadline updates remaining statement/lock time before every SQL;
-it is distinct from the mandatory p95<=1s/10sessions engineering target. Migrations and ordinary
+it is distinct from the mandatory p95<=1s/10sessions engineering target.
+Integrity uses a separate native SQL query in that same authorized snapshot, retaining
+the full checksum/version/exact-compatibility/scope predicate. Only that query temporarily
+prefers the existing partial integrity index; its previous planner setting is restored
+before ranking, and rollback restores it after a fault. This avoids fresh-page visibility
+cost estimates causing a full checksum scan. Both fresh and maintained-page profiles must
+retain the same strict NFR and fail-closed corruption behaviour. Migrations and ordinary
 manual Decision SQL keep their previous defaults. No capacity100k/cold-OS/industrial claim
 is implied by a test-only10k fixture or a PostgreSQL buffer restart.
 

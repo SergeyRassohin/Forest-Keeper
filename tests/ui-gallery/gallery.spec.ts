@@ -369,7 +369,7 @@ test('real product gallery, light/dark WCAG and responsive Stage 1–8 path', as
   await page.getByRole('button', { name: 'Тёмная тема', exact: true }).click();
   await expect(page.getByLabel('Обоснование решения', { exact: true })).toHaveValue(humanReason);
   await expect(page.getByRole('radio', { name: /Источник [AB]: Stage 8 рабочий реестр/ })).toBeChecked();
-  await capture(page, '29-recommendation-human-review', 'Предложение проходит человеческое подтверждение', 'Переключение темы сохраняет выбор и несохранённое обоснование. Кнопка предложения лишь заполняет форму; окончательный Decision создаётся после отдельного подтверждения.', page.getByRole('region', { name: 'Рассмотрение конфликта', exact: true }));
+  await capture(page, '29-recommendation-human-review', 'Предложение проходит человеческое подтверждение', 'Переключение темы сохраняет выбор и несохранённое обоснование. Кнопка предложения лишь заполняет форму; окончательный Decision создаётся после отдельного подтверждения.', page.getByRole('region', { name: 'Рассмотрение конфликта', exact: true }).locator('form'));
   const confirmed = await saveBrowserDecision(page, current, humanReason);
   expect(confirmed.decision.context_snapshot.recommendation.relationship).toBe('MATCHED');
   const override = await recommendationCase(page, 6);

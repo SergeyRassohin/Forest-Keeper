@@ -267,6 +267,31 @@ def retrieval(
         .cte("corrupt_artifacts")
         .prefix_with("MATERIALIZED")
     )
+    # Newly written heap pages can make the planner price an empty partial
+    # integrity index as if it required thousands of heap fetches. Isolate this
+    # exact scoped check and prefer its index, then restore ordinary planning
+    # before ranking. Errors roll back these transaction-local settings.
+    previous_seqscan = session.scalar(text("SELECT current_setting('enable_seqscan')"))
+    session.execute(text("SET LOCAL enable_seqscan=off"))
+    corrupt_vector = session.scalar(
+        select(
+            select(func.count())
+            .select_from(corrupt_ids)
+            .where(
+                corrupt_ids.c.decision_id.in_(
+                    compatible_pool(actor, case, features).with_only_columns(Decision.id)
+                )
+            )
+            .scalar_subquery()
+            > 0
+        ).prefix_with("/* scoped_retrieval_integrity */")
+    )
+    session.execute(
+        text("SELECT set_config('enable_seqscan', :value, true)"), {"value": previous_seqscan}
+    )
+    if not isinstance(corrupt_vector, bool):
+        result["reason_code"] = "INDEX_INTEGRITY_FAILURE"
+        return result
     distance = cast(
         DecisionEmbedding.embedding.op("OPERATOR(public.<=>)")(
             cast(literal(query_vector, type_=Vector()), Vector())
@@ -327,17 +352,7 @@ def retrieval(
             select(func.count()).select_from(scoped).scalar_subquery().label("before_count"),
             aggregate.c.after_count,
             aggregate.c.missing,
-            # Price the complete (normally empty) partial-integrity index scan.
-            # EXISTS can favour an early-row sequential plan that rehashes every
-            # valid vector before discovering there are no corrupt rows.
-            # Only the same scoped boolean is exposed, never this internal count.
-            (
-                select(func.count())
-                .select_from(corrupt_ids)
-                .where(corrupt_ids.c.decision_id.in_(select(compatible.c.id)))
-                .scalar_subquery()
-                > 0
-            ).label("corrupt_vector"),
+            literal(corrupt_vector).label("corrupt_vector"),
             aggregate.c.corrupt_features,
         )
         .select_from(aggregate)

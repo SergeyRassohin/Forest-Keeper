@@ -369,6 +369,7 @@ def test_total_monotonic_budget_applies_to_every_statement_and_releases_gate(cli
     with Session(engine) as session:
         basis_lock(session)
         assert session.scalar(text("SELECT current_setting('statement_timeout')")) == "0"
+        assert session.scalar(text("SELECT current_setting('enable_seqscan')")) == "on"
 
 
 def test_unseen_twenty_first_precedent_is_not_silently_ignored(client):
@@ -377,6 +378,56 @@ def test_unseen_twenty_first_precedent_is_not_silently_ignored(client):
     result = recommendation(client, query)
     assert result["reason_code"] == "EVIDENCE_WINDOW_EXCEEDED", result
     assert result["supporting_decision_ids"] == [] and result["confidence"] is None
+
+
+def test_isolated_integrity_sql_failure_restores_planner_and_preserves_manual_review(client):
+    from sqlalchemy import event
+
+    cases = Cases(client)
+    query = cases.prepared()
+    engine = client.app.state.engine
+    with Session(engine) as session:
+        before = business_hash(session)
+    engine.dispose()  # Start with one fresh pooled connection for the failed request.
+    failed_driver = []
+
+    def fail_integrity(connection, cursor, statement, parameters, context, executemany):
+        if "/* scoped_retrieval_integrity */" in statement:
+            failed_driver.append(connection.connection.driver_connection)
+            return "SELECT 1/0", {}
+        return statement, parameters
+
+    event.listen(engine, "before_cursor_execute", fail_integrity, retval=True)
+    try:
+        failed = recommendation(client, query, expected=503)
+        assert "division" not in str(failed).lower()
+    finally:
+        event.remove(engine, "before_cursor_execute", fail_integrity)
+    with Session(engine) as session:
+        assert session.connection().connection.driver_connection is failed_driver[0]
+        assert session.scalar(text("SELECT current_setting('enable_seqscan')")) == "on"
+        assert business_hash(session) == before
+    observed = {}
+
+    def observe_planner(connection, cursor, statement, parameters, context, executemany):
+        phase = (
+            "integrity"
+            if "/* scoped_retrieval_integrity */" in statement
+            else "ranking"
+            if statement.startswith("WITH ") and "scored_precedents AS MATERIALIZED" in statement
+            else None
+        )
+        if phase:
+            cursor.execute("SHOW enable_seqscan")
+            observed[phase] = cursor.fetchone()[0]
+
+    event.listen(engine, "before_cursor_execute", observe_planner)
+    try:
+        assert recommendation(client, query)["status"] == "RECOMMENDED"
+    finally:
+        event.remove(engine, "before_cursor_execute", observe_planner)
+    assert observed == {"integrity": "off", "ranking": "on"}
+    assert save(client, query, selection(begin(client, query)))["conflict_status"] == "RESOLVED"
 
 
 @pytest.mark.parametrize("attribute", ["mass", "price"])

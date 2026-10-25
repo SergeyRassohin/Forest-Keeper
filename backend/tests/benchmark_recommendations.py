@@ -102,6 +102,7 @@ def run():
                             output,
                         )
                 plans = {}
+                integrity_plans = {}
 
                 def capture(connection, cursor, statement, parameters, context, executemany):
                     if (
@@ -109,6 +110,8 @@ def run():
                         and "scored_precedents AS MATERIALIZED" in statement
                     ):
                         plans.update(sql=statement, parameters=parameters)
+                    if "/* scoped_retrieval_integrity */" in statement:
+                        integrity_plans.update(sql=statement, parameters=parameters)
 
                 event.listen(client.app.state.engine, "before_cursor_execute", capture)
 
@@ -189,6 +192,16 @@ def run():
                                 "EXPLAIN (ANALYZE,BUFFERS) " + plans["sql"], plans["parameters"]
                             ).scalars()
                         ]
+                        connection.execute(
+                            text("SET LOCAL enable_nestloop=on; SET LOCAL enable_seqscan=off")
+                        )
+                        integrity_plan = list(
+                            connection.exec_driver_sql(
+                                "EXPLAIN (ANALYZE,BUFFERS) " + integrity_plans["sql"],
+                                integrity_plans["parameters"],
+                            ).scalars()
+                        )
+                        connection.execute(text("SET LOCAL enable_seqscan=on"))
                         vectors = connection.scalar(
                             select(func.count()).select_from(DecisionEmbedding)
                         )
@@ -196,7 +209,7 @@ def run():
                             dict(row)
                             for row in connection.execute(
                                 text(
-                                    "SELECT relname,relpages,reltuples FROM pg_class "
+                                    "SELECT relname,relpages,reltuples,relallvisible FROM pg_class "
                                     "WHERE relnamespace=current_schema()::regnamespace "
                                     "AND relname IN "
                                     "('decision_embeddings', 'ix_embedding_integrity')"
@@ -220,6 +233,7 @@ def run():
                             resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024, 2
                         ),
                         "query_plan": plan,
+                        "integrity_plan": integrity_plan,
                         "plan_profile": "Warm ranking limit5 before concurrency; no cold claim",
                         "integrity_statistics": integrity_statistics,
                     }
