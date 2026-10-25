@@ -351,3 +351,19 @@ confirmation needs exclusive gate, fresh auth/ORM and bounded recomputation. A c
 SQL hook applies remaining monotonic budget before every SQL, with cleanup at transaction end.
 Audit integrity validates basis digest, event type/actor/case/reference and aware timestamp.
 No advisory-lock claim is made against DB superuser/direct SQL outside the quiesce protocol.
+
+
+## 2026-10-26 — Stage 9 entry and preimplementation contract
+
+Stage8 is accepted in main through PR #30, merge
+`54d3939d704bfe6aa1c943bef3e70b83b01c0527`, exact main CI40198679543 SUCCESS.
+The owner instruction «Приступай к разработке 9 этапа» authorizes Stage9 implementation
+on a separate branch/PR, not merge or previously unspecified semantic quality thresholds.
+
+[Preimplementation architecture/hardware/offline/threat/gold/metrics/decision matrix](../development/stage9-local-ai-proposal.md)
+is published before business code per issue #31 §10. Pinned models/1024 dimensions/Q4_K_M/
+32768 context and Stage8 deterministic demo policy are unchanged. Qwen runtime development
+and actual inference tests may proceed; production semantic activation/positive recommendation
+policy remain blocked without explicit approved quality evidence/policy. Proposed numerical
+quality targets and human-labelled evaluation set are NOT APPROVED, not achievements.
+Historical Stage8 proposal/acceptance records are preserved. #17/#18/#20/#32 are not closed.

@@ -1,7 +1,7 @@
 # Stage 8 — deterministic Recommendation Engine
 
 Scope: [issue #29](https://github.com/SergeyRassohin/Forest-Keeper/issues/29), including §14 light/dark themes.
-**Implemented in PR #30; not merged into main. Acceptance evidence is linked below; final delivery requires green push and PR CI on the exact final HEAD.**
+**Accepted in main through PR #30, merge54d3939d704bfe6aa1c943bef3e70b83b01c0527; exact main CI40198679543 SUCCESS. Stage9 starts separately; the approved demonstration-only policy remains unchanged.**
 Owner approved all eight product-policy points in this chat on 25 October 2026:
 «Согласен со всеми пунктами.». [Decision Log](../decisions/decision-log.md) records approval,
 the exact [historical architecture proposal](stage8-recommendation-proposal.md) commit/digest

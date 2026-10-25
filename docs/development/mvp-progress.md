@@ -1,6 +1,6 @@
 # MVP: состояние реализации
 
-**Актуально на 25 октября 2026:** Stage 0–7 приняты в `main`. Stage 7 — [PR #28](https://github.com/SergeyRassohin/Forest-Keeper/pull/28), merge `c927af513d29d83bd53b1b6522efccb42b5a1341`, [CI точного merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/40079346518). Production embedding provider отключён; synthetic test provider не доказывает промышленное качество. Stage 8 Recommendation Engine реализован по [issue #29](https://github.com/SergeyRassohin/Forest-Keeper/issues/29) и утверждённой владельцем policy в отдельном [PR #30](https://github.com/SergeyRassohin/Forest-Keeper/pull/30). Результаты приёмки и ограничения зафиксированы в `docs/testing/reports/stage8-acceptance-2026-10-25.md`; статус CI итогового commit указан в PR. В main Stage 8 пока отсутствует; слияние требует решения владельца. AI/LLM и write-back не реализованы; #17/#18/#20 открыты.
+**Актуально на 26 октября 2026:** Stage 0–8 приняты в `main`. Stage 8 — [PR #30](https://github.com/SergeyRassohin/Forest-Keeper/pull/30), merge `54d3939d704bfe6aa1c943bef3e70b83b01c0527`, [CI точного merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/40198679543). Этап 9 начинается отдельно по issue #31: локальные pinned Qwen embedding/LLM, исходная архитектура и критерии оформлены до реализации. Production semantic activation и положительные production-рекомендации заблокированы до утверждённой оценки качества; Stage 8 demo policy не меняется. AI runtime пока не реализован. #17/#18/#20 остаются открытыми.
 
 ## Итерация 1 — этап 0
 
@@ -137,3 +137,12 @@ Stage 6: [acceptance и ограничения](../testing/reports/stage6-human-
 ### Stage 8 — owner approval и дополнение тем, 25 октября 2026
 
 Владелец согласовал все восемь пунктов политики в чате: «Согласен со всеми пунктами.». Это разрешение на реализацию, без merge. [Decision Log](../decisions/decision-log.md) фиксирует version/hash исходного предложения. Issue #29 §14 добавил общий light/dark переключатель; пользователь явно поручил учесть правки ТЗ. Ветка и отдельный PR #30 сохранены. Реализованы deterministic API/evidence/audit/manual-confirmation bridge, обе темы и URL восстановление карточки. [Текущий контракт](recommendations.md). Исторические proposal/review документы сохраняют прежний pending статус как состояние на дату их создания; новый approval имеет приоритет. [Отчёт приёмки](../testing/reports/stage8-acceptance-2026-10-25.md) содержит результаты полного набора тестов, performance, restart и независимого ревью; точные финальные SHA/CI фиксируются в PR перед READY TO MERGE. Слияние не выполняется.
+
+
+## Stage9 — начало, 26 октября 2026
+
+Stage8 принят в main; отдельная ветка `codex/stage9-local-ai` создана от принятого merge.
+[Архитектура до реализации](stage9-local-ai-proposal.md) содержит фактический inventory,
+контракты, ресурсы/offline threat model, проект gold/метрик и owner decision queue.
+Пороги качества/человеческая разметка не утверждены; production activation BLOCKED.
+Настоящий Qwen runtime и его приёмка пока не выполнены. Merge не разрешён автоматически.
