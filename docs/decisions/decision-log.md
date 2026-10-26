@@ -367,3 +367,37 @@ and actual inference tests may proceed; production semantic activation/positive 
 policy remain blocked without explicit approved quality evidence/policy. Proposed numerical
 quality targets and human-labelled evaluation set are NOT APPROVED, not achievements.
 Historical Stage8 proposal/acceptance records are preserved. #17/#18/#20/#32 are not closed.
+
+
+### 2026-10-26 — Stage9 asynchronous explanation and bounded generation refinement
+
+Implementation refinement of issue31, not a new numerical policy/production approval.
+Actual initial Qwen generation exceeded the256token output bound and was rejected. The
+bound stays256; versioned grounded-clauses-v4 generates exactly3factual clause codes with
+at most1authorized example citation. Immutable case/status/action/context metadata is bound
+by the server, not generated. LLM input now includes bounded verified current normalized
+values/units/source roles and selected precedent summaries; names/reasons/raw are omitted.
+Russian/English text is rendered solely from these validated facts/clauses. Unsupported
+free prose is rejected. Earlier model failures remain failed evidence, not relabeled.
+
+Public cookie+Origin interface requires conflict.view + decision.view + recommendation.view:
+POST /api/v1/conflicts/{id}/ai-explanation accepts only request_id UUID and language ru/en,
+returns202with opaque session/actor/case-bound request handle. GET
+/api/v1/conflicts/{id}/ai-explanations/{handle} returns QUEUED/PROCESSING/COMPLETED/FAILED
+as derived technical API execution status, not canonical Conflict/Decision state. Failure
+reasons cover stale, unavailable and cancelled work. POST the same URL with /cancel marks
+logical cancellation/discard; in-flight local inference may finish under its hard resource
+bound, never deliver after cancellation. One actor lease remains until that work exits.
+All new requests are explicit, no inference on GET. Requests/results expire, are isolated
+by session/actor/case and recheck fresh auth/scope, full evidence/model/prompt/config digest
+before input and delivery. No server-generated Decision, Rule or business write.
+
+Bounded metadata-only AI_EXPLANATION_EVALUATED audit stores actor/case/request ID, model/
+prompt/input/output hashes, safe cited IDs, clause codes and duration, without prompt/raw/
+reasons/vectors. Model services remain internal-only. Production AI activation hard-disabled.
+Shadow derivation workers may build a different version in their separate queue while API
+replicas continue their old uniform configuration; no mixed API configuration is accepted.
+Final cutover/rollback still quiesces and drains API/business workers before the explicit
+active-version/config switch. Qwen backfill releases SQL transactions/connections/gates
+before a single bounded batch inference and revalidates immutable inputs/current eligibility
+before checkpoint; only an expiring Redis coordination lease spans inference.
