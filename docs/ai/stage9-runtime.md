@@ -138,3 +138,10 @@ For the dual-network consumers, also run `scripts/check-ai-workers-isolation.py`
 same `--project`/`--output` arguments. It probes backend and both AI workers, requires
 exact membership in both internal bridges and denied external TCP/DNS/empty proxies.
 It reads only selected Docker metadata; it does not dump service credential environments.
+
+The local operator/test ingress has a bounded128connection limit/backlog. Redis WATCH
+admission can hold two connections per request; the20request race test needs40, so the
+initial32connection helper limit incorrectly cut transport connections before Redis.
+This changes only the development relay, not AI queue capacity8/actor1 or request deadlines.
+`--database-only --database-ports` can start separate loopback DB test ports without an
+HTTPS listener; it lets an operator change test ingress without interrupting active sessions.

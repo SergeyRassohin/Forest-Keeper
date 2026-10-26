@@ -14,6 +14,8 @@ uv run --with PyYAML==6.0.3 python -m unittest discover -s scripts -p test_model
   uv run --frozen ruff format --check ../scripts/check-production.py ../scripts/models.py ../scripts/check-doc-links.py ../scripts/test_models.py ../scripts/render-ui-gallery.py ../scripts/check-ui-gallery.py
   uv run --frozen ruff check ../scripts/check-ai-isolation.py ../scripts/check-ai-workers-isolation.py ../scripts/serve-ai-local.py
   uv run --frozen ruff format --check ../scripts/check-ai-isolation.py ../scripts/check-ai-workers-isolation.py ../scripts/serve-ai-local.py
+  uv run --frozen ruff check ../scripts/prepare-stage9-quality-candidates.py
+  uv run --frozen ruff format --check ../scripts/prepare-stage9-quality-candidates.py
   uv run --frozen mypy app
   uv run --frozen pytest -m 'not integration'
 )

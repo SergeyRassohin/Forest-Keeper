@@ -25,9 +25,14 @@ def main() -> None:
         action="store_true",
         help="Explicit local test/operator access",
     )
+    parser.add_argument(
+        "--database-only", action="store_true", help="Do not create an HTTPS listener"
+    )
     parser.add_argument("--postgres-port", type=int, default=5432)
     parser.add_argument("--redis-port", type=int, default=6379)
     args = parser.parse_args()
+    if args.database_only and not args.database_ports:
+        parser.error("--database-only requires --database-ports")
     if not re.fullmatch(r"[a-z0-9][a-z0-9_-]{0,62}", args.project):
         parser.error("Invalid Compose project name")
     if any(not 1024 <= p <= 65535 for p in (args.https_port, args.postgres_port, args.redis_port)):
@@ -41,7 +46,7 @@ def main() -> None:
         ).strip()
         == "true"
     ), "Expected an internal-only application bridge"
-    routes = [("frontend", args.https_port, 8443)]
+    routes = [] if args.database_only else [("frontend", args.https_port, 8443)]
     if args.database_ports:
         routes += [
             ("postgres", args.postgres_port, 5432),
@@ -63,7 +68,9 @@ def main() -> None:
             )
             address = json.loads(raw)[network]["IPAddress"]
             assert ipaddress.ip_address(address).is_private
-            limit = threading.BoundedSemaphore(32)
+            # A WATCH admission can hold two connections per request. The
+            # 20-request race gate needs40, while still remaining bounded.
+            limit = threading.BoundedSemaphore(128)
 
             class Relay(socketserver.BaseRequestHandler):
                 endpoint = (address, target_port)
@@ -94,6 +101,7 @@ def main() -> None:
             class Server(socketserver.ThreadingTCPServer):
                 allow_reuse_address = True
                 daemon_threads = True
+                request_queue_size = 128
 
             server = Server(("127.0.0.1", listen_port), Relay)
             servers.append(server)

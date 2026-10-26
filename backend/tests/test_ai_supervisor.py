@@ -10,10 +10,12 @@ from app.ai import supervisor
 
 def test_supervisor_terminates_stubborn_children_and_their_descendants(tmp_path):
     marker = tmp_path / "child"
+    staged = str(marker) + ".tmp"
     script = (
         "import os,signal,time,pathlib; "
         "signal.signal(signal.SIGTERM,signal.SIG_IGN); child=os.fork(); "
-        f"pathlib.Path({str(marker)!r}).write_text(str(os.getpid())) if child==0 else None; "
+        f"pathlib.Path({staged!r}).write_text(str(os.getpid())) if child==0 else None; "
+        f"os.replace({staged!r},{str(marker)!r}) if child==0 else None; "
         "time.sleep(30)"
     )
     children = supervisor.Children()
@@ -31,7 +33,13 @@ def test_supervisor_terminates_stubborn_children_and_their_descendants(tmp_path)
         status = Path(f"/proc/{descendant}/stat")
         deadline = time.monotonic() + 0.5
         # SIGKILL delivery/reaping is asynchronous even after the leader has been reaped.
-        while status.exists() and status.read_text().split()[2] != "Z":
+        while True:
+            try:
+                state = status.read_text().split()[2]
+            except (FileNotFoundError, ProcessLookupError):
+                break  # Reaped between lookup/open/read is successful termination.
+            if state == "Z":
+                break
             assert time.monotonic() < deadline, "Descendant survived the bounded group kill"
             time.sleep(0.005)
     finally:
