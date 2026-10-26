@@ -401,3 +401,23 @@ Final cutover/rollback still quiesces and drains API/business workers before the
 active-version/config switch. Qwen backfill releases SQL transactions/connections/gates
 before a single bounded batch inference and revalidates immutable inputs/current eligibility
 before checkpoint; only an expiring Redis coordination lease spans inference.
+
+### 2026-10-26 — Stage9 measured timeout and smaller LLM prompt projection
+
+The first isolated real-Registry LLM vertical exceeded118seconds on the provisional2CPU
+LLM quota. This remains FAILED, not a passed quality/performance metric. The supervisor
+terminated native computation and Docker restarted the service. Do not raise the deadline,
+weaken core NFR or substitute the pinned model/context/quantization to hide this result.
+
+Before the next implementation attempt: retain the complete strictly validated Facts at
+the service boundary, but serialize a smaller versioned prompt projection to the native
+LLM. It retains current normalized comparison, quality/presence/unit/explicit source roles,
+verified supporting/contradictory precedent IDs and their normalized outcome summaries,
+deterministic status/reason/action and independent-group count. Each precedent ID occurs
+once, inside its evidence category. Server-only conflict/source/value IDs/fingerprint and
+redundant ID arrays stay outside the native prompt; the server still binds/validates them.
+Do not remove meaningful comparison or precedent facts. Output remains exactly3grounded
+clauses/one supplied evidence citation,256tokens, context32768, deadline118/120seconds.
+Version/hash this projection with the system prompt; stale receipts remain invalid.
+Record only bounded input/output token counts/duration/finish code, never prompt/raw/text.
+This technical minimization does not approve human-gold labels/targets or production policy.
