@@ -10,6 +10,7 @@ from sqlalchemy import case as sql_case
 from sqlalchemy.orm import Session, defer
 
 from app.ai import baseline
+from app.ai.identity import expected_model_info
 from app.auth.models import AuditEvent, User
 from app.common.config import Settings
 from app.conflicts.models import Conflict
@@ -51,6 +52,8 @@ def configuration(revision: str = "test-v1") -> dict[str, Any]:
             "input_schema": SCHEMA,
             "preprocessing": baseline.PREPROCESSING,
             "instruction_sha256": baseline.INSTRUCTION_SHA256,
+            "input_schema_sha256": expected_model_info("embedding").input_schema_sha256,
+            "output_schema_sha256": expected_model_info("embedding").output_schema_sha256,
             "runtime_versions": baseline.component_versions("embedding"),
             "eligibility": "resolved-effective-value-v1",
             "metric": "cosine",

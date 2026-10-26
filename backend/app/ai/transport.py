@@ -19,6 +19,7 @@ from app.ai.contracts import (
     ModelInfo,
     validate_explanation,
 )
+from app.ai.identity import expected_model_info
 
 HOSTS = {"127.0.0.1", "fk-ai-embedding", "fk-ai-llm"}
 PORTS = {8091, 8092, 19001, 19002, 19003}
@@ -138,6 +139,8 @@ def verify_model_info(info: ModelInfo, component: str) -> None:
         != (baseline.INSTRUCTION_SHA256 if component == "embedding" else None)
         or info.runtime_versions != baseline.component_versions(component)
         or info.dimensions != (baseline.DIMENSIONS if component == "embedding" else None)
+        or info.input_schema_sha256 != expected_model_info(info.component).input_schema_sha256
+        or info.output_schema_sha256 != expected_model_info(info.component).output_schema_sha256
     ):
         raise AIError("AI_MODEL_IDENTITY_MISMATCH")
 

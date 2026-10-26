@@ -204,6 +204,11 @@ def process_index(identifier: str) -> None:
 
 def execute_index(identifier: UUID, settings: Settings, *, max_batches: int | None = None) -> None:
     """max_batches is a test/operator interruption boundary, not a successful completion."""
+    if settings.similarity_provider == "qwen-demo":
+        from app.ai.indexing import execute
+
+        execute(identifier, settings, max_batches=max_batches)
+        return
     engine = make_engine(settings)
     try:
         with engine.connect() as connection:

@@ -11,13 +11,13 @@ import secrets
 import threading
 import time
 from pathlib import Path
-from typing import Any, Literal, Protocol
+from typing import Any, Protocol
 
 from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from pydantic import ValidationError
-from starlette.types import ASGIApp, Receive, Scope, Send
+from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
 from app.ai import baseline
 from app.ai.artifacts import verify_component
@@ -32,25 +32,8 @@ from app.ai.contracts import (
     explanation_schema,
     validate_explanation,
 )
+from app.ai.identity import expected_model_info as model_info
 from app.ai.transport import service_key, vectors_from_response
-
-
-def model_info(component: Literal["embedding", "llm"]) -> ModelInfo:
-    embedding = component == "embedding"
-    return ModelInfo(
-        component=component,
-        model_id=baseline.EMBEDDING_MODEL if embedding else baseline.LLM_MODEL,
-        revision=baseline.EMBEDDING_REVISION if embedding else baseline.LLM_REVISION,
-        artifact_sha256=baseline.EMBEDDING_SHA256 if embedding else baseline.LLM_SHA256,
-        artifact_lock_sha256=baseline.ARTIFACT_LOCK_SHA256,
-        dimensions=baseline.DIMENSIONS if embedding else None,
-        configured_context_tokens=baseline.CONTEXT_TOKENS,
-        preprocessing_version=baseline.PREPROCESSING,
-        prompt_version=None if embedding else baseline.PROMPT_VERSION,
-        prompt_sha256=None if embedding else baseline.PROMPT_SHA256,
-        instruction_sha256=baseline.INSTRUCTION_SHA256 if embedding else None,
-        runtime_versions=baseline.component_versions(component),
-    )
 
 
 class RuntimeEngine(Protocol):
@@ -87,9 +70,11 @@ class EmbeddingEngine:
 
     def embed(self, request: EmbeddingRequest) -> list[list[float]]:
         texts = [embedding_text(context, request.purpose) for context in request.contexts]
+        total_tokens = 0
         for text in texts:
             tokens = self.model.tokenizer(text, truncation=False)["input_ids"]
-            if len(tokens) > baseline.INPUT_TOKENS:
+            total_tokens += len(tokens)
+            if total_tokens > baseline.INPUT_TOKENS:
                 raise AIError("AI_INPUT_TOO_LARGE")
         result: list[list[float]] = self.model.encode(
             texts,
@@ -302,10 +287,10 @@ class PrivateBoundary:
             self.pending.release()
         delivered = False
 
-        async def bounded_receive() -> dict[str, Any]:
+        async def bounded_receive() -> Message:
             nonlocal delivered
             if delivered:
-                return {"type": "http.disconnect"}
+                return await receive()
             delivered = True
             return {"type": "http.request", "body": b"".join(parts), "more_body": False}
 
@@ -371,6 +356,9 @@ def create_runtime(
         except TimeoutError:
             fault()
             return JSONResponse({"reason_code": "AI_TIMEOUT"}, status_code=503)
+        except asyncio.CancelledError:
+            fault()  # to_thread is still running until the supervisor terminates this process.
+            raise
         except Exception:
             return JSONResponse({"reason_code": "AI_UNAVAILABLE"}, status_code=503)
         finally:
@@ -395,6 +383,9 @@ def create_runtime(
         except TimeoutError:
             fault()
             return JSONResponse({"reason_code": "AI_TIMEOUT"}, status_code=503)
+        except asyncio.CancelledError:
+            fault()
+            raise
         except Exception:
             return JSONResponse({"reason_code": "EXPLANATION_UNAVAILABLE"}, status_code=503)
         finally:

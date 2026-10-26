@@ -1,4 +1,5 @@
 export type RecommendationResult = {
+  embedding_model?: { provider?: string; model_id?: string } | null;
   conflict_id: string; status: 'RECOMMENDED' | 'ABSTAINED' | 'UNAVAILABLE';
   recommended_action: 'SELECT_VALUE' | null; recommended_source_id: string | null;
   recommended_value_id: string | null; recommended_value: { kind: string; value: string; unit: string | null } | null;

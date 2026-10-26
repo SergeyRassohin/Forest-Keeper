@@ -87,6 +87,8 @@ class ModelInfo(StrictModel):
     prompt_sha256: Digest | None
     instruction_sha256: Digest | None
     runtime_versions: dict[str, str]
+    input_schema_sha256: Digest
+    output_schema_sha256: Digest
     quality_provenance: Literal["LOCAL_QWEN_DEMO"] = "LOCAL_QWEN_DEMO"
     production_accepted: Literal[False] = False
 
@@ -94,6 +96,33 @@ class ModelInfo(StrictModel):
 class EmbeddingResponse(StrictModel):
     vectors: Annotated[list[list[StrictFloat]], Field(min_length=1, max_length=8)]
     model: ModelInfo
+
+
+class ComparedValue(StrictModel):
+    source_id: UUID
+    value_id: UUID | None
+    normalized_value: Annotated[str, Field(max_length=512)] | None
+    presence: Short
+    quality: Short
+    logical_role: Annotated[str, Field(pattern=r"^[A-Z][A-Z_]{0,63}$")]
+
+
+class Comparison(StrictModel):
+    domain: Short
+    entity_type: Short
+    attribute_code: Short
+    conflict_type: Short
+    value_kind: Literal["quantity", "decimal", "string", "date"]
+    unit: Short
+    values: Annotated[list[ComparedValue], Field(min_length=1, max_length=8)]
+
+
+class PrecedentFact(StrictModel):
+    decision_id: UUID
+    outcome: Literal["SELECT_VALUE", "ENTER_VALUE"]
+    selected_value: Annotated[str, Field(max_length=512)] | None
+    unit: Short
+    logical_role: Annotated[str, Field(pattern=r"^[A-Z][A-Z_]{0,63}$")] | None
 
 
 class Facts(StrictModel):
@@ -107,15 +136,73 @@ class Facts(StrictModel):
     source_ids: Annotated[list[UUID], Field(max_length=8)]
     value_ids: Annotated[list[UUID], Field(max_length=8)]
     independent_groups: Annotated[int, Field(ge=0, le=20)]
+    comparison: Comparison
+    precedents: Annotated[list[PrecedentFact], Field(max_length=20)]
 
     @model_validator(mode="after")
     def consistent_action(self) -> "Facts":
         if (self.status == "RECOMMENDED") != (self.action == "SELECT_VALUE"):
             raise ValueError("INCONSISTENT_ACTION")
         if self.status == "RECOMMENDED" and (
-            self.independent_groups < 5 or not self.supporting_decision_ids
+            self.independent_groups < 5
+            or len(self.supporting_decision_ids) < self.independent_groups
+            or self.contradictory_decision_ids
         ):
             raise ValueError("INSUFFICIENT_EVIDENCE")
+        support, contrary = self.supporting_decision_ids, self.contradictory_decision_ids
+        if (
+            len(set(support)) != len(support)
+            or len(set(contrary)) != len(contrary)
+            or (set(support) & set(contrary))
+        ):
+            raise ValueError("AMBIGUOUS_EVIDENCE")
+        if contrary and (
+            self.status != "ABSTAINED" or self.reason_code != "CONTRADICTORY_PRECEDENTS"
+        ):
+            raise ValueError("INCONSISTENT_CONTRADICTION")
+        if self.status == "RECOMMENDED" and self.reason_code != "UNANIMOUS_INDEPENDENT_PRECEDENTS":
+            raise ValueError("INCONSISTENT_REASON")
+        ids = [item.decision_id for item in self.precedents]
+        if len(ids) != len(set(ids)) or not (set(support) | set(contrary)).issubset(ids):
+            raise ValueError("UNVERIFIED_EVIDENCE")
+        if set(self.source_ids) != {item.source_id for item in self.comparison.values} or (
+            set(self.value_ids)
+            != {item.value_id for item in self.comparison.values if item.value_id is not None}
+        ):
+            raise ValueError("UNVERIFIED_CURRENT_REFERENCES")
+        if len(self.source_ids) != len(set(self.source_ids)) or len(self.value_ids) != len(
+            set(self.value_ids)
+        ):
+            raise ValueError("AMBIGUOUS_CURRENT_REFERENCES")
+        # Reuse the minimized-value privacy checks; never send human names/reasons/raw.
+        SemanticContext(
+            **self.comparison.model_dump(exclude={"values"}),
+            subject="Verified current comparison",
+            observations=[
+                Observation(
+                    value=item.normalized_value,
+                    presence=item.presence,
+                    quality=item.quality,
+                    source_type="NOT_INCLUDED",
+                    source_role=item.logical_role,
+                )
+                for item in self.comparison.values
+            ],
+        )
+        for item in self.precedents:
+            SemanticContext(
+                **self.comparison.model_dump(exclude={"values"}),
+                subject="Verified precedent summary",
+                observations=[
+                    Observation(
+                        value=item.selected_value,
+                        presence="PRESENT",
+                        quality="VERIFIED_SNAPSHOT",
+                        source_type="NOT_INCLUDED",
+                        source_role=item.logical_role or "NOT_DEFINED",
+                    )
+                ],
+            )
         return self
 
 

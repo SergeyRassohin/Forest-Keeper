@@ -168,3 +168,22 @@ This checkpoint is NOT READY TO MERGE. Public async AI explanation integration, 
 authorized comparison facts, supervised offline container/runtime/resource proof, real end-to-end
 browser flow, supported hardware/10k-vector NFR, human-approved gold/targets, final independent
 real inference review and exact-final-HEAD gates remain outstanding. Production hard-disabled.
+
+### Stage9 — asynchronous explanation checkpoint, 26 October 2026
+
+Implemented the explicit optional Human Review panel and ephemeral scoped jobs, bounded
+public request bodies, fresh authorizations/input/output validation, normalized comparison
+facts and minimal precedent summaries. The browser never automatically starts inference
+and preserves manual review input across explanation updates/theme changes. Added seven
+component regressions; all71frontend tests PASS. Thirty pure AI tests and the independent
+cancellation regression PASS31total; Ruff and strict mypy85source files PASS. Six real
+DB/Redis/auth tests with an explicitly stubbed model previously passed; this proves API
+boundaries, not actual LLM acceptance. Existing retrieval/recommendation suite PASS81tests.
+
+Qwen indexing now splits bounded SQL snapshots/checkpoints around one batch inference.
+An actual Qwen integration regression asserted no checked-out SQL connection or version
+advisory lock during inference. Input/output schema hashes are now explicit model/index
+identity; old runtime instances must be restarted, never silently treated as compatible.
+Independent runtime review led to fail-closed cancellation; external supervision that kills
+actual timed-out computation is still in progress. Full isolated runtime, real vertical E2E,
+NFR/gold/human approval/final review and final-HEAD gates remain outstanding. NOT READY.

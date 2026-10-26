@@ -32,6 +32,7 @@ def enqueue_bounded(
     job_id: str,
     actor_id: str | None,
     description: str,
+    request_record: dict[str, Any] | None = None,
 ) -> bool:
     """Reserve and enqueue in one transaction. Backfill leaves two slots for user work."""
     global_key = prefix(settings) + ":admission"
@@ -47,7 +48,11 @@ def enqueue_bounded(
         failure_ttl=300,
         job_id=job_id,
         description=description,
-        meta={"admission_token": token, "admission_actor_key": actor_key},
+        meta={
+            "admission_token": token,
+            "admission_actor_key": actor_key,
+            **({"request_record": request_record} if request_record is not None else {}),
+        },
     )
     watched = [global_key, job.key, *([actor_key] if actor_key else [])]
     for _ in range(3):

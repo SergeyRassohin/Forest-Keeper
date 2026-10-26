@@ -53,17 +53,50 @@ def features():
 
 
 def facts():
+    support = [uuid4() for _ in range(5)]
+    sources, values = [uuid4(), uuid4()], [uuid4(), uuid4()]
     return Facts(
         conflict_id=uuid4(),
         context_fingerprint="a" * 64,
         status="RECOMMENDED",
         reason_code="UNANIMOUS_INDEPENDENT_PRECEDENTS",
         action="SELECT_VALUE",
-        supporting_decision_ids=[uuid4() for _ in range(5)],
+        supporting_decision_ids=support,
         contradictory_decision_ids=[],
-        source_ids=[uuid4(), uuid4()],
-        value_ids=[uuid4(), uuid4()],
+        source_ids=sources,
+        value_ids=values,
         independent_groups=5,
+        comparison={
+            "domain": "materials",
+            "entity_type": "Material",
+            "attribute_code": "mass",
+            "conflict_type": "VALUE_MISMATCH",
+            "value_kind": "quantity",
+            "unit": "kg",
+            "values": [
+                {
+                    "source_id": source,
+                    "value_id": value,
+                    "normalized_value": str(12.5 - index / 10),
+                    "presence": "PRESENT",
+                    "quality": "VALID",
+                    "logical_role": role,
+                }
+                for index, (source, value, role) in enumerate(
+                    zip(sources, values, ["REGISTER_EXPORT", "ACCOUNTING_EXPORT"], strict=True)
+                )
+            ],
+        },
+        precedents=[
+            {
+                "decision_id": identifier,
+                "outcome": "SELECT_VALUE",
+                "selected_value": "12.5",
+                "unit": "kg",
+                "logical_role": "REGISTER_EXPORT",
+            }
+            for identifier in support
+        ],
     )
 
 

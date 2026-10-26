@@ -8,7 +8,7 @@ import pytest
 from fastapi.testclient import TestClient
 from redis import Redis
 from rq import Queue, SimpleWorker
-from sqlalchemy import select
+from sqlalchemy import select, text
 from sqlalchemy.orm import Session
 
 from app.auth.dependencies import COOKIE_NAME
@@ -58,10 +58,34 @@ def test_real_qwen_backfill_query_and_scoped_lookup_preserve_manual_history(auth
                 run = start_run(session, settings, "qwen-demo-v1", activate=True, batch_size=8)
                 session.commit()
                 run_id = run.id
+                version_id = run.version_id
+            original_embed = QwenProvider.embed_many
+            observed_batches = []
+
+            def observed(provider, features, *, purpose="document"):
+                assert engine.pool.checkedout() == 0
+                from app.similarity.jobs import lock_key
+
+                with Session(engine) as probe:
+                    schema = probe.scalar(text("SELECT current_schema()"))
+                    assert probe.scalar(
+                        text("SELECT pg_try_advisory_xact_lock(:key)"),
+                        {
+                            "key": lock_key(version_id, schema),
+                        },
+                    )
+                observed_batches.append(len(features))
+                return original_embed(provider, features, purpose=purpose)
+
             for _ in range(2):
                 recover_indexes(settings, redis)
-                with patch("app.similarity.jobs.Settings", return_value=settings):
+                with (
+                    patch("app.similarity.jobs.Settings", return_value=settings),
+                    patch("app.ai.indexing.make_engine", return_value=engine),
+                    patch.object(QwenProvider, "embed_many", new=observed),
+                ):
                     SimpleWorker([queue], connection=redis).work(burst=True, logging_level="ERROR")
+            assert observed_batches == [1]
             with Session(engine) as session:
                 assert session.get(IndexRun, run_id).status == "COMPLETED"
                 vector = session.scalar(select(DecisionEmbedding))

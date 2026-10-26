@@ -3,6 +3,7 @@ import { requestJson as api, SessionExpired } from './api';
 import { type Receipt, type ReviewContext, type Decision, outcomeLabels } from './decisionTypes';
 import { DecisionCard } from './Decisions';
 import { Recommendation } from './Recommendation';
+import { AIExplanation } from './AIExplanation';
 import type { RecommendationResult } from './recommendationTypes';
 import { DataValue, Identifier, StatusBadge } from './ui';
 
@@ -111,6 +112,7 @@ export function HumanReview({ conflictId, onSessionExpired, onSaved, onOpenDecis
         const selected = context.selectable_values.find(value => value.value_id === result.recommended_value_id && value.source_id === result.recommended_source_id);
         if (selected && result.audit_reference && result.review_context_version === context.context_version && editing && canAcceptRecommendation) { setChoice('SOURCE:' + selected.value_id); setAppliedRecommendation(result); }
       }} />}
+      {showRecommendations && <AIExplanation conflictId={conflictId} contextVersion={context.context_version} disabled={busy || !!pending} onSessionExpired={onSessionExpired} onOpenDecision={onOpenDecision} />}
       {context.current_decision && <DecisionCard decision={context.current_decision} title="Действующее решение по этому конфликту" />}
       {context.can_start_review && !editing && !pending && <button className="primary" disabled={busy} onClick={() => void startReview()}>{context.current_decision ? context.conflict_status === 'IN_REVIEW' ? 'Продолжить рассмотрение' : 'Пересмотреть решение' : 'Начать рассмотрение'}</button>}
       {!context.can_start_review && <p className="muted">Режим просмотра. Для сохранения решения нужны бизнес-права и доступ к области данных.</p>}
