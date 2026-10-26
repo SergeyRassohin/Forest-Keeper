@@ -439,7 +439,11 @@ def retrieval(
     )
     # Cross-table effective-head correlation is underestimated by PostgreSQL17.
     # Prefer hash joins for this set operation; avoid JIT startup on its tiny
-    # singleton cross joins. SET LOCAL is rolled back with this read transaction.
+    # singleton cross joins. A receipt check may reuse this transaction for a
+    # Decision write, so scope the plan hints to the bounded ranking query itself.
+    planner = session.execute(
+        text("SELECT current_setting('enable_nestloop'), current_setting('jit')")
+    ).one()
     session.execute(text("SET LOCAL enable_nestloop=off; SET LOCAL jit=off"))
     rows = typed_cast(
         Iterable[
@@ -455,7 +459,13 @@ def retrieval(
                 bool,
             ]
         ],
-        session.execute(query),
+        session.execute(query).all(),
+    )
+    # Fetch before restoration. SQL errors abort the caller's transaction; its
+    # required rollback restores SET LOCAL state, without issuing SQL after error.
+    session.execute(
+        text("SELECT set_config('enable_nestloop', :nested, true), set_config('jit', :jit, true)"),
+        {"nested": planner[0], "jit": planner[1]},
     )
     for (
         artifact,

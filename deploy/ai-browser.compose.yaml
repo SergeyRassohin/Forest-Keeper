@@ -1,0 +1,68 @@
+# Separate, disposable actual-Qwen browser acceptance server; no customer data/production claim.
+x-browser-server: &browser-server
+  image: ${FK_AI_BROWSER_BACKEND_IMAGE:?Prebuilt current backend required}
+  user: "${FK_AI_BROWSER_UID:-1000}:${FK_AI_BROWSER_UID:-1000}"
+  env_file: ${FK_AI_BROWSER_ENV_FILE:?Private generated schema/source-map environment required}
+  read_only: true
+  tmpfs: ["/tmp:rw,noexec,nosuid,size=64m,mode=1777"]
+  cap_drop: [ALL]
+  security_opt: [no-new-privileges:true]
+  dns: [127.0.0.1]
+  networks: [default, database, models]
+  secrets: [fk_ai_key]
+  mem_limit: 512m
+  pids_limit: 128
+  volumes:
+    - ${FK_AI_BROWSER_IMPORT_ROOT:?Owned synthetic fixture originals}:/imports
+
+services:
+  ai-browser-backend:
+    <<: *browser-server
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/v1/health',timeout=2)"]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+  ai-browser-embedding-worker:
+    <<: *browser-server
+    command: [python, -m, app.ai.worker, --kind, embedding]
+    depends_on:
+      ai-browser-backend:
+        condition: service_healthy
+  ai-browser-llm-worker:
+    <<: *browser-server
+    command: [python, -m, app.ai.worker, --kind, llm]
+    depends_on:
+      ai-browser-backend:
+        condition: service_healthy
+  frontend:
+    image: ${FK_AI_BROWSER_FRONTEND_IMAGE:?Prebuilt current frontend required}
+    environment:
+      HTTP_PROXY: ""
+      HTTPS_PROXY: ""
+      ALL_PROXY: ""
+      http_proxy: ""
+      https_proxy: ""
+      all_proxy: ""
+      NO_PROXY: "*"
+    networks: [default]
+    dns: [127.0.0.1]
+    volumes:
+      - ${FK_AI_BROWSER_TLS_ROOT:?Development TLS directory}:/etc/nginx/tls:ro
+      - ${FK_AI_BROWSER_NGINX_CONFIG:?Fixed own backend upstream}:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      ai-browser-backend:
+        condition: service_healthy
+
+networks:
+  default:
+    internal: true
+  database:
+    external: true
+    name: ${FK_AI_BROWSER_DATABASE_NETWORK:?Owned development DB bridge}
+  models:
+    external: true
+    name: ${FK_AI_BROWSER_MODEL_NETWORK:?Owned private model bridge}
+secrets:
+  fk_ai_key:
+    file: ${FK_AI_KEY_FILE:?Existing model capability file}

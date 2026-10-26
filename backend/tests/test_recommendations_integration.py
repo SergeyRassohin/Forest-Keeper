@@ -717,3 +717,31 @@ def test_retrieval_activation_invalidates_reference_but_manual_save_remains_inde
     save(client, query, body, expected=409)
     del body["recommendation_reference"]
     assert save(client, query, body)["conflict_status"] == "RESOLVED"
+
+
+def test_retrieval_planner_hints_are_restored_inside_the_caller_transaction(client):
+    from app.auth.models import User
+    from app.conflicts.models import Conflict
+    from app.similarity.service import retrieval
+
+    case = Cases(client).prepared()
+    with Session(client.app.state.engine) as session:
+        actor = session.scalar(select(User).where(User.login == "data_owner"))
+        current = session.get(Conflict, UUID(case))
+        for nested, jit in [("on", "on"), ("on", "off"), ("off", "on"), ("off", "off")]:
+            session.execute(
+                text(
+                    "SELECT set_config('enable_nestloop', :nested, true), "
+                    "set_config('jit', :jit, true)"
+                ),
+                {"nested": nested, "jit": jit},
+            )
+            result = retrieval(
+                session, actor, current, client.app.state.settings, 5, 0, prepare_query=False
+            )
+            assert result["state"] == "READY"
+            assert tuple(
+                session.execute(
+                    text("SELECT current_setting('enable_nestloop'),current_setting('jit')")
+                ).one()
+            ) == (nested, jit)
