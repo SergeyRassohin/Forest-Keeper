@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { requestJson, SessionExpired } from './api';
+import { ApiFailure, requestJson, SessionExpired } from './api';
 import { Identifier } from './ui';
 
 type Props = { conflictId: string; contextVersion: string; disabled?: boolean;
@@ -53,27 +53,44 @@ function ExplanationJob({ conflictId, disabled = false, onSessionExpired, onOpen
     if (!handle || !polling) return;
     const controller = new AbortController(); pollController.current = controller;
     let timer: ReturnType<typeof setTimeout> | undefined;
+    let inFlight = false;
+    let completed = false;
     const started = Date.now();
     async function check() {
+      if (inFlight || controller.signal.aborted) return;
+      inFlight = true;
       try {
         const value = readView(await requestJson<unknown>(`/conflicts/${conflictId}/ai-explanations/${handle}`, { signal: controller.signal }), handle!);
         if (controller.signal.aborted) return;
         setData(value); setError('');
-        if (value.state === 'COMPLETED' || value.state === 'FAILED') setPolling(false);
+        completed = value.state === 'COMPLETED';
+        if (value.state === 'FAILED') setPolling(false);
+        else if (completed) timer = setTimeout(refresh, 30_000);
         else if (Date.now() - started >= 480_000) {
           setPolling(false); setError('Объяснение ещё не готово. Можно проверить состояние позже.');
         } else timer = setTimeout(() => { void check(); }, 2500);
       } catch (cause) {
         if (controller.signal.aborted) return;
-        setPolling(false);
+        setData(null); setPolling(false);
+        if (cause instanceof ApiFailure && cause.status === 404) setHandle(null);
         if (cause instanceof SessionExpired) onSessionExpired();
         else setError('Не удалось получить AI-объяснение. Ручное рассмотрение остаётся доступно.');
-      }
+      } finally { inFlight = false; }
+    }
+    function refresh() {
+      if (controller.signal.aborted) return;
+      if (timer) clearTimeout(timer);
+      if (completed) setData(null); // Never retain stale evidence after a failed freshness check.
+      if (!document.hidden) void check();
     }
     void check();
-    return () => { controller.abort(); if (timer) clearTimeout(timer); };
+    window.addEventListener('focus', refresh);
+    document.addEventListener('visibilitychange', refresh);
+    return () => { controller.abort(); if (timer) clearTimeout(timer);
+      window.removeEventListener('focus', refresh); document.removeEventListener('visibilitychange', refresh); };
   }, [conflictId, handle, polling, pollAttempt, onSessionExpired]);
   async function start() {
+    pollController.current?.abort();
     const controller = new AbortController(); requestController.current?.abort(); requestController.current = controller;
     const requestId = retryRequest.current ?? crypto.randomUUID(); retryRequest.current = requestId;
     setRequesting(true); setError(''); setData(null); setHandle(null); setPolling(false);
@@ -88,6 +105,7 @@ function ExplanationJob({ conflictId, disabled = false, onSessionExpired, onOpen
       setData({ request_id: accepted.request_id, state: 'QUEUED' }); setPolling(true);
     } catch (cause) {
       if (controller.signal.aborted) return;
+      setData(null);
       if (cause instanceof SessionExpired) onSessionExpired();
       else setError('AI-объяснение сейчас недоступно или очередь занята. Вы можете продолжить рассмотрение самостоятельно.');
     } finally { if (!controller.signal.aborted) setRequesting(false); }

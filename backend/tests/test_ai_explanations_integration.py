@@ -1,6 +1,8 @@
 """Real auth/DB/RQ/Redis boundaries with an explicit model stub, never real-AI acceptance."""
 
 import os
+from concurrent.futures import ThreadPoolExecutor
+from threading import Barrier
 from unittest.mock import patch
 from uuid import UUID, uuid4
 
@@ -15,6 +17,8 @@ from app.ai.admission import prefix
 from app.ai.contracts import Clause
 from app.ai.explanations import result_key
 from app.auth.dependencies import COOKIE_NAME
+from app.auth.models import AuthSession, User
+from app.auth.security import token_digest
 from app.main import create_app
 from tests.recommendation_fixtures import Cases
 from tests.test_auth import ORIGIN
@@ -214,3 +218,100 @@ def test_public_ai_json_limit_origin_overrides_and_disabled_mode_fail_closed(cli
     )
     client.app.state.settings.ai_enabled = False
     assert start(client, case, expected=503)["error"]["code"] == "AI_UNAVAILABLE"
+
+
+def test_concurrent_request_id_cannot_bind_two_languages(client):
+    from app.ai.admission import enqueue_bounded
+
+    case = Cases(client).prepared()
+    request = str(uuid4())
+    barrier = Barrier(2)
+
+    def concurrent_admission(*args, **kwargs):
+        barrier.wait(timeout=5)
+        return enqueue_bounded(*args, **kwargs)
+
+    def send(language):
+        return client.post(
+            f"/api/v1/conflicts/{case}/ai-explanation",
+            headers=ORIGIN,
+            json={"request_id": request, "language": language},
+        )
+
+    with (
+        patch("app.ai.routes.enqueue_bounded", side_effect=concurrent_admission),
+        ThreadPoolExecutor(max_workers=2) as executor,
+    ):
+        futures = [executor.submit(send, language) for language in ("ru", "en")]
+        results = [future.result(timeout=10) for future in futures]
+    assert sorted(result.status_code for result in results) == [202, 409], [
+        result.text for result in results
+    ]
+    rejected = next(result for result in results if result.status_code == 409)
+    assert rejected.json()["error"]["code"] == "AI_REQUEST_ID_REUSED"
+
+
+def test_scope_revoked_during_model_work_blocks_completion_and_delivery(client, role_tokens):
+    case = Cases(client).prepared()
+    handle = start(client, case)["request_id"]
+    with Session(client.app.state.engine) as session:
+        auth = session.get(AuthSession, token_digest(role_tokens["DATA_OWNER"]))
+        actor_id = auth.user_id
+        old_scope = list(session.get(User, actor_id).data_domains)
+
+    def revoked_while_running(facts):
+        with Session(client.app.state.engine) as session:
+            session.get(User, actor_id).data_domains = []
+            session.commit()
+        return grounded(facts)
+
+    try:
+        assert run_stub(client, revoked_while_running) == 1
+        response = client.get(f"/api/v1/conflicts/{case}/ai-explanations/{handle}")
+        assert response.status_code == 404  # Existing scope policy deliberately hides the case.
+        assert "clauses" not in response.json()
+        unknown = client.get(f"/api/v1/conflicts/{uuid4()}/ai-explanations/{uuid4()}")
+        assert response.json() == unknown.json()
+    finally:
+        with Session(client.app.state.engine) as session:
+            session.get(User, actor_id).data_domains = old_scope
+            session.commit()
+    assert poll(client, case, handle)["state"] == "FAILED"
+
+
+def test_completed_result_is_invalidated_by_case_head_and_model_identity_changes(
+    client, monkeypatch
+):
+    from tests.test_decisions_integration import begin
+
+    cases = Cases(client)
+    case = cases.prepared()
+    handle = start(client, case)["request_id"]
+    assert run_stub(client) == 1
+    assert poll(client, case, handle)["state"] == "COMPLETED"
+    with monkeypatch.context() as patcher:
+        patcher.setattr("app.ai.baseline.PROMPT_VERSION", "new-unaccepted-prompt")
+        result = poll(client, case, handle)
+        assert result["reason_code"] == "AI_CONTEXT_STALE" and "clauses" not in result
+    begin(client, case)
+    result = poll(client, case, handle)
+    assert result["state"] == "FAILED" and "clauses" not in result
+
+
+def test_same_actor_another_session_cannot_poll_or_cancel_an_existing_explanation(client, password):
+    case = Cases(client).prepared()
+    handle = start(client, case)["request_id"]
+    with TestClient(
+        create_app(settings=client.app.state.settings), base_url="https://localhost:8443"
+    ) as another:
+        login = another.post(
+            "/api/v1/auth/login",
+            headers=ORIGIN,
+            json={"login": "data_owner", "password": password},
+        )
+        assert login.status_code == 200, login.text
+        path = f"/api/v1/conflicts/{case}/ai-explanations/{handle}"
+        assert another.get(path).status_code == 404
+        assert another.post(path + "/cancel", headers=ORIGIN).status_code == 404
+    assert run_stub(client) == 1
+    assert poll(client, case, handle)["state"] == "COMPLETED"

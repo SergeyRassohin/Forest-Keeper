@@ -92,6 +92,8 @@ def cancel_key(handle: UUID, settings: Settings) -> str:
 
 def record_from(job: Job, handle: UUID, settings: Settings) -> RequestRecord:
     try:
+        if not isinstance(job.meta, dict):
+            raise AIError("AI_REQUEST_UNAVAILABLE")
         record = RequestRecord.model_validate(job.meta["request_record"])
         if (
             record.handle != handle
@@ -109,7 +111,7 @@ def record_from(job: Job, handle: UUID, settings: Settings) -> RequestRecord:
         ):
             raise AIError("AI_REQUEST_UNAVAILABLE")
         return record
-    except (ValidationError, KeyError):
+    except (ValidationError, KeyError, TypeError):
         raise AIError("AI_REQUEST_UNAVAILABLE") from None
 
 

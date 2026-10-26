@@ -15,7 +15,7 @@ cd "$(dirname "${BASH_SOURCE[0]}")/.."
 if [[ -f ai/uv.lock ]]; then
   ai_scan_dir=$(mktemp -d)
   trap 'rm -rf "$ai_scan_dir"' EXIT
-  uv export --project ai --frozen --no-hashes --no-dev --no-emit-project \
+  uv export --project ai --all-extras --frozen --no-hashes --no-dev --no-emit-project \
     --format requirements-txt > "$ai_scan_dir/locked.txt"
   # PyPI advisories identify upstream torch releases, not the vendor's +cpu local suffix.
   # This only normalizes advisory lookup; ai/uv.lock still pins the exact CPU distribution.

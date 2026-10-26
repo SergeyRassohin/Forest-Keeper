@@ -113,7 +113,7 @@ def start(
             expires_at=time.time() + 900,
         )
         session.rollback()
-        enqueue_bounded(
+        created = enqueue_bounded(
             redis,
             settings,
             Queue(prefix(settings) + ":llm", connection=redis),
@@ -125,6 +125,15 @@ def start(
             description="LOCAL_AI_EXPLANATION",
             request_record=record.model_dump(mode="json"),
         )
+        if not created:
+            # Concurrent idempotency winner may have bound a different language.
+            _, winner = owned_job(redis, settings, handle, conflict_id, actor_id, session_hash)
+            if winner.language != body.language:
+                raise ApiError(
+                    409,
+                    "AI_REQUEST_ID_REUSED",
+                    "Для другого запроса используйте новый идентификатор",
+                )
         return {"request_id": str(handle)}
     except (AIError, RedisError):
         raise ApiError(

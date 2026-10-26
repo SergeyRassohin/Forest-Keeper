@@ -92,20 +92,25 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "fastapi" },
+    { name = "uvicorn" },
+]
+
+[package.optional-dependencies]
+embedding = [
     { name = "sentence-transformers" },
     { name = "torch" },
     { name = "transformers" },
-    { name = "uvicorn" },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "fastapi", specifier = "==0.162.0" },
-    { name = "sentence-transformers", specifier = "==6.2.0" },
-    { name = "torch", specifier = "==2.14.1+cpu", index = "https://download.pytorch.org/whl/cpu" },
-    { name = "transformers", specifier = "==5.20.2" },
+    { name = "sentence-transformers", marker = "extra == 'embedding'", specifier = "==6.2.0" },
+    { name = "torch", marker = "extra == 'embedding'", specifier = "==2.14.1+cpu", index = "https://download.pytorch.org/whl/cpu" },
+    { name = "transformers", marker = "extra == 'embedding'", specifier = "==5.20.2" },
     { name = "uvicorn", specifier = "==0.54.0" },
 ]
+provides-extras = ["embedding"]
 
 [[package]]
 name = "fsspec"

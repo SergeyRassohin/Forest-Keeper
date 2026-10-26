@@ -97,3 +97,36 @@ it('rejects an unsupported production-quality claim', async () => {
   expect(await screen.findByRole('alert')).toHaveTextContent('Ручное рассмотрение остаётся доступно');
   expect(screen.queryByText('Проверенный пример прошлой практики.')).not.toBeInTheDocument();
 });
+
+it('clears completed evidence immediately on focus and does not retain it after permission denial', async () => {
+  let checks = 0;
+  let finish: ((value: Response) => void) | undefined;
+  vi.spyOn(globalThis, 'fetch').mockImplementation(async (_url, options) => {
+    if (options?.method === 'POST') return response({ request_id: handle });
+    if (++checks === 1) return response(ready());
+    return new Promise<Response>(resolve => { finish = resolve; });
+  });
+  render(<><textarea aria-label="Черновик решения" defaultValue="Мой выбор" />
+    <AIExplanation conflictId={conflict} contextVersion="current" onSessionExpired={vi.fn()} /></>);
+  fireEvent.click(screen.getByRole('button', { name: 'Получить AI-объяснение' }));
+  await screen.findByText('Проверенный пример прошлой практики.');
+  fireEvent.focus(window);
+  expect(screen.queryByText('Проверенный пример прошлой практики.')).not.toBeInTheDocument();
+  await waitFor(() => expect(finish).toBeDefined());
+  await act(async () => { finish!(response({}, 403)); });
+  expect(await screen.findByRole('alert')).toHaveTextContent('Ручное рассмотрение остаётся доступно');
+  expect(screen.queryByText('Проверенный пример прошлой практики.')).not.toBeInTheDocument();
+  expect(screen.getByLabelText('Черновик решения')).toHaveValue('Мой выбор');
+});
+
+it('permits a new explicit request after the old handle expires with404', async () => {
+  const fetch = vi.spyOn(globalThis, 'fetch').mockImplementation(async (_url, options) =>
+    options?.method === 'POST' ? response({ request_id: handle }) : response({}, 404));
+  render(<AIExplanation conflictId={conflict} contextVersion="current" onSessionExpired={vi.fn()} />);
+  fireEvent.click(screen.getByRole('button', { name: 'Получить AI-объяснение' }));
+  await screen.findByRole('alert');
+  const button = screen.getByRole('button', { name: 'Получить AI-объяснение' });
+  expect(button).toBeEnabled();
+  fireEvent.click(button);
+  await waitFor(() => expect(fetch.mock.calls.filter(([, options]) => options?.method === 'POST')).toHaveLength(2));
+});

@@ -1,0 +1,14 @@
+x-proxy-build: &proxy-build
+  extra_hosts:
+    - ${FK_BUILD_PROXY_HOST_ENTRY:?Use scripts/build-ai-with-proxy.sh}
+  secrets:
+    - source: build_network_ca
+      target: network_ca
+services:
+  fk-ai-embedding:
+    build: *proxy-build
+  fk-ai-llm:
+    build: *proxy-build
+secrets:
+  build_network_ca:
+    file: ${FK_BUILD_CA_BUNDLE:-/etc/ssl/certs/ca-certificates.crt}

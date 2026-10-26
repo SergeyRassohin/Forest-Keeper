@@ -62,7 +62,7 @@ def enqueue_bounded(
                 previous = None
                 if pipe.exists(job.key):
                     previous = Job.fetch(job_id, connection=redis)
-                    if previous.get_status(refresh=False) not in {
+                    if request_record is not None or previous.get_status(refresh=False) not in {
                         "finished",
                         "failed",
                         "stopped",
