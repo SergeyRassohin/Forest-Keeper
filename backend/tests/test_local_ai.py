@@ -18,6 +18,7 @@ from app.ai.contracts import (
     Explanation,
     Facts,
     embedding_text,
+    llm_input,
     semantic_context,
     validate_explanation,
 )
@@ -403,3 +404,25 @@ def test_authenticated_slow_bodies_have_bounded_admission_and_cancel_releases_it
         assert {"type": "downstream"} in sent
 
     asyncio.run(scenario())
+
+
+def test_native_prompt_projection_preserves_comparison_and_evidence_without_server_identifiers():
+    supplied = facts()
+    projection = llm_input(supplied)
+    raw = json.dumps(projection)
+    assert len(raw) < len(supplied.model_dump_json())
+    assert str(supplied.conflict_id) not in raw
+    assert supplied.context_fingerprint not in raw
+    for identifier in [*supplied.source_ids, *supplied.value_ids]:
+        assert str(identifier) not in raw
+    assert projection["comparison"]["unit"] == supplied.comparison.unit
+    assert projection["independent_groups"] == 5
+    assert len(projection["comparison"]["values"]) == len(supplied.comparison.values)
+    for index, value in enumerate(supplied.comparison.values):
+        assert projection["comparison"]["values"][index] == value.model_dump(
+            mode="json", exclude={"source_id", "value_id"}
+        )
+    assert len(projection["supporting_precedents"]) == 5
+    for precedent in supplied.precedents:
+        assert precedent.model_dump(mode="json") in projection["supporting_precedents"]
+        assert raw.count(str(precedent.decision_id)) == 1

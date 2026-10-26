@@ -206,6 +206,31 @@ class Facts(StrictModel):
         return self
 
 
+def llm_input(facts: Facts) -> dict[str, Any]:
+    """Versioned prompt projection; verified comparison/evidence remain, server IDs do not."""
+    comparison = facts.comparison.model_dump(mode="json", exclude={"values"})
+    comparison["values"] = [
+        value.model_dump(mode="json", exclude={"source_id", "value_id"})
+        for value in facts.comparison.values
+    ]
+    support, contrary = set(facts.supporting_decision_ids), set(facts.contradictory_decision_ids)
+    return {
+        "status": facts.status,
+        "reason_code": facts.reason_code,
+        "action": facts.action,
+        "independent_groups": facts.independent_groups,
+        "comparison": comparison,
+        "supporting_precedents": [
+            item.model_dump(mode="json") for item in facts.precedents if item.decision_id in support
+        ],
+        "contradictory_precedents": [
+            item.model_dump(mode="json")
+            for item in facts.precedents
+            if item.decision_id in contrary
+        ],
+    }
+
+
 class ClauseCode(StrEnum):
     CURRENT_CONTEXT = "CURRENT_CONTEXT"
     SUPPORT = "SUPPORT"

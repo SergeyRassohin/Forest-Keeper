@@ -29,9 +29,11 @@ def test_supervisor_terminates_stubborn_children_and_their_descendants(tmp_path)
         assert time.monotonic() - started < 3
         assert leader.returncode == -signal.SIGKILL
         status = Path(f"/proc/{descendant}/stat")
-        if status.exists():
-            # A dead grandchild may await reaping by container PID1; it cannot compute.
-            assert status.read_text().split()[2] == "Z"
+        deadline = time.monotonic() + 0.5
+        # SIGKILL delivery/reaping is asynchronous even after the leader has been reaped.
+        while status.exists() and status.read_text().split()[2] != "Z":
+            assert time.monotonic() < deadline, "Descendant survived the bounded group kill"
+            time.sleep(0.005)
     finally:
         children.stop(grace=0.1)
 

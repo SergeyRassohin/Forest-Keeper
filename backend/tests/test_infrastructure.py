@@ -42,7 +42,7 @@ def test_real_health_and_vector_roundtrip() -> None:
 def test_rq_worker_executes_job() -> None:
     settings = Settings()  # type: ignore[call-arg]
     connection = Redis.from_url(settings.redis_url.get_secret_value())
-    job = Queue("forest-keeper", connection=connection).enqueue("operator.add", 2, 3)
+    job = Queue(settings.import_queue_name, connection=connection).enqueue("operator.add", 2, 3)
     try:
         # Only this unique smoke job is inspected and removed.
         import time

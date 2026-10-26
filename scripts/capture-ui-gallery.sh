@@ -57,6 +57,9 @@ compose=(docker compose --env-file "$env_file" -p "$project" -f compose.yaml -f 
 prepared=0
 cleanup() {
   result=$?
+  if [[ "$result" != 0 ]]; then
+    "${compose[@]}" logs --no-color --tail 100 > "$fixture_root/runtime-failure.log" 2>&1 || true
+  fi
   if [[ "$prepared" == 1 ]]; then
     (cd "$repo_root/backend" && uv run --frozen python -m tests.e2e_accounts cleanup) || result=1
   fi

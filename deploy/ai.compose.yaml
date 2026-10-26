@@ -41,7 +41,7 @@ x-model: &model
   security_opt: [no-new-privileges:true]
   networks: [ai_private]
   dns: [127.0.0.1]
-  tmpfs: [/tmp:rw,noexec,nosuid,size=64m,mode=1777]
+  tmpfs: ["/tmp:rw,noexec,nosuid,size=64m,mode=1777"]
   pids_limit: 128
   cpu_shares: 128
   secrets: [fk_ai_key]
@@ -70,7 +70,7 @@ x-worker: &ai-worker
   cap_drop: [ALL]
   security_opt: [no-new-privileges:true]
   read_only: true
-  tmpfs: [/tmp:rw,noexec,nosuid,size=64m,mode=1777]
+  tmpfs: ["/tmp:rw,noexec,nosuid,size=64m,mode=1777"]
   pids_limit: 128
   mem_limit: 512m
   cpus: 0.5
@@ -127,7 +127,7 @@ services:
     build:
       context: .
       dockerfile: ai/Dockerfile
-      target: llm
+      target: ${FK_AI_LLM_BUILD_TARGET:-llm}
     environment: *model-env
     cpus: 2
     mem_limit: 16g

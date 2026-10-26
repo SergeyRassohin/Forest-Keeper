@@ -36,6 +36,7 @@ RUN --mount=type=secret,id=network_ca,required=true \
 COPY backend/app/__init__.py ./app/__init__.py
 COPY backend/app/ai ./app/ai
 COPY models/artifacts.lock.json /app/artifacts.lock.json
+RUN chmod -R a+rX /app
 ENV PATH="/app/.venv/bin:$PATH" \
     HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 HF_HUB_DISABLE_TELEMETRY=1 DO_NOT_TRACK=1 \
     TOKENIZERS_PARALLELISM=false OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 \
@@ -47,10 +48,22 @@ ENTRYPOINT ["python", "-m", "app.ai.supervisor"]
 FROM base AS embedding
 USER root
 RUN --mount=type=secret,id=network_ca,required=true \
-    SSL_CERT_FILE=/run/secrets/network_ca uv sync --frozen --extra embedding --no-dev --no-install-project
+    SSL_CERT_FILE=/run/secrets/network_ca uv sync --frozen --extra embedding --no-dev --no-install-project \
+    && chmod -R a+rX /app
 USER fk
 ENV FK_AI_COMPONENT=embedding
 
 FROM base AS llm
 COPY --from=native /release /app/native
+ENV FK_AI_COMPONENT=llm LD_LIBRARY_PATH=/app/native
+
+# Optional local incremental build: reuse only the byte-locked native output of the
+# already measured source build. This target does not claim signed supplier delivery.
+FROM base AS llm-prebuilt
+USER root
+COPY work/stage9-native-release /app/native
+COPY ai/native-artifact.lock.json /app/native-lock.json
+RUN chmod -R a+rX /app/native /app/native-lock.json \
+    && python -c 'import json,pathlib,hashlib; r=pathlib.Path("/app/native"); m=json.loads(pathlib.Path("/app/native-lock.json").read_text()); assert m["source_revision"]=="620d2225cc436ab0b001e3200e590e3b286ef9ab"; actual={str(p.relative_to(r)):hashlib.sha256(p.read_bytes()).hexdigest() for p in r.rglob("*") if p.is_file()}; assert actual==m["files"]; assert not any(p.is_symlink() for p in r.rglob("*"))'
+USER fk
 ENV FK_AI_COMPONENT=llm LD_LIBRARY_PATH=/app/native

@@ -2,7 +2,7 @@
 
 import os
 import signal
-import subprocess
+import subprocess  # nosec B404 - Own fixed executable argv, shell=False; no actor input.
 import sys
 import threading
 import time
@@ -144,7 +144,7 @@ def main() -> int:
                 "app.ai.runtime:runtime_app",
                 "--factory",
                 "--host",
-                "0.0.0.0",
+                "0.0.0.0",  # nosec B104 - Keyed RPC on unpublished private container bridge only.
                 "--port",
                 port,
                 "--no-access-log",

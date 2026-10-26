@@ -1,6 +1,6 @@
 # MVP: состояние реализации
 
-**Актуально на 26 октября 2026:** Stage 0–8 приняты в `main`. Stage 8 — [PR #30](https://github.com/SergeyRassohin/Forest-Keeper/pull/30), merge `54d3939d704bfe6aa1c943bef3e70b83b01c0527`, [CI точного merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/40198679543). Этап 9 начинается отдельно по issue #31: локальные pinned Qwen embedding/LLM, исходная архитектура и критерии оформлены до реализации. Production semantic activation и положительные production-рекомендации заблокированы до утверждённой оценки качества; Stage 8 demo policy не меняется. AI runtime пока не реализован. #17/#18/#20 остаются открытыми.
+**Актуально на 26 октября 2026:** Stage 0–8 приняты в `main`. Stage 8 — [PR #30](https://github.com/SergeyRassohin/Forest-Keeper/pull/30), merge `54d3939d704bfe6aa1c943bef3e70b83b01c0527`, [CI точного merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/40198679543). Этап 9 начинается отдельно по issue #31: локальные pinned Qwen embedding/LLM, исходная архитектура и критерии оформлены до реализации. Production semantic activation и положительные production-рекомендации заблокированы до утверждённой оценки качества; Stage 8 demo policy не меняется. AI runtime и explicit async UI реализованы в development/demo; настоящие pinned модели прошли локальный isolated vertical, но итоговая приёмка Stage9 ещё не завершена. #17/#18/#20 остаются открытыми.
 
 ## Итерация 1 — этап 0
 
@@ -145,7 +145,7 @@ Stage8 принят в main; отдельная ветка `codex/stage9-local-a
 [Архитектура до реализации](stage9-local-ai-proposal.md) содержит фактический inventory,
 контракты, ресурсы/offline threat model, проект gold/метрик и owner decision queue.
 Пороги качества/человеческая разметка не утверждены; production activation BLOCKED.
-Настоящий Qwen runtime и его приёмка пока не выполнены. Merge не разрешён автоматически.
+На момент первоначального предложения runtime ещё не был реализован; актуальные результаты ниже. Итоговая приёмка не завершена. Merge не разрешён автоматически.
 
 
 ### Stage9 — development checkpoint, 26 October 2026
@@ -187,3 +187,34 @@ identity; old runtime instances must be restarted, never silently treated as com
 Independent runtime review led to fail-closed cancellation; external supervision that kills
 actual timed-out computation is still in progress. Full isolated runtime, real vertical E2E,
 NFR/gold/human approval/final review and final-HEAD gates remain outstanding. NOT READY.
+
+### Stage9 — isolated actual-model development checkpoint, 26 October 2026
+
+The actual Qwen vertical now passes in private offline containers: genuine own-file
+imports→five confirmed Decisions→five persisted1024dim vectors→scoped retrieval→unchanged
+five-group demo recommendation→explicit asynchronous grounded LLM explanation→separate
+human-confirmed Decision. Root run: backfill13.5742s, LLM93.1682s; independent repeat:
+backfill13.558s, LLM59.2815s. Two observations under different cache/load conditions are not
+latency percentiles, semantic quality or10kcapacity. Native prompt uses694input/115output
+tokens, preserving context32768/output256/deadlines. AI creates zero business writes.
+
+The earlier v4 real-Registry attempt FAILED at118s; its supervisor actually killed native
+computation and restarted the container. v5 minimizes duplicate server IDs while retaining
+all verified current comparison and supported/contrary precedent facts. Previous failures
+stay failed evidence. No model/deadline/quality threshold was relaxed. Actual pinned
+model metadata/file verification, private keyed RPC and denied public TCP/DNS/direct DB
+for both models pass. Independent probes also confirm no egress from backend and both
+AI workers on their two internal bridges. Native29-file cache is byte-locked to a prior
+actual source build, with licenses/provenance; unsigned distribution remains unaccepted.
+
+Full core checkpoint PASS310backend+73frontend tests/build/typecheck; later added v5
+projection/process subset PASS33tests, strict mypy86files and SAST pass. Gallery PASS124real
+screenshots, WCAG and310responsive checks for the current committed frontend source.
+Ten actual DB/Redis/auth explanation regressions pass. A full integration run interrupted
+by native-build disk exhaustion remains FAILED; after cache cleanup a fresh full run is
+in progress. Its worker smoke revealed a hardcoded queue rather than configured queue;
+fixed to use Settings.import_queue_name and targeted3infrastructure tests PASS2.60s.
+
+**NOT READY TO MERGE.** Human-approved gold/targets, representative10kreal-vector NFR,
+actual AI browser/recovery/remaining acceptance, final exact-HEAD gates and owner review
+are outstanding. GPU/100k/signed installer/production positive policy are not accepted.

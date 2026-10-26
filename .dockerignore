@@ -4,6 +4,7 @@
 !ai/pyproject.toml
 !ai/uv.lock
 !ai/Dockerfile
+!ai/native-artifact.lock.json
 !backend/
 !backend/app/
 !backend/app/__init__.py
@@ -14,3 +15,5 @@
 !work/
 !work/stage9-native-src/
 !work/stage9-native-src/**
+!work/stage9-native-release/
+!work/stage9-native-release/**

@@ -30,6 +30,7 @@ from app.ai.contracts import (
     ModelInfo,
     embedding_text,
     explanation_schema,
+    llm_input,
     validate_explanation,
 )
 from app.ai.identity import expected_model_info as model_info
@@ -176,7 +177,7 @@ class LlamaEngine:
             raise AIError("AI_MODEL_IDENTITY_MISMATCH")
         messages = [
             {"role": "system", "content": baseline.SYSTEM_PROMPT},
-            {"role": "user", "content": facts.model_dump_json()},
+            {"role": "user", "content": json.dumps(llm_input(facts), ensure_ascii=False)},
         ]
         template = native_request(
             "/apply-template",
@@ -191,6 +192,7 @@ class LlamaEngine:
         tokens = tokenized.get("tokens")
         if not isinstance(tokens, list) or len(tokens) > baseline.INPUT_TOKENS:
             raise AIError("AI_INPUT_TOO_LARGE")
+        logging.getLogger(__name__).warning("AI_LLM_INPUT_TOKENS count=%d", len(tokens))
         result = native_request(
             "/v1/chat/completions",
             {
@@ -213,6 +215,11 @@ class LlamaEngine:
         )
         try:
             choice = result["choices"][0]
+            # Fixed metadata only; never log generated text, IDs, prompt or arbitrary native values.
+            usage = result.get("usage", {})
+            completion = usage.get("completion_tokens") if isinstance(usage, dict) else None
+            if type(completion) is int and 0 <= completion <= baseline.OUTPUT_TOKENS:
+                logging.getLogger(__name__).warning("AI_LLM_OUTPUT_TOKENS count=%d", completion)
             if choice.get("finish_reason") != "stop":
                 raise AIError("AI_INCOMPLETE_EXPLANATION")
             generated = GeneratedClauses.model_validate_json(choice["message"]["content"])

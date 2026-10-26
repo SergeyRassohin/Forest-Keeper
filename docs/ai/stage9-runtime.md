@@ -100,3 +100,41 @@ source/image. No GPU,100kcapacity, signed release or human-gold quality claim fo
 this profile. Signed supplier distribution remains a bounded downstream dependency#32;
 checksums/source pins are not signatures. Full Stage9 acceptance and independent real
 inference review remain required. No merge or next-stage acceptance is implied.
+
+### Local incremental native cache and development ingress
+
+The32GiB workspace disk filled while repeating the native source build alongside live
+services. The failed build and interrupted integration run remain failed infrastructure
+evidence; no business volumes were deleted. For incremental Python/prompt development,
+`bash scripts/prepare-ai-native-cache.sh` can export `/app/native` from an already built
+local LLM image without running it. All29native/license/provenance files must match
+`ai/native-artifact.lock.json`; extras/symlinks/different bytes are rejected. Staging stays
+outside Git. `FK_AI_LLM_BUILD_TARGET=llm-prebuilt` selects this optional build target.
+Default `llm` still builds from the pinned source. This local byte lock is not a signed
+supplier distribution. The original source-built image ID is historical provenance;
+future compiled bytes/toolchain changes require a reviewed new lock/evidence.
+
+Docker's internal-only bridge does not publish the declared host port mappings. For the
+local development browser, keep a fixed host-side loopback ingress process running:
+
+```sh
+python3 scripts/serve-ai-local.py --project forest-keeper --https-port 8443
+```
+
+This bounded relay targets only that project's frontend inside its internal bridge and
+preserves TLS end-to-end; it never exposes model RPC. Restart it after recreating frontend
+containers because private addresses may change. Optional `--database-ports` plus explicit
+`--postgres-port`/`--redis-port` provide loopback-only operator/test access. They are off by
+default. Customer production ingress/firewall/installer setup and acceptance remain a
+separate requirement; this helper is not an Internet proxy or a production installer.
+
+Run `python3 scripts/check-ai-isolation.py --project forest-keeper --output /tmp/ai-isolation.json`
+to check actual model metadata, credential-free model environments, denied unauthenticated
+RPC, denied public TCP/DNS and direct DB connections, and private read-only container policy.
+The report has no prompt/vector/key. A DNS timeout that has not completed is not counted
+as proof of denial. The test is an explicit separate actual-runtime gate, not a CI mock.
+
+For the dual-network consumers, also run `scripts/check-ai-workers-isolation.py` with the
+same `--project`/`--output` arguments. It probes backend and both AI workers, requires
+exact membership in both internal bridges and denied external TCP/DNS/empty proxies.
+It reads only selected Docker metadata; it does not dump service credential environments.
