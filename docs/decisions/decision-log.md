@@ -421,3 +421,21 @@ clauses/one supplied evidence citation,256tokens, context32768, deadline118/120s
 Version/hash this projection with the system prompt; stale receipts remain invalid.
 Record only bounded input/output token counts/duration/finish code, never prompt/raw/text.
 This technical minimization does not approve human-gold labels/targets or production policy.
+
+### 2026-10-26 — restore ranking planner hints before recommendation writes
+
+Stage9 verification exposed intermittent RECOMMENDATION_TIMEOUT on the initial human
+submission using a recommendation receipt, locally and in PR CI. The existing ranking
+query used transaction-local enable_nestloop=off/jit=off and assumed its caller was only
+a read transaction. Receipt revalidation also calls ranking inside the eventual Decision
+write transaction. A new deterministic integration regression confirms both settings leak
+into that caller before commit (expectedon/on, observedoff/off).
+
+Keep the current ranking plan controls, scope/coverage/filtering and1500ms total deadline,
+but save the caller's two planner settings, fully fetch the bounded ranked page, and restore
+those settings before any caller provenance/receipt/write work. Aborted SQL transactions
+still require rollback and thereby restore all SET LOCAL state. No longer transaction or
+weaker timeout, no change to recommendation policy/threshold/evidence/Decision semantics.
+Prove all four caller setting combinations and rerun receipt acceptance, concurrency,
+retrieval/recommendation/full CI. Prior failed runs remain failed evidence; an isolated
+retry alone does not close this gate.
