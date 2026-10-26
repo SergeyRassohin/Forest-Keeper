@@ -550,7 +550,7 @@ def test_real_statement_timeout_is_local_and_registry_remains_readable(client, a
 
     case = real_case(client, auth_env)
 
-    def slow(session, *args):
+    def slow(session, *args, **kwargs):
         session.execute(text("SELECT pg_sleep(3)"))
 
     started = time.monotonic()

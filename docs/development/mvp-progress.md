@@ -146,3 +146,25 @@ Stage8 принят в main; отдельная ветка `codex/stage9-local-a
 контракты, ресурсы/offline threat model, проект gold/метрик и owner decision queue.
 Пороги качества/человеческая разметка не утверждены; production activation BLOCKED.
 Настоящий Qwen runtime и его приёмка пока не выполнены. Merge не разрешён автоматически.
+
+
+### Stage9 — development checkpoint, 26 October 2026
+
+[PR #33](https://github.com/SergeyRassohin/Forest-Keeper/pull/33) contains the preimplementation
+proposal and isolated CPU dependency lock, followed by local runtime/adapters. All14locked
+model files were downloaded/verified outside Git. Actual pinned llama.cpp/Qwen3-8B runs
+with context32768; sentence-transformers/Qwen3-Embedding emits1024dimensions. Initial LLM
+smokes failed; bounded v3 output passed without increasing256output tokens.
+[Actual initial results/limits](../testing/reports/stage9-initial-real-models-2026-10-26.json).
+
+30pure contract/resource tests,3real Redis admission races and1actual Qwen→pgvector→scoped
+retrieval integration test pass (genuine own-file Decision history, no heavy inference inGET).
+Existing37+44retrieval/recommendation tests initially had80PASS/1FAIL because a timeout stub
+did not accept added private auth metadata; its signature was updated and the unchanged
+timeout assertion PASS4.06s. Full final regression remains required. Independent review
+found extra-file and native-instance identity gaps; both were fixed and retained as regressions.
+
+This checkpoint is NOT READY TO MERGE. Public async AI explanation integration, meaningful
+authorized comparison facts, supervised offline container/runtime/resource proof, real end-to-end
+browser flow, supported hardware/10k-vector NFR, human-approved gold/targets, final independent
+real inference review and exact-final-HEAD gates remain outstanding. Production hard-disabled.

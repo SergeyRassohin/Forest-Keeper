@@ -1,0 +1,111 @@
+{
+  "llm_initial_failed": {
+    "source_commit": "708d6ed45571afdaad06a6199ac13476aa392b36",
+    "profile": "Actual pinned llama.cpp/Qwen model contract smoke; not Decision Registry E2E",
+    "error_code": "AI_UNAVAILABLE",
+    "seconds": 97.1936,
+    "passed": false
+  },
+  "llm_v2_failed": {
+    "source_commit": "35c7c759b7c7c56fab483ba9823be8f815ac744e",
+    "profile": "Actual pinned local model contract smoke with generated fixtures/IDs; not Decision Registry E2E, semantic evaluation or network-isolated acceptance",
+    "component": "llm",
+    "passed": false,
+    "model": {
+      "component": "llm",
+      "model_id": "Qwen/Qwen3-8B-GGUF",
+      "revision": "7c41481f57cb95916b40956ab2f0b139b296d974",
+      "artifact_sha256": "d98cdcbd03e17ce47681435b5150e34c1417f50b5c0019dd560e4882c5745785",
+      "artifact_lock_sha256": "de48fc69b3fb7babb3b6fce644b8b90ff77ad52ca23798349f3cf23bcbb60be3",
+      "dimensions": null,
+      "configured_context_tokens": 32768,
+      "preprocessing_version": "qwen3-semantic-json-last-token-v1",
+      "prompt_version": "grounded-clauses-v2",
+      "prompt_sha256": "73d78ffcfd7c5a0dce5fd699027be29727e799f5231da14aaea706a9c92ac635",
+      "instruction_sha256": null,
+      "runtime_versions": {
+        "llama.cpp": "620d2225cc436ab0b001e3200e590e3b286ef9ab"
+      },
+      "quality_provenance": "LOCAL_QWEN_DEMO",
+      "production_accepted": false
+    },
+    "error_code": "AI_UNAVAILABLE",
+    "seconds": 95.9005
+  },
+  "llm_v3": {
+    "source_commit": "822d4c5b4b66e562e185411a09abcaceff1a610d",
+    "profile": "Actual pinned local model contract smoke with generated fixtures/IDs; not Decision Registry E2E, semantic evaluation or network-isolated acceptance",
+    "component": "llm",
+    "passed": true,
+    "model": {
+      "component": "llm",
+      "model_id": "Qwen/Qwen3-8B-GGUF",
+      "revision": "7c41481f57cb95916b40956ab2f0b139b296d974",
+      "artifact_sha256": "d98cdcbd03e17ce47681435b5150e34c1417f50b5c0019dd560e4882c5745785",
+      "artifact_lock_sha256": "de48fc69b3fb7babb3b6fce644b8b90ff77ad52ca23798349f3cf23bcbb60be3",
+      "dimensions": null,
+      "configured_context_tokens": 32768,
+      "preprocessing_version": "qwen3-semantic-json-last-token-v1",
+      "prompt_version": "grounded-clauses-v3",
+      "prompt_sha256": "73d78ffcfd7c5a0dce5fd699027be29727e799f5231da14aaea706a9c92ac635",
+      "instruction_sha256": null,
+      "runtime_versions": {
+        "llama.cpp": "620d2225cc436ab0b001e3200e590e3b286ef9ab"
+      },
+      "quality_provenance": "LOCAL_QWEN_DEMO",
+      "production_accepted": false
+    },
+    "clause_codes": [
+      "CURRENT_CONTEXT",
+      "LIMITATION",
+      "SUPPORT"
+    ],
+    "validated_references": true,
+    "seconds": 59.6162
+  },
+  "embedding": {
+    "source_commit": "35c7c759b7c7c56fab483ba9823be8f815ac744e",
+    "profile": "Actual pinned local model contract smoke with generated fixtures/IDs; not Decision Registry E2E, semantic evaluation or network-isolated acceptance",
+    "component": "embedding",
+    "passed": true,
+    "model": {
+      "component": "embedding",
+      "model_id": "Qwen/Qwen3-Embedding-0.6B",
+      "revision": "97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3",
+      "artifact_sha256": "0437e45c94563b09e13cb7a64478fc406947a93cb34a7e05870fc8dcd48e23fd",
+      "artifact_lock_sha256": "de48fc69b3fb7babb3b6fce644b8b90ff77ad52ca23798349f3cf23bcbb60be3",
+      "dimensions": 1024,
+      "configured_context_tokens": 32768,
+      "preprocessing_version": "qwen3-semantic-json-last-token-v1",
+      "prompt_version": null,
+      "prompt_sha256": null,
+      "instruction_sha256": "2af0a1699e975a014a1aa3a0bb74b77752e6779e72ea538434478147e3363949",
+      "runtime_versions": {
+        "sentence-transformers": "6.2.0",
+        "transformers": "5.20.2",
+        "torch": "2.14.1+cpu"
+      },
+      "quality_provenance": "LOCAL_QWEN_DEMO",
+      "production_accepted": false
+    },
+    "dimensions": 1024,
+    "norm": 1.0000000392172448,
+    "finite_validated": true,
+    "seconds": 1.4371
+  },
+  "scope": "Initial real-model development contract smoke only; not complete Stage9 acceptance, human gold semantic quality, offline/no-egress proof, production hardware sizing or full browser vertical.",
+  "hardware": {
+    "cpu_affinity_reported": 5,
+    "cgroup_cpus": 4,
+    "cgroup_ram_bytes": 34359738368,
+    "gpu": "not detected; CPU-only"
+  },
+  "limits": [
+    "OS caches retained; no fully cold claim.",
+    "Models run on owned host loopback, not yet the accepted isolated container topology.",
+    "Embedding uses actual vectors; LLM fixture IDs are generated contract input, not Decision Registry IDs.",
+    "Initial and v2 model failures remain FAILED. V1 diagnosis confirmed output truncation at256tokens; v2 safe refusal was not separately diagnosed.",
+    "V3 bounds3clauses/1suppliedcitation, keeping256output tokens and32768 configured context.",
+    "Separate actual Qwen/pgvector integration passed with genuine independent file histories and manual Decision."
+  ]
+}

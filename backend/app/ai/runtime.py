@@ -5,6 +5,7 @@ import http.client
 import importlib
 import importlib.metadata
 import json
+import logging
 import os
 import secrets
 import threading
@@ -311,12 +312,32 @@ class PrivateBoundary:
         await self.app(scope, bounded_receive, send)
 
 
-def create_runtime(engine: RuntimeEngine, key: bytes) -> FastAPI:
+def create_runtime(
+    engine: RuntimeEngine,
+    key: bytes,
+    *,
+    fault_file: Path | None = None,
+    timeout_seconds: float = 118,
+) -> FastAPI:
     if not 32 <= len(key) <= 256:
         raise AIError("AI_SERVICE_KEY_INVALID")
+    if not 0 < timeout_seconds <= 118 or (fault_file is not None and fault_file.exists()):
+        raise AIError("AI_RUNTIME_CONFIGURATION_INVALID")
     app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
     app.add_middleware(PrivateBoundary, key=key)
     admission = threading.BoundedSemaphore(1)
+    faulted = threading.Event()
+
+    def fault() -> None:
+        faulted.set()
+        if fault_file is not None:
+            try:
+                fd = os.open(
+                    fault_file, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600
+                )
+                os.close(fd)
+            except OSError:
+                logging.getLogger(__name__).warning("AI_SUPERVISOR_MARKER_UNAVAILABLE")
 
     @app.exception_handler(RequestValidationError)
     async def invalid_request(request: Any, error: Any) -> JSONResponse:
@@ -324,24 +345,32 @@ def create_runtime(engine: RuntimeEngine, key: bytes) -> FastAPI:
 
     @app.get("/internal/ai/health", response_model=None)
     def health() -> dict[str, str] | JSONResponse:
-        if not engine.ready():
+        if faulted.is_set() or not engine.ready():
             return JSONResponse({"reason_code": "AI_UNAVAILABLE"}, status_code=503)
         return {"status": "ok", "component": engine.info.component}
 
     @app.get("/internal/ai/model-info", response_model=None)
     def info() -> ModelInfo | JSONResponse:
-        if not engine.ready():
+        if faulted.is_set() or not engine.ready():
             return JSONResponse({"reason_code": "AI_UNAVAILABLE"}, status_code=503)
         return engine.info
 
     @app.post("/internal/ai/embed", response_model=None)
-    def embed(body: EmbeddingRequest) -> dict[str, Any] | JSONResponse:
+    async def embed(body: EmbeddingRequest) -> dict[str, Any] | JSONResponse:
+        if faulted.is_set():
+            return JSONResponse({"reason_code": "AI_UNAVAILABLE"}, status_code=503)
         if not admission.acquire(blocking=False):
             return JSONResponse({"reason_code": "AI_BUSY"}, status_code=429)
         try:
-            result = {"vectors": engine.embed(body), "model": engine.info.model_dump(mode="json")}
+            vectors = await asyncio.wait_for(
+                asyncio.to_thread(engine.embed, body), timeout=timeout_seconds
+            )
+            result = {"vectors": vectors, "model": engine.info.model_dump(mode="json")}
             vectors_from_response(result, len(body.contexts))
             return result
+        except TimeoutError:
+            fault()
+            return JSONResponse({"reason_code": "AI_TIMEOUT"}, status_code=503)
         except Exception:
             return JSONResponse({"reason_code": "AI_UNAVAILABLE"}, status_code=503)
         finally:
@@ -349,15 +378,23 @@ def create_runtime(engine: RuntimeEngine, key: bytes) -> FastAPI:
 
     @app.post("/internal/ai/recommend", response_model=None)
     @app.post("/internal/ai/explain", response_model=None)
-    def explain(body: Facts) -> dict[str, Any] | JSONResponse:
+    async def explain(body: Facts) -> dict[str, Any] | JSONResponse:
+        if faulted.is_set():
+            return JSONResponse({"reason_code": "EXPLANATION_UNAVAILABLE"}, status_code=503)
         if not admission.acquire(blocking=False):
             return JSONResponse({"reason_code": "AI_BUSY"}, status_code=429)
         try:
-            output = validate_explanation(engine.explain(body), body)
+            generated = await asyncio.wait_for(
+                asyncio.to_thread(engine.explain, body), timeout=timeout_seconds
+            )
+            output = validate_explanation(generated, body)
             return {
                 "explanation": output.model_dump(mode="json"),
                 "model": engine.info.model_dump(mode="json"),
             }
+        except TimeoutError:
+            fault()
+            return JSONResponse({"reason_code": "AI_TIMEOUT"}, status_code=503)
         except Exception:
             return JSONResponse({"reason_code": "EXPLANATION_UNAVAILABLE"}, status_code=503)
         finally:
@@ -381,4 +418,9 @@ def runtime_app() -> FastAPI:
         engine = LlamaEngine(root, lock)
     else:
         raise AIError("AI_COMPONENT_UNAVAILABLE")
-    return create_runtime(engine, service_key(Path(os.environ["FK_AI_KEY_FILE"])))
+    fault_path = os.environ.get("FK_AI_FAULT_FILE")
+    return create_runtime(
+        engine,
+        service_key(Path(os.environ["FK_AI_KEY_FILE"])),
+        fault_file=Path(fault_path) if fault_path else None,
+    )

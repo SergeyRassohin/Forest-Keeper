@@ -150,7 +150,10 @@ def evaluate(
         return finish("POLICY_NOT_APPROVED")
     result.quality_provenance = "DEMONSTRATION_ONLY"
     result.limitations.insert(
-        0, "Демонстрационный режим: тестовые векторы не доказывают правильность рекомендации."
+        0,
+        "Демонстрационный режим локальной Qwen: промышленное качество не подтверждено."
+        if settings.similarity_provider == "qwen-demo"
+        else "Демонстрационный режим: тестовые векторы не доказывают правильность рекомендации.",
     )
     if case.status not in {"OPEN", "IN_REVIEW"} or case.current_decision_id is not None:
         return finish("CURRENT_CASE_NOT_ELIGIBLE")

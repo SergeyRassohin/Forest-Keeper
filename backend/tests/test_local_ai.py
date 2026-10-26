@@ -306,3 +306,67 @@ def test_native_model_identity_is_rechecked_before_generation(monkeypatch):
     monkeypatch.setattr("app.ai.runtime.native_request", forbidden)
     with pytest.raises(AIError, match="AI_MODEL_IDENTITY_MISMATCH"):
         engine.explain(facts())
+
+
+def test_model_timeout_closes_admission_marks_supervisor_fault_and_keeps_output_unavailable(
+    tmp_path,
+):
+    import time
+
+    class Slow(ContractOnlyEngine):
+        def embed(self, request):
+            self.calls += 1
+            time.sleep(0.2)
+            return [[1.0, *([0.0] * 1023)]]
+
+    engine = Slow()
+    marker = tmp_path / "model-fault"
+    with TestClient(create_runtime(engine, KEY, fault_file=marker, timeout_seconds=0.01)) as client:
+        client.headers["X-FK-AI-Key"] = KEY.decode()
+        body = {"purpose": "query", "contexts": [semantic_context(features()).model_dump()]}
+        assert client.post("/internal/ai/embed", json=body).json()["reason_code"] == "AI_TIMEOUT"
+        assert marker.exists()
+        assert client.get("/internal/ai/health").status_code == 503
+        assert client.get("/internal/ai/model-info").status_code == 503
+        assert client.post("/internal/ai/embed", json=body).status_code == 503
+        assert engine.calls == 1
+
+
+def test_authenticated_slow_bodies_have_bounded_admission_and_cancel_releases_it():
+    import asyncio
+
+    from app.ai.runtime import PrivateBoundary
+
+    async def scenario():
+        started = 0
+        sent = []
+
+        async def downstream(scope, receive, send):
+            sent.append({"type": "downstream"})
+
+        async def slow():
+            nonlocal started
+            started += 1
+            await asyncio.Event().wait()
+
+        async def output(message):
+            sent.append(message)
+
+        boundary = PrivateBoundary(downstream, KEY)
+        scope = {"type": "http", "headers": [(b"x-fk-ai-key", KEY)]}
+        tasks = [asyncio.create_task(boundary(scope, slow, output)) for _ in range(8)]
+        while started < 8:
+            await asyncio.sleep(0)
+        await boundary(scope, slow, output)
+        assert any(item.get("status") == 429 for item in sent)
+        for task in tasks:
+            task.cancel()
+        await asyncio.gather(*tasks, return_exceptions=True)
+
+        async def valid():
+            return {"type": "http.request", "body": b"", "more_body": False}
+
+        await boundary(scope, valid, output)
+        assert {"type": "downstream"} in sent
+
+    asyncio.run(scenario())
