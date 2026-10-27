@@ -1,6 +1,6 @@
 # MVP: состояние реализации
 
-**Актуально на 26 октября 2026:** Stage 0–8 приняты в `main`. Stage 8 — [PR #30](https://github.com/SergeyRassohin/Forest-Keeper/pull/30), merge `54d3939d704bfe6aa1c943bef3e70b83b01c0527`, [CI точного merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/40198679543). Этап 9 начинается отдельно по issue #31: локальные pinned Qwen embedding/LLM, исходная архитектура и критерии оформлены до реализации. Production semantic activation и положительные production-рекомендации заблокированы до утверждённой оценки качества; Stage 8 demo policy не меняется. AI runtime и explicit async UI реализованы в development/demo; настоящие pinned модели прошли локальный isolated vertical, но итоговая приёмка Stage9 ещё не завершена. #17/#18/#20 остаются открытыми.
+**Актуально на 27 октября 2026:** Stage 0–8 приняты в `main`: Stage 8 — [PR #30](https://github.com/SergeyRassohin/Forest-Keeper/pull/30), merge `54d3939d704bfe6aa1c943bef3e70b83b01c0527`, [CI merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/40198679543). Stage 9 реализуется отдельно по issue #31 в [draft PR #33](https://github.com/SergeyRassohin/Forest-Keeper/pull/33). Настоящие локальные Qwen embedding/LLM прошли изолированный development/demo сценарий, браузерную проверку и перезапуск PostgreSQL/Redis. [Результаты и оставшиеся gates](../testing/reports/stage9-development-acceptance-2026-10-27.md). Приёмка Stage 9 — **BLOCKED**: человеческий эталон/пороги качества и репрезентативная нагрузочная проверка ещё не завершены. Production AI и положительные production-рекомендации отключены; Stage 8 demo policy не меняется. Слияние не выполнялось; #17/#18/#20 остаются открытыми.
 
 ## Итерация 1 — этап 0
 
@@ -218,3 +218,27 @@ fixed to use Settings.import_queue_name and targeted3infrastructure tests PASS2.
 **NOT READY TO MERGE.** Human-approved gold/targets, representative10kreal-vector NFR,
 actual AI browser/recovery/remaining acceptance, final exact-HEAD gates and owner review
 are outstanding. GPU/100k/signed installer/production positive policy are not accepted.
+
+
+### Stage 9 — сводная проверка, 27 октября 2026
+
+[Итог development-проверки и ссылки на доказательства](../testing/reports/stage9-development-acceptance-2026-10-27.md).
+Полный локальный прогон: 311 backend unit, 567 integration, 73 frontend и 15 browser PASS;
+три опциональных теста настоящих моделей выполнены отдельно — PASS. Настоящий Qwen
+browser-сценарий прошёл отдельно: 8 PNG, 8 Axe/20 responsive checks, явное человеческое
+решение, сохранённый draft при AI/theme updates, работа при остановке обеих моделей и
+их healthy-восстановление. После фактического перезапуска PostgreSQL/Redis сохранились
+7 Decisions, 7 настоящих 1024-мерных векторов и Redis canary. Проверены dual-index,
+partial-coverage refusal, resume, explicit cutover/rollback и неизменность истории.
+
+Устранена утечка SQL planner hints из retrieval в транзакцию подтверждения Decision;
+все четыре сочетания caller settings проверены. Отдельная поломка тестового ingress
+исправлена увеличением его конечного лимита с32 до128 соединений; AI admission остаётся8.
+Прошлые failed-прогоны сохранены как failed. Оба CI коммита `63fd84d` SUCCESS; это
+промежуточный коммит, финальные SHA/CI проверяются в PR после фиксации отчётов.
+
+**Stage 9 BLOCKED, не READY TO MERGE.** [Владельцу](../testing/stage9-owner-review.md)
+подготовлены предлагаемые пороги и200 набросков для разметки — это не утверждённый Gold.
+Нужны человеческие labels/пороги до оценки и10k настоящих репрезентативных vectors /
+10сессий NFR, cold/warm/поддерживаемое железо. Подписанная поставка — открытая зависимость#32.
+Production AI/positive policy остаются отключены. Stage 10 не начат; merge не выполнялся.

@@ -1,0 +1,75 @@
+{
+  "passed": true,
+  "components": [
+    {
+      "component": "embedding",
+      "model": {
+        "component": "embedding",
+        "model_id": "Qwen/Qwen3-Embedding-0.6B",
+        "revision": "97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3",
+        "artifact_sha256": "0437e45c94563b09e13cb7a64478fc406947a93cb34a7e05870fc8dcd48e23fd",
+        "artifact_lock_sha256": "de48fc69b3fb7babb3b6fce644b8b90ff77ad52ca23798349f3cf23bcbb60be3",
+        "dimensions": 1024,
+        "configured_context_tokens": 32768,
+        "preprocessing_version": "qwen3-semantic-json-last-token-v1",
+        "prompt_version": null,
+        "prompt_sha256": null,
+        "instruction_sha256": "2af0a1699e975a014a1aa3a0bb74b77752e6779e72ea538434478147e3363949",
+        "runtime_versions": {
+          "sentence-transformers": "6.2.0",
+          "transformers": "5.20.2",
+          "torch": "2.14.1+cpu"
+        },
+        "input_schema_sha256": "08190cb4f5f26abe30389980f0f180202ad0a2ccb5755a1a567babe72cae38c2",
+        "output_schema_sha256": "d4cf311cc17593aa4a197a2f987ae61383d34ca8e3a7b1d9dd1d1a115c5f4102",
+        "quality_provenance": "LOCAL_QWEN_DEMO",
+        "production_accepted": false
+      },
+      "unauthenticated_denied": true,
+      "public_tcp_denied": true,
+      "database_tcp_denied": true,
+      "public_dns_denied": true,
+      "dns_finished_within_seconds": 3,
+      "no_database_credentials": true,
+      "no_outbound_proxy": true,
+      "offline_flags": true,
+      "private_container_policy": true,
+      "image": "sha256:fc87b4da4562898fea296f2f9fb4d1fe6d7c49470cb489eb47c7b38293ea155a",
+      "passed": true
+    },
+    {
+      "component": "llm",
+      "model": {
+        "component": "llm",
+        "model_id": "Qwen/Qwen3-8B-GGUF",
+        "revision": "7c41481f57cb95916b40956ab2f0b139b296d974",
+        "artifact_sha256": "d98cdcbd03e17ce47681435b5150e34c1417f50b5c0019dd560e4882c5745785",
+        "artifact_lock_sha256": "de48fc69b3fb7babb3b6fce644b8b90ff77ad52ca23798349f3cf23bcbb60be3",
+        "dimensions": null,
+        "configured_context_tokens": 32768,
+        "preprocessing_version": "qwen3-semantic-json-last-token-v1",
+        "prompt_version": "grounded-clauses-v5-minimal-comparison",
+        "prompt_sha256": "16079a42e9eebf4ca4a2486dac3463d2f5653bb6f764c6b46925742d029d9b87",
+        "instruction_sha256": null,
+        "runtime_versions": {
+          "llama.cpp": "620d2225cc436ab0b001e3200e590e3b286ef9ab"
+        },
+        "input_schema_sha256": "6f1ceb0c12444a0e2c9afeef2904e0d2273a497e9f0979c7badacc83fc247b5b",
+        "output_schema_sha256": "b74af58fd012d0d61b9c6e10e0f2cc6887e364edc30349e724ec6cd67303609f",
+        "quality_provenance": "LOCAL_QWEN_DEMO",
+        "production_accepted": false
+      },
+      "unauthenticated_denied": true,
+      "public_tcp_denied": true,
+      "database_tcp_denied": true,
+      "public_dns_denied": true,
+      "dns_finished_within_seconds": 3,
+      "no_database_credentials": true,
+      "no_outbound_proxy": true,
+      "offline_flags": true,
+      "private_container_policy": true,
+      "image": "sha256:998a8e65d16b5ca6f7f3b7065ff501250cb672cb1ac1e407c0e45bafb616abe3",
+      "passed": true
+    }
+  ]
+}

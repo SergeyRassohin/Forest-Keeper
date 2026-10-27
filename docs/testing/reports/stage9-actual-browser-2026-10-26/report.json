@@ -1,0 +1,277 @@
+{
+  "kind": "own-synthetic-actual-qwen-browser-not-gold",
+  "passed": true,
+  "captures": [
+    {
+      "file": "real-qwen-explanation-light-1440.png",
+      "theme": "light",
+      "width": 1440,
+      "sha256": "2cc1ea8aabf2fdf99ae38f19cc7b68264e2a1ce6f5b123e35c08423f9195b014"
+    },
+    {
+      "file": "real-qwen-explanation-light-390.png",
+      "theme": "light",
+      "width": 390,
+      "sha256": "ea5ed380196b7c9a63880c7ef2cebf556e537111be5392d3ad8b8bf9fa9ab39c"
+    },
+    {
+      "file": "real-qwen-explanation-dark-1440.png",
+      "theme": "dark",
+      "width": 1440,
+      "sha256": "c0080b9a04d2383b7c4a62dd1b7aa0c4c077b84c878507139221b497c701dda6"
+    },
+    {
+      "file": "real-qwen-explanation-dark-390.png",
+      "theme": "dark",
+      "width": 390,
+      "sha256": "7ce599dc17508f8c1a244d2fefc46fd0aaa23f512a327e74e89452542ca00cc2"
+    },
+    {
+      "file": "both-models-stopped-light-1440.png",
+      "theme": "light",
+      "width": 1440,
+      "sha256": "488204dd55ada913cb42b06c95efc6c6b712eda13c60495f429846d23c5765b8"
+    },
+    {
+      "file": "both-models-stopped-light-390.png",
+      "theme": "light",
+      "width": 390,
+      "sha256": "238f23adcbe22a1ee898e84494926de2c5f907899379b7f4c763a8df4afdf33d"
+    },
+    {
+      "file": "both-models-stopped-dark-1440.png",
+      "theme": "dark",
+      "width": 1440,
+      "sha256": "b0ef22d24c0247f7df0128eee6e72358667cc3eb51a09fa3892e435fb10768c3"
+    },
+    {
+      "file": "both-models-stopped-dark-390.png",
+      "theme": "dark",
+      "width": 390,
+      "sha256": "2cc730ec3ec325077192bc1cc5cd48f85d9a97431cd6cab35bf7c1dce55590b8"
+    }
+  ],
+  "accessibility": [
+    {
+      "label": "real-qwen-explanation",
+      "theme": "light",
+      "width": 1440,
+      "violations": []
+    },
+    {
+      "label": "real-qwen-explanation",
+      "theme": "light",
+      "width": 390,
+      "violations": []
+    },
+    {
+      "label": "real-qwen-explanation",
+      "theme": "dark",
+      "width": 1440,
+      "violations": []
+    },
+    {
+      "label": "real-qwen-explanation",
+      "theme": "dark",
+      "width": 390,
+      "violations": []
+    },
+    {
+      "label": "both-models-stopped",
+      "theme": "light",
+      "width": 1440,
+      "violations": []
+    },
+    {
+      "label": "both-models-stopped",
+      "theme": "light",
+      "width": 390,
+      "violations": []
+    },
+    {
+      "label": "both-models-stopped",
+      "theme": "dark",
+      "width": 1440,
+      "violations": []
+    },
+    {
+      "label": "both-models-stopped",
+      "theme": "dark",
+      "width": 390,
+      "violations": []
+    }
+  ],
+  "responsive": [
+    {
+      "label": "real-qwen-explanation",
+      "theme": "light",
+      "width": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "label": "real-qwen-explanation",
+      "theme": "light",
+      "width": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "label": "real-qwen-explanation",
+      "theme": "light",
+      "width": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "label": "real-qwen-explanation",
+      "theme": "light",
+      "width": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "label": "real-qwen-explanation",
+      "theme": "light",
+      "width": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "label": "real-qwen-explanation",
+      "theme": "dark",
+      "width": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "label": "real-qwen-explanation",
+      "theme": "dark",
+      "width": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "label": "real-qwen-explanation",
+      "theme": "dark",
+      "width": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "label": "real-qwen-explanation",
+      "theme": "dark",
+      "width": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "label": "real-qwen-explanation",
+      "theme": "dark",
+      "width": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "label": "both-models-stopped",
+      "theme": "light",
+      "width": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "label": "both-models-stopped",
+      "theme": "light",
+      "width": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "label": "both-models-stopped",
+      "theme": "light",
+      "width": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "label": "both-models-stopped",
+      "theme": "light",
+      "width": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "label": "both-models-stopped",
+      "theme": "light",
+      "width": 390,
+      "document": 390,
+      "passed": true
+    },
+    {
+      "label": "both-models-stopped",
+      "theme": "dark",
+      "width": 1920,
+      "document": 1920,
+      "passed": true
+    },
+    {
+      "label": "both-models-stopped",
+      "theme": "dark",
+      "width": 1440,
+      "document": 1440,
+      "passed": true
+    },
+    {
+      "label": "both-models-stopped",
+      "theme": "dark",
+      "width": 1280,
+      "document": 1280,
+      "passed": true
+    },
+    {
+      "label": "both-models-stopped",
+      "theme": "dark",
+      "width": 1024,
+      "document": 1024,
+      "passed": true
+    },
+    {
+      "label": "both-models-stopped",
+      "theme": "dark",
+      "width": 390,
+      "document": 390,
+      "passed": true
+    }
+  ],
+  "actual_model": {
+    "component": "llm",
+    "model_id": "Qwen/Qwen3-8B-GGUF",
+    "revision": "7c41481f57cb95916b40956ab2f0b139b296d974",
+    "artifact_sha256": "d98cdcbd03e17ce47681435b5150e34c1417f50b5c0019dd560e4882c5745785",
+    "artifact_lock_sha256": "de48fc69b3fb7babb3b6fce644b8b90ff77ad52ca23798349f3cf23bcbb60be3",
+    "dimensions": null,
+    "configured_context_tokens": 32768,
+    "preprocessing_version": "qwen3-semantic-json-last-token-v1",
+    "prompt_version": "grounded-clauses-v5-minimal-comparison",
+    "prompt_sha256": "16079a42e9eebf4ca4a2486dac3463d2f5653bb6f764c6b46925742d029d9b87",
+    "instruction_sha256": null,
+    "runtime_versions": {
+      "llama.cpp": "620d2225cc436ab0b001e3200e590e3b286ef9ab"
+    },
+    "input_schema_sha256": "6f1ceb0c12444a0e2c9afeef2904e0d2273a497e9f0979c7badacc83fc247b5b",
+    "output_schema_sha256": "b74af58fd012d0d61b9c6e10e0f2cc6887e364edc30349e724ec6cd67303609f",
+    "quality_provenance": "LOCAL_QWEN_DEMO",
+    "production_accepted": false
+  },
+  "verified_case_id": "d0e6b6cf-6f7b-5c58-909c-242bc8a70842",
+  "verified_cited_decision_ids": [
+    "9440a1ec-eb1f-49eb-93a9-46657a6421fa"
+  ],
+  "citations_valid": true,
+  "no_ai_business_writes": true,
+  "draft_and_theme_preserved": true,
+  "explicit_human_decision": true,
+  "both_models_stopped_manual_decision": true,
+  "flow_passed": true,
+  "models_restored_healthy": true
+}

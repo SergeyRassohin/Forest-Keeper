@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "decisions": 7,
+  "vector_dimensions": 1024,
+  "actual_vectors_preserved": 7,
+  "immutable_business_digests_preserved": true,
+  "redis_aof_canary_preserved": true
+}

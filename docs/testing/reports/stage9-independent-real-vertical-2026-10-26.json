@@ -1,0 +1,35 @@
+{
+  "kind": "legally-synthetic-development-vertical-not-gold",
+  "passed": true,
+  "backfill_seconds": 13.558,
+  "llm_job_seconds": 59.2815,
+  "explanation_state": "COMPLETED",
+  "precedents": 5,
+  "actual_vectors": 5,
+  "retrieval_version": "2bfa62e6-1660-5ab2-a938-86f12b508eac",
+  "model": {
+    "component": "llm",
+    "model_id": "Qwen/Qwen3-8B-GGUF",
+    "revision": "7c41481f57cb95916b40956ab2f0b139b296d974",
+    "artifact_sha256": "d98cdcbd03e17ce47681435b5150e34c1417f50b5c0019dd560e4882c5745785",
+    "artifact_lock_sha256": "de48fc69b3fb7babb3b6fce644b8b90ff77ad52ca23798349f3cf23bcbb60be3",
+    "dimensions": null,
+    "configured_context_tokens": 32768,
+    "preprocessing_version": "qwen3-semantic-json-last-token-v1",
+    "prompt_version": "grounded-clauses-v5-minimal-comparison",
+    "prompt_sha256": "16079a42e9eebf4ca4a2486dac3463d2f5653bb6f764c6b46925742d029d9b87",
+    "instruction_sha256": null,
+    "runtime_versions": {
+      "llama.cpp": "620d2225cc436ab0b001e3200e590e3b286ef9ab"
+    },
+    "input_schema_sha256": "6f1ceb0c12444a0e2c9afeef2904e0d2273a497e9f0979c7badacc83fc247b5b",
+    "output_schema_sha256": "b74af58fd012d0d61b9c6e10e0f2cc6887e364edc30349e724ec6cd67303609f",
+    "quality_provenance": "LOCAL_QWEN_DEMO",
+    "production_accepted": false
+  },
+  "support_citations_valid": true,
+  "ai_business_writes": 0,
+  "human_confirmation": true,
+  "production_accepted": false,
+  "elapsed_seconds": 79.5737
+}

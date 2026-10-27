@@ -1,0 +1,45 @@
+{
+  "internal_networks": {
+    "fk-stage9_ai_private": true,
+    "fk-stage9_default": true
+  },
+  "components": {
+    "backend": {
+      "public_tcp_denied": true,
+      "public_dns_denied": true,
+      "dns_finished": true,
+      "no_proxy": true,
+      "networks": [
+        "fk-stage9_ai_private",
+        "fk-stage9_default"
+      ],
+      "image": "sha256:82b980ebe04468b957d273757ccf62f32130c85a3e28add6302bd6ddaf17c39f",
+      "passed": true
+    },
+    "ai-embedding-worker": {
+      "public_tcp_denied": true,
+      "public_dns_denied": true,
+      "dns_finished": true,
+      "no_proxy": true,
+      "networks": [
+        "fk-stage9_ai_private",
+        "fk-stage9_default"
+      ],
+      "image": "sha256:82b980ebe04468b957d273757ccf62f32130c85a3e28add6302bd6ddaf17c39f",
+      "passed": true
+    },
+    "ai-llm-worker": {
+      "public_tcp_denied": true,
+      "public_dns_denied": true,
+      "dns_finished": true,
+      "no_proxy": true,
+      "networks": [
+        "fk-stage9_ai_private",
+        "fk-stage9_default"
+      ],
+      "image": "sha256:82b980ebe04468b957d273757ccf62f32130c85a3e28add6302bd6ddaf17c39f",
+      "passed": true
+    }
+  },
+  "passed": true
+}

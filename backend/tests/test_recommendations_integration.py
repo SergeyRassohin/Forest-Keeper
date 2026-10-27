@@ -53,7 +53,7 @@ def recommendation(client, identifier, expected=200):
 
 def business_hash(session):
     tables = (
-        "sources",
+        "source_systems",
         "import_batches",
         "raw_records",
         "analysis_runs",
