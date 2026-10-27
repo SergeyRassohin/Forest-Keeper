@@ -40,3 +40,55 @@ def test_wrong_scope_or_dataset_list_is_not_a_success(category):
     client.get.return_value.json.return_value = [{"id": "outside", "conflict_id": "outside"}] * 50
     row = observe(client, category, "/owned", "case", "decision", {"history"}, {"case"})
     assert row["valid"] is False
+
+
+@pytest.mark.parametrize(
+    "field,value",
+    [
+        ("state", "INDEXING"),
+        ("state", "UNAVAILABLE"),
+        ("retrieval_version", "wrong-space"),
+        ("embedding_model", {"provider": "test"}),
+        ("total_candidates_before_filter", 1),
+        ("total_after_filter", 1),
+    ],
+)
+def test_retrieval_wrong_provider_version_or_pool_cannot_pass(field, value):
+    from app.similarity.service import configuration
+
+    payload = {
+        "state": "READY",
+        "retrieval_version": "owned-qwen-version",
+        "embedding_model": configuration("qwen-demo-v1"),
+        "total_candidates_before_filter": 10000,
+        "total_after_filter": 10000,
+    }
+    payload[field] = value
+    client = MagicMock()
+    client.get.return_value.status_code = 200
+    client.get.return_value.json.return_value = payload
+    row = observe(
+        client,
+        "similar_decisions",
+        "/owned",
+        "case",
+        "decision",
+        set(),
+        set(),
+        "owned-qwen-version",
+        10000,
+    )
+    assert row["valid"] is False
+
+
+def test_full_pool_recommendation_does_not_count_unavailable_or_positive_as_success():
+    client = MagicMock()
+    client.get.return_value.status_code = 200
+    for payload in [
+        {"status": "UNAVAILABLE"},
+        {"status": "RECOMMENDED"},
+        {"status": "ABSTAINED", "reason_code": "WRONG_REASON"},
+    ]:
+        client.get.return_value.json.return_value = payload
+        row = observe(client, "recommendation", "/owned", "case", "decision", set(), set())
+        assert row["valid"] is False

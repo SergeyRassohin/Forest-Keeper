@@ -4,6 +4,7 @@ This is a core metadata test, not semantic quality, full-index ranking or LLM ti
 The only authentication is the existing owned fixture's ten browser cookie sessions.
 """
 
+import hashlib
 import json
 import math
 import os
@@ -70,7 +71,7 @@ def probe(value):
     return result
 
 
-def observe(client, category, path, query, decision, history, cases):
+def observe(client, category, path, query, decision, history, cases, version=None, target=None):
     since = time.monotonic()
     row = {"endpoint": category, "valid": False, "status_code": None, "error_code": None}
     try:
@@ -100,6 +101,31 @@ def observe(client, category, path, query, decision, history, cases):
             valid = valid and isinstance(data, dict) and data.get("conflict_id") == query
         elif category == "conflict_detail":
             valid = valid and isinstance(data, dict) and data.get("id") == query
+        elif category == "similar_decisions":
+            from app.similarity.service import configuration
+
+            valid = (
+                valid
+                and isinstance(data, dict)
+                and (
+                    data.get("state") in {"READY", "NO_PRECEDENT"}
+                    and version is not None
+                    and target is not None
+                    and data.get("retrieval_version") == version
+                    and data.get("embedding_model") == configuration("qwen-demo-v1")
+                    and data.get("total_candidates_before_filter") == target
+                    and data.get("total_after_filter") == target
+                )
+            )
+        elif category == "recommendation":
+            valid = (
+                valid
+                and isinstance(data, dict)
+                and (
+                    data.get("status") == "ABSTAINED"
+                    and data.get("reason_code") == "EVIDENCE_WINDOW_EXCEEDED"
+                )
+            )
         else:
             valid = False
         row["valid"] = valid
@@ -115,7 +141,15 @@ def main():
         raise SystemExit("Explicit owned development fixture opt-in required")
     value = json.loads((FIXTURE / "fixture.json").read_text())
     assert value["kind"] == "owned-stage9-distinct-file-capacity-v1-not-gold"
-    assert value["phase"] == "INDEXING" and value["target"] == 10000
+    assert value["phase"] in {"INDEXING", "INDEXED"} and value["target"] == 10000
+    mode = os.getenv("FK_AI_CORE_MODE", "metadata")
+    assert mode in {"metadata", "retrieval"}
+    if mode == "retrieval":
+        assert value["phase"] == "INDEXED", "Never measure full ranking on a partial index"
+    activity = os.getenv(
+        "FK_AI_CORE_REQUIRE_ACTIVITY", "embedding" if value["phase"] == "INDEXING" else "none"
+    )
+    assert activity in {"embedding", "llm", "none"}
     assert re.fullmatch(r"auth_test_[a-f0-9]{32}", value["schema"])
     assert len(set(value["tokens"])) == 10
     for identifier in value["queries"]:
@@ -131,18 +165,29 @@ def main():
         text=True,
     ).strip()
     assert label == "fk-stage9-capacity"
-    report = FIXTURE / "evidence" / ("core-https-backfill-" + uuid4().hex + ".json")
+    report = FIXTURE / "evidence" / ("core-https-" + activity + "-" + uuid4().hex + ".json")
+    source = Path(__file__).read_bytes()
+    source_hash = hashlib.sha256(source).hexdigest()
+    source_artifact = report.parent / ("https-observer-source-" + source_hash + ".py.txt")
+    if source_artifact.exists():
+        assert source_artifact.read_bytes() == source
+    else:
+        with source_artifact.open("xb") as out:
+            out.write(source)
     result = {
-        "kind": "actual-https-core-load-during-qwen-backfill-not-quality",
+        "kind": "actual-https-core-metadata-load-not-quality",
         "passed": False,
         "sessions": 10,
         "planned_requests": 500,
         "started_at": datetime.now(UTC).isoformat(),
         "transport": "actual local HTTPS/nginx/API/PG/Redis",
-        "full_index_ranking_measured": False,
+        "full_index_ranking_measured": mode == "retrieval",
         "llm_measured": False,
         "production_accepted": False,
         "semantic_quality_evaluated": False,
+        "required_overlap_component": activity,
+        "observer_source_sha256": source_hash,
+        "observer_source_artifact": source_artifact.name,
     }
 
     def persist():
@@ -151,7 +196,7 @@ def main():
         os.replace(temporary, report)
 
     persist()
-    rows, cpu = [], []
+    rows, cpu, llm_cpu = [], [], []
     history = frozenset(value["history"])
     cases = history | frozenset(value["queries"])
     mutex, finished, start = Lock(), Event(), Barrier(10)
@@ -166,30 +211,41 @@ def main():
                     "stats",
                     "--no-stream",
                     "--format",
-                    "{{.CPUPerc}}",
+                    "{{.Name}} {{.CPUPerc}}",
                     "fk-stage9-fk-ai-embedding-1",
+                    "fk-stage9-fk-ai-llm-1",
                 ],
                 capture_output=True,
                 text=True,
                 check=False,
                 timeout=5,
             )
-            if sample.returncode == 0 and re.fullmatch(r"\d+(?:\.\d+)?%", sample.stdout.strip()):
-                cpu.append(
-                    {
-                        "elapsed_seconds": round(time.monotonic() - began, 4),
-                        "sample_start_seconds": round(since, 4),
-                        "cpu_percent": float(sample.stdout.strip().rstrip("%")),
-                    }
-                )
+            if sample.returncode == 0:
+                for line in sample.stdout.splitlines():
+                    match = re.fullmatch(
+                        r"(fk-stage9-fk-ai-(embedding|llm)-1) (\d+(?:\.\d+)?)%", line.strip()
+                    )
+                    if match:
+                        collection = cpu if match[2] == "embedding" else llm_cpu
+                        collection.append(
+                            {
+                                "elapsed_seconds": round(time.monotonic() - began, 4),
+                                "sample_start_seconds": round(since, 4),
+                                "cpu_percent": float(match[3]),
+                            }
+                        )
             finished.wait(2)
 
     began = time.monotonic()
     sampler = Thread(target=cpu_sample, daemon=True)
     try:
         result["before"] = probe(value)
-        assert result["before"]["index_status"] == "PROCESSING"
-        assert 0 < result["before"]["vectors"] < 10000
+        if value["phase"] == "INDEXING":
+            assert result["before"]["index_status"] == "PROCESSING"
+            assert 0 < result["before"]["vectors"] < 10000
+        else:
+            assert result["before"]["index_status"] == "COMPLETED"
+            assert result["before"]["vectors"] == 10000
         with httpx.Client(
             base_url=BASE,
             verify=context,
@@ -216,6 +272,14 @@ def main():
                 "review_context": "/api/v1/conflicts/" + query + "/review-context",
                 "conflict_detail": "/api/v1/conflicts/" + query,
             }
+            if mode == "retrieval":
+                endpoints = {
+                    "similar_decisions": "/api/v1/conflicts/" + query + "/similar-decisions",
+                    "recommendation": "/api/v1/conflicts/" + query + "/recommendation",
+                    "registry_list": endpoints["registry_list"],
+                    "review_context": endpoints["review_context"],
+                    "decision_detail": endpoints["decision_detail"],
+                }
             with httpx.Client(
                 base_url=BASE,
                 verify=context,
@@ -227,14 +291,26 @@ def main():
                 start.wait(timeout=10)
                 for _ in range(10):
                     for category, path in endpoints.items():
-                        row = observe(client, category, path, query, decision, history, cases)
+                        row = observe(
+                            client,
+                            category,
+                            path,
+                            query,
+                            decision,
+                            history,
+                            cases,
+                            value["version_id"],
+                            value["target"],
+                        )
                         with mutex:
                             rows.append(row)
 
+        result["request_window_started_at"] = datetime.now(UTC).isoformat()
         began = time.monotonic()
         sampler.start()
         with ThreadPoolExecutor(10) as pool:
             list(pool.map(reader, range(10)))
+        result["request_window_ended_at"] = datetime.now(UTC).isoformat()
         result["request_window_seconds"] = round(time.monotonic() - began, 4)
         finished.set()
         sampler.join(timeout=10)
@@ -249,7 +325,12 @@ def main():
         finished.set()
         if sampler.is_alive():
             sampler.join(timeout=10)
-        result.update(measurements=rows, embedding_cpu_samples=cpu, requests=len(rows))
+        result.update(
+            measurements=rows,
+            embedding_cpu_samples=cpu,
+            llm_cpu_samples=llm_cpu,
+            requests=len(rows),
+        )
         result["invalid_responses"] = sum(not r["valid"] for r in rows)
         result["outcomes"] = dict(
             Counter(r["error_code"] or "HTTP_" + str(r["status_code"]) for r in rows)
@@ -274,10 +355,13 @@ def main():
             and "error_code" not in result
             and result.get("immutable_history_preserved") is True
             and result.get("after", {}).get("index_status") in {"PROCESSING", "COMPLETED"}
-            and any(
-                s["cpu_percent"] > 0
-                and s["elapsed_seconds"] <= result.get("request_window_seconds", 0)
-                for s in cpu
+            and (
+                activity == "none"
+                or any(
+                    s["cpu_percent"] >= 10
+                    and s["elapsed_seconds"] <= result.get("request_window_seconds", 0)
+                    for s in (cpu if activity == "embedding" else llm_cpu)
+                )
             )
             and all(t <= 1 for t in result["endpoint_p95_seconds"].values())
         )

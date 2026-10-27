@@ -129,3 +129,71 @@ remains historical under the older instrument, despite all its500rows having no 
 error. It does not replace the corrected rerun. Raw reports are preserved without editing
 their metrics. The companion hashes bind report filenames as produced during execution;
 the repository copies use descriptive filenames above.
+
+
+## Process startup and timing-series preparation
+
+The known idle development LLM was restarted once while actual embedding backfill
+continued. Same image, weights, context32768 and limits; no OS cache flush. The first
+retained successful Docker health check was23.6161s after restart initiation. This is
+one coarse process-readiness observation, not a cold-disk startup distribution or a
+production guarantee. [Startup evidence](reports/stage9-llm-process-startup-2026-10-28.json).
+
+A [500request actual HTTPS core run](reports/stage9-https-core-during-llm-startup-2026-10-28.json)
+passed during that startup: endpoint p95=0.144941–0.225857s, no invalid responses or
+business-history changes. Its exact request window was21:43:35.601–21:43:42.255UTC,
+before the first healthy check at21:43:47.102UTC. Embedding CPU75.52% and LLM93.11% were
+sampled inside the request window; the LLM activity here was **startup, not inference**.
+[Observer hash/provenance](reports/stage9-llm-startup-observer-provenance-2026-10-28.json).
+
+The first separate twenty-vertical series stopped at its own embedding preparation,
+**before any LLM call**: [failed result](reports/stage9-first-concurrent-series-pre-llm-failed-2026-10-28.json),
+one attempted fixture, zero LLM timings. Its separate queue shared the model with the
+continuously active backfill. Runtime intentionally has one nonblocking embedding
+admission slot. This is not an observed LLM timeout/latency failure. The main backfill
+continues. Retry the separate series only after it finishes, without changing service
+limits/deadlines, introducing provider mocks or silently erasing this failure.
+
+```sh
+python scripts/run-ai-capacity.py series --fixture real-series-v2
+```
+
+This phase is guarded until the10000-vector fixture is INDEXED. It creates a fresh
+bounded operator container and runs the existing actual Registry→Qwen→groundedLLM→
+explicit fixture human-confirmation vertical twenty times, each in its own disposable
+schema. Settings routing is the only injection. Per-attempt logs are private; sanitized
+reports remain separate. Stop on the first failure for diagnosis. Incomplete samples
+cannot pass. Record both total attempts/failures and actual LLM timing denominator;
+never present a single successful observation as a p95 guarantee.
+
+For subsequent HTTPS measurement, `FK_AI_CORE_MODE=retrieval` requires the full INDEXED
+fixture and validates actual model/version and10000accessible compatible candidates.
+`FK_AI_CORE_REQUIRE_ACTIVITY=llm` additionally requires substantial LLM CPU within the
+recorded request window; bind that window to the actual test's `llm-phase.json` before
+claiming inference overlap. Default metadata mode remains distinct from ranking.
+Respect the120reads/minute actor gate and900s query-cache TTL between measurement
+phases; neither limit may be relaxed to obtain a pass.
+
+
+Historical startup-source limitation: the companion records the then-working observer
+hash4f3d1460…, but its exact source bytes were not archived at invocation. The helper
+subsequently gained completed-index/activity/retrieval modes. Do not replace the historical
+hash with the latest source or assert that current bytes generated that older observation.
+The raw startup/HTTP measurements remain historical observations; exact-source final
+acceptance requires a fresh run on the committed helper. Future HTTP runs now archive
+the observer's complete source bytes by SHA256 at invocation and record that artifact in
+the report. The corrected earlier V2core run is separately bound to committed27b1797
+source and its original hash.
+
+
+Final-source startup rerun procedure (after full indexing):
+
+```sh
+FK_TEST_INTEGRATION=1 uv run --project backend --frozen python -m tests.benchmark_ai_model_startup
+```
+
+This guarded observer refuses a partial fixture or busy LLM, archives its exact source
+bytes by SHA256 before restart, records coarse readiness and preserves failure. A
+parallel HTTP observation also archives its own exact source automatically. These
+fresh committed-source results are required before closing the historical startup
+provenance limitation. [Runtime observer independent review](reports/stage9-runtime-capacity-independent-2026-10-28.md).

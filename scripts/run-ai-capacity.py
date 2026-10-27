@@ -15,7 +15,7 @@ def main():
     if os.getuid() == 0:
         raise SystemExit("Run the owned capacity helper as a non-root operator")
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("phase", choices=["prepare", "index", "measure"])
+    parser.add_argument("phase", choices=["prepare", "index", "measure", "series"])
     parser.add_argument("--fixture", required=True)
     parser.add_argument("--count", type=int, choices=[20, 100, 1000, 10000], default=10000)
     args = parser.parse_args()
@@ -24,6 +24,10 @@ def main():
     base = ROOT / "work/stage9-capacity-private"
     if not (base / "base.env").is_file():
         raise SystemExit("Provide the private base.env with configured owned DB/Redis selectors")
+    if args.phase == "series":
+        capacity = json.loads((base / "actual-10k-v1/fixture.json").read_text())
+        if capacity.get("phase") != "INDEXED" or capacity.get("target") != 10000:
+            raise SystemExit("Finish the owned 10k backfill before a separate vertical series")
     for network in ("fk-stage9_default", "fk-stage9_ai_private"):
         info = json.loads(
             subprocess.check_output(
@@ -176,14 +180,28 @@ def main():
         "NO_PROXY=*",
         "--env",
         "no_proxy=*",
+    ]
+    if args.phase == "series":
+        for name, value in {
+            "FK_AI_TEST_REAL": "1",
+            "FK_AI_TEST_EMBEDDING_ENDPOINT": "http://fk-ai-embedding:8091",
+            "FK_AI_TEST_LLM_ENDPOINT": "http://fk-ai-llm:8092",
+            "FK_AI_TEST_KEY_FILE": "/run/secrets/fk_ai_key",
+            "FK_AI_SERIES_ROOT": "/evidence/llm-series",
+        }.items():
+            command += ["--env", name + "=" + value]
+    command += [
         "--workdir",
         "/repository/backend",
         image,
         "python",
         "-m",
-        "tests.benchmark_ai_capacity",
-        args.phase,
+        "tests.benchmark_ai_real_series"
+        if args.phase == "series"
+        else "tests.benchmark_ai_capacity",
     ]
+    if args.phase != "series":
+        command.append(args.phase)
     if args.phase == "prepare":
         command.append(str(args.count))
     subprocess.run(command, check=True, stdout=subprocess.DEVNULL)

@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "kind": "owned-llm-process-restart-not-os-cold-cache",
+  "model_image": "sha256:998a8e65d16b5ca6f7f3b7065ff501250cb672cb1ac1e407c0e45bafb616abe3",
+  "started_at": "2026-10-27T21:43:23.486871+00:00",
+  "os_cache_flushed": false,
+  "weights_or_configuration_changed": false,
+  "embedding_backfill_continues": true,
+  "restart_command_seconds": 0.7661,
+  "healthy_observed_at": "2026-10-27T21:44:24.033382+00:00",
+  "first_retained_successful_healthcheck_at": "2026-10-27T21:43:47.102965793Z",
+  "restart_to_successful_healthcheck_seconds": 23.6161,
+  "timing_limitation": "Readiness observed by coarse Docker health checks; OS cache not flushed."
+}

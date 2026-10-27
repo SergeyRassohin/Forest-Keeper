@@ -7,6 +7,7 @@ is mocked. This legally synthetic development vertical is not human-gold evaluat
 import json
 import os
 import time
+from datetime import UTC, datetime
 from pathlib import Path
 from unittest.mock import patch
 from uuid import UUID, uuid4
@@ -111,7 +112,32 @@ def test_real_imports_precedents_qwen_retrieval_and_grounded_llm_leave_decision_
             assert request.status_code == 202, request.text
             handle = request.json()["request_id"]
             phase = time.monotonic()
+            report["llm_started_at"] = datetime.now(UTC).isoformat()
+            if folder := os.getenv("FK_AI_REAL_REPORT_DIR"):
+                destination = Path(folder)
+                destination.mkdir(parents=True, exist_ok=True)
+                (destination / "llm-phase.json").write_text(
+                    json.dumps(
+                        {
+                            "kind": "owned-actual-qwen-vertical-phase-not-quality",
+                            "llm_started_at": report["llm_started_at"],
+                        }
+                    )
+                    + "\n"
+                )
             drain(llm_queue, settings, "app.ai.explanations.Settings")
+            report["llm_finished_at"] = datetime.now(UTC).isoformat()
+            if folder:
+                (Path(folder) / "llm-phase.json").write_text(
+                    json.dumps(
+                        {
+                            "kind": "owned-actual-qwen-vertical-phase-not-quality",
+                            "llm_started_at": report["llm_started_at"],
+                            "llm_finished_at": report["llm_finished_at"],
+                        }
+                    )
+                    + "\n"
+                )
             response = client.get(path + "/ai-explanations/" + handle)
             assert response.status_code == 200, response.text
             explanation = response.json()
