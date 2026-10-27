@@ -1,0 +1,3575 @@
+{
+  "kind": "actual-https-core-load-during-qwen-backfill-not-quality",
+  "passed": true,
+  "sessions": 10,
+  "planned_requests": 500,
+  "started_at": "2026-10-27T21:22:12.506457+00:00",
+  "transport": "actual local HTTPS/nginx/API/PG/Redis",
+  "full_index_ranking_measured": false,
+  "llm_measured": false,
+  "production_accepted": false,
+  "semantic_quality_evaluated": false,
+  "before": {
+    "decisions": 10000,
+    "vectors": 264,
+    "index_status": "PROCESSING",
+    "business_digests": {
+      "source_systems": "ba8ec6164fd2844b5e659cd51228f5b4",
+      "import_batches": "b78245c7637a76225818ca252356fc19",
+      "raw_records": "57622992ebb34494bdd10d06aa81c214",
+      "analysis_runs": "ecdebd98f330db479bb1febc172263e8",
+      "canonical_entities": "deca4d7812569e742d24fe048418b871",
+      "entity_values": "580d002610618fbc072409b1fbe35061",
+      "matching_runs": "b67b47491ebeef6396c4bae3f065ee00",
+      "match_candidates": "8f901803d0ae72393502cf0198473c42",
+      "conflicts": "4b0bae24b71c3f2ecd7d1e3d91339c93",
+      "decisions": "47205a767c1bab308a1dd1d5421c607c"
+    }
+  },
+  "request_window_seconds": 5.3642,
+  "duration_seconds": 5.3643,
+  "after": {
+    "decisions": 10000,
+    "vectors": 264,
+    "index_status": "PROCESSING",
+    "business_digests": {
+      "source_systems": "ba8ec6164fd2844b5e659cd51228f5b4",
+      "import_batches": "b78245c7637a76225818ca252356fc19",
+      "raw_records": "57622992ebb34494bdd10d06aa81c214",
+      "analysis_runs": "ecdebd98f330db479bb1febc172263e8",
+      "canonical_entities": "deca4d7812569e742d24fe048418b871",
+      "entity_values": "580d002610618fbc072409b1fbe35061",
+      "matching_runs": "b67b47491ebeef6396c4bae3f065ee00",
+      "match_candidates": "8f901803d0ae72393502cf0198473c42",
+      "conflicts": "4b0bae24b71c3f2ecd7d1e3d91339c93",
+      "decisions": "47205a767c1bab308a1dd1d5421c607c"
+    }
+  },
+  "immutable_history_preserved": true,
+  "measurements": [
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.069066
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.094413
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.202092
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.202676
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.204502
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.202777
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.214701
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.216612
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.251479
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.26967
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.209545
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.080471
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.083057
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.097223
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.104281
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.214173
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.044864
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.119652
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.040675
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.051978
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.11538
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.095964
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.040138
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.0546
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.059112
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.055689
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.055895
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.059064
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.088862
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.090809
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.136091
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.130884
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.141669
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.154762
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.161663
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.143028
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.103213
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.125505
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.164516
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.167666
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.148194
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.096525
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.139375
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.111392
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.112581
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.117334
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.130442
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.124547
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.133769
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.067369
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.070076
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.074877
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.045355
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.085813
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.120612
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.11092
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.131314
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.070668
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.089737
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.079588
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.160197
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.173055
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.061704
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.161761
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.135133
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.104192
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.04838
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.072088
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.103708
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.061134
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.063055
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.056739
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.062484
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.092747
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.042424
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.091981
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.068888
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.065158
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.050893
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.08878
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.06455
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.08101
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.083604
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.087167
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.101672
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.099106
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.089659
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.115332
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.089565
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.13122
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.12786
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.114382
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.112152
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.101354
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.103854
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.060657
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.138894
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.122471
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.069528
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.104699
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.090669
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.11841
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.089796
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.058754
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.124576
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.048767
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.127363
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.056383
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.097543
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.151726
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.12576
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.126516
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.111195
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.090792
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.140898
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.114042
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.113582
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.088616
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.071938
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.095405
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.103485
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.1518
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.084367
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.069461
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.045154
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.103483
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.038977
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.04376
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.108549
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.103011
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.052676
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.092662
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.07548
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.08851
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.106898
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.075831
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.117168
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.09516
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.093056
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.112094
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.101603
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.081114
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.122222
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.098243
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.099437
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.145333
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.13026
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.139383
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.111733
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.123855
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.077101
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.120655
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.105399
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.087411
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.123968
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.133
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.124027
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.066493
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.098681
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.123569
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.128463
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.141779
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.053499
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.124897
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.135741
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.060711
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.087989
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.070005
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.067275
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.066425
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.080682
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.064241
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.101315
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.092506
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.112745
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.047772
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.06409
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.059131
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.091282
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.083151
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.087413
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.099939
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.113077
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.107904
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.098652
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.081322
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.099755
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.122588
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.109269
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.116206
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.135071
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.090835
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.112052
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.160699
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.092525
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.109696
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.080633
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.100558
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.125982
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.072131
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.067491
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.100957
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.100448
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.097448
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.12354
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.052962
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.086356
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.136149
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.07006
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.159612
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.114082
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.093129
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.105955
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.106744
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.087391
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.147641
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.125406
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.146227
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.115509
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.115606
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.102674
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.080061
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.138374
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.052848
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.112027
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.063073
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.055623
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.099659
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.041468
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.051794
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.105055
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.073778
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.108853
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.12805
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.116688
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.136157
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.126455
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.147279
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.181242
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.201637
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.199456
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.143188
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.103485
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.097701
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.174543
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.152863
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.097914
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.146424
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.151239
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.094443
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.07918
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.081327
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.083355
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.106207
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.10666
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.118296
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.120631
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.104062
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.14289
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.135895
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.111721
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.089813
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.111071
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.102904
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.111928
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.102815
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.105131
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.149829
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.140247
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.125016
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.131812
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.071531
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.115395
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.132727
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.115738
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.098416
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.065016
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.072803
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.103339
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.137333
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.073213
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.104888
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.100444
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.118423
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.09034
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.096457
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.094486
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.078424
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.072486
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.112445
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.116381
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.110427
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.11127
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.121087
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.093037
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.074234
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.120173
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.113802
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.117138
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.091389
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.072687
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.053929
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.062963
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.077188
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.079544
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.057149
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.111358
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.125549
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.11078
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.095914
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.119546
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.10328
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.142094
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.064612
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.087398
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.115355
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.106183
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.069097
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.114408
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.124209
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.129138
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.102934
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.085278
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.063896
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.061343
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.104
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.071146
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.060168
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.06351
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.081507
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.058059
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.108729
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.100552
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.113959
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.135337
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.118418
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.100221
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.087031
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.11819
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.082328
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.173659
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.169211
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.113901
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.110314
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.114671
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.080978
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.15546
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.106338
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.110692
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.108807
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.05244
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.106347
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.072413
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.135177
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.072986
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.07561
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.092069
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.110156
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.104165
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.075147
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.076546
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.096801
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.073645
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.126584
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.070445
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.067569
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.165215
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.071356
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.117057
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.097899
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.061973
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.088282
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.110439
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.084255
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.113876
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.092386
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.131291
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.116038
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.136056
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.10741
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.141139
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.086267
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.106953
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.069178
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.117436
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.10898
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.098817
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.110612
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.074892
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.107116
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.127475
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.090435
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.125818
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.087067
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.120026
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.077575
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.137377
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.062044
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.146108
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.070778
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.098835
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.13671
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.116475
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.099258
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.114246
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.123749
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.109396
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.146397
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.129167
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.13321
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.119052
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.081619
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.089704
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.161563
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.07042
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.102895
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.125968
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.135245
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.097646
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.125692
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.073266
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.095784
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.127905
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.066679
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.100054
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.126116
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.068797
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.090011
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.103623
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.113756
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.096557
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.104753
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.122071
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.108276
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.154463
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.167723
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.181157
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.105113
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.144511
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.108983
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.131827
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.165143
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.117972
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.105023
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.077975
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.070328
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.180624
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.115657
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.162798
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.1918
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.139469
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.130121
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.097427
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.112281
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.077899
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.073636
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.088594
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.071583
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.124515
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.046128
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.103821
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.129328
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.120588
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.116138
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.089547
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.071614
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.132408
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.127639
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.12588
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.11668
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.114424
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.13541
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.156581
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.116997
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.111262
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.122429
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.13595
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.114093
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.098762
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.112971
+    },
+    {
+      "endpoint": "conflict_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.100277
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.13013
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.128292
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.106512
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.068115
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.089042
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.153231
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.120931
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.085366
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.058205
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.083776
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.028011
+    },
+    {
+      "endpoint": "registry_list",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.115539
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.05481
+    },
+    {
+      "endpoint": "decision_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.023931
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.03536
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.034347
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.028624
+    },
+    {
+      "endpoint": "review_context",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.032032
+    },
+    {
+      "endpoint": "conflict_detail",
+      "valid": true,
+      "status_code": 200,
+      "error_code": null,
+      "seconds": 0.01219
+    }
+  ],
+  "embedding_cpu_samples": [
+    {
+      "elapsed_seconds": 1.5291,
+      "sample_start_seconds": 0.0002,
+      "cpu_percent": 77.09
+    },
+    {
+      "elapsed_seconds": 5.0691,
+      "sample_start_seconds": 3.5293,
+      "cpu_percent": 81.9
+    }
+  ],
+  "requests": 500,
+  "invalid_responses": 0,
+  "outcomes": {
+    "HTTP_200": 500
+  },
+  "endpoint_p95_seconds": {
+    "conflict_list": 0.202777,
+    "registry_list": 0.165143,
+    "conflict_detail": 0.148194,
+    "review_context": 0.154762,
+    "decision_detail": 0.114671
+  }
+}

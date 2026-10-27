@@ -1,0 +1,79 @@
+{
+  "scope": "Corrected real HTTPS core metadata read burst during actual Qwen backfill; not full-index search, sustained throughput, LLM or semantic quality acceptance",
+  "source_parent_commit": "f6fae3f33a89d51efa99ce838dddc26851f13406",
+  "observer_sha256": "84ebbf5ce924ee8e07c928be98c8f72af36e5a3ae0bd97ed4cf489be0515fc73",
+  "observer_negatives": {
+    "root_passed": 19,
+    "independent_passed": 20
+  },
+  "reports": {
+    "initial-historical": {
+      "file": "core-https-backfill-3b203ba30a4d417dbdcb648aacf06704.json",
+      "sha256": "d56b71eecd7666b27f9d050d93486d3d262a54ec655107c5100ac1241df7cd28"
+    },
+    "corrected": {
+      "file": "core-https-backfill-a12b69a303044f6a873d0a9b3f143fb0.json",
+      "sha256": "bc2d2a307dfc8de77a60069f8e4bbaefe44f813c1cb8ebf1b45c86ed56a27af8"
+    }
+  },
+  "containers": {
+    "fk-stage9-capacity-ai-browser-backend-1": {
+      "image": "sha256:bc5d510ebe5ba007c032655f95d26446239ecf5c569e15e15f90364908fc3f07",
+      "user": "1000:1000",
+      "read_only": true,
+      "nano_cpus": 0,
+      "memory_bytes": 536870912,
+      "networks": [
+        "fk-stage9-capacity_default",
+        "fk-stage9_ai_private",
+        "fk-stage9_default"
+      ]
+    },
+    "fk-stage9-capacity-frontend-1": {
+      "image": "sha256:e47ab6b5f765bd1ab27f47bef875137bbcadd3a3710d35dd3c7a41087c89bfa6",
+      "user": "",
+      "read_only": false,
+      "nano_cpus": 0,
+      "memory_bytes": 0,
+      "networks": [
+        "fk-stage9-capacity_default"
+      ]
+    },
+    "fk-stage9-fk-ai-embedding-1": {
+      "image": "sha256:fc87b4da4562898fea296f2f9fb4d1fe6d7c49470cb489eb47c7b38293ea155a",
+      "user": "10001:10001",
+      "read_only": true,
+      "nano_cpus": 750000000,
+      "memory_bytes": 6442450944,
+      "networks": [
+        "fk-stage9_ai_private"
+      ]
+    },
+    "fk-stage9-fk-ai-llm-1": {
+      "image": "sha256:998a8e65d16b5ca6f7f3b7065ff501250cb672cb1ac1e407c0e45bafb616abe3",
+      "user": "10001:10001",
+      "read_only": true,
+      "nano_cpus": 2000000000,
+      "memory_bytes": 17179869184,
+      "networks": [
+        "fk-stage9_ai_private"
+      ]
+    },
+    "fk-stage9-postgres-1": {
+      "image": "sha256:151aa1c2e849e7828ed8aef2183ae15f692cbe887d2f28921d8b44b26e154d7e",
+      "user": "",
+      "read_only": false,
+      "nano_cpus": 0,
+      "memory_bytes": 0,
+      "networks": [
+        "fk-stage9_default"
+      ]
+    }
+  },
+  "host_cgroup_cpu_max": "400000 100000",
+  "host_cgroup_memory_max": "34359738368",
+  "nginx_config_sha256": "fd34601b691bbd2386eb8c7f3862b1443240c56418af64d955d34d48c25446d5",
+  "tls_certificate_sha256": "e74cacb772c2d3115ed724670a07577cf9f10999e0b1a32a763657c520433d7d",
+  "tls_verification": true,
+  "production_accepted": false
+}

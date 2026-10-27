@@ -100,3 +100,32 @@ and prior reports remain intact. One private file lock prevents overlapping phas
 
 Stage9 remains **BLOCKED** until all required quality/performance/release gates and exact
 final-HEAD CI are complete. Production AI and positive production policy remain disabled.
+
+
+## Core HTTPS during actual partial backfill, 28 October (Europe/Moscow)
+
+[Corrected500request result](reports/stage9-https-core-backfill-2026-10-28.json),
+[independent review](reports/stage9-https-core-independent-2026-10-28.md) and
+[exact source/image/hardware companion](reports/stage9-https-core-provenance-2026-10-28.json).
+Execution was27October UTC; the owner's date had crossed midnight. Actual TLS verification
+was enabled through local nginx to a separate512MiB API container without a dedicated CPU
+quota, on the same4CPU/32GiB host. This differs from the1CPU ASGI runner profile above.
+
+Ten actual cookie sessions made500GET requests across Conflict list, Registry list,
+Decision detail, review context and Conflict detail. Every endpoint had100observations,
+all500were valid HTTP200, and ten canonical business-table digests remained unchanged.
+Endpoint p95 ranged0.109818–0.218458s, below the unchanged1second baseline. During the
+5.4947s request window actual embedding CPU samples were77.00%/76.14%; the active run
+stayedPROCESSING and persisted vectors advanced328→336. There were10000Decisions,
+but only a **partial** actual-vector index. No search/LLM POST was made by this load tool.
+This is a short core metadata burst with real model overlap, not sustained throughput,
+full10kvector search, LLM latency or industrial acceptance.
+
+Independent review caught an instrument bug: malformed successful detail JSON could leave
+a valid flag true after an exception. Explicit type/membership validation and an exception
+reset now reject that case;19negative regressions PASS, plus an independent end-to-end
+negative. The [initial observation](reports/stage9-https-core-initial-historical-2026-10-28.json)
+remains historical under the older instrument, despite all its500rows having no recorded
+error. It does not replace the corrected rerun. Raw reports are preserved without editing
+their metrics. The companion hashes bind report filenames as produced during execution;
+the repository copies use descriptive filenames above.
