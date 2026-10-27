@@ -242,3 +242,22 @@ partial-coverage refusal, resume, explicit cutover/rollback и неизменн�
 Нужны человеческие labels/пороги до оценки и10k настоящих репрезентативных vectors /
 10сессий NFR, cold/warm/поддерживаемое железо. Подписанная поставка — открытая зависимость#32.
 Production AI/positive policy остаются отключены. Stage 10 не начат; merge не выполнялся.
+
+
+### Stage 9 — actual-vector capacity, 27 октября 2026
+
+Продолжается [отдельный воспроизводимый нагрузочный прогон](../testing/stage9-capacity-run.md):
+10020 разных записей из двух синтетических файлов, полный действующий pipeline,
+10000 автоматизированных fixture Decisions через API и20 query Conflicts. Это не
+человеческая разметка и не Gold. Векторы вычисляет настоящая Qwen bounded RQ jobs по8.
+Приватные state/tokens находятся вне Git, driver сохраняет прогресс без удаления данных.
+Подготовка после VFS disk pressure возобновлена с уже сохранённых Decisions; лимит
+дискового headroom теперь проверяется на checkpoints.
+
+Малый calibration:20 настоящих векторов,400 warm ASGI reads при10сессиях, общий p95
+0.877651s; самый медленный endpoint p95=0.974084s. Это **не10kNFR**, не HTTPS, не
+одновременная inference и не промышленная приёмка.7отрицательных тестов измерителя
+PASS локально и независимо; полные локальные checks318unit+73frontend PASS, SAST/SCA
+и negative security fixtures PASS. [Независимая проверка harness](../testing/reports/stage9-capacity-harness-independent-2026-10-27.md)
+не выявила блокеров для заявленного запуска. Полные результаты и новый exact-HEAD CI
+ещё предстоят. Stage9 BLOCKED; production AI/positive policy отключены, merge не выполняется.

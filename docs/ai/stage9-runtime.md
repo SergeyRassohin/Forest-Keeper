@@ -145,3 +145,9 @@ initial32connection helper limit incorrectly cut transport connections before Re
 This changes only the development relay, not AI queue capacity8/actor1 or request deadlines.
 `--database-only --database-ports` can start separate loopback DB test ports without an
 HTTPS listener; it lets an operator change test ingress without interrupting active sessions.
+
+
+The separate [resumable actual-vector capacity run](../testing/stage9-capacity-run.md)
+uses an explicitly owned development fixture and records calibration/full-run results
+separately. Its warm ASGI baseline does not replace the remaining AI/core, HTTPS,
+cold/warm, semantic-quality or supported-hardware gates.
