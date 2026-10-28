@@ -22,6 +22,7 @@ from uuid import UUID, uuid4
 import httpx
 
 from app.auth.dependencies import COOKIE_NAME
+from tests.benchmark_ai_capacity import retrieval_expectation
 
 ROOT = Path(__file__).resolve().parents[2]
 FIXTURE = ROOT / "work/stage9-capacity-private/actual-10k-v1"
@@ -71,7 +72,18 @@ def probe(value):
     return result
 
 
-def observe(client, category, path, query, decision, history, cases, version=None, target=None):
+def observe(
+    client,
+    category,
+    path,
+    query,
+    decision,
+    history,
+    cases,
+    version=None,
+    target=None,
+    expected_reason="EVIDENCE_WINDOW_EXCEEDED",
+):
     since = time.monotonic()
     row = {"endpoint": category, "valid": False, "status_code": None, "error_code": None}
     try:
@@ -102,28 +114,18 @@ def observe(client, category, path, query, decision, history, cases, version=Non
         elif category == "conflict_detail":
             valid = valid and isinstance(data, dict) and data.get("id") == query
         elif category == "similar_decisions":
-            from app.similarity.service import configuration
-
             valid = (
                 valid
-                and isinstance(data, dict)
-                and (
-                    data.get("state") in {"READY", "NO_PRECEDENT"}
-                    and version is not None
-                    and target is not None
-                    and data.get("retrieval_version") == version
-                    and data.get("embedding_model") == configuration("qwen-demo-v1")
-                    and data.get("total_candidates_before_filter") == target
-                    and data.get("total_after_filter") == target
-                )
+                and version is not None
+                and target is not None
+                and retrieval_expectation(data, version, target, history) is not None
             )
         elif category == "recommendation":
             valid = (
                 valid
                 and isinstance(data, dict)
                 and (
-                    data.get("status") == "ABSTAINED"
-                    and data.get("reason_code") == "EVIDENCE_WINDOW_EXCEEDED"
+                    data.get("status") == "ABSTAINED" and data.get("reason_code") == expected_reason
                 )
             )
         else:
@@ -174,6 +176,14 @@ def main():
     else:
         with source_artifact.open("xb") as out:
             out.write(source)
+    contract_source = Path(retrieval_expectation.__code__.co_filename).read_bytes()
+    contract_hash = hashlib.sha256(contract_source).hexdigest()
+    contract_artifact = report.parent / ("retrieval-contract-source-" + contract_hash + ".py.txt")
+    if contract_artifact.exists():
+        assert contract_artifact.read_bytes() == contract_source
+    else:
+        with contract_artifact.open("xb") as out:
+            out.write(contract_source)
     result = {
         "kind": "actual-https-core-metadata-load-not-quality",
         "passed": False,
@@ -188,6 +198,8 @@ def main():
         "required_overlap_component": activity,
         "observer_source_sha256": source_hash,
         "observer_source_artifact": source_artifact.name,
+        "retrieval_contract_source_sha256": contract_hash,
+        "retrieval_contract_source_artifact": contract_artifact.name,
     }
 
     def persist():
@@ -199,6 +211,7 @@ def main():
     rows, cpu, llm_cpu = [], [], []
     history = frozenset(value["history"])
     cases = history | frozenset(value["queries"])
+    expected_reasons = {}
     mutex, finished, start = Lock(), Event(), Barrier(10)
     context = ssl.create_default_context(cafile=str(ROOT / "deploy/local/tls/dev.crt"))
 
@@ -262,6 +275,18 @@ def main():
             decision_ids = [r["id"] for r in registry[:10]]
             for identifier in decision_ids:
                 UUID(identifier)
+            if mode == "retrieval":
+                for identifier in value["queries"][:10]:
+                    response = client.get("/api/v1/conflicts/" + identifier + "/similar-decisions")
+                    assert response.status_code == 200
+                    reason = retrieval_expectation(
+                        response.json(), value["version_id"], value["target"], history
+                    )
+                    assert reason is not None, "Full-index preflight read is invalid"
+                    expected_reasons[identifier] = reason
+                result["preflight_recommendation_reasons"] = dict(
+                    Counter(expected_reasons.values())
+                )
 
         def reader(position):
             query, decision = value["queries"][position], decision_ids[position]
@@ -301,6 +326,7 @@ def main():
                             cases,
                             value["version_id"],
                             value["target"],
+                            expected_reasons.get(query),
                         )
                         with mutex:
                             rows.append(row)

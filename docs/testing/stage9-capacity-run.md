@@ -197,3 +197,33 @@ bytes by SHA256 before restart, records coarse readiness and preserves failure. 
 parallel HTTP observation also archives its own exact source automatically. These
 fresh committed-source results are required before closing the historical startup
 provenance limitation. [Runtime observer independent review](reports/stage9-runtime-capacity-independent-2026-10-28.md).
+
+
+### 28 October: completed actual 10k index and observer correction
+
+The original frozen `f6fae3f` driver completed **10,000 distinct actual Qwen vectors**,
+1024 dimensions, with **10,000 distinct input hashes**. Container lifetime was
+2026-10-27 21:11:20.921 UTC through 2026-10-28 04:04:16.002 UTC
+(6h52m55s); 1,251 bounded jobs included the final completion checkpoint.
+Job p50/p95/max: 19.682228 / 21.237548 / 24.071176 seconds.
+[Original index observation](reports/stage9-actual-10k-index-2026-10-28.json) preserves
+its original source hash, exact model configuration and hardware. Its `passed:false`
+means the separate load measurement had not passed; indexing itself is COMPLETED.
+No re-embedding or business-data rewrite was needed for the observer changes below.
+
+[First full-index measurement](reports/stage9-actual-10k-first-warmup-failed-2026-10-28.json)
+is retained as FAILED: warmup query 3 returned canonical `NO_PRECEDENT / BELOW_THRESHOLD`
+with zero matches and a correctly scoped 10k pool. The observer incorrectly required
+READY and stopped before any timed requests. This is not a semantic-quality finding.
+The corrected observer accepts either a consistent READY/MATCHES with bounded owned
+results or NO_PRECEDENT/BELOW_THRESHOLD with exactly zero matches and empty results;
+provider/version/count checks remain mandatory. Expected recommendation abstention
+comes from that query's validated baseline (BELOW_THRESHOLD, oversized evidence, or
+insufficient independent evidence for these correlated files), never a blanket allowed
+reason list. Model thresholds, policy and the one-second endpoint p95 baseline did not
+change. Independent review additionally reproduced false acceptance of malformed
+HTTP200 ASGI list payloads. Strict list shape, distinct owned IDs and exception
+fail-closed checks now cover both Conflict and Registry lists. Negative tests retain
+malformed/unhashable IDs, wrong dataset, provider, pool, version and reason failures.
+Both the measurement source and the HTTPS observer's shared retrieval contract source
+are archived by exact SHA at invocation. Fresh actual measurements are still required.

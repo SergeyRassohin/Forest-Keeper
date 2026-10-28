@@ -62,23 +62,29 @@ def test_retrieval_wrong_provider_version_or_pool_cannot_pass(field, value):
         "embedding_model": configuration("qwen-demo-v1"),
         "total_candidates_before_filter": 10000,
         "total_after_filter": 10000,
+        "reason_code": "MATCHES",
+        "total_above_threshold": 100,
+        "results": [
+            {"decision_id": "decision-" + str(i), "conflict_id": "owned-history"} for i in range(5)
+        ],
     }
-    payload[field] = value
     client = MagicMock()
     client.get.return_value.status_code = 200
     client.get.return_value.json.return_value = payload
-    row = observe(
+    args = (
         client,
         "similar_decisions",
         "/owned",
         "case",
         "decision",
-        set(),
+        {"owned-history"},
         set(),
         "owned-qwen-version",
         10000,
     )
-    assert row["valid"] is False
+    assert observe(*args)["valid"] is True
+    payload[field] = value
+    assert observe(*args)["valid"] is False
 
 
 def test_full_pool_recommendation_does_not_count_unavailable_or_positive_as_success():
@@ -92,3 +98,57 @@ def test_full_pool_recommendation_does_not_count_unavailable_or_positive_as_succ
         client.get.return_value.json.return_value = payload
         row = observe(client, "recommendation", "/owned", "case", "decision", set(), set())
         assert row["valid"] is False
+
+
+@pytest.mark.parametrize(
+    "field,value",
+    [
+        ("state", "READY"),
+        ("reason_code", "MATCHES"),
+        ("total_above_threshold", 1),
+        ("total_above_threshold", False),
+        ("results", [{}]),
+    ],
+)
+def test_empty_retrieval_only_accepts_consistent_canonical_absence(field, value):
+    from app.similarity.service import configuration
+
+    payload = {
+        "state": "NO_PRECEDENT",
+        "reason_code": "BELOW_THRESHOLD",
+        "retrieval_version": "owned-qwen-version",
+        "embedding_model": configuration("qwen-demo-v1"),
+        "total_candidates_before_filter": 10000,
+        "total_after_filter": 10000,
+        "total_above_threshold": 0,
+        "results": [],
+    }
+    client = MagicMock()
+    client.get.return_value.status_code = 200
+    client.get.return_value.json.return_value = payload
+    args = (
+        client,
+        "similar_decisions",
+        "/owned",
+        "case",
+        "decision",
+        set(),
+        set(),
+        "owned-qwen-version",
+        10000,
+    )
+    assert observe(*args)["valid"] is True
+    payload[field] = value
+    assert observe(*args)["valid"] is False
+
+
+def test_below_threshold_recommendation_must_match_current_preflight():
+    client = MagicMock()
+    client.get.return_value.status_code = 200
+    client.get.return_value.json.return_value = {
+        "status": "ABSTAINED",
+        "reason_code": "BELOW_THRESHOLD",
+    }
+    args = (client, "recommendation", "/owned", "case", "decision", set(), set())
+    assert observe(*args, expected_reason="BELOW_THRESHOLD")["valid"] is True
+    assert observe(*args, expected_reason="EVIDENCE_WINDOW_EXCEEDED")["valid"] is False

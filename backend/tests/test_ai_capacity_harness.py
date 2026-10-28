@@ -24,6 +24,18 @@ from tests import benchmark_ai_capacity as bench
         ("http", False),
         ("version", False),
         ("count", False),
+        ("list_type", False),
+        ("list_foreign", False),
+        ("list_duplicate", False),
+        ("registry_type", False),
+        ("registry_foreign", False),
+        ("registry_duplicate", False),
+        ("list_unhashable", False),
+        ("registry_unhashable", False),
+        ("retrieval_unhashable", False),
+        ("recommendation", False),
+        ("none", False),
+        ("below", False),
     ],
 )
 def test_failures_are_preserved_and_clear_older_pass(tmp_path, monkeypatch, fault, during_warmup):
@@ -35,6 +47,7 @@ def test_failures_are_preserved_and_clear_older_pass(tmp_path, monkeypatch, faul
         "version_id": "owned-version",
         "tokens": ["synthetic-test-token-" + str(i) for i in range(10)],
         "queries": ["owned-query-" + str(i) for i in range(20)],
+        "history": ["owned-history-" + str(i) for i in range(20)],
     }
     monkeypatch.setattr(bench, "REPORT", report)
     settings = Settings(
@@ -65,7 +78,16 @@ def test_failures_are_preserved_and_clear_older_pass(tmp_path, monkeypatch, faul
                 self.calls += 1
                 inject = (
                     not self.injected
-                    and endpoint.endswith("similar-decisions")
+                    and (
+                        endpoint.endswith("similar-decisions")
+                        if not fault.startswith(("list_", "registry_"))
+                        and fault != "recommendation"
+                        else endpoint.startswith("/api/v1/conflicts?")
+                        if fault.startswith("list_")
+                        else endpoint.startswith("/api/v1/decisions?")
+                        if fault.startswith("registry_")
+                        else endpoint.endswith("recommendation")
+                    )
                     and (
                         (during_warmup and self.calls == 1)
                         or (not during_warmup and self.calls > 20)
@@ -74,7 +96,14 @@ def test_failures_are_preserved_and_clear_older_pass(tmp_path, monkeypatch, faul
                 self.injected = self.injected or inject
             if inject and fault == "transport":
                 raise ConnectionError("Private transport details must never enter the report")
-            payload = []
+            payload = (
+                [{"id": identifier} for identifier in value["history"] + value["queries"]]
+                if endpoint.startswith("/api/v1/conflicts?")
+                else [
+                    {"id": "decision-" + str(i), "conflict_id": identifier}
+                    for i, identifier in enumerate(value["history"])
+                ]
+            )
             if endpoint.endswith("similar-decisions"):
                 payload = {
                     "state": "READY",
@@ -83,13 +112,42 @@ def test_failures_are_preserved_and_clear_older_pass(tmp_path, monkeypatch, faul
                     "total_candidates_before_filter": 20,
                     "total_after_filter": 20,
                     "reason_code": "MATCHES",
+                    "total_above_threshold": 20,
+                    "results": [
+                        {"decision_id": "decision-" + str(i), "conflict_id": value["history"][i]}
+                        for i in range(5)
+                    ],
                 }
+                if fault == "below":
+                    payload.update(
+                        state="NO_PRECEDENT",
+                        reason_code="BELOW_THRESHOLD",
+                        total_above_threshold=0,
+                        results=[],
+                    )
                 if inject and fault == "version":
                     payload["retrieval_version"] = "wrong-space"
                 if inject and fault == "count":
                     payload["total_after_filter"] = 1
+                if inject and fault == "retrieval_unhashable":
+                    payload["results"][0]["conflict_id"] = []
             elif endpoint.endswith("recommendation"):
-                payload = {"status": "ABSTAINED", "reason_code": "CORRELATED_PRECEDENTS"}
+                payload = {
+                    "status": "ABSTAINED",
+                    "reason_code": "BELOW_THRESHOLD"
+                    if fault == "below"
+                    else "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+                }
+                if inject and fault == "recommendation":
+                    payload["reason_code"] = "WRONG_REASON"
+            if inject and fault in {"list_type", "registry_type"}:
+                payload = {}
+            if inject and fault in {"list_foreign", "registry_foreign"}:
+                payload[0] = {"id": "foreign"}
+            if inject and fault in {"list_duplicate", "registry_duplicate"}:
+                payload[0] = payload[1]
+            if inject and fault in {"list_unhashable", "registry_unhashable"}:
+                payload[0]["id" if fault.startswith("list_") else "conflict_id"] = []
             response = MagicMock(status_code=403 if inject and fault == "http" else 200)
             if inject and fault == "json":
                 response.json.side_effect = ValueError("Untrusted response body")
@@ -98,6 +156,10 @@ def test_failures_are_preserved_and_clear_older_pass(tmp_path, monkeypatch, faul
             return response
 
     monkeypatch.setattr(bench, "TestClient", Client)
+    if fault in {"none", "below"}:
+        bench.measure()
+        assert json.loads(report.read_text())["passed"] is True
+        return
     with pytest.raises(AssertionError, match="NFR failed"):
         bench.measure()
     outcome = json.loads(report.read_text())

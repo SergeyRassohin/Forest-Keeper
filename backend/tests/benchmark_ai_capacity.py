@@ -368,8 +368,50 @@ def percentile(values, fraction):
     return round(sorted(values)[math.ceil(len(values) * fraction) - 1], 6)
 
 
-def measure():
+def retrieval_expectation(payload, version, target, history):
+    """Validate this correlated fixture's read and predict its bounded abstention.
+
+    A legitimate below-threshold answer is not a failed HTTP/performance observation.
+    Neither this contract nor its timings assert that the semantic answer is correct.
+    """
     from app.similarity.service import configuration
+
+    if not isinstance(payload, dict) or not (
+        payload.get("retrieval_version") == version
+        and payload.get("embedding_model") == configuration("qwen-demo-v1")
+        and type(payload.get("total_candidates_before_filter")) is int
+        and payload["total_candidates_before_filter"] == target
+        and type(payload.get("total_after_filter")) is int
+        and payload["total_after_filter"] == target
+    ):
+        return None
+    above, results = payload.get("total_above_threshold"), payload.get("results")
+    if type(above) is not int or not 0 <= above <= target or not isinstance(results, list):
+        return None
+    if len(results) != min(5, above) or not all(
+        isinstance(row, dict)
+        and isinstance(row.get("decision_id"), str)
+        and row["decision_id"]
+        and isinstance(row.get("conflict_id"), str)
+        and row.get("conflict_id") in history
+        for row in results
+    ):
+        return None
+    if len({row["decision_id"] for row in results}) != len(results):
+        return None
+    if above == 0:
+        return (
+            "BELOW_THRESHOLD"
+            if payload.get("state") == "NO_PRECEDENT"
+            and payload.get("reason_code") == "BELOW_THRESHOLD"
+            else None
+        )
+    if payload.get("state") != "READY" or payload.get("reason_code") != "MATCHES":
+        return None
+    return "EVIDENCE_WINDOW_EXCEEDED" if above > 20 else "INSUFFICIENT_INDEPENDENT_EVIDENCE"
+
+
+def measure():
     from tests.test_recommendations_integration import business_hash
 
     value, settings = load()
@@ -406,10 +448,21 @@ def measure():
         sessions=10,
         planned_requests=400,
     )
+    source_artifact = REPORT.with_name(
+        "measurement-observer-source-" + result["measurement_benchmark_sha256"] + ".py.txt"
+    )
+    if source_artifact.exists():
+        assert source_artifact.read_bytes() == Path(__file__).read_bytes()
+    else:
+        with source_artifact.open("xb") as out:
+            out.write(Path(__file__).read_bytes())
+    result["measurement_observer_artifact"] = source_artifact.name
     write_json(REPORT, result)
     measurements, warmup = [], []
     lock = Lock()
-    expected_config = configuration("qwen-demo-v1")
+    history = frozenset(value["history"])
+    cases = history | frozenset(value["queries"])
+    expected_reasons = {}
     engine = make_engine(settings)
     before = None
 
@@ -418,13 +471,7 @@ def measure():
         return code if isinstance(code, str) and re.fullmatch(r"[A-Z0-9_]{1,64}", code) else None
 
     def valid_retrieval(payload):
-        return isinstance(payload, dict) and (
-            payload.get("state") == "READY"
-            and payload.get("retrieval_version") == value["version_id"]
-            and payload.get("embedding_model") == expected_config
-            and payload.get("total_candidates_before_filter") == value["target"]
-            and payload.get("total_after_filter") == value["target"]
-        )
+        return retrieval_expectation(payload, value["version_id"], value["target"], history)
 
     def observe(client, endpoint, token):
         started = time.monotonic()
@@ -448,21 +495,51 @@ def measure():
             row["valid"] = response.status_code == 200 and isinstance(payload, (dict, list))
             row["reason_code"] = safe_reason(payload)
             if endpoint.endswith("/similar-decisions"):
-                row["valid"] = row["valid"] and valid_retrieval(payload)
+                row["valid"] = row["valid"] and valid_retrieval(payload) is not None
+            elif endpoint.startswith("/api/v1/conflicts?"):
+                row["valid"] = (
+                    row["valid"]
+                    and isinstance(payload, list)
+                    and len(payload) == min(50, len(cases))
+                    and all(
+                        isinstance(item, dict)
+                        and isinstance(item.get("id"), str)
+                        and item.get("id") in cases
+                        for item in payload
+                    )
+                    and len({item["id"] for item in payload}) == len(payload)
+                )
+            elif endpoint.startswith("/api/v1/decisions?"):
+                row["valid"] = (
+                    row["valid"]
+                    and isinstance(payload, list)
+                    and len(payload) == min(50, len(history))
+                    and all(
+                        isinstance(item, dict)
+                        and isinstance(item.get("id"), str)
+                        and item["id"]
+                        and isinstance(item.get("conflict_id"), str)
+                        and item.get("conflict_id") in history
+                        for item in payload
+                    )
+                    and len({item["id"] for item in payload}) == len(payload)
+                )
             elif endpoint.endswith("/recommendation"):
                 row["valid"] = (
                     row["valid"]
                     and isinstance(payload, dict)
                     and payload.get("status") in {"RECOMMENDED", "ABSTAINED"}
                 )
-                if value["target"] >= 100:
-                    row["valid"] = (
-                        row["valid"]
-                        and payload.get("status") == "ABSTAINED"
-                        and payload.get("reason_code") == "EVIDENCE_WINDOW_EXCEEDED"
-                    )
+                query = endpoint.split("/")[-2]
+                row["valid"] = (
+                    row["valid"]
+                    and payload.get("status") == "ABSTAINED"
+                    and query in expected_reasons
+                    and payload.get("reason_code") == expected_reasons[query]
+                )
         except Exception as error:
             # Fixed class name only; no URI, credentials, response body or exception text.
+            row["valid"] = False
             row["error_code"] = type(error).__name__[:64]
         row["seconds"] = round(time.monotonic() - started, 6)
         return row, payload
@@ -491,6 +568,7 @@ def measure():
                     warmup.append(row)
                     if not row["valid"]:
                         raise RuntimeError("Warmup failed")
+                    expected_reasons[identifier] = valid_retrieval(payload)
 
             def reader(item):
                 position, token = item
@@ -542,6 +620,7 @@ def measure():
             and "measurement_error" not in result
             and result.get("immutable_history_preserved") is True
             and result["invalid_responses"] == 0
+            and all(r["error_code"] is None for r in measurements + warmup)
             and all(elapsed <= 1 for elapsed in result["endpoint_p95_seconds"].values())
         )
         write_json(REPORT, result)
