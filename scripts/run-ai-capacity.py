@@ -44,11 +44,21 @@ def main():
     fixture.mkdir(mode=0o700, exist_ok=True)
     for name in ("imports", "evidence"):
         (fixture / name).mkdir(exist_ok=True)
+    state_path = fixture / "fixture.json"
+    if state_path.exists():
+        state = json.loads(state_path.read_text())
+        if state.get("measurement_only") and args.phase != "measure":
+            raise SystemExit("An adopted index profile permits measurement only")
+    image = subprocess.check_output(
+        ["docker", "inspect", "fk-stage9-backend-1", "--format", "{{.Image}}"],
+        text=True,
+    ).strip()
     hardware = {
         "host_cgroup_cpu_max": Path("/sys/fs/cgroup/cpu.max").read_text().strip(),
         "host_cgroup_memory_max": Path("/sys/fs/cgroup/memory.max").read_text().strip(),
         "runner_cpu_limit": 1,
         "runner_memory_bytes": 1073741824,
+        "runner_base_image": image,
         "source_commit": subprocess.check_output(
             ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True
         ).strip(),
@@ -100,10 +110,6 @@ def main():
             raise SystemExit("Existing container is not this owned capacity fixture")
         # Never silently restart an existing preparation or overlap an indexing driver.
         raise SystemExit("Container already exists; inspect its preserved status before resuming")
-    image = subprocess.check_output(
-        ["docker", "inspect", "fk-stage9-backend-1", "--format", "{{.Image}}"],
-        text=True,
-    ).strip()
     command = [
         "docker",
         "create",

@@ -50,6 +50,8 @@ def test_failures_are_preserved_and_clear_older_pass(tmp_path, monkeypatch, faul
         "history": ["owned-history-" + str(i) for i in range(20)],
     }
     monkeypatch.setattr(bench, "REPORT", report)
+    monkeypatch.setattr(bench, "PRIVATE", tmp_path / "fixture.json")
+    (tmp_path / "hardware.json").write_text(json.dumps({"kind": "pure-instrument-test-profile"}))
     settings = Settings(
         database_url="postgresql+psycopg://localhost/owned", redis_url="redis://localhost/15"
     )

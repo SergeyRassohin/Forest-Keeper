@@ -2,6 +2,7 @@
 
 import hashlib
 import json
+import math
 from typing import Any
 from uuid import UUID, uuid4
 
@@ -31,6 +32,43 @@ def digest(value: Any) -> str:
             separators=(",", ":"),
             ensure_ascii=False,
             allow_nan=False,
+        ).encode()
+    ).hexdigest()
+
+
+def _plain_json(value: Any) -> bool:
+    kind = type(value)
+    if kind in (str, int, bool, type(None)):
+        return True
+    if kind is float:
+        return math.isfinite(value)
+    if kind is list:
+        return all(_plain_json(item) for item in value)
+    if kind is dict:
+        return all(
+            type(key) is str and not key.startswith("_sa") and _plain_json(item)
+            for key, item in value.items()
+        )
+    return False
+
+
+def digest_frozen_json(value: Any) -> str:
+    """Same canonical hash without re-encoding plain stored/frozen JSON trees.
+
+    Typed values, subclasses and SQLAlchemy-private keys retain the original encoder.
+    Do not cache hashes across requests or replace provenance validation with a hash.
+    """
+    try:
+        plain = _plain_json(value)
+    except RecursionError:
+        # The guard adds stack frames; the original encoder can still accept a
+        # deeply nested valid tree. Cycles remain errors in that original path.
+        return digest(value)
+    if not plain:
+        return digest(value)
+    return hashlib.sha256(
+        json.dumps(
+            value, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False
         ).encode()
     ).hexdigest()
 

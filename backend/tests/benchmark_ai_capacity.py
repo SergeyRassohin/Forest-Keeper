@@ -432,10 +432,17 @@ def measure():
         "passed",
         "measurement_error",
         "immutable_history_preserved",
+        "warmup",
+        "requests",
+        "outcomes",
+        "http_failures",
+        "invalid_responses",
+        "warmup_failures",
     ):
         result.pop(field, None)
     result.update(
         passed=False,
+        measurement_status="PROCESSING",
         measurement_attempt=str(uuid4()),
         measurement_started_at=datetime.now(UTC).isoformat(),
         measurement_benchmark_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
@@ -447,6 +454,8 @@ def measure():
         ),
         sessions=10,
         planned_requests=400,
+        measurement_hardware_profile=json.loads(PRIVATE.with_name("hardware.json").read_text()),
+        reused_index_fixture=value.get("index_source_fixture"),
     )
     source_artifact = REPORT.with_name(
         "measurement-observer-source-" + result["measurement_benchmark_sha256"] + ".py.txt"
@@ -623,6 +632,7 @@ def measure():
             and all(r["error_code"] is None for r in measurements + warmup)
             and all(elapsed <= 1 for elapsed in result["endpoint_p95_seconds"].values())
         )
+        result["measurement_status"] = "PASSED" if result["passed"] else "FAILED"
         write_json(REPORT, result)
     assert result["passed"], "NFR failed; observations preserved without relaxing the target"
 

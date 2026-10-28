@@ -1,0 +1,11 @@
+{
+  "kind": "all-owned-persisted-JSON-canonical-hash-compatibility-not-quality",
+  "contexts": 10000,
+  "context_mismatches": 0,
+  "persisted_evidence_mismatches": 0,
+  "old_hash_seconds": 7.341432598863321,
+  "candidate_hash_seconds": 2.3278898809367092,
+  "business_writes": 0,
+  "candidate_application_file_sha256": "bb9bf4101425d8b2fd5120ce868d4c8d9241f4cef4bd8bb633cdf293e6e4f65c",
+  "passed": true
+}

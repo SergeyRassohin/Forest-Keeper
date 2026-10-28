@@ -265,3 +265,35 @@ Fresh committed-source observations, same actual full 10k index and fixed model 
 The twenty-observation genuine-model series is running separately; no completed-series
 percentile or semantic-quality claim exists yet. The slow recommendation path requires
 profiling after the frozen series completes. Previous FAIL observations stay FAILED.
+
+
+### Completed actual-model series and bounded performance correction
+
+[Twenty genuine-model vertical observations](reports/stage9-real-20-vertical-timing-series-2026-10-28.json):
+**20/20PASS**,20 completed LLM timings,0failures; p50/p95/max53.8491/60.8512/87.2469s.
+First call87.2469s includes the separately reported HTTPS interference; later calls use
+persistent warm processes and repeated fixture semantics, not a diverse human Gold set.
+Each observation owns a fresh Registry schema and proves actual embeddings, grounded
+citations, zero AI business writes and a separate simulated human confirmation. The
+previous pre-LLM failed series remains separate with zero LLM timing observations.
+[Memory checkpoint during generation](reports/stage9-actual-inference-memory-2026-10-28.json)
+records per-process RSS and cgroup current/lifetime peak/limit separately; mapped/shared
+pages mean RSS is neither PSS nor directly equivalent to the cgroup charge. No production
+profile is accepted from these snapshots.
+
+[Read-only profiling](reports/stage9-recommendation-profile-2026-10-28.json) did not confirm
+coverage/JIT as the dominant cost: coverage14–15ms, no JIT, final wide ranking joins5ms.
+The more material Python work repeatedly encoded JSON that was already encoded/stored.
+The bounded correction preserves the original generic digest and uses an exact-type
+guard/legacy fallback for only two already-frozen inputs in recommendation validation.
+[Independent source/compatibility review](reports/stage9-frozen-json-independent-2026-10-28.md)
+and [all10k persisted hash comparisons](reports/stage9-frozen-json-hash-compatibility-10000-2026-10-28.json)
+found zero changed hashes. No history, vector, policy, threshold or deadline was changed.
+This optimization's effect on API p95 is still unproven until the next actual run.
+
+A fresh **measurement-only profile** may reuse the completed owned index after a business
+source/image update. Preserve the original fixture, original failed measurements and
+index hardware/source; record the new measurement source/image separately. The derived
+private state carries index_source_fixture/measurement_only, shares the original runner
+lock inode, and permits only measure (no import/index). This is a new measurement of the
+same verified10k vectors, not a relabelled original run or a new semantic dataset.

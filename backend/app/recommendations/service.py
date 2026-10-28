@@ -14,7 +14,13 @@ from app.common.basis_lock import Budget
 from app.common.config import Settings
 from app.conflicts.models import Conflict
 from app.decisions.models import Decision
-from app.decisions.service import context_version, digest, frozen_evidence, historical_context
+from app.decisions.service import (
+    context_version,
+    digest,
+    digest_frozen_json,
+    frozen_evidence,
+    historical_context,
+)
 from app.decisions.validation import selectable
 from app.recommendations.evidence import EvidenceError, prepare, validate_lineage
 from app.recommendations.policy import POLICY, POLICY_HASH, aggregate
@@ -227,7 +233,10 @@ def evaluate(
         session.execute(eligible(actor).where(Decision.id.in_(ids)).add_columns(Conflict)).all(),
     )
     rows = {row.id: row for row, _ in records}
-    if any(row.evidence_hash != digest(frozen_evidence(past_case)) for row, past_case in records):
+    if any(
+        row.evidence_hash != digest_frozen_json(frozen_evidence(past_case))
+        for row, past_case in records
+    ):
         return finish("CORRUPT_LINEAGE", Outcome.UNAVAILABLE)
     try:
         validate_lineage(session, [row.context_snapshot for row in rows.values()])
@@ -284,7 +293,7 @@ def evaluate(
             manifest.append(
                 {
                     "decision_id": str(row.id),
-                    "context_hash": digest(row.context_snapshot),
+                    "context_hash": digest_frozen_json(row.context_snapshot),
                     "evidence_hash": row.evidence_hash,
                     "similarity": item["similarity"],
                     "outcome": row.decision_type,
