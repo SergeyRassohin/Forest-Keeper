@@ -215,6 +215,7 @@ def main():
     if args.phase == "verify":
         command += [
             "tests/test_ai_real_integration.py",
+            "tests/test_qwen_integration.py",
             "-q",
             "--tb=short",
             "--show-capture=no",
