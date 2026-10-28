@@ -1,0 +1,35 @@
+{
+  "observed_at": "2026-10-28T04:25:58.845180+00:00",
+  "scope": "CPU-only development cgroup checkpoints; memory.peak is lifetime cgroup high-water, not per-phase RSS; no supported production profile inferred.",
+  "index_container": {
+    "Status": "exited",
+    "ExitCode": 0,
+    "StartedAt": "2026-10-27T21:11:20.921093268Z",
+    "FinishedAt": "2026-10-28T04:04:16.001968298Z",
+    "OOMKilled": false
+  },
+  "host_cpu_max": "400000 100000",
+  "host_memory_max": "34359738368",
+  "models": {
+    "embedding": {
+      "cgroup_memory_current_peak_limit_bytes": [
+        4813258752,
+        4940050432,
+        6442450944
+      ],
+      "image": "sha256:fc87b4da4562898fea296f2f9fb4d1fe6d7c49470cb489eb47c7b38293ea155a",
+      "nano_cpus": 750000000,
+      "memory_bytes": 6442450944
+    },
+    "llm": {
+      "cgroup_memory_current_peak_limit_bytes": [
+        8355405824,
+        8376909824,
+        17179869184
+      ],
+      "image": "sha256:998a8e65d16b5ca6f7f3b7065ff501250cb672cb1ac1e407c0e45bafb616abe3",
+      "nano_cpus": 2000000000,
+      "memory_bytes": 17179869184
+    }
+  }
+}

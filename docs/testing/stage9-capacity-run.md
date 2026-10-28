@@ -227,3 +227,41 @@ fail-closed checks now cover both Conflict and Registry lists. Negative tests re
 malformed/unhashable IDs, wrong dataset, provider, pool, version and reason failures.
 Both the measurement source and the HTTPS observer's shared retrieval contract source
 are archived by exact SHA at invocation. Fresh actual measurements are still required.
+
+
+Corrected full-index ASGI run on committed `c8e9aa0`: **FAILED** one-second
+per-endpoint p95 gate. All 20 warmups and 400 timed reads were valid, with zero HTTP
+failures and immutable business history. Endpoint p95: Conflict list0.168704s, Registry
+list0.154624s, similar Decisions0.559988s, recommendation**1.109600s**. Aggregate
+p95=0.910812s does not override the failing endpoint. This ASGI application/client
+runner is explicitly capped at1CPU/1GiB, while PostgreSQL is a separate uncapped
+development container. No concurrent inference occurred in the timed window.
+[Preserved failed observation](reports/stage9-actual-10k-asgi-1cpu-failed-2026-10-28.json).
+The ten query/session workload includes BELOW_THRESHOLD and correlated-small-pool
+abstentions as well as oversized evidence; neither success nor absence proves semantic
+quality. Actual deployed HTTPS/API measurements are separate and must retain their own
+measured resource profile; a PASS there cannot relabel this restricted ASGI run.
+
+Fresh committed-source observations, same actual full 10k index and fixed model limits:
+
+- [LLM process startup](reports/stage9-llm-final-source-startup-2026-10-28.json):
+  readiness PASS, 23.4531s to retained successful health check; no OS cache flush.
+- [Full HTTPS during startup](reports/stage9-full-https-startup-failed-2026-10-28.json):
+  **FAILED**,499/500valid, one recommendation503; recommendationp95=1.404224s.
+  The enclosing HTTP window extends2.67s after first readiness; this is a startup/ready
+  transition workload, not a wholly pre-ready or generation measurement.
+- [Full HTTPS during actual generation](reports/stage9-full-https-inference-failed-2026-10-28.json):
+  **FAILED** one-second endpoint gate;500/500valid and immutable, recommendation
+  p95=1.285170s, retrieval0.809282s, other endpoints0.157–0.220s.
+  [Actual successful first vertical and phase bounds](reports/stage9-first-actual-llm-overlap-2026-10-28.json)
+  prove the complete enclosing HTTP window lies inside actual successful LLM inference
+  (87.2469s); this does not make the failed core latency pass.
+- [Source provenance](reports/stage9-actual-10k-provenance-2026-10-28.json) includes
+  hashes and exact archived observer/contract bytes, closing the new run's provenance
+  gap without rewriting historical observations. [Resource checkpoint](reports/stage9-post-index-resource-2026-10-28.json)
+  separates lifetime cgroup memory high-water from per-phase RSS; these are development
+  measurements, not a supported production AI profile.
+
+The twenty-observation genuine-model series is running separately; no completed-series
+percentile or semantic-quality claim exists yet. The slow recommendation path requires
+profiling after the frozen series completes. Previous FAIL observations stay FAILED.

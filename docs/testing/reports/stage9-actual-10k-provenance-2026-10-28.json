@@ -1,0 +1,23 @@
+{
+  "source_commit": "c8e9aa09b4595725ab550c5cd3c70a6e88c32ec7",
+  "kind": "actual-10k-observation-source-binding-not-production-acceptance",
+  "files": {
+    "stage9-llm-final-source-startup-2026-10-28.json": {
+      "sha256": "fe4cc79793504ed0d0c42c1fced118f0664596789a508cbb2683a79f7b3dfb3b",
+      "observer_artifact": "stage9-observers-2026-10-28/startup-observer-c1f2caef33638452160d843c1b023d8c78bef1568c5e2eb034526d5b049ac617.py.txt"
+    },
+    "stage9-full-https-startup-failed-2026-10-28.json": {
+      "sha256": "cfbe6e6a0027696d3e4ee739062bd0aa6ad678ee4fd0db155a197c2273d74e44",
+      "observer_source_artifact": "stage9-observers-2026-10-28/https-observer-source-f3fe2420667cf2038f5fe4433940679e0ca4f44495c4c225e5832c3327a5312d.py.txt",
+      "retrieval_contract_source_artifact": "stage9-observers-2026-10-28/retrieval-contract-source-3522b1b3da9d0ff98042ae19b5e3f665b3a9f5474a6b7719b6282a33d3c45d41.py.txt"
+    },
+    "stage9-full-https-inference-failed-2026-10-28.json": {
+      "sha256": "97a516c8f612c9107d39a8dacf010c0d588c36e7d7a47af0a7381d304b957eda",
+      "observer_source_artifact": "stage9-observers-2026-10-28/https-observer-source-f3fe2420667cf2038f5fe4433940679e0ca4f44495c4c225e5832c3327a5312d.py.txt",
+      "retrieval_contract_source_artifact": "stage9-observers-2026-10-28/retrieval-contract-source-3522b1b3da9d0ff98042ae19b5e3f665b3a9f5474a6b7719b6282a33d3c45d41.py.txt"
+    },
+    "stage9-post-index-resource-2026-10-28.json": {
+      "sha256": "5bf9fa85c23fbdf7047a6f70c33644d448778b85ee1b0644f8c21e5e773331f1"
+    }
+  }
+}
