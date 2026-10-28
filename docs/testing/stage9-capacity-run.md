@@ -297,3 +297,21 @@ index hardware/source; record the new measurement source/image separately. The d
 private state carries index_source_fixture/measurement_only, shares the original runner
 lock inode, and permits only measure (no import/index). This is a new measurement of the
 same verified10k vectors, not a relabelled original run or a new semantic dataset.
+
+
+The hash-correction profile `actual-10k-json-v2` reused the original index and unchanged
+business digests. [New deployed API provenance](reports/stage9-json-v2-deployment-provenance-2026-10-28.json)
+verifies all86 app-file hashes against committed7a2a1db, image000a2e52…,512MiB/no explicit
+API CPU quota. Models and their resource bounds remain unchanged.
+[New1CPU ASGI observation](reports/stage9-actual-10k-json-v2-asgi-failed-2026-10-28.json)
+is still **FAILED**:400valid/20valid warmups/immutable, recommendationp95=1.046292s,
+retrieval0.577487s, other endpoints0.122–0.126s. Original failed observations remain.
+This small reduction is not a proof of a supported industrial hardware profile.
+
+Further measured repetition: on the11-match diagnostic,12fresh checks loaded both
+profile catalogs12times (profile cProfile cumulative16.65ms). Each evaluation now
+captures approved profile digests once and reuses immutable strings for its current
+and historical evidence; the next evaluation reloads. [Independent scope review](reports/stage9-profile-snapshot-independent-2026-10-28.md)
+found no policy/scope/digest change. Full integration and actual performance repeat are
+pending. The owned runner's verify mode selects the three opt-in actual-model tests;
+it does not reduce the required twenty-observation timing-series denominator.

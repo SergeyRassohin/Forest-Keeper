@@ -285,6 +285,31 @@ def test_exact_committed_reference_retry_does_not_require_redis_or_new_evaluatio
         assert save(client, query, body, expected=200)["decision_id"] == committed["decision_id"]
 
 
+def test_current_and_past_evidence_share_one_profile_snapshot_per_evaluation(client):
+    from unittest.mock import patch
+
+    from app.recommendations.evidence import prepare, profile_digests
+
+    query = Cases(client).prepared()
+    captured = []
+
+    def load_profiles():
+        approved = profile_digests()
+        captured.append(approved)
+        return approved
+
+    with (
+        patch("app.recommendations.service.profile_digests", side_effect=load_profiles),
+        patch("app.recommendations.service.prepare", wraps=prepare) as observe,
+    ):
+        for request_number in range(2):
+            assert recommendation(client, query)["status"] == "RECOMMENDED"
+            calls = observe.call_args_list[request_number * 6 : (request_number + 1) * 6]
+            assert len(calls) == 6  # Current comparison plus five genuine histories.
+            assert all(call.kwargs["profiles"] is captured[request_number] for call in calls)
+    assert len(captured) == 2 and captured[0] is not captured[1]
+
+
 @pytest.mark.parametrize(
     "field", ["file_hash", "raw_record_id", "normalization_origins", "authority"]
 )

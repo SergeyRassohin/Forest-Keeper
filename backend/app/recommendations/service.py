@@ -22,7 +22,7 @@ from app.decisions.service import (
     historical_context,
 )
 from app.decisions.validation import selectable
-from app.recommendations.evidence import EvidenceError, prepare, validate_lineage
+from app.recommendations.evidence import EvidenceError, prepare, profile_digests, validate_lineage
 from app.recommendations.policy import POLICY, POLICY_HASH, aggregate
 from app.recommendations.schemas import Evidence, Outcome, RecommendationResult, SourceMap
 from app.similarity.models import DecisionEmbedding
@@ -170,7 +170,8 @@ def evaluate(
         if not settings.recommendation_source_map:
             return finish("SOURCE_MAPPING_NOT_CONFIGURED")
         mapping = SourceMap.model_validate(settings.recommendation_source_map)
-        current = prepare(snapshot, mapping)
+        profiles = profile_digests()
+        current = prepare(snapshot, mapping, profiles=profiles)
         validate_lineage(session, [snapshot])
     except ValidationError:
         return finish("SOURCE_MAPPING_AMBIGUOUS")
@@ -249,7 +250,7 @@ def evaluate(
     try:
         for item in retrieved["results"]:
             row = rows[UUID(str(item["decision_id"]))]
-            past = prepare(row.context_snapshot, mapping, row)
+            past = prepare(row.context_snapshot, mapping, row, profiles=profiles)
             prepared.append(past.candidate)
             used_sources.update(past.roles)
             correspondence = [

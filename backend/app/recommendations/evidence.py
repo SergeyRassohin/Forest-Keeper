@@ -1,6 +1,8 @@
 """Explicit source correspondence and conservative frozen provenance validation."""
 
+from collections.abc import Mapping
 from dataclasses import dataclass
+from types import MappingProxyType
 from typing import Any
 
 from sqlalchemy import select, tuple_
@@ -31,12 +33,32 @@ class Prepared:
     features: dict[str, Any]
 
 
-def fresh(snapshot: dict[str, Any]) -> bool:
+@dataclass(frozen=True)
+class ProfileDigests:
+    matching: Mapping[str, str]
+    normalization: Mapping[str, str]
+
+
+def profile_digests() -> ProfileDigests:
+    """One request's approved configuration; never cached across evaluations."""
+    try:
+        return ProfileDigests(
+            MappingProxyType(
+                {str(key): value.digest() for key, value in matching_catalog().items()}
+            ),
+            MappingProxyType(
+                {str(key): value.digest() for key, value in normalization_catalog().items()}
+            ),
+        )
+    except (TypeError, ValueError):
+        raise EvidenceError("STALE_CONTEXT") from None
+
+
+def fresh(snapshot: dict[str, Any], *, profiles: ProfileDigests | None = None) -> bool:
     try:
         matching = snapshot["matching"]
-        profiles = {str(key): value for key, value in matching_catalog().items()}
-        profile = profiles.get(matching["profile_id"])
-        normalization = {str(key): value for key, value in normalization_catalog().items()}
+        approved = profiles if profiles is not None else profile_digests()
+        profile = approved.matching.get(matching["profile_id"])
         origins = snapshot["normalization_origins"]
         sides = snapshot["conflict"]["values_snapshot"]
         return bool(
@@ -44,22 +66,28 @@ def fresh(snapshot: dict[str, Any]) -> bool:
             and len({x["analysis_id"] for x in origins}) == 2
             and {x["source_id"] for x in origins} == {x["source_id"] for x in sides}
             and profile
-            and profile.digest() == matching["profile_hash"]
+            and profile == matching["profile_hash"]
             and snapshot["conflict"]["basis"]["config_hash"] == CONFIG_HASH
             and all(
-                (item := normalization.get(origin["profile_id"])) is not None
-                and item.digest() == origin["mapping_hash"]
+                bool(item := approved.normalization.get(origin["profile_id"]))
+                and item == origin["mapping_hash"]
                 for origin in snapshot["normalization_origins"]
             )
         )
-    except (KeyError, TypeError, ValueError):
+    except (KeyError, TypeError, ValueError, EvidenceError):
         return False
 
 
-def prepare(snapshot: dict[str, Any], mapping: SourceMap, row: Decision | None = None) -> Prepared:
+def prepare(
+    snapshot: dict[str, Any],
+    mapping: SourceMap,
+    row: Decision | None = None,
+    *,
+    profiles: ProfileDigests | None = None,
+) -> Prepared:
     try:
         features = context(snapshot, row)
-        if not fresh(snapshot):
+        if not fresh(snapshot, profiles=profiles):
             raise EvidenceError("STALE_CONTEXT")
         if features["authority"] != "NOT_DEFINED" or features["forest_codex"].get("configured"):
             # No accepted active authority/Rule adapter yet, never invent precedence.
