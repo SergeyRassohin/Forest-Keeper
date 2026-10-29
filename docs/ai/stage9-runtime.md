@@ -151,3 +151,12 @@ The separate [resumable actual-vector capacity run](../testing/stage9-capacity-r
 uses an explicitly owned development fixture and records calibration/full-run results
 separately. Its warm ASGI baseline does not replace the remaining AI/core, HTTPS,
 cold/warm, semantic-quality or supported-hardware gates.
+
+Final development measurements on29October are summarized in the
+[current acceptance checkpoint](../testing/reports/stage9-development-acceptance-2026-10-29.md).
+The real10kindex is complete. Idle ten-session HTTPS passes, but loaded recommendation
+p95=1.044695s during startup and1.102804s during generation exceeds the mandatory1s
+baseline. The4CPU/32GiB host is a limited development demonstration, not an accepted
+production AI hardware profile. No8CPU/100k/GPU sizing guarantee follows from it.
+Human Gold/targets, production policy, signed packaging#32 and final exact-SHA CI
+remain separate gates; Stage9 is BLOCKED and production activation stays disabled.

@@ -1,0 +1,316 @@
+{
+  "kind": "independent-final-stage9-actual-inference-and-evidence-review-not-semantic-quality",
+  "assembled_at_utc": "2026-10-29T14:24:14.379338+00:00",
+  "tested_source_commit": "43fcf12b334a5d457bfafbf3afe56be801d33c4b",
+  "business_source_unchanged_from": "d47fa17b74f23360fb9b803b138f1efeec9dc566",
+  "actual_three_tests": {
+    "kind": "independent-actual-model-final-verification-not-semantic-quality",
+    "passed": true,
+    "source_commit_at_launch": "43fcf12b334a5d457bfafbf3afe56be801d33c4b",
+    "application_unchanged_from": "d47fa17b74f23360fb9b803b138f1efeec9dc566",
+    "tests_passed": 3,
+    "tests_skipped": 0,
+    "pytest_summary": "3 passed, 1 warning in 117.48s (0:01:57)",
+    "tests": [
+      "test_real_imports_precedents_qwen_retrieval_and_grounded_llm_leave_decision_to_human",
+      "test_real_qwen_backfill_query_and_scoped_lookup_preserve_manual_history",
+      "test_real_qwen_shadow_checkpoint_new_worker_cutover_and_test_space_rollback"
+    ],
+    "container_state": {
+      "Status": "exited",
+      "ExitCode": 0,
+      "StartedAt": "2026-10-29T14:16:57.901314229Z",
+      "FinishedAt": "2026-10-29T14:18:57.512561563Z",
+      "OOMKilled": false
+    },
+    "actual_vertical": {
+      "kind": "legally-synthetic-development-vertical-not-gold",
+      "passed": true,
+      "backfill_seconds": 15.306,
+      "llm_started_at": "2026-10-29T14:17:23.059134+00:00",
+      "llm_finished_at": "2026-10-29T14:18:34.103005+00:00",
+      "llm_job_seconds": 71.1286,
+      "explanation_state": "COMPLETED",
+      "precedents": 5,
+      "actual_vectors": 5,
+      "retrieval_version": "2bfa62e6-1660-5ab2-a938-86f12b508eac",
+      "model": {
+        "component": "llm",
+        "model_id": "Qwen/Qwen3-8B-GGUF",
+        "revision": "7c41481f57cb95916b40956ab2f0b139b296d974",
+        "artifact_sha256": "d98cdcbd03e17ce47681435b5150e34c1417f50b5c0019dd560e4882c5745785",
+        "artifact_lock_sha256": "de48fc69b3fb7babb3b6fce644b8b90ff77ad52ca23798349f3cf23bcbb60be3",
+        "dimensions": null,
+        "configured_context_tokens": 32768,
+        "preprocessing_version": "qwen3-semantic-json-last-token-v1",
+        "prompt_version": "grounded-clauses-v5-minimal-comparison",
+        "prompt_sha256": "16079a42e9eebf4ca4a2486dac3463d2f5653bb6f764c6b46925742d029d9b87",
+        "instruction_sha256": null,
+        "runtime_versions": {
+          "llama.cpp": "620d2225cc436ab0b001e3200e590e3b286ef9ab"
+        },
+        "input_schema_sha256": "6f1ceb0c12444a0e2c9afeef2904e0d2273a497e9f0979c7badacc83fc247b5b",
+        "output_schema_sha256": "b74af58fd012d0d61b9c6e10e0f2cc6887e364edc30349e724ec6cd67303609f",
+        "quality_provenance": "LOCAL_QWEN_DEMO",
+        "production_accepted": false
+      },
+      "support_citations_valid": true,
+      "ai_business_writes": 0,
+      "human_confirmation": true,
+      "production_accepted": false,
+      "elapsed_seconds": 93.4324
+    },
+    "scope_notes": [
+      "Genuine legally synthetic imports/Registry IDs, actual pinned local embedding and LLM, no provider/output mock.",
+      "Settings routing isolates each owned disposable schema/queue. One provider wrapper checks released SQL connections/advisory locks and calls actual original inference.",
+      "Background-only query embedding; GET provider call prohibited; separate AI/core queues checked.",
+      "Shadow partial checkpoint refuses activation; fresh RQ worker resumes; full explicit cutover and separate vector spaces; rollback preserves history.",
+      "Three observations do not establish latency percentiles, human Gold quality or supported production hardware.",
+      "Network isolation was inspected from actual Docker ownership/internal-network configuration, not a new packet-level egress probe.",
+      "The named scoped-lookup test exercises actual scoped server retrieval; this run does not substitute for separate negative cross-domain/IDOR/adversarial security tests.",
+      "New-worker recovery is from a durable shadow checkpoint, not a mid-native-inference SIGKILL."
+    ],
+    "semantic_quality_evaluated": false,
+    "production_accepted": false,
+    "raw_private_log_sha256": "d756fc5f0949970a3bbba66a5ba53bcd176ba906d2938f3c93b6844ccc2f91c2",
+    "provenance_sha256": "5d2d7c2a63dd7c4ab64b96fe0af7f8f5f307bc0c2b866bb2aa221001fc9f2ca3",
+    "application_source_unchanged_after_run": true,
+    "model_post_run_state": {
+      "embedding": {
+        "image": "sha256:fc87b4da4562898fea296f2f9fb4d1fe6d7c49470cb489eb47c7b38293ea155a",
+        "started_at": "2026-10-27T20:41:04.243899222Z",
+        "healthy": true,
+        "no_restart_during_verification": true
+      },
+      "llm": {
+        "image": "sha256:998a8e65d16b5ca6f7f3b7065ff501250cb672cb1ac1e407c0e45bafb616abe3",
+        "started_at": "2026-10-28T06:00:47.423470682Z",
+        "healthy": true,
+        "no_restart_during_verification": true
+      }
+    }
+  },
+  "independent_runner_provenance": {
+    "kind": "independent-owned-actual-verification-provenance",
+    "source_commit": "43fcf12b334a5d457bfafbf3afe56be801d33c4b",
+    "app_source_unchanged_from": "d47fa17b74f23360fb9b803b138f1efeec9dc566",
+    "application_files": 86,
+    "application_source_sha256": {
+      "__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ai/__init__.py": "4e8f1d978af8832c2e9e222032fd36d709a12017546e3bd73c7bc33beda250fb",
+      "ai/admission.py": "d13a0f829e49ba16860d380a7d7f58c03c59ddd7a5b64acaf17a19a5b40fd1f1",
+      "ai/artifacts.py": "5e04d680268370b75a50f4fd0d2f6daeffe17728251f4ad3aef7fce12f7be941",
+      "ai/authorization.py": "783b88614fbf6e2836f1aa4b9de8223a94357418a50fa236b2239d2c3d9864ac",
+      "ai/baseline.py": "7fd13be315ac5953a78db5c8d2b166f4a47d609c46b5929b4de646cd2bf1e508",
+      "ai/contracts.py": "d9d1f2526cee2580608691ecac6ca46976f5ab736a6814710bfe3416bdd7e0d0",
+      "ai/explanations.py": "bc654ad13710dd26e1f0f9984c06b54c7ad89adc0638e074a1ddb8f94e154c75",
+      "ai/facts.py": "30ad7b796aa701774d3c42061e70d3533698062d638901a9ff777c4ccf70ea96",
+      "ai/http_limits.py": "7aa7d30d1f13c340851de49dcddd30ddbad6c2524ed816fbf6240f1d600b6abc",
+      "ai/identity.py": "1f972aa0d618ffaf57a8d4d440ed52e9c801257bf0dcfd52c021c374927c31cb",
+      "ai/indexing.py": "995981953bad31824744265de6302de1ec26a339dcfafe5f071016e127a394b0",
+      "ai/routes.py": "6822614228a1251d0863d7a36ec0b74f8c0e30b7f5cd37e25ca7aad0da6ff190",
+      "ai/runtime.py": "9133416b87689f2db426222271a0d81e384858084a05544ba7726115e463a8d7",
+      "ai/supervisor.py": "9e0b1b75283edcc22c0c0974c16f3e66abdb3f657f79683d737bf1291b13eb7c",
+      "ai/transport.py": "652be8a43294bea930404015e698e597ac5b249d7ce1478816f71b138e707448",
+      "ai/worker.py": "1a577b9d1fc54c2be1190ac59e26623386a7657381f7659ccdfda90b73f00db7",
+      "auth/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "auth/bootstrap.py": "c08121db451a7b0ecde30d4ae7c96889339a337daf4c21daae6c3202fb28be2a",
+      "auth/dependencies.py": "07e1cf9eeb4cfd1a418726a0f15fe7dcabebf491219d8bf67ed4a88271a9ce1f",
+      "auth/models.py": "d4192b6505a40bf0620bb9c6b79da4ef4d551b5ac25eab4a83604720679a2a77",
+      "auth/policy.py": "d986a0f5ba29554aea51496873f1ebbd33be2b13331e9ab25a25f015c50ebac4",
+      "auth/routes.py": "a5dbf450755f1ea55e9f3898bfe081812ce1b4391e8fe525802aacab36ed8951",
+      "auth/schemas.py": "09148f769d7a8868545683998511a4b15f54de1267cd6bc5ddd4861c159ceb79",
+      "auth/security.py": "79aefb0eace2188574b3e15c6b6ecf2e8aedb9082d4096e97d0cb5acdd331d65",
+      "common/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "common/basis_lock.py": "7007acc87c4ffc58c69aa9db1eb3de6b25d57b30597177dc3f688f3ac57e98fd",
+      "common/config.py": "4e4b48b080bf791c7af5df3659fd9df42338841b39c7b03af2995f64f2c1846f",
+      "common/database.py": "2c7b12a091c44fc93f5f778e02de968d9d5a710be54f87141778a7ee9e7eb562",
+      "common/errors.py": "98d6299c177f2eb77494262321a057f2864a53d4fc265e50cfe4ce2213fc9357",
+      "common/health.py": "f69d90d7080691c037207f655b7f996c38592b4ecf2258f340b6359eaba9857f",
+      "common/retrieval_rate.py": "d46c71d1c806dc59577515e1b88f0da44bf8bed73392c7f94bcf74c2a0c85d86",
+      "conflicts/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "conflicts/engine.py": "f008920dd72e8c3304aa75c0ea921cf00cad6cffb08814542e8a5718eb492bf0",
+      "conflicts/jobs.py": "ac16ad4f2a0c821356609fd878921085dc780079a419b9e759ce0b33ac0131ee",
+      "conflicts/models.py": "d5d00c41aa2ecb014b084c1dfbb2d0bd9d79fc0bf71ab72939376a6d2415f1d2",
+      "conflicts/pipeline.py": "b935331d3510d020d1a76d0e5c6e6a6d56e44e2361583495d44db7bba511c34d",
+      "conflicts/routes.py": "c3c830e78c40eafb628c37b8fb29c3517a2ea6474fa6c207cd7564b8ea016ded",
+      "decisions/__init__.py": "45a66e7bfb3aec043fa806767419625563deec75ab1993096431ba772fd2777a",
+      "decisions/models.py": "af4ff3f8789dce2658b235e0073ef03446e8a84c4b14251c4b2c15ff85ee7ec2",
+      "decisions/routes.py": "298fd3bee6cc7527e32d928d690ec195902e480778f210a04a7844060fd2c086",
+      "decisions/schemas.py": "a2d2e6c548a07087cf4de3882093d21fe16f362938b2ffea682e81915bc8002a",
+      "decisions/service.py": "bb9bf4101425d8b2fd5120ce868d4c8d9241f4cef4bd8bb633cdf293e6e4f65c",
+      "decisions/validation.py": "46a566bef8f4eab20590b5743e076553f2ce6e1af65d3a17f40e3216fb82befa",
+      "imports/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "imports/jobs.py": "c94f819d9565cfd6be8d12f26201839c9ad46e23f3c53117a93edfa350fd9138",
+      "imports/models.py": "d1cb4b19330c996ae007057c3417d31c9ec97c6ba2e8c62e8f3c1d057a3db6ab",
+      "imports/parsers.py": "a26cbbad2b247780d678f840e3a4350c16e5fae7c75159b5e2ad41a1db2bc703",
+      "imports/recover.py": "bfdce3617fe3aa5caf7d323a7ebf7b289d03460fab4b71d91a47097986c823e9",
+      "imports/routes.py": "de8fd9c7d32df6299ade02c45c4a47cf72ece4c8779288ffeb8e3b2ff268223a",
+      "imports/schemas.py": "47fe13b2409d9ca5a680ed06c474332f3f77e1c3b7dd8d96d9631ae155e4db78",
+      "imports/service.py": "2bd96b5a37bae47b4978697f2edda34e4141b024128a357185f700223e7ef08a",
+      "imports/storage.py": "0dd4caa7f37a4a25bc88627ba3fa4d9ddcff41cfdd9a9748d7a841c92445bc9f",
+      "main.py": "a0fcf08ef3174a330ec5893ce17321ffd9af1591c77d4be8bf9f3d35ba27d02c",
+      "matching/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "matching/engine.py": "bf0973359998a84494f5eddde452fbce3065d5b981a8ef08029ddb0f71ecaf11",
+      "matching/jobs.py": "41d22b2d47a605e7461b1db297b4189ccfa65a5d111ef6628f69bcd9abec614f",
+      "matching/models.py": "98cf1b6ab7559636702fda91e521319370b6153c8925fc8ef40d2e53746c6f5b",
+      "matching/profiles.py": "984f3c61ee69079a167251ad520c5d84eb2753393730f565e6e8754dcc63b1c7",
+      "matching/routes.py": "34758f2a8a3bdc7e76d8d4998feee4dcd5a74d09abfc150ef8106cca2611e26a",
+      "matching/storage.py": "0f3221fce7c84adbddeff33d85f19ed935710e1af35fd31242e00ebe9fb21158",
+      "normalization/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalization/jobs.py": "247cff413d52ad420863061d1151d72288598a9d00e548616ae3d2196a79d806",
+      "normalization/models.py": "97ad886ec100c70a8393920f312b5f72b02cd7f5eff9cb3931b79a291e4095c9",
+      "normalization/normalize.py": "5d3133e471b892cd5a0379b91a7696d8800d4668b3af1d4e894c6e0912dde56d",
+      "normalization/pipeline.py": "a86e8f2abd094e3b501fce84967bdf173553c219427e1ff4648f16c2e9b9fe82",
+      "normalization/profiles.py": "2dd248f95703ee8523a88fa227cc97f7be6c8b126e417494e70189dbf91e66e1",
+      "normalization/recover.py": "07a31957e2ff780d4af57b0e878dc51c90145fbe03c3c7a4e18a8350cc442ded",
+      "normalization/routes.py": "8590a596a821e9118a39542a3d544e38975354acb27f7c43ab337e69522e098f",
+      "recommendations/__init__.py": "6798db0cbea9132c6a57f3cdc0d6b0aabbfc4d93e5a321eada53cbab7ca0d0c2",
+      "recommendations/audit.py": "c190f178744d45f151f959ffd55c513fb1519eab8158344a04280e2e926a6278",
+      "recommendations/evidence.py": "a890a5828306c683fb7a0c9e50cda83716ea2fc865d8b3bb51894e6e27b61dfe",
+      "recommendations/policy.py": "5802291f6dc8d1397a6ab2a2f7c31ecff269027e9e754f56a404786d6b70a929",
+      "recommendations/routes.py": "f5739beb1f77e20c12b23b75033b18e5629ace12a8a61d9ee8d5d45b70994a95",
+      "recommendations/schemas.py": "03bb42d6d659969133c46fd7daad2b771cc574b584a23b8330c5e752f91e9143",
+      "recommendations/service.py": "e0b26829a6d90e2576c33abc104437a58ead7470d3d62cc0924ea89b557c1fbf",
+      "similarity/__init__.py": "0f764db1ff1561d47d99b135f08b529566be2fefb3fc60256c5ea111e46fc445",
+      "similarity/cli.py": "3b362ad09e55b88d655b552bae378508fc89a997c361b65f7ddb136a91a92d6f",
+      "similarity/context.py": "6673a2f06f95f3d3459509e23583bfc54b893ebe70935180c01c09e78b86a3a4",
+      "similarity/jobs.py": "525027cd2ad3d037f2491ba98d4f6fd6185eedeb4689a5902b8dc0914a9e4e97",
+      "similarity/models.py": "99e040be1d08027cd837313ee67dab583b44ea97b6d950dbbd1ef5240d729291",
+      "similarity/provider.py": "41eabd21340a0b660af13971ca25ed41f8489fde497fd3c4bc927bbd8215ea0a",
+      "similarity/routes.py": "a2d6c0d444cda671a7385bd792013ebea4a03901cae38cde830103a4622e3045",
+      "similarity/service.py": "6e7325911fc83099f376ab16fbcd9f617e16fb296fb3e299819591b448bbd87e",
+      "worker.py": "6be1f1ca49b22a24a007e2234343672c81f984f5ddd419ec4a627cd8fa4c56a4",
+      "worker_health.py": "5bb10ac5a30abe2928d77e159f804dc8dff296c9ffac1e8991dbf77817b75793"
+    },
+    "runner_source_sha256": "c96b5cfa45350180d44e03e6ce2a8df230472c22ca3827981c35cf167254f654",
+    "test_source_sha256": {
+      "test_ai_real_integration.py": "8f602f7f074672110d07d384c091490e52e70339d2f374558b7b00c5419793f3",
+      "test_qwen_integration.py": "dad005bb2b1ea2f24f1f4643de96672af1a5180e9ca3d828c900b424b0e9dba1"
+    },
+    "container": {
+      "name": "fk-stage9-capacity-independent-final-profiles-v3-verify",
+      "image": "sha256:bc5d510ebe5ba007c032655f95d26446239ecf5c569e15e15f90364908fc3f07",
+      "user": "1000:1000",
+      "readonly_rootfs": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_opt": [
+        "no-new-privileges"
+      ],
+      "nano_cpus": 1000000000,
+      "memory_bytes": 1073741824,
+      "pids_limit": 128,
+      "networks": {
+        "fk-stage9_ai_private": {
+          "internal": true,
+          "project": "fk-stage9"
+        },
+        "fk-stage9_default": {
+          "internal": true,
+          "project": "fk-stage9"
+        }
+      },
+      "public_ports": {},
+      "proxies_empty": true,
+      "no_docker_socket_mount": true,
+      "selected_mount_destinations": [
+        "/repository/models/artifacts.lock.json",
+        "/run/secrets/fk_ai_key",
+        "/imports",
+        "/repository/backend/tests",
+        "/repository/backend/migrations",
+        "/repository/backend/alembic.ini",
+        "/repository/docs/security",
+        "/test-dependencies",
+        "/private",
+        "/evidence",
+        "/repository/backend/app",
+        "/repository/tests/data"
+      ]
+    },
+    "model_images_and_limits": {
+      "fk-ai-embedding": {
+        "image": "sha256:fc87b4da4562898fea296f2f9fb4d1fe6d7c49470cb489eb47c7b38293ea155a",
+        "nano_cpus": 750000000,
+        "memory_bytes": 6442450944
+      },
+      "fk-ai-llm": {
+        "image": "sha256:998a8e65d16b5ca6f7f3b7065ff501250cb672cb1ac1e407c0e45bafb616abe3",
+        "nano_cpus": 2000000000,
+        "memory_bytes": 17179869184
+      },
+      "postgres": {
+        "image": "sha256:151aa1c2e849e7828ed8aef2183ae15f692cbe887d2f28921d8b44b26e154d7e",
+        "nano_cpus": 0,
+        "memory_bytes": 0
+      }
+    },
+    "production_accepted": false,
+    "semantic_quality_evaluated": false
+  },
+  "evidence_review": {
+    "reviewed_public_report_sha256": {
+      "stage9-profiles-v3-asgi-2026-10-28.json": "e9316bb12d45c1880ca45bc337975d89ebd374ccb0848c131fd28ee6874f35fc",
+      "stage9-profiles-v3-deployment-2026-10-28.json": "0ab5d8d1237fc92378fd1ee09708306afca0eff76803d2d03db117b023d0f9be",
+      "stage9-profiles-v3-https-idle-2026-10-28.json": "e649e11c776e87d0e688c17e940b99d252b3f3417dd92b2012ae7dd8174d636f",
+      "stage9-profiles-v3-https-inference-failed-2026-10-28.json": "d9c7b494f3cb2c5ac26cbc946d1bfe2164dacc033d5901aa3a31549eba9ad9d0",
+      "stage9-profiles-v3-https-startup-failed-2026-10-28.json": "1174827884572ff77e01503035fcb9c07f283fc438fc587f0c78ca20ab4a0222",
+      "stage9-profiles-v3-inference-overlap-2026-10-28.json": "8d3d76acf6411709f346e26b3488b993a70dcbdb3057e965cd57075b6bb064ad",
+      "stage9-profiles-v3-llm-startup-2026-10-28.json": "1930ed187829fd36d311a41a496005e9e594277812d2ee49c29f4dd1f192aab7",
+      "stage9-final-model-isolation-2026-10-28.json": "223f545f998aa0d848b7ed7f8673a8db2c092664454cf2d74b24ef1ea931552e",
+      "stage9-final-three-actual-tests-2026-10-28.json": "68efa4d8329f6cea12d470d10af8b7ed16650543567ae005f3fa73d54a1dfe45",
+      "stage9-final-local-gates-2026-10-29.json": "5c075dc98d9940f11767fa5f13d6191d4ef40e3f87621d3ecf806316a3d75329"
+    },
+    "all_94_deployed_python_json_files_match_checkout": true,
+    "all_86_independent_runner_python_files_unchanged_before_after": true,
+    "asgi_400_and_three_https_500_row_metrics_recomputed": true,
+    "every_endpoint_has_100_observations": true,
+    "all_observations_valid_http_200_and_no_errors": true,
+    "all_four_nfr_pass_fail_flags_match_per_endpoint_one_second_threshold": true,
+    "original_partial_backfill_to_final_ten_canonical_business_digests_identical": true,
+    "referenced_observer_source_artifacts_present_and_sha256_verified": true,
+    "all_six_retained_local_gate_log_hashes_verified": true,
+    "inference_entire_http_window_inside_successful_llm_phase_verified": true,
+    "startup_http_continues_after_first_readiness_seconds": 1.153438,
+    "new_public_reports_checked_no_credentials_raw_prompts_vectors": true,
+    "fresh_packet_level_egress_or_idor_negative_probe_by_this_reviewer": false,
+    "remote_final_ci_independently_verified": false
+  },
+  "source_review": {
+    "blocking_source_findings": [],
+    "scope": "architecture/security/product intent, two bounded performance corrections, runtime observer contracts and final acceptance documents",
+    "new_global_cache_or_policy_threshold_deadline_auth_relaxation_found": false,
+    "human_approved_gold_or_targets_present": false,
+    "reviewer_business_source_mutations": 0,
+    "owned_completed_client_removed_after_capture": true,
+    "bind_evidence_data_and_business_volumes_preserved": true
+  },
+  "acceptance": {
+    "stage_status": "BLOCKED",
+    "ready_to_merge": false,
+    "merged": false,
+    "production_accepted": false,
+    "semantic_quality_evaluated": false,
+    "remaining_gates": [
+      "Loaded recommendation p95 exceeds mandatory1s: startup1.044695s; actual generation1.102804s.",
+      "Human-approved independent materialized Gold, sealed separation and preapproved numerical targets absent.",
+      "Supported production AI hardware/profile and positive policy not accepted; no100k/GPU guarantee.",
+      "Signed offline distribution dependency#32 unresolved.",
+      "Final report commit delivery and exact-final-HEAD push/PR CI not verified; configured GitHub authorization unavailable."
+    ],
+    "protected_followups": [
+      "#17",
+      "#18",
+      "#20"
+    ],
+    "next_stage_started": false
+  },
+  "limits": [
+    "Three actual tests are functional verification, not a latency percentile or semantic quality benchmark.",
+    "Fresh own-file disposable fixtures use legally synthetic histories and explicit fixture confirmation, not customer Gold labels.",
+    "Earlier actual browser/restart/security evidence retains its own historical source and execution scope.",
+    "Current report-only changes require their own final remote synchronization/CI; launch SHA43fcf12 is not automatically that final SHA."
+  ]
+}

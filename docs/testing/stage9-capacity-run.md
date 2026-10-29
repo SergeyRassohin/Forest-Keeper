@@ -262,9 +262,9 @@ Fresh committed-source observations, same actual full 10k index and fixed model 
   separates lifetime cgroup memory high-water from per-phase RSS; these are development
   measurements, not a supported production AI profile.
 
-The twenty-observation genuine-model series is running separately; no completed-series
-percentile or semantic-quality claim exists yet. The slow recommendation path requires
-profiling after the frozen series completes. Previous FAIL observations stay FAILED.
+At that checkpoint the twenty-observation genuine-model series was still running.
+Its completed results and subsequent profiling are recorded below. Previous FAIL
+observations stay FAILED; the series does not measure semantic quality.
 
 
 ### Completed actual-model series and bounded performance correction
@@ -289,7 +289,7 @@ guard/legacy fallback for only two already-frozen inputs in recommendation valid
 [Independent source/compatibility review](reports/stage9-frozen-json-independent-2026-10-28.md)
 and [all10k persisted hash comparisons](reports/stage9-frozen-json-hash-compatibility-10000-2026-10-28.json)
 found zero changed hashes. No history, vector, policy, threshold or deadline was changed.
-This optimization's effect on API p95 is still unproven until the next actual run.
+Subsequent measurements of this optimization and the profile snapshot follow below.
 
 A fresh **measurement-only profile** may reuse the completed owned index after a business
 source/image update. Preserve the original fixture, original failed measurements and
@@ -312,6 +312,78 @@ Further measured repetition: on the11-match diagnostic,12fresh checks loaded bot
 profile catalogs12times (profile cProfile cumulative16.65ms). Each evaluation now
 captures approved profile digests once and reuses immutable strings for its current
 and historical evidence; the next evaluation reloads. [Independent scope review](reports/stage9-profile-snapshot-independent-2026-10-28.md)
-found no policy/scope/digest change. Full integration and actual performance repeat are
-pending. The owned runner's verify mode selects the three opt-in actual-model tests;
+found no policy/scope/digest change. Full integration and actual performance repeats
+are now complete, as recorded below. The owned runner's verify mode selects the three opt-in actual-model tests;
 it does not reduce the required twenty-observation timing-series denominator.
+
+### Final business-source measurement: profiles-v3
+
+The application bytes are from `43fcf12b334a5d457bfafbf3afe56be801d33c4b`
+(business source unchanged from `d47fa17`). The measurement-only profile reuses the
+original completed10k index and its shared lock. All94 deployed Python/JSON file
+digests match this checkout; the verification runner separately records86 Python
+digests. [Deployment provenance](reports/stage9-profiles-v3-deployment-2026-10-28.json)
+retains the exact image, source context/recipe/dependency hashes and bounds. The
+source-only offline development image overlay is not signed industrial packaging.
+The exact [ASGI observer snapshot](reports/stage9-observers-2026-10-28/measurement-observer-source-f1180f6f6f05d64e20464c57940b5fc213cd0d6e0445c55d570bf03e1776084f.py.txt)
+and [HTTPS retrieval-contract snapshot](reports/stage9-observers-2026-10-28/retrieval-contract-source-f1180f6f6f05d64e20464c57940b5fc213cd0d6e0445c55d570bf03e1776084f.py.txt)
+match the invocation hashes; the HTTPS/startup observer sources remain unchanged from
+their separately archived bytes above.
+
+| Workload,10 sessions | Valid requests | Recommendation endpoint p95 | Gate |
+|---|---:|---:|---|
+| [Warm ASGI,1CPU/1GiB](reports/stage9-profiles-v3-asgi-2026-10-28.json) |400/400;20/20warmups|0.868401s|PASS|
+| [Actual HTTPS, models idle](reports/stage9-profiles-v3-https-idle-2026-10-28.json) |500/500|0.801118s|PASS|
+| [Actual HTTPS during LLM process startup](reports/stage9-profiles-v3-https-startup-failed-2026-10-28.json) |500/500|1.044695s|**FAILED**|
+| [Actual HTTPS during successful LLM generation](reports/stage9-profiles-v3-https-inference-failed-2026-10-28.json) |500/500|1.102804s|**FAILED**|
+
+All four preserve business history; the HTTPS samples contain zero HTTP failures or
+invalid responses. Other endpoint p95 values are below1s. Each HTTPS endpoint has100
+timings, while ASGI has100per endpoint. The baseline is per endpoint, so successful
+responses, an aggregate percentile and the idle PASS cannot waive a loaded FAIL.
+This fixture has two below-threshold queries, seven correlated-small-pool abstentions
+and one oversized-evidence abstention among its ten timed query/session pairs. It is
+a bounded workload on real vectors, not independent positive semantic-quality evidence.
+
+[Whole-window inference provenance](reports/stage9-profiles-v3-inference-overlap-2026-10-28.json)
+ties all HTTP measurements06:07:49.002367–06:08:05.504175UTC on28October to the
+successful actual LLM phase06:07:38.589168–06:09:05.902787UTC. LLM CPU samples are
+106–159% of one CPU. This is genuine generation overlap, not idle health or startup.
+The HTTPS observer's `llm_measured:false` means it does not itself measure LLM latency;
+the separate actual-model report supplies the phase and87.3997s job timing.
+
+[Process restart](reports/stage9-profiles-v3-llm-startup-2026-10-28.json) reached its
+first retained successful healthcheck in23.124s. The startup HTTPS window ends about
+1.15s after first readiness: a startup/ready transition, not wholly pre-ready traffic.
+No OS cache flush occurred, so this is not a cold-storage distribution.
+
+[Three actual-model integration tests](reports/stage9-final-three-actual-tests-2026-10-28.json)
+PASS on final business source: genuine Registry→Qwen embeddings→pgvector retrieval→
+grounded LLM→separate human confirmation, plus scoped retrieval and versioned
+backfill/new-worker resume/cutover/rollback. No model outputs are mocked. Tests use
+isolated settings and legally synthetic own-file fixtures; neither this result nor the
+earlier20-observation latency series establishes human-approved semantic accuracy.
+[Independent final repetition and evidence review](reports/stage9-independent-final-actual-and-evidence-2026-10-29.md)
+also PASS:3actual tests,0skips,117.48s, separate bounded client and no concurrent parent
+inference. All86 Python hashes were unchanged before/after; the reviewer independently
+recomputed the final endpoint percentiles and confirmed the two loaded FAILs. This
+scoped independent gate does not supply human Gold or a passing production profile.
+[Final model isolation](reports/stage9-final-model-isolation-2026-10-28.json) again
+passes exact artifact/model-info, unauthenticated denial, private/read-only runtime,
+external TCP/DNS and direct DB denial, empty outbound proxies and offline flags.
+
+Development assembly failures remain visible: the initial source overlay inherited
+unreadable700/600 workspace permissions under a different runtime UID and failed before
+API startup. Only the generated build-context code modes were normalized to the standard
+Dockerfile's readable/executable modes; exact file hashes and business digests were then
+verified. A frontend IP change also required refreshing the owned loopback TLS relay;
+its failed precheck produced no load samples. The failed container state/log and relay
+refresh provenance remain in ignored operator evidence. Neither setup failure is counted
+as a passed performance run. No running business container or data volume was removed.
+
+The measured host remains4CPU/32GiB with32GiB VFS Docker storage, no GPU. API512MiB/no
+explicit CPU quota; embedding0.75CPU/6GiB; LLM2CPU/16GiB; PostgreSQL separate and uncapped.
+Passing idle reads and the20-model-job series do not establish a supported industrial
+ten-session profile with concurrent AI. The loaded NFR still fails. More hardware has
+not been measured, so no8CPU,100k, GPU or customer-capacity guarantee is made. Model,
+quality, rate, timeout and policy limits were not relaxed. Stage9 remains **BLOCKED**.

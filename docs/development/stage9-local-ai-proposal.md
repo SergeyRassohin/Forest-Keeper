@@ -247,3 +247,19 @@ with any unapproved or failed gate explicitly BLOCKED; both-theme gallery/Axe/re
 independent real inference/security/product review; exact final push/PR CI. Stop READY TO
 MERGE only when all required gates pass, otherwise report BLOCKED with actual evidence.
 No merge, no auto-close of #17/#18/#20 and no next-stage implementation.
+
+## Decision-matrix evidence update — 29 October 2026
+
+The preimplementation matrix above remains the historical design/owner queue. Current
+[acceptance evidence](../testing/reports/stage9-development-acceptance-2026-10-29.md)
+records real pinned models, offline isolation, scoped grounded inference, versioned
+cutover/rollback and recovery tests. These provide development implementation evidence
+for its resolved design rows; they do not approve semantic targets or production use.
+
+CPU-only10kreal-vector/ten-session measurements and the20-LLM-job series are complete.
+Performance disposition remains **BLOCK_PRODUCTION**: loaded recommendation endpoint
+p95 exceeds1s on the measured4CPU/32GiB host. Cold-storage distributions, a supported
+industrial profile, GPU/100k claims remain unverified. Human Gold/target approval and
+production positive policy remain **BLOCK_PRODUCTION**; source mapping/Rules, external
+readiness and signed distribution retain their original **DEFER_LINKED** dispositions.
+No owner approval is inferred from test success or an earlier Stage8 approval.
