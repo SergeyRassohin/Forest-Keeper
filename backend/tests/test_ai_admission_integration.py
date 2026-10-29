@@ -7,6 +7,7 @@ from uuid import uuid4
 
 import pytest
 from redis import Redis
+from redis.client import Pipeline
 from rq import Queue
 from rq.job import Job
 
@@ -97,3 +98,57 @@ def test_enqueue_failure_rolls_back_actor_lease_and_global_reservation(owned, mo
     assert not redis.exists(prefix(settings) + ":admission")
     assert not redis.exists(prefix(settings) + ":actor:" + actor)
     assert queue.count == 0
+
+
+@pytest.mark.parametrize("queue_becomes_full", [False, True])
+def test_idempotent_winner_between_watched_reads_is_not_reported_busy(
+    owned, monkeypatch, queue_becomes_full
+):
+    settings, redis, queue, enqueue = owned
+    if queue_becomes_full:
+        for _ in range(7):
+            assert enqueue()
+    actor = uuid4().hex
+    identifier = prefix(settings) + "-same-request"
+    record = {"language": "ru"}
+
+    def submit(language="en"):
+        return enqueue_bounded(
+            redis,
+            settings,
+            queue,
+            time.time,
+            (),
+            {},
+            job_id=identifier,
+            actor_id=actor,
+            description="OWNED_IDEMPOTENCY_RACE",
+            request_record={"language": language},
+        )
+
+    original_exists = Pipeline.exists
+    winner_committed = False
+
+    def exists_after_winner(pipe, *keys):
+        nonlocal winner_committed
+        result = original_exists(pipe, *keys)
+        if keys == (Job.key_for(identifier),) and not result and not winner_committed:
+            # Commit the actual competing RQ/Redis transaction after the loser's
+            # missing-job read but before its actor/capacity reads. No Redis mock.
+            winner_committed = True
+            assert submit("ru")
+        return result
+
+    try:
+        with monkeypatch.context() as patcher:
+            patcher.setattr(Pipeline, "exists", exists_after_winner)
+            assert submit() is False
+        assert winner_committed
+        assert queue.count == (8 if queue_becomes_full else 1)
+        assert redis.zcard(prefix(settings) + ":admission") == queue.count
+        assert Job.fetch(identifier, connection=redis).meta["request_record"] == record
+    finally:
+        job = Job.fetch_many([identifier], connection=redis)[0]
+        if job is not None:
+            job.delete()
+        redis.delete(prefix(settings) + ":actor:" + actor)

@@ -70,10 +70,18 @@ def enqueue_bounded(
                     }:
                         return False
                 now = time.time()
+                unavailable = None
                 if cast(int, pipe.zcount(global_key, now, "+inf")) >= (8 if actor_id else 6):
-                    raise AIError("AI_QUEUE_FULL")
-                if actor_key and pipe.exists(actor_key):
-                    raise AIError("AI_ACTOR_BUSY")
+                    unavailable = "AI_QUEUE_FULL"
+                elif actor_key and pipe.exists(actor_key):
+                    unavailable = "AI_ACTOR_BUSY"
+                if unavailable is not None:
+                    # A concurrent winner may have created this same request after
+                    # our missing-job read. Validate WATCH before refusing: dirty
+                    # reads retry and discover the winner's immutable request record.
+                    pipe.multi()
+                    pipe.execute()
+                    raise AIError(unavailable)
                 pipe.multi()
                 if previous is not None:
                     previous.delete(pipeline=pipe)

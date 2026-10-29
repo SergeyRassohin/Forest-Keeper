@@ -1,5 +1,6 @@
-import time
-from unittest.mock import Mock
+import asyncio
+from threading import Event
+from unittest.mock import Mock, patch
 
 import pytest
 from fastapi.testclient import TestClient
@@ -36,15 +37,33 @@ def test_driver_error_does_not_leak_secrets() -> None:
 
 
 def test_health_deadline_bounds_slow_dependencies() -> None:
+    release = Event()
+    finished = Event()
+
+    def slow_database() -> bool:
+        try:
+            release.wait(timeout=5)  # Failure cleanup bound; not the health deadline.
+            return True
+        finally:
+            finished.set()
+
     checker = HealthChecker(Mock(), Mock(), 0.02)
-    checker.database_ready = Mock(side_effect=lambda: time.sleep(0.1))
+    checker.database_ready = Mock(side_effect=slow_database)
     checker.redis_ready = Mock(return_value=True)
     with TestClient(create_app(checker=checker)) as client:
-        started = time.monotonic()
-        response = client.get("/api/v1/health")
-        elapsed = time.monotonic() - started
-    assert response.status_code == 503
-    assert elapsed < 0.1
+        try:
+            # Observe real asyncio operations only in the health module. The blocked
+            # dependency must outlive the response; TestClient/scheduler overhead
+            # must not be mistaken for the configured dependency deadline.
+            with patch("app.common.health.asyncio", wraps=asyncio) as observed:
+                response = client.get("/api/v1/health")
+            assert response.status_code == 503
+            assert response.json()["components"]["database"] == "unavailable"
+            assert not finished.is_set()
+            assert observed.wait_for.call_count == 2
+            assert all(call.kwargs["timeout"] == 0.02 for call in observed.wait_for.call_args_list)
+        finally:
+            release.set()
 
 
 def test_required_settings_are_not_silently_defaulted(monkeypatch: pytest.MonkeyPatch) -> None:
