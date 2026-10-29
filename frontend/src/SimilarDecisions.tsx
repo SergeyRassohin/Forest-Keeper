@@ -12,7 +12,7 @@ type Precedent = {
 };
 type Retrieval = {
   state: 'READY' | 'NO_PRECEDENT' | 'INDEXING' | 'UNAVAILABLE'; reason_code: string;
-  results: Precedent[]; embedding_model: { is_test: boolean } | null;
+  results: Precedent[]; embedding_model: { is_test: boolean; provider?: string } | null;
 };
 const labels = new Map(Object.entries({
   domain: 'Область данных', entity_type: 'Тип сущности', attribute_code: 'Атрибут',
@@ -43,7 +43,7 @@ export function SimilarDecisions({ conflictId, onSessionExpired, onOpenDecision 
     <p className="human-boundary">Похожие решения показывают прошлый опыт. Они не являются автоматическим решением текущего конфликта.</p>
     {!data && !error && <p role="status">Ищем прошлые подтверждённые решения…</p>}
     {error && <p role="alert">{error}</p>}
-    {data?.embedding_model?.is_test && <p className="warning">Тестовый поиск на синтетических данных. Качество поиска на рабочих данных ещё не подтверждено.</p>}
+    {data?.embedding_model?.is_test && <p className="warning">{data.embedding_model.provider === 'qwen-local-demo' ? 'Поиск реальными локальными Qwen-векторами в демонстрационном режиме. Промышленное качество ещё не подтверждено.' : 'Тестовый поиск на синтетических данных. Качество поиска на рабочих данных ещё не подтверждено.'}</p>}
     {data?.state === 'UNAVAILABLE' && <p role="status">Поиск временно недоступен. История решений и рассмотрение конфликта доступны.</p>}
     {data?.state === 'INDEXING' && <p role="status">Индекс ещё строится. Повторите поиск позже.</p>}
     {data?.state === 'NO_PRECEDENT' && <p role="status">{data.reason_code === 'NO_ACCESSIBLE_PRECEDENT' ? 'Нет доступных решений в вашей области данных.' : 'Похожих подтверждённых решений пока нет.'}</p>}

@@ -1,0 +1,45 @@
+{
+  "source_commit": "43fcf12b334a5d457bfafbf3afe56be801d33c4b",
+  "actual_vertical_passed": true,
+  "llm_job_seconds": 87.3997,
+  "llm_phase": {
+    "kind": "owned-actual-qwen-vertical-phase-not-quality",
+    "llm_started_at": "2026-10-28T06:07:38.589168+00:00",
+    "llm_finished_at": "2026-10-28T06:09:05.902787+00:00"
+  },
+  "whole_enclosing_http_window_inside_successful_llm": true,
+  "https_nfr_passed": false,
+  "https_requests": 500,
+  "https_invalid_responses": 0,
+  "endpoint_p95_seconds": {
+    "decision_detail": 0.16474,
+    "review_context": 0.221544,
+    "recommendation": 1.102804,
+    "registry_list": 0.195402,
+    "similar_decisions": 0.743193
+  },
+  "llm_cpu_samples": [
+    {
+      "elapsed_seconds": 2.5459,
+      "sample_start_seconds": 0.0002,
+      "cpu_percent": 106.32
+    },
+    {
+      "elapsed_seconds": 7.0801,
+      "sample_start_seconds": 4.5461,
+      "cpu_percent": 158.97
+    },
+    {
+      "elapsed_seconds": 11.6147,
+      "sample_start_seconds": 9.0802,
+      "cpu_percent": 133.64
+    },
+    {
+      "elapsed_seconds": 16.1703,
+      "sample_start_seconds": 13.6148,
+      "cpu_percent": 116.97
+    }
+  ],
+  "semantic_quality_evaluated": false,
+  "production_accepted": false
+}

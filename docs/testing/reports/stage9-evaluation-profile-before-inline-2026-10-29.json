@@ -1,0 +1,992 @@
+{
+  "kind": "read-only-owned-coverage-profile-not-NFR-or-quality",
+  "observations": [
+    {
+      "mode": "evaluate",
+      "completed": true,
+      "sql": [
+        {
+          "sha256": "6c20e5345ee8028f61cc0541aeb60699e5cffa99c8f79ff7f8c62b0a8dad1837",
+          "kind": "SET",
+          "seconds": 0.000251
+        },
+        {
+          "sha256": "2298ed5967c3ef3cae57076072552ac0738b1bf5c7aa3466a9a714532576b2cc",
+          "kind": "SELECT",
+          "seconds": 0.002731
+        },
+        {
+          "sha256": "f29774d84d406cda22c3ecde655a7ed0a4043d0437c334e6036b962a3976ff03",
+          "kind": "SELECT",
+          "seconds": 0.001546
+        },
+        {
+          "sha256": "6c65b957257fa65419924c5e34c52127786fecc8eea51b0f4a720af7e6222daf",
+          "kind": "SELECT",
+          "seconds": 0.000721
+        },
+        {
+          "sha256": "9f6f8f4f352b99955f20c618a7cc4bedbf753093d14049d0dba72309a2ccea69",
+          "kind": "SELECT",
+          "seconds": 0.001269
+        },
+        {
+          "sha256": "4f73b8edf4fa9ad8ecde981fe0bd1042fa52ef793ed578bd1b9566c946f08621",
+          "kind": "SELECT",
+          "seconds": 0.00037
+        },
+        {
+          "sha256": "710659c122296752c8c75a34b04c2e48db0bb6755c09d8bb10b60893e2285025",
+          "kind": "SELECT",
+          "seconds": 0.001057
+        },
+        {
+          "sha256": "fc06e92e7a423ef9fa485b200ed7cfa94b9022c68e1c9366cc41c630691a9f3b",
+          "kind": "SELECT",
+          "seconds": 0.000921
+        },
+        {
+          "sha256": "58b48fd6ee8a1203bb8db2bc442b87bf7bac06228b4dc07a105416d344e4ab6d",
+          "kind": "SELECT",
+          "seconds": 0.000779
+        },
+        {
+          "sha256": "58b48fd6ee8a1203bb8db2bc442b87bf7bac06228b4dc07a105416d344e4ab6d",
+          "kind": "SELECT",
+          "seconds": 0.000392
+        },
+        {
+          "sha256": "4fb35142bb069006c2ae409b337560137a8d42771e6407103a9eac1239f365df",
+          "kind": "SELECT",
+          "seconds": 0.00101
+        },
+        {
+          "sha256": "4fb35142bb069006c2ae409b337560137a8d42771e6407103a9eac1239f365df",
+          "kind": "SELECT",
+          "seconds": 0.000396
+        },
+        {
+          "sha256": "1cd4099a1b12697d4acdb0b0eaafd5798807d37c7c3e1fe0d54ab1440b2759bc",
+          "kind": "SELECT",
+          "seconds": 0.001558
+        },
+        {
+          "sha256": "45635515aa3279f9dd9f2a75b8a3e1bdcf4e986d8ba044af36160334cddc9916",
+          "kind": "SELECT",
+          "seconds": 0.000723
+        },
+        {
+          "sha256": "9af8f9e782d46ae5a93d7704314ebe7487801ee15e23d8400193686fcaddde7f",
+          "kind": "SELECT",
+          "seconds": 0.000898
+        },
+        {
+          "sha256": "3239014a27e70762285cbb36212e6558f743f99eb13148b0f90ababc766833c7",
+          "kind": "SELECT",
+          "seconds": 0.001046
+        },
+        {
+          "sha256": "5607bec43180cb5ea48df59f1bc8869e4f0ee1334b9d43ab95c29773d7b3c47e",
+          "kind": "SELECT",
+          "seconds": 0.000692
+        },
+        {
+          "sha256": "f8232932b153134753a11dc4e29355a370d3ab113509f348e477612760c05e91",
+          "kind": "SELECT",
+          "seconds": 0.000454
+        },
+        {
+          "sha256": "8a4da963437550929f235c3a8f85497b2f9aa62545e5104bb86808fffc02d00a",
+          "kind": "SELECT",
+          "seconds": 0.001851
+        },
+        {
+          "sha256": "227880c832b11f68c92dffcfc7f629c7444ceffb17c1ca7c2f0857cabda6b0e6",
+          "kind": "SELECT",
+          "seconds": 0.00033
+        },
+        {
+          "sha256": "8a2756d566272e75d15d0e35977f9bd773185156a3a621fa618b112975fc4b81",
+          "kind": "SET",
+          "seconds": 0.000243
+        },
+        {
+          "sha256": "c9071c6be0f4b8885e445d7768d68fee6ae1e4f29124f6bf8793a32f55c55b67",
+          "kind": "WITH",
+          "seconds": 0.00273
+        },
+        {
+          "sha256": "5f1d39826dd6f23901dfae03761a862301d87f116a16d8a2c895b3340514d721",
+          "kind": "SELECT",
+          "seconds": 0.000271
+        },
+        {
+          "sha256": "4f73b8edf4fa9ad8ecde981fe0bd1042fa52ef793ed578bd1b9566c946f08621",
+          "kind": "SELECT",
+          "seconds": 0.000235
+        },
+        {
+          "sha256": "425eb27812135445a1115e9d31325e3963f07b296466ea7b35229e553b90ce07",
+          "kind": "SET",
+          "seconds": 0.000193
+        },
+        {
+          "sha256": "dcc1abffc5acbd6e6fd2d8c7ae30c01c0e9776122b442b8c3940dc648f70f3a0",
+          "kind": "WITH",
+          "seconds": 0.106903
+        },
+        {
+          "sha256": "618672e1efe1679a5033784b558692f97f28e744dcd163b49d1cfc5df49181f6",
+          "kind": "SELECT",
+          "seconds": 0.000404
+        },
+        {
+          "sha256": "ea3a6103f31f41cb368c703bfb9e26e566664390f095aea279ef8d3af1fdae36",
+          "kind": "coverage-exists",
+          "seconds": 0.018011
+        },
+        {
+          "sha256": "5dd9a43f33985054066c2ffe4f9de7c1ddfbc1f6699171059e5ceaf2503426fb",
+          "kind": "SELECT",
+          "seconds": 0.002849
+        },
+        {
+          "sha256": "85a8a693b963ef4e23063219888cbd23c57646b91742c67d43557b64f14ae92e",
+          "kind": "SELECT",
+          "seconds": 0.00103
+        },
+        {
+          "sha256": "cc23362144dc9ae1962449634c8ec1ef2f924528e54aadc72b5946955beb8b13",
+          "kind": "SELECT",
+          "seconds": 0.000835
+        },
+        {
+          "sha256": "5e738c09ae1c8f1a8d9402935d975d9afb5c02951a9d94f623444a8fc7e2a2e7",
+          "kind": "SELECT",
+          "seconds": 0.001726
+        },
+        {
+          "sha256": "7fee5c9cfe8a5d885a6480c9b929aa235e1641b4c70c9f4438a5853ea14a9269",
+          "kind": "SELECT",
+          "seconds": 0.001831
+        },
+        {
+          "sha256": "4f73b8edf4fa9ad8ecde981fe0bd1042fa52ef793ed578bd1b9566c946f08621",
+          "kind": "SELECT",
+          "seconds": 0.000278
+        }
+      ],
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "python_cumulative": [
+        {
+          "file": "recommendations/service.py",
+          "line": 91,
+          "function": "evaluate",
+          "calls": 1,
+          "self_seconds": 0.001297,
+          "cumulative_seconds": 0.353077
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py",
+          "line": 2201,
+          "function": "_execute_internal",
+          "calls": 27,
+          "self_seconds": 0.000599,
+          "cumulative_seconds": 0.238413
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/elements.py",
+          "line": 524,
+          "function": "_execute_on_connection",
+          "calls": 27,
+          "self_seconds": 0.000105,
+          "cumulative_seconds": 0.232206
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py",
+          "line": 1621,
+          "function": "_execute_clauseelement",
+          "calls": 27,
+          "self_seconds": 0.000479,
+          "cumulative_seconds": 0.232101
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py",
+          "line": 1407,
+          "function": "execute",
+          "calls": 26,
+          "self_seconds": 0.000106,
+          "cumulative_seconds": 0.230891
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/orm/context.py",
+          "line": 306,
+          "function": "orm_execute_statement",
+          "calls": 21,
+          "self_seconds": 0.000131,
+          "cumulative_seconds": 0.228352
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py",
+          "line": 2406,
+          "function": "execute",
+          "calls": 24,
+          "self_seconds": 8.7e-05,
+          "cumulative_seconds": 0.201336
+        },
+        {
+          "file": "similarity/service.py",
+          "line": 164,
+          "function": "retrieval",
+          "calls": 1,
+          "self_seconds": 0.000736,
+          "cumulative_seconds": 0.19493
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py",
+          "line": 1770,
+          "function": "_execute_context",
+          "calls": 27,
+          "self_seconds": 0.000271,
+          "cumulative_seconds": 0.1717
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py",
+          "line": 1829,
+          "function": "_exec_single_context",
+          "calls": 27,
+          "self_seconds": 0.000702,
+          "cumulative_seconds": 0.16665
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/psycopg/cursor.py",
+          "line": 100,
+          "function": "execute",
+          "calls": 54,
+          "self_seconds": 0.0002,
+          "cumulative_seconds": 0.159221
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/psycopg/connection.py",
+          "line": 479,
+          "function": "wait",
+          "calls": 54,
+          "self_seconds": 0.141396,
+          "cumulative_seconds": 0.158995
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/engine/default.py",
+          "line": 1191,
+          "function": "do_execute",
+          "calls": 27,
+          "self_seconds": 4.9e-05,
+          "cumulative_seconds": 0.147752
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/elements.py",
+          "line": 694,
+          "function": "_compile_w_cache",
+          "calls": 27,
+          "self_seconds": 0.000325,
+          "cumulative_seconds": 0.059501
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/elements.py",
+          "line": 324,
+          "function": "_compiler",
+          "calls": 20,
+          "self_seconds": 0.000108,
+          "cumulative_seconds": 0.050859
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/compiler.py",
+          "line": 1449,
+          "function": "__init__",
+          "calls": 20,
+          "self_seconds": 0.000247,
+          "cumulative_seconds": 0.050751
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/compiler.py",
+          "line": 893,
+          "function": "__init__",
+          "calls": 20,
+          "self_seconds": 0.000185,
+          "cumulative_seconds": 0.050504
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/compiler.py",
+          "line": 971,
+          "function": "process",
+          "calls": 31,
+          "self_seconds": 0.000137,
+          "cumulative_seconds": 0.050303
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/visitors.py",
+          "line": 116,
+          "function": "_compiler_dispatch",
+          "calls": 880,
+          "self_seconds": 0.00224,
+          "cumulative_seconds": 0.050264
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/compiler.py",
+          "line": 5100,
+          "function": "visit_select",
+          "calls": 35,
+          "self_seconds": 0.001083,
+          "cumulative_seconds": 0.049947
+        },
+        {
+          "file": "recommendations/evidence.py",
+          "line": 177,
+          "function": "validate_lineage",
+          "calls": 2,
+          "self_seconds": 0.001504,
+          "cumulative_seconds": 0.038295
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py",
+          "line": 2517,
+          "function": "scalar",
+          "calls": 3,
+          "self_seconds": 6e-05,
+          "cumulative_seconds": 0.037225
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py",
+          "line": 3732,
+          "function": "get",
+          "calls": 9,
+          "self_seconds": 4.1e-05,
+          "cumulative_seconds": 0.036378
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py",
+          "line": 3907,
+          "function": "_get_impl",
+          "calls": 9,
+          "self_seconds": 0.000439,
+          "cumulative_seconds": 0.036337
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/orm/loading.py",
+          "line": 535,
+          "function": "_load_on_pk_identity",
+          "calls": 9,
+          "self_seconds": 0.00024,
+          "cumulative_seconds": 0.034679
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/fastapi/encoders.py",
+          "line": 129,
+          "function": "jsonable_encoder",
+          "calls": 9775,
+          "self_seconds": 0.017933,
+          "cumulative_seconds": 0.03369
+        },
+        {
+          "file": "decisions/service.py",
+          "line": 207,
+          "function": "historical_context",
+          "calls": 1,
+          "self_seconds": 0.00013,
+          "cumulative_seconds": 0.027909
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/base.py",
+          "line": 910,
+          "function": "create_for_statement",
+          "calls": 35,
+          "self_seconds": 0.000198,
+          "cumulative_seconds": 0.025805
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/orm/context.py",
+          "line": 454,
+          "function": "create_for_statement",
+          "calls": 35,
+          "self_seconds": 0.000149,
+          "cumulative_seconds": 0.025564
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/orm/context.py",
+          "line": 1107,
+          "function": "_create_orm_context",
+          "calls": 35,
+          "self_seconds": 0.000921,
+          "cumulative_seconds": 0.025411
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method builtins.any>",
+          "calls": 70,
+          "self_seconds": 0.000464,
+          "cumulative_seconds": 0.024644
+        },
+        {
+          "file": "decisions/service.py",
+          "line": 99,
+          "function": "frozen_evidence",
+          "calls": 13,
+          "self_seconds": 0.00011,
+          "cumulative_seconds": 0.023358
+        },
+        {
+          "file": "recommendations/service.py",
+          "line": 237,
+          "function": "<genexpr>",
+          "calls": 12,
+          "self_seconds": 6.9e-05,
+          "cumulative_seconds": 0.023322
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/compiler.py",
+          "line": 4825,
+          "function": "_label_select_column",
+          "calls": 236,
+          "self_seconds": 0.00151,
+          "cumulative_seconds": 0.02176
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/compiler.py",
+          "line": 5387,
+          "function": "_compose_select_body",
+          "calls": 35,
+          "self_seconds": 0.000741,
+          "cumulative_seconds": 0.021047
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/psycopg/_cursor_base.py",
+          "line": 195,
+          "function": "_execute_gen",
+          "calls": 162,
+          "self_seconds": 0.000332,
+          "cumulative_seconds": 0.017599
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/orm/loading.py",
+          "line": 214,
+          "function": "chunks",
+          "calls": 42,
+          "self_seconds": 0.000308,
+          "cumulative_seconds": 0.016767
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/engine/cursor.py",
+          "line": 2376,
+          "function": "_fetchall_impl",
+          "calls": 21,
+          "self_seconds": 2.5e-05,
+          "cumulative_seconds": 0.014768
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/engine/cursor.py",
+          "line": 1309,
+          "function": "fetchall",
+          "calls": 21,
+          "self_seconds": 6.4e-05,
+          "cumulative_seconds": 0.014742
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/psycopg/cursor.py",
+          "line": 274,
+          "function": "fetchall",
+          "calls": 21,
+          "self_seconds": 0.001174,
+          "cumulative_seconds": 0.014436
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method builtins.isinstance>",
+          "calls": 71809,
+          "self_seconds": 0.012494,
+          "cumulative_seconds": 0.013384
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/psycopg/types/json.py",
+          "line": 256,
+          "function": "load",
+          "calls": 266,
+          "self_seconds": 0.000411,
+          "cumulative_seconds": 0.013216
+        },
+        {
+          "file": "/usr/local/lib/python3.13/json/__init__.py",
+          "line": 304,
+          "function": "loads",
+          "calls": 266,
+          "self_seconds": 0.00041,
+          "cumulative_seconds": 0.012755
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/orm/context.py",
+          "line": 1282,
+          "function": "_setup_for_generate",
+          "calls": 35,
+          "self_seconds": 0.000686,
+          "cumulative_seconds": 0.012642
+        },
+        {
+          "file": "decisions/service.py",
+          "line": 27,
+          "function": "digest",
+          "calls": 100,
+          "self_seconds": 0.000253,
+          "cumulative_seconds": 0.01229
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/psycopg/_cursor_base.py",
+          "line": 275,
+          "function": "_maybe_prepare_gen",
+          "calls": 162,
+          "self_seconds": 0.002028,
+          "cumulative_seconds": 0.01205
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/engine/events.py",
+          "line": 182,
+          "function": "wrap_before_cursor_execute",
+          "calls": 54,
+          "self_seconds": 8.8e-05,
+          "cumulative_seconds": 0.011908
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/compiler.py",
+          "line": 5735,
+          "function": "visit_join",
+          "calls": 14,
+          "self_seconds": 0.000181,
+          "cumulative_seconds": 0.011906
+        },
+        {
+          "file": "decisions/service.py",
+          "line": 55,
+          "function": "digest_frozen_json",
+          "calls": 22,
+          "self_seconds": 0.000137,
+          "cumulative_seconds": 0.011756
+        },
+        {
+          "file": "common/basis_lock.py",
+          "line": 34,
+          "function": "before_sql",
+          "calls": 27,
+          "self_seconds": 0.000131,
+          "cumulative_seconds": 0.01175
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/compiler.py",
+          "line": 2681,
+          "function": "visit_label",
+          "calls": 59,
+          "self_seconds": 0.000552,
+          "cumulative_seconds": 0.011689
+        },
+        {
+          "file": "/usr/local/lib/python3.13/json/decoder.py",
+          "line": 340,
+          "function": "decode",
+          "calls": 266,
+          "self_seconds": 0.000462,
+          "cumulative_seconds": 0.011496
+        },
+        {
+          "file": "similarity/service.py",
+          "line": 43,
+          "function": "configuration",
+          "calls": 1,
+          "self_seconds": 1.8e-05,
+          "cumulative_seconds": 0.011408
+        },
+        {
+          "file": "ai/identity.py",
+          "line": 29,
+          "function": "expected_model_info",
+          "calls": 2,
+          "self_seconds": 2.7e-05,
+          "cumulative_seconds": 0.011388
+        },
+        {
+          "file": "ai/identity.py",
+          "line": 17,
+          "function": "schema_identity",
+          "calls": 1,
+          "self_seconds": 2.3e-05,
+          "cumulative_seconds": 0.011178
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/engine/result.py",
+          "line": 970,
+          "function": "all",
+          "calls": 2,
+          "self_seconds": 2.2e-05,
+          "cumulative_seconds": 0.011121
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/engine/result.py",
+          "line": 1890,
+          "function": "_fetchall_impl",
+          "calls": 2,
+          "self_seconds": 1.5e-05,
+          "cumulative_seconds": 0.011087
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/pydantic/main.py",
+          "line": 606,
+          "function": "model_json_schema",
+          "calls": 2,
+          "self_seconds": 9e-06,
+          "cumulative_seconds": 0.010996
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/pydantic/json_schema.py",
+          "line": 2721,
+          "function": "model_json_schema",
+          "calls": 2,
+          "self_seconds": 5.2e-05,
+          "cumulative_seconds": 0.010986
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/compiler.py",
+          "line": 4361,
+          "function": "visit_cte",
+          "calls": 18,
+          "self_seconds": 0.000171,
+          "cumulative_seconds": 0.010899
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/compiler.py",
+          "line": 4689,
+          "function": "visit_subquery",
+          "calls": 3,
+          "self_seconds": 1.8e-05,
+          "cumulative_seconds": 0.010651
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/compiler.py",
+          "line": 4588,
+          "function": "visit_alias",
+          "calls": 3,
+          "self_seconds": 3.3e-05,
+          "cumulative_seconds": 0.010642
+        },
+        {
+          "file": "/usr/local/lib/python3.13/json/decoder.py",
+          "line": 351,
+          "function": "raw_decode",
+          "calls": 266,
+          "self_seconds": 0.010563,
+          "cumulative_seconds": 0.010563
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/compiler.py",
+          "line": 3636,
+          "function": "visit_binary",
+          "calls": 87,
+          "self_seconds": 0.000653,
+          "cumulative_seconds": 0.010547
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/pydantic/json_schema.py",
+          "line": 399,
+          "function": "generate",
+          "calls": 2,
+          "self_seconds": 4e-05,
+          "cumulative_seconds": 0.010259
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/compiler.py",
+          "line": 2583,
+          "function": "visit_grouping",
+          "calls": 28,
+          "self_seconds": 6.4e-05,
+          "cumulative_seconds": 0.00981
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/compiler.py",
+          "line": 3742,
+          "function": "_generate_generic_binary",
+          "calls": 87,
+          "self_seconds": 0.000455,
+          "cumulative_seconds": 0.00979
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/coercions.py",
+          "line": 323,
+          "function": "expect",
+          "calls": 711,
+          "self_seconds": 0.003544,
+          "cumulative_seconds": 0.009696
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method builtins.all>",
+          "calls": 1798,
+          "self_seconds": 0.001384,
+          "cumulative_seconds": 0.008928
+        },
+        {
+          "file": "decisions/service.py",
+          "line": 39,
+          "function": "_plain_json",
+          "calls": 8316,
+          "self_seconds": 0.003069,
+          "cumulative_seconds": 0.008927
+        },
+        {
+          "file": "decisions/service.py",
+          "line": 48,
+          "function": "<genexpr>",
+          "calls": 7249,
+          "self_seconds": 0.00302,
+          "cumulative_seconds": 0.008837
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/compiler.py",
+          "line": 2957,
+          "function": "_generate_delimited_and_list",
+          "calls": 27,
+          "self_seconds": 0.000165,
+          "cumulative_seconds": 0.008297
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'join' of 'str' objects>",
+          "calls": 426,
+          "self_seconds": 0.000379,
+          "cumulative_seconds": 0.00823
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/util/langhelpers.py",
+          "line": 1461,
+          "function": "oneshot",
+          "calls": 41,
+          "self_seconds": 0.000183,
+          "cumulative_seconds": 0.00808
+        },
+        {
+          "file": "similarity/context.py",
+          "line": 28,
+          "function": "context",
+          "calls": 23,
+          "self_seconds": 0.000723,
+          "cumulative_seconds": 0.00788
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/util/langhelpers.py",
+          "line": 1446,
+          "function": "__get__",
+          "calls": 1451,
+          "self_seconds": 0.002682,
+          "cumulative_seconds": 0.007861
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method builtins.sorted>",
+          "calls": 837,
+          "self_seconds": 0.000929,
+          "cumulative_seconds": 0.007642
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/cache_key.py",
+          "line": 263,
+          "function": "_generate_cache_key",
+          "calls": 27,
+          "self_seconds": 5.8e-05,
+          "cumulative_seconds": 0.007379
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/util/langhelpers.py",
+          "line": 1334,
+          "function": "__get__",
+          "calls": 488,
+          "self_seconds": 0.000717,
+          "cumulative_seconds": 0.007336
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/cache_key.py",
+          "line": 209,
+          "function": "_generate_cache_key",
+          "calls": 27,
+          "self_seconds": 0.002385,
+          "cumulative_seconds": 0.007322
+        },
+        {
+          "file": "/usr/local/lib/python3.13/json/__init__.py",
+          "line": 185,
+          "function": "dumps",
+          "calls": 222,
+          "self_seconds": 0.000494,
+          "cumulative_seconds": 0.00701
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/elements.py",
+          "line": 1592,
+          "function": "operate",
+          "calls": 112,
+          "self_seconds": 0.000141,
+          "cumulative_seconds": 0.006909
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/type_api.py",
+          "line": 261,
+          "function": "operate",
+          "calls": 112,
+          "self_seconds": 0.000324,
+          "cumulative_seconds": 0.006451
+        },
+        {
+          "file": "/usr/local/lib/python3.13/json/encoder.py",
+          "line": 185,
+          "function": "encode",
+          "calls": 222,
+          "self_seconds": 0.000319,
+          "cumulative_seconds": 0.006439
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/selectable.py",
+          "line": 4887,
+          "function": "__init__",
+          "calls": 35,
+          "self_seconds": 0.000212,
+          "cumulative_seconds": 0.006395
+        },
+        {
+          "file": "/usr/local/lib/python3.13/dataclasses.py",
+          "line": 1380,
+          "function": "is_dataclass",
+          "calls": 9779,
+          "self_seconds": 0.003954,
+          "cumulative_seconds": 0.006247
+        },
+        {
+          "file": "/usr/local/lib/python3.13/json/encoder.py",
+          "line": 207,
+          "function": "iterencode",
+          "calls": 222,
+          "self_seconds": 0.005992,
+          "cumulative_seconds": 0.005992
+        },
+        {
+          "file": "decisions/service.py",
+          "line": 46,
+          "function": "<genexpr>",
+          "calls": 2827,
+          "self_seconds": 0.000572,
+          "cumulative_seconds": 0.005968
+        },
+        {
+          "file": "recommendations/evidence.py",
+          "line": 81,
+          "function": "prepare",
+          "calls": 12,
+          "self_seconds": 0.000445,
+          "cumulative_seconds": 0.005962
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/psycopg/_cursor_base.py",
+          "line": 416,
+          "function": "_execute_send",
+          "calls": 32,
+          "self_seconds": 0.005748,
+          "cumulative_seconds": 0.005748
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/compiler.py",
+          "line": 2746,
+          "function": "visit_column",
+          "calls": 349,
+          "self_seconds": 0.001307,
+          "cumulative_seconds": 0.005608
+        },
+        {
+          "file": "decisions/service.py",
+          "line": 118,
+          "function": "context_version",
+          "calls": 1,
+          "self_seconds": 2e-05,
+          "cumulative_seconds": 0.005523
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/compiler.py",
+          "line": 2968,
+          "function": "<genexpr>",
+          "calls": 58,
+          "self_seconds": 2.4e-05,
+          "cumulative_seconds": 0.005296
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/compiler.py",
+          "line": 2970,
+          "function": "<genexpr>",
+          "calls": 58,
+          "self_seconds": 6.6e-05,
+          "cumulative_seconds": 0.005274
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/orm/attributes.py",
+          "line": 456,
+          "function": "operate",
+          "calls": 71,
+          "self_seconds": 7.5e-05,
+          "cumulative_seconds": 0.005001
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/orm/properties.py",
+          "line": 481,
+          "function": "operate",
+          "calls": 71,
+          "self_seconds": 0.000103,
+          "cumulative_seconds": 0.004816
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/pydantic/json_schema.py",
+          "line": 2689,
+          "function": "_build_definitions_remapping",
+          "calls": 2,
+          "self_seconds": 3.1e-05,
+          "cumulative_seconds": 0.004774
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/engine/default.py",
+          "line": 1564,
+          "function": "_init_compiled",
+          "calls": 27,
+          "self_seconds": 0.000556,
+          "cumulative_seconds": 0.004764
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/psycopg/_cursor_base.py",
+          "line": 461,
+          "function": "_convert_query",
+          "calls": 54,
+          "self_seconds": 0.000104,
+          "cumulative_seconds": 0.004737
+        },
+        {
+          "file": "/app/.venv/lib/python3.13/site-packages/pydantic/json_schema.py",
+          "line": 142,
+          "function": "from_prioritized_choices",
+          "calls": 2,
+          "self_seconds": 0.000103,
+          "cumulative_seconds": 0.004729
+        }
+      ],
+      "caller_guc_preserved": true,
+      "elapsed_seconds": 0.396787
+    }
+  ],
+  "observer_sha256": "fd192f04a59ebb56ed1992761ce8801050508776fe0dd5c7f00ddc9bfcfc4c37",
+  "index_vectors": 10000,
+  "executed_api_image": "sha256:34fd217534dc785ee1cda56e022e3553c3297a051afdb336ae87d63ca7d16550",
+  "source_scope": "Direct read-only evaluation in recorded43fcf12 API image; warm recommendation/evidence source bytes match current ed240cd, admission-only delta is not executed here. Not NFR or semantic scoring.",
+  "warmup_above_threshold": 11,
+  "code_source_commit": "ed240cd62cc7cbc3d5953c55effbb948fd7d8835"
+}

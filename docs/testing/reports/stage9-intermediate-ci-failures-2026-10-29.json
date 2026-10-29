@@ -1,0 +1,70 @@
+{
+  "kind": "preserved-failed-CI-observations-not-waivers",
+  "runs": [
+    {
+      "source_commit": "43fcf12b334a5d457bfafbf3afe56be801d33c4b",
+      "run_id": 40639291460,
+      "url": "https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/40639291460",
+      "event": "push",
+      "conclusion": "failure",
+      "failed_tests": [
+        "test_health_deadline_bounds_slow_dependencies"
+      ],
+      "safe_notes": [
+        "elapsed0.145992s exceeds old0.1s observer bound"
+      ],
+      "private_log_sha256": "5a4785e4b70b0d15a3dfd8ddae54a8389d2fd17a968770049dd9a57630cdfd53"
+    },
+    {
+      "source_commit": "43fcf12b334a5d457bfafbf3afe56be801d33c4b",
+      "run_id": 40639299091,
+      "url": "https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/40639299091",
+      "event": "pull_request",
+      "conclusion": "failure",
+      "failed_tests": [
+        "test_concurrent_request_id_cannot_bind_two_languages"
+      ],
+      "safe_notes": [
+        "202+503 instead of202+409; WATCH refusal interleaving independently reproduced and fixed"
+      ],
+      "private_log_sha256": "ba98cb93e5b8c4491b2a60bd0476066ca5225196ff5b4913ca531466e93c27df"
+    },
+    {
+      "source_commit": "5b17f2900211cb8f3939278e2c3fe82ade7a84e7",
+      "run_id": 40891444945,
+      "url": "https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/40891444945",
+      "event": "pull_request",
+      "conclusion": "failure",
+      "failed_tests": [
+        "test_health_deadline_bounds_slow_dependencies"
+      ],
+      "safe_notes": [
+        "elapsed0.131985s exceeds old0.1s observer bound"
+      ],
+      "private_log_sha256": "bc0b2b4ec6ffebd5ab62cd70de0ffcc08d28501adf6a3cc0598bd99d807bcdcf"
+    },
+    {
+      "source_commit": "9971e94d1efee899b06d0342ef4838f7b759b7f4",
+      "run_id": 40892726833,
+      "url": "https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/40892726833",
+      "event": "pull_request",
+      "conclusion": "failure",
+      "failed_tests": [
+        "test_concurrent_start_requests_coalesce_one_active_run",
+        "test_current_and_past_evidence_share_one_profile_snapshot_per_evaluation"
+      ],
+      "safe_notes": [
+        "QUEUE_UNAVAILABLE from recover_runs broad exception; underlying exception unobserved",
+        "RECOMMENDATION_TIMEOUT protective total1.5s budget; responsible stage unobserved"
+      ],
+      "private_log_sha256": "8143fa2df41436bb4cea9589be19d1c49efab22775e9f2ce305b5f4e28df50e5"
+    }
+  ],
+  "subsequent_same_source_local_full_regression": "9971:570integration+15browser PASS; does not relabel failedCI",
+  "causality_limits": [
+    "The two PG statement-timeout log lines in9971 are deliberate negative-test SELECT pg_sleep SQL; they do not establish the cause of the unexpected normalization/profile failures.",
+    "No flaky label or resource-contention cause is established. No runtime deadline/rate/queue limit was relaxed.",
+    "A final exact-full-HEAD CI requires its own observed successful runs."
+  ],
+  "stage_status": "BLOCKED"
+}

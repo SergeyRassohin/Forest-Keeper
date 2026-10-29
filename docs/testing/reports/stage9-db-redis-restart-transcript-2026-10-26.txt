@@ -1,0 +1,25 @@
+Owned project: fk-stage9
+Fixture: owned-stage9-synthetic-browser-fixture-v1; isolated auth_test schema.
+No fixture credentials, database URLs, raw source records or vectors are included here.
+The operator verified each selected container's Compose project label before restart.
+
+Before-probe output (successful run):
+Owned actual-vector/Decision snapshot and bounded Redis canary recorded.
+
+Operator command:
+docker restart --time 10 fk-stage9-postgres-1 fk-stage9-redis-1
+
+Command output:
+Flag --time has been deprecated, use --timeout instead
+fk-stage9-postgres-1
+fk-stage9-redis-1
+
+Both selected containers then reported healthy within the bounded readiness check.
+
+After-probe output:
+Actual owned Qwen vectors, immutable Decisions and Redis restart canary PASS.
+
+Safe result: stage9-actual-db-redis-restart-2026-10-26.json
+Probe source: backend/tests/ai_restart_probe.py
+Earlier table/function setup errors occurred before a successful baseline and before
+the actual restart above; those attempts are not counted as recovery evidence.

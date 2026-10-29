@@ -1,0 +1,7 @@
+{
+  "observer_sha256": "4f3d14601332a12c48bc6d0a06f95d2ec7a185096631ffd9b9a2488cd670ceed",
+  "startup_report_sha256": "c9964cb5536e0017a62707349ba559a4f9911fa841c5b64c37e78e076469dfec",
+  "core_report_file": "core-https-backfill-6ff1edbae7434a35b4841be69c3bc076.json",
+  "core_report_sha256": "701461a96bf4095f0d087413c090ac22637ce024c2627102ba00bad027e7ad6d",
+  "scope": "Observed LLM process startup with actual core HTTPS requests and ongoing actual embedding backfill; no OS cache flush, no LLM inference in this observation."
+}

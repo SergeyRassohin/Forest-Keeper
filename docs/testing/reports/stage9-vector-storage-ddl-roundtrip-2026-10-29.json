@@ -1,0 +1,75 @@
+{
+  "kind": "owned-temporary-vector-storage-diagnostic-not-NFR-or-quality",
+  "source_rows_modified": false,
+  "temporary_tables_only": true,
+  "timings": [],
+  "index_verification": {
+    "active_version_and_run_match": true,
+    "pinned_model_config_match": true,
+    "vectors": 10000,
+    "distinct_input_hashes": 10000,
+    "dimensions": 1024,
+    "vector_hash_nonzero_and_metadata_checks": 10000,
+    "owned_decision_links": 10000,
+    "unexpected_version_vectors": 0
+  },
+  "external_storage": {
+    "heap_bytes": 16392192,
+    "toast_bytes": 54616064,
+    "total_bytes": 72802304
+  },
+  "plain_storage": {
+    "heap_bytes": 81920000,
+    "toast_bytes": 13656064,
+    "total_bytes": 97607680
+  },
+  "all_10000_vector_bytes_identical": true,
+  "migration_diagnostic_statement_timeout_seconds": 30,
+  "api_request_budget_seconds_unchanged": 1.5,
+  "immutable_before": [
+    true,
+    true
+  ],
+  "row_differences_before": 0,
+  "ddl_roundtrip": [
+    {
+      "target_storage": "PLAIN",
+      "seconds": 0.750121,
+      "physical": {
+        "attstorage": "p",
+        "relpages": 10048,
+        "heap_bytes": 82313216,
+        "toast_bytes": 13656064
+      },
+      "original_row_differences": 0,
+      "immutable_mutations_rejected": [
+        true,
+        true
+      ],
+      "edge_vector_bytes_unchanged": true,
+      "trigger_enabled": true
+    },
+    {
+      "target_storage": "EXTERNAL",
+      "seconds": 0.598503,
+      "physical": {
+        "attstorage": "e",
+        "relpages": 1728,
+        "heap_bytes": 14155776,
+        "toast_bytes": 54616064
+      },
+      "original_row_differences": 0,
+      "immutable_mutations_rejected": [
+        true,
+        true
+      ],
+      "edge_vector_bytes_unchanged": true,
+      "trigger_enabled": true
+    }
+  ],
+  "original_table_still_external": true,
+  "operator_source_sha256": "028ba62b985a6c2e1d894e5dea8e12256715a35f2aff7ded45c90c32ee4eb3d9",
+  "cooperating_runner_lock_held": true,
+  "production_accepted": false,
+  "semantic_quality_evaluated": false
+}

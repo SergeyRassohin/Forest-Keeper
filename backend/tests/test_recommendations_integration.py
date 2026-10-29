@@ -53,7 +53,7 @@ def recommendation(client, identifier, expected=200):
 
 def business_hash(session):
     tables = (
-        "sources",
+        "source_systems",
         "import_batches",
         "raw_records",
         "analysis_runs",
@@ -283,6 +283,62 @@ def test_exact_committed_reference_retry_does_not_require_redis_or_new_evaluatio
         patch("app.recommendations.audit.evaluate", side_effect=AssertionError("no recompute")),
     ):
         assert save(client, query, body, expected=200)["decision_id"] == committed["decision_id"]
+
+
+def test_current_and_past_evidence_share_one_profile_snapshot_per_evaluation(client):
+    import json
+    import time
+    from pathlib import Path
+    from traceback import extract_stack
+    from unittest.mock import patch
+
+    from app.common.basis_lock import Budget
+    from app.common.errors import ApiError
+    from app.recommendations.evidence import prepare, profile_digests
+
+    query = Cases(client).prepared()
+    captured = []
+    budget_errors = []
+    original_remaining = Budget.remaining
+
+    def observe_remaining(budget):
+        try:
+            return original_remaining(budget)
+        except ApiError:
+            # Observe the real deadline without extending/retrying it. Only safe
+            # callsites and lateness are recorded if the original assertion fails.
+            budget_errors.append(
+                {
+                    "overdue_ms": round((time.monotonic() - budget.deadline) * 1000, 3),
+                    "frames": [
+                        [Path(frame.filename).name, frame.name, frame.lineno]
+                        for frame in extract_stack(limit=30)
+                        if "/app/" in frame.filename
+                    ],
+                }
+            )
+            raise
+
+    def load_profiles():
+        approved = profile_digests()
+        captured.append(approved)
+        return approved
+
+    with (
+        patch("app.recommendations.service.profile_digests", side_effect=load_profiles),
+        patch("app.recommendations.service.prepare", wraps=prepare) as observe,
+        patch.object(Budget, "remaining", observe_remaining),
+    ):
+        for request_number in range(2):
+            try:
+                assert recommendation(client, query)["status"] == "RECOMMENDED"
+            except AssertionError as error:
+                error.add_note("Sanitized budget diagnostics: " + json.dumps(budget_errors))
+                raise
+            calls = observe.call_args_list[request_number * 6 : (request_number + 1) * 6]
+            assert len(calls) == 6  # Current comparison plus five genuine histories.
+            assert all(call.kwargs["profiles"] is captured[request_number] for call in calls)
+    assert len(captured) == 2 and captured[0] is not captured[1]
 
 
 @pytest.mark.parametrize(
@@ -717,3 +773,31 @@ def test_retrieval_activation_invalidates_reference_but_manual_save_remains_inde
     save(client, query, body, expected=409)
     del body["recommendation_reference"]
     assert save(client, query, body)["conflict_status"] == "RESOLVED"
+
+
+def test_retrieval_planner_hints_are_restored_inside_the_caller_transaction(client):
+    from app.auth.models import User
+    from app.conflicts.models import Conflict
+    from app.similarity.service import retrieval
+
+    case = Cases(client).prepared()
+    with Session(client.app.state.engine) as session:
+        actor = session.scalar(select(User).where(User.login == "data_owner"))
+        current = session.get(Conflict, UUID(case))
+        for nested, jit in [("on", "on"), ("on", "off"), ("off", "on"), ("off", "off")]:
+            session.execute(
+                text(
+                    "SELECT set_config('enable_nestloop', :nested, true), "
+                    "set_config('jit', :jit, true)"
+                ),
+                {"nested": nested, "jit": jit},
+            )
+            result = retrieval(
+                session, actor, current, client.app.state.settings, 5, 0, prepare_query=False
+            )
+            assert result["state"] == "READY"
+            assert tuple(
+                session.execute(
+                    text("SELECT current_setting('enable_nestloop'),current_setting('jit')")
+                ).one()
+            ) == (nested, jit)

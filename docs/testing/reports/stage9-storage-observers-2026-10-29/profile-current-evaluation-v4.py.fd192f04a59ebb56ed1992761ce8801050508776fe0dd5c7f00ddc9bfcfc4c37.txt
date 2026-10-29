@@ -1,0 +1,140 @@
+"""Read-only owned-development diagnostic; not a performance/quality acceptance test."""
+import cProfile
+import hashlib
+import json
+import pstats
+import sys
+import time
+from uuid import UUID
+
+from sqlalchemy import event, exists, func, select, text
+from sqlalchemy.orm import Session
+
+import app.main
+from app.auth.models import AuthSession, User
+from app.auth.security import token_digest
+from app.common.basis_lock import Budget
+from app.common.config import Settings
+from app.common.database import make_engine
+from app.decisions.models import Decision
+from app.decisions.service import case_for, historical_context, require
+from app.recommendations.evidence import prepare
+from app.recommendations.schemas import SourceMap
+from app.recommendations.service import evaluate
+from app.similarity.models import DecisionEmbedding, RetrievalState
+from app.similarity.service import compatible_pool
+
+owned = json.load(sys.stdin)
+settings = Settings()
+assert settings.import_queue_name == owned['queue']
+engine = make_engine(settings)
+with engine.connect() as connection:
+    assert connection.scalar(text('SELECT current_schema()')) == owned['schema']
+report = {'kind': 'read-only-owned-coverage-profile-not-NFR-or-quality', 'observations': []}
+
+
+def actor_case(session):
+    auth = session.scalar(select(AuthSession).where(
+        AuthSession.token_hash == token_digest(owned['token']),
+        AuthSession.revoked_at.is_(None), AuthSession.expires_at > func.now()))
+    assert auth is not None
+    actor = session.get(User, auth.user_id)
+    assert actor.status == 'ACTIVE'
+    for permission in ['conflict.view', 'decision.view', 'recommendation.view']:
+        require(actor, permission)
+    case = case_for(session, UUID(owned['query']), actor)
+    return actor, case
+
+
+for mode in ['evaluate']:
+    row = {'mode': mode, 'completed': False, 'sql': []}
+    report['observations'].append(row)
+    def before(conn, cursor, statement, parameters, context, many):
+        if False and mode == 'evaluate' and 'scored_precedents AS MATERIALIZED' in statement:
+            cursor.execute('EXPLAIN (ANALYZE, BUFFERS, FORMAT JSON) '+statement, parameters)
+            data = cursor.fetchone()[0]
+            plan = (json.loads(data) if isinstance(data, str) else data)[0]
+            def summary(node):
+                return {k:node[k] for k in ['Node Type','Join Type','Relation Name',
+                    'Plan Rows','Actual Rows','Actual Loops','Actual Total Time',
+                    'Shared Hit Blocks','Shared Read Blocks'] if k in node} | {
+                    'children':[summary(n) for n in node.get('Plans',[])]}
+            row['ranking_plan'] = summary(plan['Plan'])
+            row['ranking_execution_ms'] = plan['Execution Time']
+            row['profile_extra_readonly_ranking_execution'] = True
+        context._owned_profile_started = time.monotonic()
+    def after(conn, cursor, statement, parameters, context, many):
+        row['sql'].append({
+            'sha256': hashlib.sha256(statement.encode()).hexdigest(),
+            'kind': 'coverage-exists' if statement.lstrip().startswith('SELECT EXISTS')
+                and 'decision_embeddings' in statement else statement.split()[0],
+            'seconds': round(time.monotonic()-context._owned_profile_started, 6),
+        })
+    event.listen(engine, 'before_cursor_execute', before)
+    event.listen(engine, 'after_cursor_execute', after)
+    started = time.monotonic()
+    try:
+        with Session(engine) as session:
+            session.connection(execution_options={'isolation_level': 'REPEATABLE READ'})
+            session.execute(text('SET TRANSACTION READ ONLY'))
+            actor, case = actor_case(session)
+            previous = tuple(session.execute(text(
+                "SELECT current_setting('enable_nestloop'), current_setting('jit')")).one())
+            if mode == 'evaluate':
+                profiler = cProfile.Profile()
+                profiler.enable()
+                try:
+                    outcome = evaluate(session, actor, case, settings, Budget())
+                    row['reason_code'] = outcome.result.reason_code
+                finally:
+                    profiler.disable()
+                    entries = pstats.Stats(profiler).stats
+                    top = sorted(entries.items(), key=lambda item:item[1][3], reverse=True)[:100]
+                    row['python_cumulative'] = [{
+                        'file': name[0].split('/app/app/')[-1], 'line': name[1], 'function':name[2],
+                        'calls': stats[1], 'self_seconds':round(stats[2],6),
+                        'cumulative_seconds':round(stats[3],6),
+                    } for name, stats in top]
+            else:
+                current = prepare(historical_context(session, case, include_review=False),
+                                  SourceMap.model_validate(settings.recommendation_source_map))
+                version = session.get(RetrievalState, 1).active_version_id
+                missing = compatible_pool(actor, case, current.features).where(~exists(
+                    select(DecisionEmbedding.id).where(
+                        DecisionEmbedding.decision_id == Decision.id,
+                        DecisionEmbedding.version_id == version)))
+                query = select(exists(missing.with_only_columns(Decision.id)))
+                if mode.endswith('no-jit'):
+                    session.execute(text('SET LOCAL enable_nestloop=off; SET LOCAL jit=off'))
+                budget = Budget();budget.arm(session)
+                compiled = str(query.compile(dialect=engine.dialect,
+                    compile_kwargs={'literal_binds':True}))
+                plan = session.scalar(text('EXPLAIN (ANALYZE, BUFFERS, FORMAT JSON) '+compiled))[0]
+                def summarize(node):
+                    return {k:node[k] for k in [
+                        'Node Type','Join Type','Relation Name','Plan Rows','Actual Rows',
+                        'Actual Loops','Actual Total Time','Shared Hit Blocks','Shared Read Blocks',
+                    ] if k in node} | {'children':[summarize(n) for n in node.get('Plans',[])]}
+                row['plan'] = summarize(plan['Plan'])
+                row['planning_ms'] = plan['Planning Time']
+                row['execution_ms'] = plan['Execution Time']
+                row['jit'] = plan.get('JIT')
+                session.execute(text("SELECT set_config('enable_nestloop', :nest, true), "
+                                     "set_config('jit', :jit, true)"),
+                                {'nest':previous[0], 'jit':previous[1]})
+            current = tuple(session.execute(text(
+                "SELECT current_setting('enable_nestloop'), current_setting('jit')")).one())
+            row['caller_guc_preserved'] = previous == current
+            assert previous == current
+            session.rollback()
+            row['completed'] = True
+    except Exception as error:
+        row['error_code'] = type(error).__name__
+        code = getattr(error, 'code', None)
+        if isinstance(code, str) and code.isupper():row['public_reason_code'] = code
+    finally:
+        row['elapsed_seconds'] = round(time.monotonic()-started, 6)
+        event.remove(engine, 'before_cursor_execute', before)
+        event.remove(engine, 'after_cursor_execute', after)
+engine.dispose()
+print(json.dumps(report))

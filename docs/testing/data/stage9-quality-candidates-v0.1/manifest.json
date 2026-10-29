@@ -1,0 +1,10 @@
+{
+  "dataset_sha256": "f9bbc4bc44922b9e5a3c6b4a9d7a8d3c81db5e2a198657419335b0ab0425570d",
+  "cases": 200,
+  "human_approved": false,
+  "metrics_measured": false,
+  "precision_returned_target_proposal": 0.95,
+  "recall_target_proposal": 0.9,
+  "no_match_false_positive_target_proposal": 0,
+  "harmful_recommendation_target_proposal": 0
+}

@@ -604,3 +604,26 @@ confirmed=true, версия, idempotency key и все прежние прав�
 Без reference ручное сохранение независимо от Recommendation/embedding.
 Новый Decision может содержать additive context_snapshot.recommendation; старые
 факты не переписываются. PATCH/DELETE и автоматического Decision нет.
+
+### Stage 9 optional local AI explanation (development, not accepted production)
+
+The explicit cookie/Origin-authenticated `POST /api/v1/conflicts/{id}/ai-explanation`
+accepts only `{ "request_id": "UUID", "language": "ru" }` (`en` also supported) and
+returns202`{ "request_id": "opaque UUID handle" }`. Retrying the same client request ID
+in the same session/case is idempotent. Required permissions are `conflict.view`,
+`decision.view` and `recommendation.view`, plus current case scope. Production is disabled.
+
+`GET /api/v1/conflicts/{id}/ai-explanations/{handle}` polls derived execution state
+QUEUED/PROCESSING/COMPLETED/FAILED; it never runs inference. A completed response contains
+validated factual clauses, existing evidence links and pinned model/prompt/schema identity.
+Only the requesting actor/session/case can read it. Fresh scope, case/head and all relevant
+configuration/evidence digests are checked before inference and completed delivery.
+Stale, malformed or unavailable output produces a bounded failure, without model prose.
+POST the polling URL with `/cancel` and no body marks logical discard. Active computation
+can finish within its resource bound; cancellation cannot publish its result.
+
+These routes do not create or prefill a Decision. Current review token, human reason,
+confirmation and existing business permissions remain required for a manual Decision.
+Model-facing `/internal/ai/*` routes belong to separate private model services and are
+not registered on the public backend. Input bodies, prompts and vectors are not audited;
+only bounded IDs, digests, clause codes and duration are recorded.

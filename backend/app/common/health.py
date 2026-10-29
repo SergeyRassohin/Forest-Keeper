@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from redis import Redis
 from sqlalchemy import Engine, text
 
-SCHEMA_REVISION = "0008_similarity"
+SCHEMA_REVISION = "0009_inline_vectors"
 ComponentStatus = Literal["ok", "unavailable"]
 
 

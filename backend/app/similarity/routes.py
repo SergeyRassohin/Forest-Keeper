@@ -57,6 +57,8 @@ def similar(
     try:
         access(actor, "conflict.view", request, session)
         access(actor, "decision.view", request, session)
+        if settings.similarity_provider == "qwen-demo":
+            access(actor, "recommendation.view", request, session)
         read_budget(cache, settings, actor)
         return retrieval(
             session,
@@ -65,6 +67,7 @@ def similar(
             settings,
             query.limit,
             query.offset,
+            actor_session_hash=request.state.auth_session.token_hash,
         )
     except ApiError as error:
         session.rollback()

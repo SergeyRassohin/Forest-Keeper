@@ -12,6 +12,9 @@ from sqlalchemy import exists, select, text
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.orm import Session
 
+from app.ai.admission import enqueue_bounded, release_current
+from app.ai.authorization import actor_case
+from app.ai.contracts import AIError
 from app.common.config import Settings
 from app.common.database import make_engine
 from app.conflicts.models import Conflict
@@ -27,10 +30,11 @@ from app.similarity.models import (
     RetrievalVersion,
 )
 from app.similarity.provider import (
-    REVISIONS,
     ProviderError,
+    inference_queue,
     permitted,
     provider,
+    revision_name,
     validate_vector,
     vector_hash,
 )
@@ -56,12 +60,21 @@ def lock_key(version: UUID, schema: str = "public") -> int:
 
 
 def prepare_query(
-    case_id: str, version_id: str, expected_hash: str, settings: Settings | None = None
+    case_id: str,
+    version_id: str,
+    expected_hash: str,
+    settings: Settings | None = None,
+    *,
+    actor_id: str | None = None,
+    auth_session_hash: str | None = None,
 ) -> None:
     settings = settings or Settings()  # type: ignore[call-arg]
     engine = make_engine(settings)
     try:
         with Session(engine) as session:
+            if settings.similarity_provider == "qwen-demo":
+                session.connection(execution_options={"isolation_level": "REPEATABLE READ"})
+                session.execute(text("SET TRANSACTION READ ONLY"))
             version = session.get(RetrievalVersion, UUID(version_id))
             case = session.get(Conflict, UUID(case_id))
             if (
@@ -73,11 +86,21 @@ def prepare_query(
             features = context(historical_context(session, case, include_review=False))
             if digest(features) != expected_hash:
                 return
-            vector = validate_vector(provider(settings, version.config["revision"]).embed(features))
+            if settings.similarity_provider == "qwen-demo":
+                actor_case(session, actor_id, auth_session_hash, case.id)
+            revision = version.config["revision"]
+        # No DB transaction/locks/pool slot are held across model inference.
+        vector = validate_vector(provider(settings, revision).embed(features, purpose="query"))
+        with Session(engine) as session:
+            if settings.similarity_provider == "qwen-demo":
+                _, current = actor_case(session, actor_id, auth_session_hash, UUID(case_id))
+                fresh = context(historical_context(session, current, include_review=False))
+                if digest(fresh) != expected_hash:
+                    return
             session.execute(
                 insert(QueryEmbedding)
                 .values(
-                    version_id=version.id,
+                    version_id=UUID(version_id),
                     context_hash=expected_hash,
                     features=features,
                     embedding=vector,
@@ -91,14 +114,25 @@ def prepare_query(
         raise ProviderError("QUERY_PREPARATION_FAILED") from None
     finally:
         engine.dispose()
+        if settings.similarity_provider == "qwen-demo":
+            release_current(settings)
 
 
-def request_query(case_id: UUID, version_id: UUID, context_hash: str, settings: Settings) -> None:
+def request_query(
+    case_id: UUID,
+    version_id: UUID,
+    context_hash: str,
+    settings: Settings,
+    *,
+    actor_id: str | None = None,
+    auth_session_hash: str | None = None,
+) -> None:
     with Redis.from_url(
         settings.redis_url.get_secret_value(), socket_connect_timeout=0.5, socket_timeout=0.5
     ) as redis:
-        queue = Queue(settings.import_queue_name, connection=redis)
-        queue_namespace = hashlib.sha256(settings.import_queue_name.encode()).hexdigest()[:12]
+        queue_name = inference_queue(settings)
+        queue = Queue(queue_name, connection=redis)
+        queue_namespace = hashlib.sha256(queue_name.encode()).hexdigest()[:12]
         job_id = "retrieval-query-" + queue_namespace + "-" + version_id.hex + "-" + context_hash
         job = Job.fetch_many([job_id], connection=redis)[0]
         if job and job.get_status(refresh=True) == "failed":
@@ -110,8 +144,26 @@ def request_query(case_id: UUID, version_id: UUID, context_hash: str, settings: 
                 raise ProviderError("QUERY_PREPARATION_FAILED")
         if job and job.get_status(refresh=True) in {"queued", "started", "deferred", "scheduled"}:
             return
-        if job:
+        if job and settings.similarity_provider != "qwen-demo":
             job.delete()
+        if settings.similarity_provider == "qwen-demo":
+            if actor_id is None or auth_session_hash is None:
+                raise ProviderError("AI_AUTHORIZATION_REQUIRED")
+            try:
+                enqueue_bounded(
+                    redis,
+                    settings,
+                    queue,
+                    prepare_query,
+                    (str(case_id), str(version_id), context_hash),
+                    {"actor_id": actor_id, "auth_session_hash": auth_session_hash},
+                    job_id=job_id,
+                    actor_id=actor_id,
+                    description="QWEN_QUERY_PREPARATION",
+                )
+            except AIError as error:
+                raise ProviderError(str(error)) from None
+            return
         queue.enqueue(
             prepare_query,
             str(case_id),
@@ -138,11 +190,25 @@ def activate_version(session: Session, identifier: UUID) -> None:
 
 
 def process_index(identifier: str) -> None:
-    execute_index(UUID(identifier), Settings())  # type: ignore[call-arg]
+    settings = Settings()  # type: ignore[call-arg]
+    try:
+        execute_index(
+            UUID(identifier),
+            settings,
+            max_batches=1 if settings.similarity_provider == "qwen-demo" else None,
+        )
+    finally:
+        if settings.similarity_provider == "qwen-demo":
+            release_current(settings)
 
 
 def execute_index(identifier: UUID, settings: Settings, *, max_batches: int | None = None) -> None:
     """max_batches is a test/operator interruption boundary, not a successful completion."""
+    if settings.similarity_provider == "qwen-demo":
+        from app.ai.indexing import execute
+
+        execute(identifier, settings, max_batches=max_batches)
+        return
     engine = make_engine(settings)
     try:
         with engine.connect() as connection:
@@ -203,7 +269,10 @@ def execute_index(identifier: UUID, settings: Settings, *, max_batches: int | No
                             else:
                                 try:
                                     features = context(decision.context_snapshot, decision)
-                                    if features["synthetic"] is not True:
+                                    if (
+                                        settings.similarity_provider == "test"
+                                        and features["synthetic"] is not True
+                                    ):
                                         raise ProviderError("SYNTHETIC_ONLY")
                                 except ProviderError as error:
                                     reason = str(error)
@@ -273,19 +342,40 @@ def recover_indexes(settings: Settings, redis: Redis) -> None:
                     if state and state.active_version_id
                     else None
                 )
-                if version and session.scalar(
-                    missing(version.id).with_only_columns(Decision.id).limit(1)
+                selected_provider = (
+                    "qwen-local-demo"
+                    if settings.similarity_provider == "qwen-demo"
+                    else "deterministic-test"
+                )
+                if (
+                    version
+                    and version.config.get("provider") == selected_provider
+                    and session.scalar(missing(version.id).with_only_columns(Decision.id).limit(1))
                 ):
-                    revision = next(
-                        (k for k, v in REVISIONS.items() if v == version.config["revision"]), None
-                    )
+                    try:
+                        revision = revision_name(version.config["revision"])
+                    except ProviderError:
+                        revision = None
                     if revision:
-                        start_run(session, settings, revision)
+                        start_run(
+                            session,
+                            settings,
+                            revision,
+                            batch_size=8 if settings.similarity_provider == "qwen-demo" else 100,
+                        )
                         session.commit()
-            queue = Queue(settings.import_queue_name, connection=redis)
+            queue = Queue(inference_queue(settings), connection=redis)
             for run in session.scalars(
                 select(IndexRun).where(IndexRun.status.in_(["NEW", "QUEUED", "PROCESSING"]))
             ):
+                version = session.get(RetrievalVersion, run.version_id)
+                selected_provider = (
+                    "qwen-local-demo"
+                    if settings.similarity_provider == "qwen-demo"
+                    else "deterministic-test"
+                )
+                if version is None or version.config.get("provider") != selected_provider:
+                    continue
                 if not session.scalar(
                     text("SELECT pg_try_advisory_xact_lock(:key)"),
                     {
@@ -308,8 +398,25 @@ def recover_indexes(settings: Settings, redis: Redis) -> None:
                     "scheduled",
                 }:
                     continue
-                if job:
+                if job and settings.similarity_provider != "qwen-demo":
                     job.delete()
+                if settings.similarity_provider == "qwen-demo":
+                    try:
+                        enqueue_bounded(
+                            redis,
+                            settings,
+                            queue,
+                            process_index,
+                            (str(run.id),),
+                            {},
+                            job_id=job_id,
+                            actor_id=None,
+                            description="QWEN_BOUNDED_BACKFILL",
+                        )
+                    except AIError:
+                        continue
+                    session.commit()
+                    continue
                 queue.enqueue(
                     process_index,
                     str(run.id),

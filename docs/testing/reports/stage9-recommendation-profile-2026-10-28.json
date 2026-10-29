@@ -1,0 +1,2139 @@
+{
+  "kind": "read-only-diagnostic-not-concurrent-NFR-or-semantic-quality",
+  "business_writes": 0,
+  "coverage_probe": {
+    "kind": "read-only-owned-coverage-profile-not-NFR-or-quality",
+    "observations": [
+      {
+        "mode": "evaluate",
+        "completed": true,
+        "sql": [
+          {
+            "sha256": "6c20e5345ee8028f61cc0541aeb60699e5cffa99c8f79ff7f8c62b0a8dad1837",
+            "kind": "SET",
+            "seconds": 0.000241
+          },
+          {
+            "sha256": "2298ed5967c3ef3cae57076072552ac0738b1bf5c7aa3466a9a714532576b2cc",
+            "kind": "SELECT",
+            "seconds": 0.001243
+          },
+          {
+            "sha256": "f29774d84d406cda22c3ecde655a7ed0a4043d0437c334e6036b962a3976ff03",
+            "kind": "SELECT",
+            "seconds": 0.000558
+          },
+          {
+            "sha256": "6c65b957257fa65419924c5e34c52127786fecc8eea51b0f4a720af7e6222daf",
+            "kind": "SELECT",
+            "seconds": 0.00033
+          },
+          {
+            "sha256": "9f6f8f4f352b99955f20c618a7cc4bedbf753093d14049d0dba72309a2ccea69",
+            "kind": "SELECT",
+            "seconds": 0.001039
+          },
+          {
+            "sha256": "4f73b8edf4fa9ad8ecde981fe0bd1042fa52ef793ed578bd1b9566c946f08621",
+            "kind": "SELECT",
+            "seconds": 0.000252
+          },
+          {
+            "sha256": "710659c122296752c8c75a34b04c2e48db0bb6755c09d8bb10b60893e2285025",
+            "kind": "SELECT",
+            "seconds": 0.000583
+          },
+          {
+            "sha256": "fc06e92e7a423ef9fa485b200ed7cfa94b9022c68e1c9366cc41c630691a9f3b",
+            "kind": "SELECT",
+            "seconds": 0.000565
+          },
+          {
+            "sha256": "58b48fd6ee8a1203bb8db2bc442b87bf7bac06228b4dc07a105416d344e4ab6d",
+            "kind": "SELECT",
+            "seconds": 0.000556
+          },
+          {
+            "sha256": "58b48fd6ee8a1203bb8db2bc442b87bf7bac06228b4dc07a105416d344e4ab6d",
+            "kind": "SELECT",
+            "seconds": 0.000271
+          },
+          {
+            "sha256": "4fb35142bb069006c2ae409b337560137a8d42771e6407103a9eac1239f365df",
+            "kind": "SELECT",
+            "seconds": 0.000547
+          },
+          {
+            "sha256": "4fb35142bb069006c2ae409b337560137a8d42771e6407103a9eac1239f365df",
+            "kind": "SELECT",
+            "seconds": 0.000214
+          },
+          {
+            "sha256": "1cd4099a1b12697d4acdb0b0eaafd5798807d37c7c3e1fe0d54ab1440b2759bc",
+            "kind": "SELECT",
+            "seconds": 0.001277
+          },
+          {
+            "sha256": "45635515aa3279f9dd9f2a75b8a3e1bdcf4e986d8ba044af36160334cddc9916",
+            "kind": "SELECT",
+            "seconds": 0.000626
+          },
+          {
+            "sha256": "9af8f9e782d46ae5a93d7704314ebe7487801ee15e23d8400193686fcaddde7f",
+            "kind": "SELECT",
+            "seconds": 0.000871
+          },
+          {
+            "sha256": "3239014a27e70762285cbb36212e6558f743f99eb13148b0f90ababc766833c7",
+            "kind": "SELECT",
+            "seconds": 0.001067
+          },
+          {
+            "sha256": "5607bec43180cb5ea48df59f1bc8869e4f0ee1334b9d43ab95c29773d7b3c47e",
+            "kind": "SELECT",
+            "seconds": 0.000467
+          },
+          {
+            "sha256": "f8232932b153134753a11dc4e29355a370d3ab113509f348e477612760c05e91",
+            "kind": "SELECT",
+            "seconds": 0.000332
+          },
+          {
+            "sha256": "8a4da963437550929f235c3a8f85497b2f9aa62545e5104bb86808fffc02d00a",
+            "kind": "SELECT",
+            "seconds": 0.001298
+          },
+          {
+            "sha256": "227880c832b11f68c92dffcfc7f629c7444ceffb17c1ca7c2f0857cabda6b0e6",
+            "kind": "SELECT",
+            "seconds": 0.000161
+          },
+          {
+            "sha256": "8a2756d566272e75d15d0e35977f9bd773185156a3a621fa618b112975fc4b81",
+            "kind": "SET",
+            "seconds": 0.000121
+          },
+          {
+            "sha256": "c9071c6be0f4b8885e445d7768d68fee6ae1e4f29124f6bf8793a32f55c55b67",
+            "kind": "WITH",
+            "seconds": 0.002322
+          },
+          {
+            "sha256": "5f1d39826dd6f23901dfae03761a862301d87f116a16d8a2c895b3340514d721",
+            "kind": "SELECT",
+            "seconds": 0.00021
+          },
+          {
+            "sha256": "4f73b8edf4fa9ad8ecde981fe0bd1042fa52ef793ed578bd1b9566c946f08621",
+            "kind": "SELECT",
+            "seconds": 0.000133
+          },
+          {
+            "sha256": "425eb27812135445a1115e9d31325e3963f07b296466ea7b35229e553b90ce07",
+            "kind": "SET",
+            "seconds": 0.000153
+          },
+          {
+            "sha256": "dcc1abffc5acbd6e6fd2d8c7ae30c01c0e9776122b442b8c3940dc648f70f3a0",
+            "kind": "WITH",
+            "seconds": 0.082102
+          },
+          {
+            "sha256": "618672e1efe1679a5033784b558692f97f28e744dcd163b49d1cfc5df49181f6",
+            "kind": "SELECT",
+            "seconds": 0.000305
+          },
+          {
+            "sha256": "ea3a6103f31f41cb368c703bfb9e26e566664390f095aea279ef8d3af1fdae36",
+            "kind": "coverage-exists",
+            "seconds": 0.014834
+          },
+          {
+            "sha256": "52259236e403a31ae8886c1f4def710658d3997566ce36048c7c91f6d85c8867",
+            "kind": "SELECT",
+            "seconds": 0.000963
+          },
+          {
+            "sha256": "1cd4099a1b12697d4acdb0b0eaafd5798807d37c7c3e1fe0d54ab1440b2759bc",
+            "kind": "SELECT",
+            "seconds": 0.000432
+          },
+          {
+            "sha256": "45635515aa3279f9dd9f2a75b8a3e1bdcf4e986d8ba044af36160334cddc9916",
+            "kind": "SELECT",
+            "seconds": 0.000271
+          },
+          {
+            "sha256": "9af8f9e782d46ae5a93d7704314ebe7487801ee15e23d8400193686fcaddde7f",
+            "kind": "SELECT",
+            "seconds": 0.000473
+          },
+          {
+            "sha256": "3239014a27e70762285cbb36212e6558f743f99eb13148b0f90ababc766833c7",
+            "kind": "SELECT",
+            "seconds": 0.000439
+          },
+          {
+            "sha256": "4f73b8edf4fa9ad8ecde981fe0bd1042fa52ef793ed578bd1b9566c946f08621",
+            "kind": "SELECT",
+            "seconds": 0.000163
+          }
+        ],
+        "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+        "python_cumulative": [
+          {
+            "file": "recommendations/service.py",
+            "line": 85,
+            "function": "evaluate",
+            "calls": 1,
+            "self_seconds": 0.000371,
+            "cumulative_seconds": 0.217575
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py",
+            "line": 2201,
+            "function": "_execute_internal",
+            "calls": 27,
+            "self_seconds": 0.000225,
+            "cumulative_seconds": 0.169063
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/elements.py",
+            "line": 524,
+            "function": "_execute_on_connection",
+            "calls": 27,
+            "self_seconds": 3e-05,
+            "cumulative_seconds": 0.1656
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py",
+            "line": 1621,
+            "function": "_execute_clauseelement",
+            "calls": 27,
+            "self_seconds": 0.000301,
+            "cumulative_seconds": 0.16557
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py",
+            "line": 1407,
+            "function": "execute",
+            "calls": 26,
+            "self_seconds": 4.7e-05,
+            "cumulative_seconds": 0.165124
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/orm/context.py",
+            "line": 306,
+            "function": "orm_execute_statement",
+            "calls": 21,
+            "self_seconds": 5.2e-05,
+            "cumulative_seconds": 0.163226
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py",
+            "line": 2406,
+            "function": "execute",
+            "calls": 24,
+            "self_seconds": 3.4e-05,
+            "cumulative_seconds": 0.139028
+          },
+          {
+            "file": "similarity/service.py",
+            "line": 164,
+            "function": "retrieval",
+            "calls": 1,
+            "self_seconds": 0.000395,
+            "cumulative_seconds": 0.13568
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py",
+            "line": 1770,
+            "function": "_execute_context",
+            "calls": 27,
+            "self_seconds": 0.000137,
+            "cumulative_seconds": 0.125
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py",
+            "line": 1829,
+            "function": "_exec_single_context",
+            "calls": 27,
+            "self_seconds": 0.000395,
+            "cumulative_seconds": 0.122329
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/psycopg/cursor.py",
+            "line": 100,
+            "function": "execute",
+            "calls": 54,
+            "self_seconds": 0.000123,
+            "cumulative_seconds": 0.117774
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/psycopg/connection.py",
+            "line": 479,
+            "function": "wait",
+            "calls": 54,
+            "self_seconds": 0.110805,
+            "cumulative_seconds": 0.117631
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/engine/default.py",
+            "line": 1191,
+            "function": "do_execute",
+            "calls": 27,
+            "self_seconds": 2.6e-05,
+            "cumulative_seconds": 0.110815
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/elements.py",
+            "line": 694,
+            "function": "_compile_w_cache",
+            "calls": 27,
+            "self_seconds": 0.000202,
+            "cumulative_seconds": 0.040014
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/elements.py",
+            "line": 324,
+            "function": "_compiler",
+            "calls": 20,
+            "self_seconds": 8.4e-05,
+            "cumulative_seconds": 0.035301
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/compiler.py",
+            "line": 1449,
+            "function": "__init__",
+            "calls": 20,
+            "self_seconds": 0.000136,
+            "cumulative_seconds": 0.035216
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/compiler.py",
+            "line": 893,
+            "function": "__init__",
+            "calls": 20,
+            "self_seconds": 8.3e-05,
+            "cumulative_seconds": 0.03508
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/visitors.py",
+            "line": 116,
+            "function": "_compiler_dispatch",
+            "calls": 830,
+            "self_seconds": 0.001453,
+            "cumulative_seconds": 0.034996
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/compiler.py",
+            "line": 971,
+            "function": "process",
+            "calls": 31,
+            "self_seconds": 3.5e-05,
+            "cumulative_seconds": 0.034987
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/compiler.py",
+            "line": 5100,
+            "function": "visit_select",
+            "calls": 35,
+            "self_seconds": 0.000681,
+            "cumulative_seconds": 0.034805
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py",
+            "line": 2517,
+            "function": "scalar",
+            "calls": 3,
+            "self_seconds": 3.6e-05,
+            "cumulative_seconds": 0.030104
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py",
+            "line": 3732,
+            "function": "get",
+            "calls": 9,
+            "self_seconds": 1.8e-05,
+            "cumulative_seconds": 0.02016
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py",
+            "line": 3907,
+            "function": "_get_impl",
+            "calls": 9,
+            "self_seconds": 0.000189,
+            "cumulative_seconds": 0.020142
+          },
+          {
+            "file": "recommendations/evidence.py",
+            "line": 149,
+            "function": "validate_lineage",
+            "calls": 2,
+            "self_seconds": 0.00042,
+            "cumulative_seconds": 0.019699
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/orm/loading.py",
+            "line": 535,
+            "function": "_load_on_pk_identity",
+            "calls": 9,
+            "self_seconds": 0.000143,
+            "cumulative_seconds": 0.01941
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/base.py",
+            "line": 910,
+            "function": "create_for_statement",
+            "calls": 35,
+            "self_seconds": 0.000102,
+            "cumulative_seconds": 0.019293
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/orm/context.py",
+            "line": 454,
+            "function": "create_for_statement",
+            "calls": 35,
+            "self_seconds": 8.9e-05,
+            "cumulative_seconds": 0.019163
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/orm/context.py",
+            "line": 1107,
+            "function": "_create_orm_context",
+            "calls": 35,
+            "self_seconds": 0.00058,
+            "cumulative_seconds": 0.01907
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/compiler.py",
+            "line": 4825,
+            "function": "_label_select_column",
+            "calls": 236,
+            "self_seconds": 0.000776,
+            "cumulative_seconds": 0.017632
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/compiler.py",
+            "line": 5387,
+            "function": "_compose_select_body",
+            "calls": 35,
+            "self_seconds": 0.000372,
+            "cumulative_seconds": 0.0175
+          }
+        ],
+        "caller_guc_preserved": true,
+        "elapsed_seconds": 0.244329
+      },
+      {
+        "mode": "explain-original",
+        "completed": true,
+        "sql": [
+          {
+            "sha256": "6c20e5345ee8028f61cc0541aeb60699e5cffa99c8f79ff7f8c62b0a8dad1837",
+            "kind": "SET",
+            "seconds": 0.000175
+          },
+          {
+            "sha256": "2298ed5967c3ef3cae57076072552ac0738b1bf5c7aa3466a9a714532576b2cc",
+            "kind": "SELECT",
+            "seconds": 0.000273
+          },
+          {
+            "sha256": "f29774d84d406cda22c3ecde655a7ed0a4043d0437c334e6036b962a3976ff03",
+            "kind": "SELECT",
+            "seconds": 0.000218
+          },
+          {
+            "sha256": "6c65b957257fa65419924c5e34c52127786fecc8eea51b0f4a720af7e6222daf",
+            "kind": "SELECT",
+            "seconds": 0.000202
+          },
+          {
+            "sha256": "9f6f8f4f352b99955f20c618a7cc4bedbf753093d14049d0dba72309a2ccea69",
+            "kind": "SELECT",
+            "seconds": 0.000311
+          },
+          {
+            "sha256": "4f73b8edf4fa9ad8ecde981fe0bd1042fa52ef793ed578bd1b9566c946f08621",
+            "kind": "SELECT",
+            "seconds": 0.000131
+          },
+          {
+            "sha256": "710659c122296752c8c75a34b04c2e48db0bb6755c09d8bb10b60893e2285025",
+            "kind": "SELECT",
+            "seconds": 0.000178
+          },
+          {
+            "sha256": "fc06e92e7a423ef9fa485b200ed7cfa94b9022c68e1c9366cc41c630691a9f3b",
+            "kind": "SELECT",
+            "seconds": 0.000257
+          },
+          {
+            "sha256": "58b48fd6ee8a1203bb8db2bc442b87bf7bac06228b4dc07a105416d344e4ab6d",
+            "kind": "SELECT",
+            "seconds": 0.000233
+          },
+          {
+            "sha256": "58b48fd6ee8a1203bb8db2bc442b87bf7bac06228b4dc07a105416d344e4ab6d",
+            "kind": "SELECT",
+            "seconds": 0.000278
+          },
+          {
+            "sha256": "4fb35142bb069006c2ae409b337560137a8d42771e6407103a9eac1239f365df",
+            "kind": "SELECT",
+            "seconds": 0.000196
+          },
+          {
+            "sha256": "4fb35142bb069006c2ae409b337560137a8d42771e6407103a9eac1239f365df",
+            "kind": "SELECT",
+            "seconds": 0.000177
+          },
+          {
+            "sha256": "5607bec43180cb5ea48df59f1bc8869e4f0ee1334b9d43ab95c29773d7b3c47e",
+            "kind": "SELECT",
+            "seconds": 0.000226
+          },
+          {
+            "sha256": "0585ea7a37d4f8005628dcf06b76e1995cb102b8ffcc492ddfd18690354dfae3",
+            "kind": "EXPLAIN",
+            "seconds": 0.016198
+          },
+          {
+            "sha256": "7c1ffce2c57d7d64ad5cef7840a361782c0df953ad6875e29cb027691bc8e9cc",
+            "kind": "SELECT",
+            "seconds": 0.000152
+          },
+          {
+            "sha256": "4f73b8edf4fa9ad8ecde981fe0bd1042fa52ef793ed578bd1b9566c946f08621",
+            "kind": "SELECT",
+            "seconds": 0.000107
+          }
+        ],
+        "plan": {
+          "Node Type": "Result",
+          "Plan Rows": 1,
+          "Actual Rows": 1,
+          "Actual Loops": 1,
+          "Actual Total Time": 14.877,
+          "Shared Hit Blocks": 20839,
+          "Shared Read Blocks": 0,
+          "children": [
+            {
+              "Node Type": "Nested Loop",
+              "Join Type": "Inner",
+              "Plan Rows": 1,
+              "Actual Rows": 0,
+              "Actual Loops": 1,
+              "Actual Total Time": 14.875,
+              "Shared Hit Blocks": 20839,
+              "Shared Read Blocks": 0,
+              "children": [
+                {
+                  "Node Type": "Nested Loop",
+                  "Join Type": "Anti",
+                  "Plan Rows": 1,
+                  "Actual Rows": 0,
+                  "Actual Loops": 1,
+                  "Actual Total Time": 14.874,
+                  "Shared Hit Blocks": 20839,
+                  "Shared Read Blocks": 0,
+                  "children": [
+                    {
+                      "Node Type": "Seq Scan",
+                      "Relation Name": "decisions",
+                      "Plan Rows": 25,
+                      "Actual Rows": 10000,
+                      "Actual Loops": 1,
+                      "Actual Total Time": 5.177,
+                      "Shared Hit Blocks": 772,
+                      "Shared Read Blocks": 0,
+                      "children": [
+                        {
+                          "Node Type": "Index Only Scan",
+                          "Relation Name": "decisions",
+                          "Plan Rows": 1,
+                          "Actual Rows": 0,
+                          "Actual Loops": 1,
+                          "Actual Total Time": 0.004,
+                          "Shared Hit Blocks": 2,
+                          "Shared Read Blocks": 0,
+                          "children": []
+                        }
+                      ]
+                    },
+                    {
+                      "Node Type": "Index Only Scan",
+                      "Relation Name": "decision_embeddings",
+                      "Plan Rows": 1,
+                      "Actual Rows": 1,
+                      "Actual Loops": 10000,
+                      "Actual Total Time": 0.001,
+                      "Shared Hit Blocks": 20067,
+                      "Shared Read Blocks": 0,
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "Node Type": "Index Scan",
+                  "Relation Name": "conflicts",
+                  "Plan Rows": 1,
+                  "Actual Rows": 0,
+                  "Actual Loops": 0,
+                  "Actual Total Time": 0.0,
+                  "Shared Hit Blocks": 0,
+                  "Shared Read Blocks": 0,
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        "planning_ms": 0.427,
+        "execution_ms": 14.907,
+        "jit": null,
+        "caller_guc_preserved": true,
+        "elapsed_seconds": 0.02879
+      },
+      {
+        "mode": "explain-no-nestloop-no-jit",
+        "completed": true,
+        "sql": [
+          {
+            "sha256": "6c20e5345ee8028f61cc0541aeb60699e5cffa99c8f79ff7f8c62b0a8dad1837",
+            "kind": "SET",
+            "seconds": 0.000138
+          },
+          {
+            "sha256": "2298ed5967c3ef3cae57076072552ac0738b1bf5c7aa3466a9a714532576b2cc",
+            "kind": "SELECT",
+            "seconds": 0.000268
+          },
+          {
+            "sha256": "f29774d84d406cda22c3ecde655a7ed0a4043d0437c334e6036b962a3976ff03",
+            "kind": "SELECT",
+            "seconds": 0.000224
+          },
+          {
+            "sha256": "6c65b957257fa65419924c5e34c52127786fecc8eea51b0f4a720af7e6222daf",
+            "kind": "SELECT",
+            "seconds": 0.00019
+          },
+          {
+            "sha256": "9f6f8f4f352b99955f20c618a7cc4bedbf753093d14049d0dba72309a2ccea69",
+            "kind": "SELECT",
+            "seconds": 0.000285
+          },
+          {
+            "sha256": "4f73b8edf4fa9ad8ecde981fe0bd1042fa52ef793ed578bd1b9566c946f08621",
+            "kind": "SELECT",
+            "seconds": 0.000126
+          },
+          {
+            "sha256": "710659c122296752c8c75a34b04c2e48db0bb6755c09d8bb10b60893e2285025",
+            "kind": "SELECT",
+            "seconds": 0.000353
+          },
+          {
+            "sha256": "fc06e92e7a423ef9fa485b200ed7cfa94b9022c68e1c9366cc41c630691a9f3b",
+            "kind": "SELECT",
+            "seconds": 0.000284
+          },
+          {
+            "sha256": "58b48fd6ee8a1203bb8db2bc442b87bf7bac06228b4dc07a105416d344e4ab6d",
+            "kind": "SELECT",
+            "seconds": 0.00026
+          },
+          {
+            "sha256": "58b48fd6ee8a1203bb8db2bc442b87bf7bac06228b4dc07a105416d344e4ab6d",
+            "kind": "SELECT",
+            "seconds": 0.000207
+          },
+          {
+            "sha256": "4fb35142bb069006c2ae409b337560137a8d42771e6407103a9eac1239f365df",
+            "kind": "SELECT",
+            "seconds": 0.000193
+          },
+          {
+            "sha256": "4fb35142bb069006c2ae409b337560137a8d42771e6407103a9eac1239f365df",
+            "kind": "SELECT",
+            "seconds": 0.00019
+          },
+          {
+            "sha256": "5607bec43180cb5ea48df59f1bc8869e4f0ee1334b9d43ab95c29773d7b3c47e",
+            "kind": "SELECT",
+            "seconds": 0.000225
+          },
+          {
+            "sha256": "425eb27812135445a1115e9d31325e3963f07b296466ea7b35229e553b90ce07",
+            "kind": "SET",
+            "seconds": 0.000131
+          },
+          {
+            "sha256": "0585ea7a37d4f8005628dcf06b76e1995cb102b8ffcc492ddfd18690354dfae3",
+            "kind": "EXPLAIN",
+            "seconds": 0.010222
+          },
+          {
+            "sha256": "7c1ffce2c57d7d64ad5cef7840a361782c0df953ad6875e29cb027691bc8e9cc",
+            "kind": "SELECT",
+            "seconds": 0.000121
+          },
+          {
+            "sha256": "4f73b8edf4fa9ad8ecde981fe0bd1042fa52ef793ed578bd1b9566c946f08621",
+            "kind": "SELECT",
+            "seconds": 0.000161
+          }
+        ],
+        "plan": {
+          "Node Type": "Result",
+          "Plan Rows": 1,
+          "Actual Rows": 1,
+          "Actual Loops": 1,
+          "Actual Total Time": 9.377,
+          "Shared Hit Blocks": 851,
+          "Shared Read Blocks": 0,
+          "children": [
+            {
+              "Node Type": "Hash Join",
+              "Join Type": "Inner",
+              "Plan Rows": 1,
+              "Actual Rows": 0,
+              "Actual Loops": 1,
+              "Actual Total Time": 9.375,
+              "Shared Hit Blocks": 851,
+              "Shared Read Blocks": 0,
+              "children": [
+                {
+                  "Node Type": "Seq Scan",
+                  "Relation Name": "conflicts",
+                  "Plan Rows": 9824,
+                  "Actual Rows": 1,
+                  "Actual Loops": 1,
+                  "Actual Total Time": 0.006,
+                  "Shared Hit Blocks": 2,
+                  "Shared Read Blocks": 0,
+                  "children": []
+                },
+                {
+                  "Node Type": "Hash",
+                  "Plan Rows": 1,
+                  "Actual Rows": 0,
+                  "Actual Loops": 1,
+                  "Actual Total Time": 9.365,
+                  "Shared Hit Blocks": 849,
+                  "Shared Read Blocks": 0,
+                  "children": [
+                    {
+                      "Node Type": "Merge Join",
+                      "Join Type": "Anti",
+                      "Plan Rows": 1,
+                      "Actual Rows": 0,
+                      "Actual Loops": 1,
+                      "Actual Total Time": 9.364,
+                      "Shared Hit Blocks": 849,
+                      "Shared Read Blocks": 0,
+                      "children": [
+                        {
+                          "Node Type": "Sort",
+                          "Plan Rows": 25,
+                          "Actual Rows": 10000,
+                          "Actual Loops": 1,
+                          "Actual Total Time": 7.197,
+                          "Shared Hit Blocks": 772,
+                          "Shared Read Blocks": 0,
+                          "children": [
+                            {
+                              "Node Type": "Seq Scan",
+                              "Relation Name": "decisions",
+                              "Plan Rows": 25,
+                              "Actual Rows": 10000,
+                              "Actual Loops": 1,
+                              "Actual Total Time": 4.323,
+                              "Shared Hit Blocks": 772,
+                              "Shared Read Blocks": 0,
+                              "children": [
+                                {
+                                  "Node Type": "Index Only Scan",
+                                  "Relation Name": "decisions",
+                                  "Plan Rows": 1,
+                                  "Actual Rows": 0,
+                                  "Actual Loops": 1,
+                                  "Actual Total Time": 0.004,
+                                  "Shared Hit Blocks": 2,
+                                  "Shared Read Blocks": 0,
+                                  "children": []
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "Node Type": "Index Only Scan",
+                          "Relation Name": "decision_embeddings",
+                          "Plan Rows": 9999,
+                          "Actual Rows": 10000,
+                          "Actual Loops": 1,
+                          "Actual Total Time": 0.792,
+                          "Shared Hit Blocks": 77,
+                          "Shared Read Blocks": 0,
+                          "children": []
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "planning_ms": 0.402,
+        "execution_ms": 9.409,
+        "jit": null,
+        "caller_guc_preserved": true,
+        "elapsed_seconds": 0.022735
+      }
+    ],
+    "observer_sha256": "0c157038d5e24593d0822c9fa1c5463eab522d37267d959d9c96ee4bd6736750",
+    "index_vectors": 10000,
+    "warmup_above_threshold": 1,
+    "code_source_commit": "f56f8a0e3fdc12b5d1ae4d58dfb66f17b6d9e5a7"
+  },
+  "positive11_ranking_probe": {
+    "kind": "read-only-owned-coverage-profile-not-NFR-or-quality",
+    "observations": [
+      {
+        "mode": "evaluate",
+        "completed": true,
+        "sql": [
+          {
+            "sha256": "6c20e5345ee8028f61cc0541aeb60699e5cffa99c8f79ff7f8c62b0a8dad1837",
+            "kind": "SET",
+            "seconds": 0.000237
+          },
+          {
+            "sha256": "2298ed5967c3ef3cae57076072552ac0738b1bf5c7aa3466a9a714532576b2cc",
+            "kind": "SELECT",
+            "seconds": 0.001354
+          },
+          {
+            "sha256": "f29774d84d406cda22c3ecde655a7ed0a4043d0437c334e6036b962a3976ff03",
+            "kind": "SELECT",
+            "seconds": 0.000631
+          },
+          {
+            "sha256": "6c65b957257fa65419924c5e34c52127786fecc8eea51b0f4a720af7e6222daf",
+            "kind": "SELECT",
+            "seconds": 0.000439
+          },
+          {
+            "sha256": "9f6f8f4f352b99955f20c618a7cc4bedbf753093d14049d0dba72309a2ccea69",
+            "kind": "SELECT",
+            "seconds": 0.00086
+          },
+          {
+            "sha256": "4f73b8edf4fa9ad8ecde981fe0bd1042fa52ef793ed578bd1b9566c946f08621",
+            "kind": "SELECT",
+            "seconds": 0.000262
+          },
+          {
+            "sha256": "710659c122296752c8c75a34b04c2e48db0bb6755c09d8bb10b60893e2285025",
+            "kind": "SELECT",
+            "seconds": 0.000589
+          },
+          {
+            "sha256": "fc06e92e7a423ef9fa485b200ed7cfa94b9022c68e1c9366cc41c630691a9f3b",
+            "kind": "SELECT",
+            "seconds": 0.000622
+          },
+          {
+            "sha256": "58b48fd6ee8a1203bb8db2bc442b87bf7bac06228b4dc07a105416d344e4ab6d",
+            "kind": "SELECT",
+            "seconds": 0.000575
+          },
+          {
+            "sha256": "58b48fd6ee8a1203bb8db2bc442b87bf7bac06228b4dc07a105416d344e4ab6d",
+            "kind": "SELECT",
+            "seconds": 0.000335
+          },
+          {
+            "sha256": "4fb35142bb069006c2ae409b337560137a8d42771e6407103a9eac1239f365df",
+            "kind": "SELECT",
+            "seconds": 0.000487
+          },
+          {
+            "sha256": "4fb35142bb069006c2ae409b337560137a8d42771e6407103a9eac1239f365df",
+            "kind": "SELECT",
+            "seconds": 0.000278
+          },
+          {
+            "sha256": "1cd4099a1b12697d4acdb0b0eaafd5798807d37c7c3e1fe0d54ab1440b2759bc",
+            "kind": "SELECT",
+            "seconds": 0.001156
+          },
+          {
+            "sha256": "45635515aa3279f9dd9f2a75b8a3e1bdcf4e986d8ba044af36160334cddc9916",
+            "kind": "SELECT",
+            "seconds": 0.000719
+          },
+          {
+            "sha256": "9af8f9e782d46ae5a93d7704314ebe7487801ee15e23d8400193686fcaddde7f",
+            "kind": "SELECT",
+            "seconds": 0.000845
+          },
+          {
+            "sha256": "3239014a27e70762285cbb36212e6558f743f99eb13148b0f90ababc766833c7",
+            "kind": "SELECT",
+            "seconds": 0.001046
+          },
+          {
+            "sha256": "5607bec43180cb5ea48df59f1bc8869e4f0ee1334b9d43ab95c29773d7b3c47e",
+            "kind": "SELECT",
+            "seconds": 0.000497
+          },
+          {
+            "sha256": "f8232932b153134753a11dc4e29355a370d3ab113509f348e477612760c05e91",
+            "kind": "SELECT",
+            "seconds": 0.000452
+          },
+          {
+            "sha256": "8a4da963437550929f235c3a8f85497b2f9aa62545e5104bb86808fffc02d00a",
+            "kind": "SELECT",
+            "seconds": 0.001927
+          },
+          {
+            "sha256": "227880c832b11f68c92dffcfc7f629c7444ceffb17c1ca7c2f0857cabda6b0e6",
+            "kind": "SELECT",
+            "seconds": 0.000384
+          },
+          {
+            "sha256": "8a2756d566272e75d15d0e35977f9bd773185156a3a621fa618b112975fc4b81",
+            "kind": "SET",
+            "seconds": 0.000191
+          },
+          {
+            "sha256": "c9071c6be0f4b8885e445d7768d68fee6ae1e4f29124f6bf8793a32f55c55b67",
+            "kind": "WITH",
+            "seconds": 0.002945
+          },
+          {
+            "sha256": "5f1d39826dd6f23901dfae03761a862301d87f116a16d8a2c895b3340514d721",
+            "kind": "SELECT",
+            "seconds": 0.000361
+          },
+          {
+            "sha256": "4f73b8edf4fa9ad8ecde981fe0bd1042fa52ef793ed578bd1b9566c946f08621",
+            "kind": "SELECT",
+            "seconds": 0.000215
+          },
+          {
+            "sha256": "425eb27812135445a1115e9d31325e3963f07b296466ea7b35229e553b90ce07",
+            "kind": "SET",
+            "seconds": 0.000211
+          },
+          {
+            "sha256": "dcc1abffc5acbd6e6fd2d8c7ae30c01c0e9776122b442b8c3940dc648f70f3a0",
+            "kind": "WITH",
+            "seconds": 0.074593
+          },
+          {
+            "sha256": "618672e1efe1679a5033784b558692f97f28e744dcd163b49d1cfc5df49181f6",
+            "kind": "SELECT",
+            "seconds": 0.000366
+          },
+          {
+            "sha256": "ea3a6103f31f41cb368c703bfb9e26e566664390f095aea279ef8d3af1fdae36",
+            "kind": "coverage-exists",
+            "seconds": 0.01465
+          },
+          {
+            "sha256": "5dd9a43f33985054066c2ffe4f9de7c1ddfbc1f6699171059e5ceaf2503426fb",
+            "kind": "SELECT",
+            "seconds": 0.003529
+          },
+          {
+            "sha256": "85a8a693b963ef4e23063219888cbd23c57646b91742c67d43557b64f14ae92e",
+            "kind": "SELECT",
+            "seconds": 0.001079
+          },
+          {
+            "sha256": "cc23362144dc9ae1962449634c8ec1ef2f924528e54aadc72b5946955beb8b13",
+            "kind": "SELECT",
+            "seconds": 0.000861
+          },
+          {
+            "sha256": "5e738c09ae1c8f1a8d9402935d975d9afb5c02951a9d94f623444a8fc7e2a2e7",
+            "kind": "SELECT",
+            "seconds": 0.002015
+          },
+          {
+            "sha256": "7fee5c9cfe8a5d885a6480c9b929aa235e1641b4c70c9f4438a5853ea14a9269",
+            "kind": "SELECT",
+            "seconds": 0.002198
+          },
+          {
+            "sha256": "4f73b8edf4fa9ad8ecde981fe0bd1042fa52ef793ed578bd1b9566c946f08621",
+            "kind": "SELECT",
+            "seconds": 0.000226
+          }
+        ],
+        "ranking_plan": {
+          "Node Type": "Sort",
+          "Plan Rows": 1,
+          "Actual Rows": 11,
+          "Actual Loops": 1,
+          "Actual Total Time": 83.435,
+          "Shared Hit Blocks": 41251,
+          "Shared Read Blocks": 0,
+          "children": [
+            {
+              "Node Type": "Hash Join",
+              "Join Type": "Inner",
+              "Plan Rows": 1,
+              "Actual Rows": 10000,
+              "Actual Loops": 1,
+              "Actual Total Time": 16.34,
+              "Shared Hit Blocks": 3115,
+              "Shared Read Blocks": 0,
+              "children": [
+                {
+                  "Node Type": "Seq Scan",
+                  "Relation Name": "conflicts",
+                  "Plan Rows": 9824,
+                  "Actual Rows": 10000,
+                  "Actual Loops": 1,
+                  "Actual Total Time": 6.407,
+                  "Shared Hit Blocks": 2343,
+                  "Shared Read Blocks": 0,
+                  "children": []
+                },
+                {
+                  "Node Type": "Hash",
+                  "Plan Rows": 5003,
+                  "Actual Rows": 10000,
+                  "Actual Loops": 1,
+                  "Actual Total Time": 6.995,
+                  "Shared Hit Blocks": 772,
+                  "Shared Read Blocks": 0,
+                  "children": [
+                    {
+                      "Node Type": "Seq Scan",
+                      "Relation Name": "decisions",
+                      "Plan Rows": 5003,
+                      "Actual Rows": 10000,
+                      "Actual Loops": 1,
+                      "Actual Total Time": 4.909,
+                      "Shared Hit Blocks": 772,
+                      "Shared Read Blocks": 0,
+                      "children": [
+                        {
+                          "Node Type": "Index Only Scan",
+                          "Relation Name": "decisions",
+                          "Plan Rows": 1,
+                          "Actual Rows": 0,
+                          "Actual Loops": 1,
+                          "Actual Total Time": 0.008,
+                          "Shared Hit Blocks": 2,
+                          "Shared Read Blocks": 0,
+                          "children": []
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Node Type": "CTE Scan",
+              "Plan Rows": 1,
+              "Actual Rows": 10000,
+              "Actual Loops": 1,
+              "Actual Total Time": 20.614,
+              "Shared Hit Blocks": 3115,
+              "Shared Read Blocks": 0,
+              "children": []
+            },
+            {
+              "Node Type": "Hash Join",
+              "Join Type": "Right",
+              "Plan Rows": 1,
+              "Actual Rows": 10000,
+              "Actual Loops": 1,
+              "Actual Total Time": 68.314,
+              "Shared Hit Blocks": 38474,
+              "Shared Read Blocks": 0,
+              "children": [
+                {
+                  "Node Type": "Seq Scan",
+                  "Relation Name": "decision_embeddings",
+                  "Plan Rows": 9999,
+                  "Actual Rows": 10000,
+                  "Actual Loops": 1,
+                  "Actual Total Time": 3.916,
+                  "Shared Hit Blocks": 2001,
+                  "Shared Read Blocks": 0,
+                  "children": []
+                },
+                {
+                  "Node Type": "Hash",
+                  "Plan Rows": 1,
+                  "Actual Rows": 10000,
+                  "Actual Loops": 1,
+                  "Actual Total Time": 23.42,
+                  "Shared Hit Blocks": 3115,
+                  "Shared Read Blocks": 0,
+                  "children": [
+                    {
+                      "Node Type": "CTE Scan",
+                      "Plan Rows": 1,
+                      "Actual Rows": 10000,
+                      "Actual Loops": 1,
+                      "Actual Total Time": 22.21,
+                      "Shared Hit Blocks": 3115,
+                      "Shared Read Blocks": 0,
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "Node Type": "Index Scan",
+                  "Relation Name": "retrieval_items",
+                  "Plan Rows": 1,
+                  "Actual Rows": 0,
+                  "Actual Loops": 0,
+                  "Actual Total Time": 0.0,
+                  "Shared Hit Blocks": 0,
+                  "Shared Read Blocks": 0,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "Node Type": "Subquery Scan",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1,
+              "Actual Total Time": 49.497,
+              "Shared Hit Blocks": 35329,
+              "Shared Read Blocks": 0,
+              "children": [
+                {
+                  "Node Type": "Aggregate",
+                  "Plan Rows": 1,
+                  "Actual Rows": 1,
+                  "Actual Loops": 1,
+                  "Actual Total Time": 0.846,
+                  "Shared Hit Blocks": 0,
+                  "Shared Read Blocks": 0,
+                  "children": [
+                    {
+                      "Node Type": "CTE Scan",
+                      "Plan Rows": 1,
+                      "Actual Rows": 10000,
+                      "Actual Loops": 1,
+                      "Actual Total Time": 0.481,
+                      "Shared Hit Blocks": 0,
+                      "Shared Read Blocks": 0,
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "Node Type": "Aggregate",
+                  "Plan Rows": 1,
+                  "Actual Rows": 1,
+                  "Actual Loops": 1,
+                  "Actual Total Time": 48.643,
+                  "Shared Hit Blocks": 35329,
+                  "Shared Read Blocks": 0,
+                  "children": [
+                    {
+                      "Node Type": "CTE Scan",
+                      "Plan Rows": 1,
+                      "Actual Rows": 10000,
+                      "Actual Loops": 1,
+                      "Actual Total Time": 47.471,
+                      "Shared Hit Blocks": 35329,
+                      "Shared Read Blocks": 0,
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Node Type": "Nested Loop",
+              "Join Type": "Inner",
+              "Plan Rows": 1,
+              "Actual Rows": 10000,
+              "Actual Loops": 1,
+              "Actual Total Time": 76.331,
+              "Shared Hit Blocks": 38474,
+              "Shared Read Blocks": 0,
+              "children": [
+                {
+                  "Node Type": "CTE Scan",
+                  "Plan Rows": 1,
+                  "Actual Rows": 10000,
+                  "Actual Loops": 1,
+                  "Actual Total Time": 24.03,
+                  "Shared Hit Blocks": 3145,
+                  "Shared Read Blocks": 0,
+                  "children": []
+                },
+                {
+                  "Node Type": "CTE Scan",
+                  "Plan Rows": 1,
+                  "Actual Rows": 1,
+                  "Actual Loops": 10000,
+                  "Actual Total Time": 0.005,
+                  "Shared Hit Blocks": 35329,
+                  "Shared Read Blocks": 0,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "Node Type": "Limit",
+              "Plan Rows": 1,
+              "Actual Rows": 11,
+              "Actual Loops": 1,
+              "Actual Total Time": 0.426,
+              "Shared Hit Blocks": 0,
+              "Shared Read Blocks": 0,
+              "children": [
+                {
+                  "Node Type": "Sort",
+                  "Plan Rows": 1,
+                  "Actual Rows": 11,
+                  "Actual Loops": 1,
+                  "Actual Total Time": 0.423,
+                  "Shared Hit Blocks": 0,
+                  "Shared Read Blocks": 0,
+                  "children": [
+                    {
+                      "Node Type": "CTE Scan",
+                      "Plan Rows": 1,
+                      "Actual Rows": 11,
+                      "Actual Loops": 1,
+                      "Actual Total Time": 0.409,
+                      "Shared Hit Blocks": 0,
+                      "Shared Read Blocks": 0,
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Node Type": "Nested Loop",
+              "Join Type": "Left",
+              "Plan Rows": 1,
+              "Actual Rows": 11,
+              "Actual Loops": 1,
+              "Actual Total Time": 83.358,
+              "Shared Hit Blocks": 41245,
+              "Shared Read Blocks": 0,
+              "children": [
+                {
+                  "Node Type": "Nested Loop",
+                  "Join Type": "Inner",
+                  "Plan Rows": 1,
+                  "Actual Rows": 1,
+                  "Actual Loops": 1,
+                  "Actual Total Time": 78.169,
+                  "Shared Hit Blocks": 38474,
+                  "Shared Read Blocks": 0,
+                  "children": [
+                    {
+                      "Node Type": "Aggregate",
+                      "Plan Rows": 1,
+                      "Actual Rows": 1,
+                      "Actual Loops": 1,
+                      "Actual Total Time": 78.163,
+                      "Shared Hit Blocks": 38474,
+                      "Shared Read Blocks": 0,
+                      "children": [
+                        {
+                          "Node Type": "CTE Scan",
+                          "Plan Rows": 1,
+                          "Actual Rows": 11,
+                          "Actual Loops": 1,
+                          "Actual Total Time": 78.158,
+                          "Shared Hit Blocks": 38474,
+                          "Shared Read Blocks": 0,
+                          "children": []
+                        }
+                      ]
+                    },
+                    {
+                      "Node Type": "CTE Scan",
+                      "Plan Rows": 1,
+                      "Actual Rows": 1,
+                      "Actual Loops": 1,
+                      "Actual Total Time": 0.002,
+                      "Shared Hit Blocks": 0,
+                      "Shared Read Blocks": 0,
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "Node Type": "Hash Join",
+                  "Join Type": "Right",
+                  "Plan Rows": 1,
+                  "Actual Rows": 11,
+                  "Actual Loops": 1,
+                  "Actual Total Time": 5.183,
+                  "Shared Hit Blocks": 2771,
+                  "Shared Read Blocks": 0,
+                  "children": [
+                    {
+                      "Node Type": "Seq Scan",
+                      "Relation Name": "decision_embeddings",
+                      "Plan Rows": 9999,
+                      "Actual Rows": 10000,
+                      "Actual Loops": 1,
+                      "Actual Total Time": 1.106,
+                      "Shared Hit Blocks": 2001,
+                      "Shared Read Blocks": 0,
+                      "children": []
+                    },
+                    {
+                      "Node Type": "Hash",
+                      "Plan Rows": 1,
+                      "Actual Rows": 11,
+                      "Actual Loops": 1,
+                      "Actual Total Time": 2.411,
+                      "Shared Hit Blocks": 770,
+                      "Shared Read Blocks": 0,
+                      "children": [
+                        {
+                          "Node Type": "Hash Join",
+                          "Join Type": "Right",
+                          "Plan Rows": 1,
+                          "Actual Rows": 11,
+                          "Actual Loops": 1,
+                          "Actual Total Time": 2.393,
+                          "Shared Hit Blocks": 770,
+                          "Shared Read Blocks": 0,
+                          "children": [
+                            {
+                              "Node Type": "Seq Scan",
+                              "Relation Name": "decisions",
+                              "Plan Rows": 10007,
+                              "Actual Rows": 10000,
+                              "Actual Loops": 1,
+                              "Actual Total Time": 0.89,
+                              "Shared Hit Blocks": 770,
+                              "Shared Read Blocks": 0,
+                              "children": []
+                            },
+                            {
+                              "Node Type": "Hash",
+                              "Plan Rows": 1,
+                              "Actual Rows": 11,
+                              "Actual Loops": 1,
+                              "Actual Total Time": 0.436,
+                              "Shared Hit Blocks": 0,
+                              "Shared Read Blocks": 0,
+                              "children": [
+                                {
+                                  "Node Type": "CTE Scan",
+                                  "Plan Rows": 1,
+                                  "Actual Rows": 11,
+                                  "Actual Loops": 1,
+                                  "Actual Total Time": 0.429,
+                                  "Shared Hit Blocks": 0,
+                                  "Shared Read Blocks": 0,
+                                  "children": []
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "ranking_execution_ms": 84.373,
+        "profile_extra_readonly_ranking_execution": true,
+        "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+        "python_cumulative": [
+          {
+            "file": "recommendations/service.py",
+            "line": 85,
+            "function": "evaluate",
+            "calls": 1,
+            "self_seconds": 0.000924,
+            "cumulative_seconds": 0.399413
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py",
+            "line": 2201,
+            "function": "_execute_internal",
+            "calls": 27,
+            "self_seconds": 0.000295,
+            "cumulative_seconds": 0.262349
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/elements.py",
+            "line": 524,
+            "function": "_execute_on_connection",
+            "calls": 27,
+            "self_seconds": 3.7e-05,
+            "cumulative_seconds": 0.25852
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py",
+            "line": 1621,
+            "function": "_execute_clauseelement",
+            "calls": 27,
+            "self_seconds": 0.000309,
+            "cumulative_seconds": 0.258483
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py",
+            "line": 1407,
+            "function": "execute",
+            "calls": 26,
+            "self_seconds": 6.7e-05,
+            "cumulative_seconds": 0.257309
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/orm/context.py",
+            "line": 306,
+            "function": "orm_execute_statement",
+            "calls": 21,
+            "self_seconds": 7.8e-05,
+            "cumulative_seconds": 0.255301
+          },
+          {
+            "file": "similarity/service.py",
+            "line": 164,
+            "function": "retrieval",
+            "calls": 1,
+            "self_seconds": 0.00067,
+            "cumulative_seconds": 0.235375
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py",
+            "line": 2406,
+            "function": "execute",
+            "calls": 24,
+            "self_seconds": 4.3e-05,
+            "cumulative_seconds": 0.232476
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py",
+            "line": 1770,
+            "function": "_execute_context",
+            "calls": 27,
+            "self_seconds": 0.000187,
+            "cumulative_seconds": 0.218405
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py",
+            "line": 1829,
+            "function": "_exec_single_context",
+            "calls": 27,
+            "self_seconds": 0.000638,
+            "cumulative_seconds": 0.214624
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/psycopg/cursor.py",
+            "line": 100,
+            "function": "execute",
+            "calls": 55,
+            "self_seconds": 0.000182,
+            "cumulative_seconds": 0.208489
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/psycopg/connection.py",
+            "line": 479,
+            "function": "wait",
+            "calls": 55,
+            "self_seconds": 0.197422,
+            "cumulative_seconds": 0.208282
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/engine/default.py",
+            "line": 1191,
+            "function": "do_execute",
+            "calls": 27,
+            "self_seconds": 3.5e-05,
+            "cumulative_seconds": 0.111947
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/engine/events.py",
+            "line": 182,
+            "function": "wrap_before_cursor_execute",
+            "calls": 54,
+            "self_seconds": 7.6e-05,
+            "cumulative_seconds": 0.097271
+          },
+          {
+            "file": "<string>",
+            "line": 52,
+            "function": "before",
+            "calls": 27,
+            "self_seconds": 7.5e-05,
+            "cumulative_seconds": 0.088884
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/fastapi/encoders.py",
+            "line": 129,
+            "function": "jsonable_encoder",
+            "calls": 24449,
+            "self_seconds": 0.036055,
+            "cumulative_seconds": 0.066956
+          },
+          {
+            "file": "decisions/service.py",
+            "line": 26,
+            "function": "digest",
+            "calls": 122,
+            "self_seconds": 0.000365,
+            "cumulative_seconds": 0.051696
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/elements.py",
+            "line": 694,
+            "function": "_compile_w_cache",
+            "calls": 27,
+            "self_seconds": 0.000192,
+            "cumulative_seconds": 0.039414
+          },
+          {
+            "file": "~",
+            "line": 0,
+            "function": "<built-in method builtins.any>",
+            "calls": 103,
+            "self_seconds": 0.000252,
+            "cumulative_seconds": 0.03508
+          },
+          {
+            "file": "recommendations/service.py",
+            "line": 230,
+            "function": "<genexpr>",
+            "calls": 12,
+            "self_seconds": 4.4e-05,
+            "cumulative_seconds": 0.033588
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/elements.py",
+            "line": 324,
+            "function": "_compiler",
+            "calls": 20,
+            "self_seconds": 6.8e-05,
+            "cumulative_seconds": 0.032917
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/compiler.py",
+            "line": 1449,
+            "function": "__init__",
+            "calls": 20,
+            "self_seconds": 0.000164,
+            "cumulative_seconds": 0.032849
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/compiler.py",
+            "line": 893,
+            "function": "__init__",
+            "calls": 20,
+            "self_seconds": 8.8e-05,
+            "cumulative_seconds": 0.032685
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/visitors.py",
+            "line": 116,
+            "function": "_compiler_dispatch",
+            "calls": 880,
+            "self_seconds": 0.001593,
+            "cumulative_seconds": 0.03264
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/compiler.py",
+            "line": 971,
+            "function": "process",
+            "calls": 31,
+            "self_seconds": 3.8e-05,
+            "cumulative_seconds": 0.032585
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/sql/compiler.py",
+            "line": 5100,
+            "function": "visit_select",
+            "calls": 35,
+            "self_seconds": 0.000598,
+            "cumulative_seconds": 0.032374
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py",
+            "line": 2517,
+            "function": "scalar",
+            "calls": 3,
+            "self_seconds": 4.5e-05,
+            "cumulative_seconds": 0.029961
+          },
+          {
+            "file": "recommendations/evidence.py",
+            "line": 149,
+            "function": "validate_lineage",
+            "calls": 2,
+            "self_seconds": 0.001102,
+            "cumulative_seconds": 0.029732
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py",
+            "line": 3732,
+            "function": "get",
+            "calls": 9,
+            "self_seconds": 2.4e-05,
+            "cumulative_seconds": 0.023581
+          },
+          {
+            "file": "/app/.venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py",
+            "line": 3907,
+            "function": "_get_impl",
+            "calls": 9,
+            "self_seconds": 0.000236,
+            "cumulative_seconds": 0.023557
+          }
+        ],
+        "caller_guc_preserved": true,
+        "elapsed_seconds": 0.427559
+      },
+      {
+        "mode": "explain-original",
+        "completed": true,
+        "sql": [
+          {
+            "sha256": "6c20e5345ee8028f61cc0541aeb60699e5cffa99c8f79ff7f8c62b0a8dad1837",
+            "kind": "SET",
+            "seconds": 0.000241
+          },
+          {
+            "sha256": "2298ed5967c3ef3cae57076072552ac0738b1bf5c7aa3466a9a714532576b2cc",
+            "kind": "SELECT",
+            "seconds": 0.000403
+          },
+          {
+            "sha256": "f29774d84d406cda22c3ecde655a7ed0a4043d0437c334e6036b962a3976ff03",
+            "kind": "SELECT",
+            "seconds": 0.000286
+          },
+          {
+            "sha256": "6c65b957257fa65419924c5e34c52127786fecc8eea51b0f4a720af7e6222daf",
+            "kind": "SELECT",
+            "seconds": 0.000259
+          },
+          {
+            "sha256": "9f6f8f4f352b99955f20c618a7cc4bedbf753093d14049d0dba72309a2ccea69",
+            "kind": "SELECT",
+            "seconds": 0.000422
+          },
+          {
+            "sha256": "4f73b8edf4fa9ad8ecde981fe0bd1042fa52ef793ed578bd1b9566c946f08621",
+            "kind": "SELECT",
+            "seconds": 0.000181
+          },
+          {
+            "sha256": "710659c122296752c8c75a34b04c2e48db0bb6755c09d8bb10b60893e2285025",
+            "kind": "SELECT",
+            "seconds": 0.000303
+          },
+          {
+            "sha256": "fc06e92e7a423ef9fa485b200ed7cfa94b9022c68e1c9366cc41c630691a9f3b",
+            "kind": "SELECT",
+            "seconds": 0.0003
+          },
+          {
+            "sha256": "58b48fd6ee8a1203bb8db2bc442b87bf7bac06228b4dc07a105416d344e4ab6d",
+            "kind": "SELECT",
+            "seconds": 0.00031
+          },
+          {
+            "sha256": "58b48fd6ee8a1203bb8db2bc442b87bf7bac06228b4dc07a105416d344e4ab6d",
+            "kind": "SELECT",
+            "seconds": 0.000351
+          },
+          {
+            "sha256": "4fb35142bb069006c2ae409b337560137a8d42771e6407103a9eac1239f365df",
+            "kind": "SELECT",
+            "seconds": 0.000281
+          },
+          {
+            "sha256": "4fb35142bb069006c2ae409b337560137a8d42771e6407103a9eac1239f365df",
+            "kind": "SELECT",
+            "seconds": 0.000279
+          },
+          {
+            "sha256": "5607bec43180cb5ea48df59f1bc8869e4f0ee1334b9d43ab95c29773d7b3c47e",
+            "kind": "SELECT",
+            "seconds": 0.000265
+          },
+          {
+            "sha256": "0bcf1b2f6d44e3d20217daa84fef1acf700df6d0c23eead08c68d2875bccd883",
+            "kind": "EXPLAIN",
+            "seconds": 0.015677
+          },
+          {
+            "sha256": "7c1ffce2c57d7d64ad5cef7840a361782c0df953ad6875e29cb027691bc8e9cc",
+            "kind": "SELECT",
+            "seconds": 0.000234
+          },
+          {
+            "sha256": "4f73b8edf4fa9ad8ecde981fe0bd1042fa52ef793ed578bd1b9566c946f08621",
+            "kind": "SELECT",
+            "seconds": 0.000155
+          }
+        ],
+        "plan": {
+          "Node Type": "Result",
+          "Plan Rows": 1,
+          "Actual Rows": 1,
+          "Actual Loops": 1,
+          "Actual Total Time": 14.488,
+          "Shared Hit Blocks": 20839,
+          "Shared Read Blocks": 0,
+          "children": [
+            {
+              "Node Type": "Nested Loop",
+              "Join Type": "Inner",
+              "Plan Rows": 1,
+              "Actual Rows": 0,
+              "Actual Loops": 1,
+              "Actual Total Time": 14.486,
+              "Shared Hit Blocks": 20839,
+              "Shared Read Blocks": 0,
+              "children": [
+                {
+                  "Node Type": "Nested Loop",
+                  "Join Type": "Anti",
+                  "Plan Rows": 1,
+                  "Actual Rows": 0,
+                  "Actual Loops": 1,
+                  "Actual Total Time": 14.486,
+                  "Shared Hit Blocks": 20839,
+                  "Shared Read Blocks": 0,
+                  "children": [
+                    {
+                      "Node Type": "Seq Scan",
+                      "Relation Name": "decisions",
+                      "Plan Rows": 25,
+                      "Actual Rows": 10000,
+                      "Actual Loops": 1,
+                      "Actual Total Time": 4.913,
+                      "Shared Hit Blocks": 772,
+                      "Shared Read Blocks": 0,
+                      "children": [
+                        {
+                          "Node Type": "Index Only Scan",
+                          "Relation Name": "decisions",
+                          "Plan Rows": 1,
+                          "Actual Rows": 0,
+                          "Actual Loops": 1,
+                          "Actual Total Time": 0.004,
+                          "Shared Hit Blocks": 2,
+                          "Shared Read Blocks": 0,
+                          "children": []
+                        }
+                      ]
+                    },
+                    {
+                      "Node Type": "Index Only Scan",
+                      "Relation Name": "decision_embeddings",
+                      "Plan Rows": 1,
+                      "Actual Rows": 1,
+                      "Actual Loops": 10000,
+                      "Actual Total Time": 0.001,
+                      "Shared Hit Blocks": 20067,
+                      "Shared Read Blocks": 0,
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "Node Type": "Index Scan",
+                  "Relation Name": "conflicts",
+                  "Plan Rows": 1,
+                  "Actual Rows": 0,
+                  "Actual Loops": 0,
+                  "Actual Total Time": 0.0,
+                  "Shared Hit Blocks": 0,
+                  "Shared Read Blocks": 0,
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        "planning_ms": 0.51,
+        "execution_ms": 14.517,
+        "jit": null,
+        "caller_guc_preserved": true,
+        "elapsed_seconds": 0.030214
+      },
+      {
+        "mode": "explain-no-nestloop-no-jit",
+        "completed": true,
+        "sql": [
+          {
+            "sha256": "6c20e5345ee8028f61cc0541aeb60699e5cffa99c8f79ff7f8c62b0a8dad1837",
+            "kind": "SET",
+            "seconds": 0.000226
+          },
+          {
+            "sha256": "2298ed5967c3ef3cae57076072552ac0738b1bf5c7aa3466a9a714532576b2cc",
+            "kind": "SELECT",
+            "seconds": 0.000365
+          },
+          {
+            "sha256": "f29774d84d406cda22c3ecde655a7ed0a4043d0437c334e6036b962a3976ff03",
+            "kind": "SELECT",
+            "seconds": 0.000289
+          },
+          {
+            "sha256": "6c65b957257fa65419924c5e34c52127786fecc8eea51b0f4a720af7e6222daf",
+            "kind": "SELECT",
+            "seconds": 0.000278
+          },
+          {
+            "sha256": "9f6f8f4f352b99955f20c618a7cc4bedbf753093d14049d0dba72309a2ccea69",
+            "kind": "SELECT",
+            "seconds": 0.00045
+          },
+          {
+            "sha256": "4f73b8edf4fa9ad8ecde981fe0bd1042fa52ef793ed578bd1b9566c946f08621",
+            "kind": "SELECT",
+            "seconds": 0.000174
+          },
+          {
+            "sha256": "710659c122296752c8c75a34b04c2e48db0bb6755c09d8bb10b60893e2285025",
+            "kind": "SELECT",
+            "seconds": 0.000268
+          },
+          {
+            "sha256": "fc06e92e7a423ef9fa485b200ed7cfa94b9022c68e1c9366cc41c630691a9f3b",
+            "kind": "SELECT",
+            "seconds": 0.000307
+          },
+          {
+            "sha256": "58b48fd6ee8a1203bb8db2bc442b87bf7bac06228b4dc07a105416d344e4ab6d",
+            "kind": "SELECT",
+            "seconds": 0.000413
+          },
+          {
+            "sha256": "58b48fd6ee8a1203bb8db2bc442b87bf7bac06228b4dc07a105416d344e4ab6d",
+            "kind": "SELECT",
+            "seconds": 0.000331
+          },
+          {
+            "sha256": "4fb35142bb069006c2ae409b337560137a8d42771e6407103a9eac1239f365df",
+            "kind": "SELECT",
+            "seconds": 0.000321
+          },
+          {
+            "sha256": "4fb35142bb069006c2ae409b337560137a8d42771e6407103a9eac1239f365df",
+            "kind": "SELECT",
+            "seconds": 0.000237
+          },
+          {
+            "sha256": "5607bec43180cb5ea48df59f1bc8869e4f0ee1334b9d43ab95c29773d7b3c47e",
+            "kind": "SELECT",
+            "seconds": 0.000294
+          },
+          {
+            "sha256": "425eb27812135445a1115e9d31325e3963f07b296466ea7b35229e553b90ce07",
+            "kind": "SET",
+            "seconds": 0.000176
+          },
+          {
+            "sha256": "0bcf1b2f6d44e3d20217daa84fef1acf700df6d0c23eead08c68d2875bccd883",
+            "kind": "EXPLAIN",
+            "seconds": 0.009905
+          },
+          {
+            "sha256": "7c1ffce2c57d7d64ad5cef7840a361782c0df953ad6875e29cb027691bc8e9cc",
+            "kind": "SELECT",
+            "seconds": 0.000167
+          },
+          {
+            "sha256": "4f73b8edf4fa9ad8ecde981fe0bd1042fa52ef793ed578bd1b9566c946f08621",
+            "kind": "SELECT",
+            "seconds": 0.000143
+          }
+        ],
+        "plan": {
+          "Node Type": "Result",
+          "Plan Rows": 1,
+          "Actual Rows": 1,
+          "Actual Loops": 1,
+          "Actual Total Time": 8.904,
+          "Shared Hit Blocks": 851,
+          "Shared Read Blocks": 0,
+          "children": [
+            {
+              "Node Type": "Hash Join",
+              "Join Type": "Inner",
+              "Plan Rows": 1,
+              "Actual Rows": 0,
+              "Actual Loops": 1,
+              "Actual Total Time": 8.902,
+              "Shared Hit Blocks": 851,
+              "Shared Read Blocks": 0,
+              "children": [
+                {
+                  "Node Type": "Seq Scan",
+                  "Relation Name": "conflicts",
+                  "Plan Rows": 9824,
+                  "Actual Rows": 1,
+                  "Actual Loops": 1,
+                  "Actual Total Time": 0.008,
+                  "Shared Hit Blocks": 2,
+                  "Shared Read Blocks": 0,
+                  "children": []
+                },
+                {
+                  "Node Type": "Hash",
+                  "Plan Rows": 1,
+                  "Actual Rows": 0,
+                  "Actual Loops": 1,
+                  "Actual Total Time": 8.89,
+                  "Shared Hit Blocks": 849,
+                  "Shared Read Blocks": 0,
+                  "children": [
+                    {
+                      "Node Type": "Merge Join",
+                      "Join Type": "Anti",
+                      "Plan Rows": 1,
+                      "Actual Rows": 0,
+                      "Actual Loops": 1,
+                      "Actual Total Time": 8.889,
+                      "Shared Hit Blocks": 849,
+                      "Shared Read Blocks": 0,
+                      "children": [
+                        {
+                          "Node Type": "Sort",
+                          "Plan Rows": 25,
+                          "Actual Rows": 10000,
+                          "Actual Loops": 1,
+                          "Actual Total Time": 6.582,
+                          "Shared Hit Blocks": 772,
+                          "Shared Read Blocks": 0,
+                          "children": [
+                            {
+                              "Node Type": "Seq Scan",
+                              "Relation Name": "decisions",
+                              "Plan Rows": 25,
+                              "Actual Rows": 10000,
+                              "Actual Loops": 1,
+                              "Actual Total Time": 4.446,
+                              "Shared Hit Blocks": 772,
+                              "Shared Read Blocks": 0,
+                              "children": [
+                                {
+                                  "Node Type": "Index Only Scan",
+                                  "Relation Name": "decisions",
+                                  "Plan Rows": 1,
+                                  "Actual Rows": 0,
+                                  "Actual Loops": 1,
+                                  "Actual Total Time": 0.004,
+                                  "Shared Hit Blocks": 2,
+                                  "Shared Read Blocks": 0,
+                                  "children": []
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "Node Type": "Index Only Scan",
+                          "Relation Name": "decision_embeddings",
+                          "Plan Rows": 9999,
+                          "Actual Rows": 10000,
+                          "Actual Loops": 1,
+                          "Actual Total Time": 0.748,
+                          "Shared Hit Blocks": 77,
+                          "Shared Read Blocks": 0,
+                          "children": []
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "planning_ms": 0.489,
+        "execution_ms": 8.941,
+        "jit": null,
+        "caller_guc_preserved": true,
+        "elapsed_seconds": 0.02442
+      }
+    ],
+    "observer_sha256": "1e366f74dc530b983cf28984b35dadd51c08defbc5443da0b841bf5190b8ff0f",
+    "index_vectors": 10000,
+    "warmup_above_threshold": 11,
+    "code_source_commit": "f56f8a0e3fdc12b5d1ae4d58dfb66f17b6d9e5a7"
+  },
+  "query_pools": {
+    "kind": "sequential-query-preparation-diagnostic-not-NFR-or-quality",
+    "rows": [
+      {
+        "position": 0,
+        "state": "READY",
+        "reason_code": "MATCHES",
+        "above": 11,
+        "seconds": 0.122227
+      },
+      {
+        "position": 1,
+        "state": "READY",
+        "reason_code": "MATCHES",
+        "above": 1,
+        "seconds": 0.103835
+      },
+      {
+        "position": 2,
+        "state": "NO_PRECEDENT",
+        "reason_code": "BELOW_THRESHOLD",
+        "above": 0,
+        "seconds": 0.093096
+      },
+      {
+        "position": 3,
+        "state": "READY",
+        "reason_code": "MATCHES",
+        "above": 11,
+        "seconds": 0.105359
+      },
+      {
+        "position": 4,
+        "state": "READY",
+        "reason_code": "MATCHES",
+        "above": 31,
+        "seconds": 0.101873
+      },
+      {
+        "position": 5,
+        "state": "NO_PRECEDENT",
+        "reason_code": "BELOW_THRESHOLD",
+        "above": 0,
+        "seconds": 0.101846
+      },
+      {
+        "position": 6,
+        "state": "READY",
+        "reason_code": "MATCHES",
+        "above": 4,
+        "seconds": 0.106231
+      },
+      {
+        "position": 7,
+        "state": "READY",
+        "reason_code": "MATCHES",
+        "above": 1,
+        "seconds": 0.103029
+      },
+      {
+        "position": 8,
+        "state": "READY",
+        "reason_code": "MATCHES",
+        "above": 2,
+        "seconds": 0.102281
+      },
+      {
+        "position": 9,
+        "state": "READY",
+        "reason_code": "MATCHES",
+        "above": 7,
+        "seconds": 0.121073
+      },
+      {
+        "position": 10,
+        "state": "READY",
+        "reason_code": "MATCHES",
+        "above": 98,
+        "seconds": 0.119129
+      },
+      {
+        "position": 11,
+        "state": "READY",
+        "reason_code": "MATCHES",
+        "above": 5,
+        "seconds": 0.108354
+      },
+      {
+        "position": 12,
+        "state": "READY",
+        "reason_code": "MATCHES",
+        "above": 6,
+        "seconds": 0.107283
+      },
+      {
+        "position": 13,
+        "state": "READY",
+        "reason_code": "MATCHES",
+        "above": 2,
+        "seconds": 0.096409
+      },
+      {
+        "position": 14,
+        "state": "READY",
+        "reason_code": "MATCHES",
+        "above": 8,
+        "seconds": 0.10368
+      },
+      {
+        "position": 15,
+        "state": "NO_PRECEDENT",
+        "reason_code": "BELOW_THRESHOLD",
+        "above": 0,
+        "seconds": 0.117443
+      },
+      {
+        "position": 16,
+        "state": "READY",
+        "reason_code": "MATCHES",
+        "above": 28,
+        "seconds": 0.107187
+      },
+      {
+        "position": 17,
+        "state": "READY",
+        "reason_code": "MATCHES",
+        "above": 394,
+        "seconds": 0.096482
+      },
+      {
+        "position": 18,
+        "state": "READY",
+        "reason_code": "MATCHES",
+        "above": 13,
+        "seconds": 0.123576
+      },
+      {
+        "position": 19,
+        "state": "NO_PRECEDENT",
+        "reason_code": "BELOW_THRESHOLD",
+        "above": 0,
+        "seconds": 0.102161
+      }
+    ],
+    "new_jobs_requested": 0
+  },
+  "limitations": [
+    "Representative sequential diagnostic; no conclusion that coverage/JIT caused prior timeout.",
+    "The positive11 probe intentionally executes ranking twice (EXPLAIN then SELECT); its total duration is not normal request latency.",
+    "Initial diagnostic erroneously required DATA_OWNER for VIEWER read; three failed guard observations remain private, no role or permission changed.",
+    "Actual QueryEmbedding persists by version/features; no query-vector TTL changed or assumed for these observations."
+  ]
+}

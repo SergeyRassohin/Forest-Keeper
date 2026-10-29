@@ -59,7 +59,7 @@ export function Recommendation({ conflictId, contextVersion, currentValues, canU
     {!data && !error && <p role="status">Проверяем основания рекомендации…</p>}
     {error && <p role="alert">{error}</p>}
     {data && <>
-      {data.quality_provenance === 'DEMONSTRATION_ONLY' && <p className="warning">Демонстрационная рекомендация на синтетических данных. Промышленное качество не подтверждено.</p>}
+      {data.quality_provenance === 'DEMONSTRATION_ONLY' && <p className="warning">{data.embedding_model?.provider === 'qwen-local-demo' ? 'Демонстрационная рекомендация с локальными Qwen-векторами. Промышленное качество не подтверждено.' : 'Демонстрационная рекомендация на синтетических данных. Промышленное качество не подтверждено.'}</p>}
       <p role="status"><strong>{data.status === 'RECOMMENDED' ? 'Есть обоснованное предложение' : data.status === 'ABSTAINED' ? 'Нет обоснованной рекомендации' : 'Рекомендация пока недоступна'}</strong><br />{data.reasoning_summary}</p>
       {data.recommended_value && <p className="compared-value">Предлагаемое текущее значение: <DataValue value={data.recommended_value.value} /> {data.recommended_value.unit}</p>}
       {data.confidence !== null && <p>Сила основания: <strong>{data.confidence} согласованных независимых групп прошлых случаев</strong>. Это количество оснований, а не вероятность правильного ответа.</p>}

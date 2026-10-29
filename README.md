@@ -1,6 +1,10 @@
 # Forest Keeper
 
-**Актуально на 25 октября 2026:** Stage 0–7 приняты в `main`. Stage 7 — [PR #28](https://github.com/SergeyRassohin/Forest-Keeper/pull/28), merge `c927af513d29d83bd53b1b6522efccb42b5a1341`, [CI точного merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/40079346518). Production embedding provider отключён; synthetic test provider не доказывает промышленное качество. Stage 8 Recommendation Engine реализован по [issue #29](https://github.com/SergeyRassohin/Forest-Keeper/issues/29) и утверждённой владельцем policy в отдельном [PR #30](https://github.com/SergeyRassohin/Forest-Keeper/pull/30). Результаты приёмки и ограничения зафиксированы в `docs/testing/reports/stage8-acceptance-2026-10-25.md`; статус CI итогового commit указан в PR. В main Stage 8 пока отсутствует; слияние требует решения владельца. AI/LLM и write-back не реализованы; #17/#18/#20 открыты.
+**Актуально на 29 октября 2026:** Stage 0–8 приняты в `main`: Stage 8 — [PR #30](https://github.com/SergeyRassohin/Forest-Keeper/pull/30), merge `54d3939d704bfe6aa1c943bef3e70b83b01c0527`, [CI merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/40198679543). Stage 9 реализуется отдельно по issue #31 в [draft PR #33](https://github.com/SergeyRassohin/Forest-Keeper/pull/33).
+
+Настоящие локальные Qwen embedding/LLM прошли development/demo сценарии, браузерную проверку и перезапуск PostgreSQL/Redis. Построены 10000 различных настоящих векторов, завершена серия 20 LLM-проверок. [Результаты и оставшиеся условия приёмки](docs/testing/reports/stage9-development-acceptance-2026-10-29.md).
+
+Приёмка Stage 9 — **BLOCKED**: под AI-нагрузкой p95 рекомендаций 1.04–1.10 s превышает 1 s; человеческий эталон/пороги качества не утверждены, промышленный AI-профиль и подписанная поставка не приняты. Production AI и положительные production-рекомендации отключены; Stage 8 demo policy не меняется. Слияние не выполнялось; #17/#18/#20 остаются открытыми. Временный сбой авторизации GitHub устранён, отчёты отправлены. Выявленная CI гонка повторных AI-запросов исправлена отдельно; результат CI точного финального SHA указан в проверках PR и не отменяет оставшиеся условия приёмки.
 
 Forest Keeper помогает сравнить данные из разных корпоративных систем и разобрать расхождения. Например, одна и та же деталь может иметь разные названия, единицы измерения или значения в 1С и Excel. Продукт сохраняет исходные записи, показывает основания сравнения и оставляет спорное решение человеку.
 
@@ -21,7 +25,7 @@ Forest Keeper разворачивается внутри инфраструкт
 
 ## Что доступно в проверяемой версии
 
-Основная версия — `main`, где приняты этапы 0–7 (Stage 6 — PR #26, Stage 7 — PR #28). Stage 8 готовится отдельным PR по #29. Matching объединён через [PR #15](https://github.com/SergeyRassohin/Forest-Keeper/pull/15), merge `bea0d55c92540744657feac863084cde131a7f43`; [CI merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39595762080). В main также включены изменения PR #19. Инструкция получает основную ветку; сохраняйте точный SHA проверки.
+Основная версия — `main`, где приняты этапы 0–8. Инструкция установки получает основную ветку; сохраняйте точный SHA проверки. Qwen runtime и AI-объяснения доступны только в отдельной development/demo ветке `codex/stage9-local-ai` / PR #33; обычный запуск `main` их не включает.
 
 | Возможность | Статус |
 | --- | --- |
@@ -32,12 +36,12 @@ Forest Keeper разворачивается внутри инфраструкт
 | Conflict Engine | Реализован в main, этап 5 принят; persisted OPEN conflicts, Basis/provenance и read-only UI |
 | Human Review + Decision Registry | Принято в main через PR #26; [сценарий и ограничения](docs/development/human-review.md) |
 | Поиск прошлого Decision | Stage 7 принят через PR #28; положительный путь только в явном synthetic test режиме, production provider отключён |
-| Рекомендации | Stage 8 реализован в PR #30 по утверждённой policy; [контракт и ограничения](docs/development/recommendations.md). В main пока отсутствует |
-| AI inference | Не реализовано; следующий Stage 9 |
-| Получение и проверка pinned Qwen artifacts | [Команды и точные ссылки](docs/ai/model-downloads.md); это подготовка файлов, без запуска AI |
+| Рекомендации | Stage 8 принят в main через PR #30; положительный результат только в явном demo по утверждённой policy; [контракт и ограничения](docs/development/recommendations.md) |
+| AI inference | В PR #33: настоящий локальный Qwen development/demo runtime и явные AI-объяснения; приёмка BLOCKED, в main отсутствует |
+| Получение и проверка pinned Qwen artifacts | [Команды и точные ссылки](docs/ai/model-downloads.md); отдельно от обычного запуска. Для ветки Stage 9 — [development runtime](docs/ai/stage9-runtime.md) |
 | Корпоративный установщик, лицензирование, Update Service | Последующие этапы |
 
-Этап 3 принят через [PR #13](https://github.com/SergeyRassohin/Forest-Keeper/pull/13), merge `6a494534a49960b79fdf64e5e2b8436c32011688`; [CI merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39452965438). Этап 4 принят через PR #15. Stage 5 принят через PR #22. Перед Stage 6–7 реализован отдельный **Stage 5.1: фирменный Web UI и галерея**; результаты проверок, CI и отдельное разрешение на merge фиксируются в его PR. Полный путь «свой файл → конфликт → Decision → похожий случай → рекомендация» пока **заблокирован отсутствующими модулями**, см. [критерии готовности](docs/deployment/review-readiness.md). Зелёный health означает готовность инфраструктуры, а не наличие всех бизнес-функций.
+Этап 3 принят через [PR #13](https://github.com/SergeyRassohin/Forest-Keeper/pull/13), merge `6a494534a49960b79fdf64e5e2b8436c32011688`; [CI merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/39452965438). Этап 4 принят через PR #15. Stage 5 принят через PR #22. Перед Stage 6–7 реализован отдельный **Stage 5.1: фирменный Web UI и галерея**; результаты проверок, CI и отдельное разрешение на merge фиксируются в его PR. Этот путь доступен в ограниченной демонстрации; промышленная оценка качества/производительности и внешняя приёмка ещё **BLOCKED**, см. [критерии готовности](docs/deployment/review-readiness.md). Зелёный health означает готовность инфраструктуры, а не наличие всех бизнес-функций.
 
 Нумерация: фактический Stage 6 объединил Human Review + Registry; Stage 7 = retrieval, Stage 8 = recommendations, следующий Stage 9 = AI/LLM. Старые roadmap stages 8/9/10 соответствуют нынешним 7/8/9. Исторические документы не перенумеровываются задним числом.
 

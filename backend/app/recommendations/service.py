@@ -14,9 +14,15 @@ from app.common.basis_lock import Budget
 from app.common.config import Settings
 from app.conflicts.models import Conflict
 from app.decisions.models import Decision
-from app.decisions.service import context_version, digest, frozen_evidence, historical_context
+from app.decisions.service import (
+    context_version,
+    digest,
+    digest_frozen_json,
+    frozen_evidence,
+    historical_context,
+)
 from app.decisions.validation import selectable
-from app.recommendations.evidence import EvidenceError, prepare, validate_lineage
+from app.recommendations.evidence import EvidenceError, prepare, profile_digests, validate_lineage
 from app.recommendations.policy import POLICY, POLICY_HASH, aggregate
 from app.recommendations.schemas import Evidence, Outcome, RecommendationResult, SourceMap
 from app.similarity.models import DecisionEmbedding
@@ -150,7 +156,10 @@ def evaluate(
         return finish("POLICY_NOT_APPROVED")
     result.quality_provenance = "DEMONSTRATION_ONLY"
     result.limitations.insert(
-        0, "Демонстрационный режим: тестовые векторы не доказывают правильность рекомендации."
+        0,
+        "Демонстрационный режим локальной Qwen: промышленное качество не подтверждено."
+        if settings.similarity_provider == "qwen-demo"
+        else "Демонстрационный режим: тестовые векторы не доказывают правильность рекомендации.",
     )
     if case.status not in {"OPEN", "IN_REVIEW"} or case.current_decision_id is not None:
         return finish("CURRENT_CASE_NOT_ELIGIBLE")
@@ -161,7 +170,8 @@ def evaluate(
         if not settings.recommendation_source_map:
             return finish("SOURCE_MAPPING_NOT_CONFIGURED")
         mapping = SourceMap.model_validate(settings.recommendation_source_map)
-        current = prepare(snapshot, mapping)
+        profiles = profile_digests()
+        current = prepare(snapshot, mapping, profiles=profiles)
         validate_lineage(session, [snapshot])
     except ValidationError:
         return finish("SOURCE_MAPPING_AMBIGUOUS")
@@ -224,7 +234,10 @@ def evaluate(
         session.execute(eligible(actor).where(Decision.id.in_(ids)).add_columns(Conflict)).all(),
     )
     rows = {row.id: row for row, _ in records}
-    if any(row.evidence_hash != digest(frozen_evidence(past_case)) for row, past_case in records):
+    if any(
+        row.evidence_hash != digest_frozen_json(frozen_evidence(past_case))
+        for row, past_case in records
+    ):
         return finish("CORRUPT_LINEAGE", Outcome.UNAVAILABLE)
     try:
         validate_lineage(session, [row.context_snapshot for row in rows.values()])
@@ -237,7 +250,7 @@ def evaluate(
     try:
         for item in retrieved["results"]:
             row = rows[UUID(str(item["decision_id"]))]
-            past = prepare(row.context_snapshot, mapping, row)
+            past = prepare(row.context_snapshot, mapping, row, profiles=profiles)
             prepared.append(past.candidate)
             used_sources.update(past.roles)
             correspondence = [
@@ -281,7 +294,7 @@ def evaluate(
             manifest.append(
                 {
                     "decision_id": str(row.id),
-                    "context_hash": digest(row.context_snapshot),
+                    "context_hash": digest_frozen_json(row.context_snapshot),
                     "evidence_hash": row.evidence_hash,
                     "similarity": item["similarity"],
                     "outcome": row.decision_type,

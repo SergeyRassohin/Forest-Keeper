@@ -1,0 +1,29 @@
+{
+  "observed_at": "2026-10-28T04:40:30.904662+00:00",
+  "kind": "actual-inference-memory-checkpoint-not-per-phase-peak",
+  "attempt": 8,
+  "phase": {
+    "kind": "owned-actual-qwen-vertical-phase-not-quality",
+    "llm_started_at": "2026-10-28T04:40:20.765929+00:00"
+  },
+  "models": {
+    "embedding": {
+      "process_rss": "PID                 COMMAND             RSS\n110926              python              37536\n111004              python              3000780\n",
+      "cgroup_current_peak_limit_bytes": [
+        4822867968,
+        4940050432,
+        6442450944
+      ]
+    },
+    "llm": {
+      "process_rss": "PID                 COMMAND             RSS\n1621694             python              47128\n1621950             llama-server        13548900\n1622711             python              58032\n",
+      "cgroup_current_peak_limit_bytes": [
+        8970600448,
+        9087143936,
+        17179869184
+      ]
+    }
+  },
+  "rss_units": "KiB per process, not PSS or cgroup sum",
+  "production_hardware_accepted": false
+}

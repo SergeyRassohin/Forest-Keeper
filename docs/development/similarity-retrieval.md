@@ -79,6 +79,30 @@ Empty downgrade/upgrade is supported transactionally. Downgrade with Decision ve
 refused to preserve derived audit; Decision history is never deleted. Query vectors are
 rebuildable cache artifacts.
 
+Stage9 migration `0009_inline_vectors` changes only the physical storage of the fixed
+1024-dimensional `decision_embeddings.embedding` column to PLAIN. Its combined ALTER
+rewrites the derived heap through a float4-array round trip; `vector_send` bytes, row
+IDs, timestamps, hashes, model/version metadata and business facts are preserved.
+No UPDATE, trigger disable, model call or version activation occurs. Query-vector
+storage is unchanged. Signed-zero/subnormal/max-finite fixtures and populated
+upgrade/downgrade/interruption tests protect the conversion and immutable guards.
+
+This is a maintenance operation, **not an online metadata-only toggle**: ALTER TYPE
+takes ACCESS EXCLUSIVE, rewrites the heap and indexes, and generates WAL. Coordinate
+API/index-worker downtime and close outstanding retrieval transactions. Budget space
+for the old relation plus the new heap/TOAST/indexes, WAL and safety headroom on the
+actual database volume; do not size from model-weight disk alone. Measure the peak on
+a disposable copy before a customer upgrade. A legally synthetic10k TEMP comparison
+used72.8MB external versus97.6MB inline including indexes (about34% more), with identical
+10000vector payloads and30000distances. These are storage diagnostics, not API NFR or
+an industrial sizing guarantee. Native weights/policy/thresholds do not change.
+
+The migration is transactional and refreshes planner statistics after rewriting.
+Interruption restores the old revision, layout and values. Populated9→8 rollback
+restores EXTERNAL while preserving artifacts; the earlier populated8→7 removal remains
+refused. Start the matching API/worker version only after upgrade completes; its health
+gate requires the current revision. Keep production AI disabled pending its other gates.
+
 Trusted server operators use the existing execution environment, without a new HTTP admin
 permission, to register/backfill and explicitly activate a version:
 

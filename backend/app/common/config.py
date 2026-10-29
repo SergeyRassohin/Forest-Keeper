@@ -42,9 +42,15 @@ class Settings(BaseSettings):
     import_job_timeout: int = Field(default=900, ge=30, le=7200)
     import_queue_name: str = "forest-keeper"
     deployment_mode: Literal["production", "development", "test"] = "production"
-    similarity_provider: Literal["unavailable", "test"] = "unavailable"
+    similarity_provider: Literal["unavailable", "test", "qwen-demo"] = "unavailable"
     similarity_allow_test_provider: bool = False
+    similarity_allow_qwen_demo: bool = False
     similarity_autoindex: bool = False
     similarity_reads_per_minute: int = Field(default=120, ge=1, le=600)
     recommendation_enabled: bool = False
     recommendation_source_map: dict[str, Any] = Field(default_factory=dict)
+    ai_enabled: bool = False
+    ai_embedding_endpoint: str = "http://fk-ai-embedding:8091"
+    ai_llm_endpoint: str = "http://fk-ai-llm:8092"
+    ai_service_key_file: Path = Path("/run/secrets/fk_ai_key")
+    ai_queue_prefix: str = ""

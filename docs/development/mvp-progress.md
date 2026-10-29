@@ -1,6 +1,6 @@
 # MVP: состояние реализации
 
-**Актуально на 25 октября 2026:** Stage 0–7 приняты в `main`. Stage 7 — [PR #28](https://github.com/SergeyRassohin/Forest-Keeper/pull/28), merge `c927af513d29d83bd53b1b6522efccb42b5a1341`, [CI точного merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/40079346518). Production embedding provider отключён; synthetic test provider не доказывает промышленное качество. Stage 8 Recommendation Engine реализован по [issue #29](https://github.com/SergeyRassohin/Forest-Keeper/issues/29) и утверждённой владельцем policy в отдельном [PR #30](https://github.com/SergeyRassohin/Forest-Keeper/pull/30). Результаты приёмки и ограничения зафиксированы в `docs/testing/reports/stage8-acceptance-2026-10-25.md`; статус CI итогового commit указан в PR. В main Stage 8 пока отсутствует; слияние требует решения владельца. AI/LLM и write-back не реализованы; #17/#18/#20 открыты.
+**Актуально на 27 октября 2026:** Stage 0–8 приняты в `main`: Stage 8 — [PR #30](https://github.com/SergeyRassohin/Forest-Keeper/pull/30), merge `54d3939d704bfe6aa1c943bef3e70b83b01c0527`, [CI merge commit — SUCCESS](https://github.com/SergeyRassohin/Forest-Keeper/actions/runs/40198679543). Stage 9 реализуется отдельно по issue #31 в [draft PR #33](https://github.com/SergeyRassohin/Forest-Keeper/pull/33). Настоящие локальные Qwen embedding/LLM прошли изолированный development/demo сценарий, браузерную проверку и перезапуск PostgreSQL/Redis. [Результаты и оставшиеся gates](../testing/reports/stage9-development-acceptance-2026-10-27.md). Приёмка Stage 9 — **BLOCKED**: человеческий эталон/пороги качества и репрезентативная нагрузочная проверка ещё не завершены. Production AI и положительные production-рекомендации отключены; Stage 8 demo policy не меняется. Слияние не выполнялось; #17/#18/#20 остаются открытыми.
 
 ## Итерация 1 — этап 0
 
@@ -137,3 +137,214 @@ Stage 6: [acceptance и ограничения](../testing/reports/stage6-human-
 ### Stage 8 — owner approval и дополнение тем, 25 октября 2026
 
 Владелец согласовал все восемь пунктов политики в чате: «Согласен со всеми пунктами.». Это разрешение на реализацию, без merge. [Decision Log](../decisions/decision-log.md) фиксирует version/hash исходного предложения. Issue #29 §14 добавил общий light/dark переключатель; пользователь явно поручил учесть правки ТЗ. Ветка и отдельный PR #30 сохранены. Реализованы deterministic API/evidence/audit/manual-confirmation bridge, обе темы и URL восстановление карточки. [Текущий контракт](recommendations.md). Исторические proposal/review документы сохраняют прежний pending статус как состояние на дату их создания; новый approval имеет приоритет. [Отчёт приёмки](../testing/reports/stage8-acceptance-2026-10-25.md) содержит результаты полного набора тестов, performance, restart и независимого ревью; точные финальные SHA/CI фиксируются в PR перед READY TO MERGE. Слияние не выполняется.
+
+
+## Stage9 — начало, 26 октября 2026
+
+Stage8 принят в main; отдельная ветка `codex/stage9-local-ai` создана от принятого merge.
+[Архитектура до реализации](stage9-local-ai-proposal.md) содержит фактический inventory,
+контракты, ресурсы/offline threat model, проект gold/метрик и owner decision queue.
+Пороги качества/человеческая разметка не утверждены; production activation BLOCKED.
+На момент первоначального предложения runtime ещё не был реализован; актуальные результаты ниже. Итоговая приёмка не завершена. Merge не разрешён автоматически.
+
+
+### Stage9 — development checkpoint, 26 October 2026
+
+[PR #33](https://github.com/SergeyRassohin/Forest-Keeper/pull/33) contains the preimplementation
+proposal and isolated CPU dependency lock, followed by local runtime/adapters. All14locked
+model files were downloaded/verified outside Git. Actual pinned llama.cpp/Qwen3-8B runs
+with context32768; sentence-transformers/Qwen3-Embedding emits1024dimensions. Initial LLM
+smokes failed; bounded v3 output passed without increasing256output tokens.
+[Actual initial results/limits](../testing/reports/stage9-initial-real-models-2026-10-26.json).
+
+30pure contract/resource tests,3real Redis admission races and1actual Qwen→pgvector→scoped
+retrieval integration test pass (genuine own-file Decision history, no heavy inference inGET).
+Existing37+44retrieval/recommendation tests initially had80PASS/1FAIL because a timeout stub
+did not accept added private auth metadata; its signature was updated and the unchanged
+timeout assertion PASS4.06s. Full final regression remains required. Independent review
+found extra-file and native-instance identity gaps; both were fixed and retained as regressions.
+
+This checkpoint is NOT READY TO MERGE. Public async AI explanation integration, meaningful
+authorized comparison facts, supervised offline container/runtime/resource proof, real end-to-end
+browser flow, supported hardware/10k-vector NFR, human-approved gold/targets, final independent
+real inference review and exact-final-HEAD gates remain outstanding. Production hard-disabled.
+
+### Stage9 — asynchronous explanation checkpoint, 26 October 2026
+
+Implemented the explicit optional Human Review panel and ephemeral scoped jobs, bounded
+public request bodies, fresh authorizations/input/output validation, normalized comparison
+facts and minimal precedent summaries. The browser never automatically starts inference
+and preserves manual review input across explanation updates/theme changes. Added seven
+component regressions; all71frontend tests PASS. Thirty pure AI tests and the independent
+cancellation regression PASS31total; Ruff and strict mypy85source files PASS. Six real
+DB/Redis/auth tests with an explicitly stubbed model previously passed; this proves API
+boundaries, not actual LLM acceptance. Existing retrieval/recommendation suite PASS81tests.
+
+Qwen indexing now splits bounded SQL snapshots/checkpoints around one batch inference.
+An actual Qwen integration regression asserted no checked-out SQL connection or version
+advisory lock during inference. Input/output schema hashes are now explicit model/index
+identity; old runtime instances must be restarted, never silently treated as compatible.
+Independent runtime review led to fail-closed cancellation; external supervision that kills
+actual timed-out computation is still in progress. Full isolated runtime, real vertical E2E,
+NFR/gold/human approval/final review and final-HEAD gates remain outstanding. NOT READY.
+
+### Stage9 — isolated actual-model development checkpoint, 26 October 2026
+
+The actual Qwen vertical now passes in private offline containers: genuine own-file
+imports→five confirmed Decisions→five persisted1024dim vectors→scoped retrieval→unchanged
+five-group demo recommendation→explicit asynchronous grounded LLM explanation→separate
+human-confirmed Decision. Root run: backfill13.5742s, LLM93.1682s; independent repeat:
+backfill13.558s, LLM59.2815s. Two observations under different cache/load conditions are not
+latency percentiles, semantic quality or10kcapacity. Native prompt uses694input/115output
+tokens, preserving context32768/output256/deadlines. AI creates zero business writes.
+
+The earlier v4 real-Registry attempt FAILED at118s; its supervisor actually killed native
+computation and restarted the container. v5 minimizes duplicate server IDs while retaining
+all verified current comparison and supported/contrary precedent facts. Previous failures
+stay failed evidence. No model/deadline/quality threshold was relaxed. Actual pinned
+model metadata/file verification, private keyed RPC and denied public TCP/DNS/direct DB
+for both models pass. Independent probes also confirm no egress from backend and both
+AI workers on their two internal bridges. Native29-file cache is byte-locked to a prior
+actual source build, with licenses/provenance; unsigned distribution remains unaccepted.
+
+Full core checkpoint PASS310backend+73frontend tests/build/typecheck; later added v5
+projection/process subset PASS33tests, strict mypy86files and SAST pass. Gallery PASS124real
+screenshots, WCAG and310responsive checks for the current committed frontend source.
+Ten actual DB/Redis/auth explanation regressions pass. A full integration run interrupted
+by native-build disk exhaustion remains FAILED; after cache cleanup a fresh full run is
+in progress. Its worker smoke revealed a hardcoded queue rather than configured queue;
+fixed to use Settings.import_queue_name and targeted3infrastructure tests PASS2.60s.
+
+**NOT READY TO MERGE.** Human-approved gold/targets, representative10kreal-vector NFR,
+actual AI browser/recovery/remaining acceptance, final exact-HEAD gates and owner review
+are outstanding. GPU/100k/signed installer/production positive policy are not accepted.
+
+
+### Stage 9 — сводная проверка, 27 октября 2026
+
+[Итог development-проверки и ссылки на доказательства](../testing/reports/stage9-development-acceptance-2026-10-27.md).
+Полный локальный прогон: 311 backend unit, 567 integration, 73 frontend и 15 browser PASS;
+три опциональных теста настоящих моделей выполнены отдельно — PASS. Настоящий Qwen
+browser-сценарий прошёл отдельно: 8 PNG, 8 Axe/20 responsive checks, явное человеческое
+решение, сохранённый draft при AI/theme updates, работа при остановке обеих моделей и
+их healthy-восстановление. После фактического перезапуска PostgreSQL/Redis сохранились
+7 Decisions, 7 настоящих 1024-мерных векторов и Redis canary. Проверены dual-index,
+partial-coverage refusal, resume, explicit cutover/rollback и неизменность истории.
+
+Устранена утечка SQL planner hints из retrieval в транзакцию подтверждения Decision;
+все четыре сочетания caller settings проверены. Отдельная поломка тестового ingress
+исправлена увеличением его конечного лимита с32 до128 соединений; AI admission остаётся8.
+Прошлые failed-прогоны сохранены как failed. Оба CI коммита `63fd84d` SUCCESS; это
+промежуточный коммит, финальные SHA/CI проверяются в PR после фиксации отчётов.
+
+**Stage 9 BLOCKED, не READY TO MERGE.** [Владельцу](../testing/stage9-owner-review.md)
+подготовлены предлагаемые пороги и200 набросков для разметки — это не утверждённый Gold.
+Нужны человеческие labels/пороги до оценки и10k настоящих репрезентативных vectors /
+10сессий NFR, cold/warm/поддерживаемое железо. Подписанная поставка — открытая зависимость#32.
+Production AI/positive policy остаются отключены. Stage 10 не начат; merge не выполнялся.
+
+
+### Stage 9 — actual-vector capacity, 27 октября 2026
+
+Продолжается [отдельный воспроизводимый нагрузочный прогон](../testing/stage9-capacity-run.md):
+10020 разных записей из двух синтетических файлов, полный действующий pipeline,
+10000 автоматизированных fixture Decisions через API и20 query Conflicts. Это не
+человеческая разметка и не Gold. Векторы вычисляет настоящая Qwen bounded RQ jobs по8.
+Приватные state/tokens находятся вне Git, driver сохраняет прогресс без удаления данных.
+Подготовка после VFS disk pressure возобновлена с уже сохранённых Decisions; лимит
+дискового headroom теперь проверяется на checkpoints.
+
+Малый calibration:20 настоящих векторов,400 warm ASGI reads при10сессиях, общий p95
+0.877651s; самый медленный endpoint p95=0.974084s. Это **не10kNFR**, не HTTPS, не
+одновременная inference и не промышленная приёмка.7отрицательных тестов измерителя
+PASS локально и независимо; полные локальные checks318unit+73frontend PASS, SAST/SCA
+и negative security fixtures PASS. [Независимая проверка harness](../testing/reports/stage9-capacity-harness-independent-2026-10-27.md)
+не выявила блокеров для заявленного запуска. Полные результаты и новый exact-HEAD CI
+ещё предстоят. Stage9 BLOCKED; production AI/positive policy отключены, merge не выполняется.
+
+
+### Stage9 — core HTTPS под фоновой индексацией, 28 октября 2026
+
+Отдельный реальный HTTPS-прогон:10 cookie-сессий,500корректных GET, по100на5endpoints,
+p95=0.110–0.219s; бизнес-таблицы неизменны. На фоне Qwen фактически использовала
+77%/76% одного CPU и сохранила следующий checkpoint:328→336векторов. Это только
+основные чтения при **частичном** индексе, не полный10kпоиск и не LLM latency.
+[Отчёты, точные границы и независимое ревью](../testing/stage9-capacity-run.md).
+19отрицательных тестов закрыли найденную в измерителе ошибку malformed HTTP200.
+Индексация всех10000векторов продолжается, production/merge/полная приёмка BLOCKED.
+
+
+### Stage9 — полный настоящий индекс и выявленный NFR-блокер, 28 октября 2026
+
+Индексация всех10000различных настоящих Qwen1024-векторов завершена:10000различных
+input hashes,1251bounded jobs,6ч52м55с при embedding0.75CPU. Исходный отчёт и хеш
+замороженного driver сохранены. Исправлены ошибки измерителей: каноническое отсутствие
+подходящего precedent теперь проверяется по согласованным reason/count/results;
+malformed/чужие/дублированные записи не считаются корректным HTTP200, исключение
+сбрасывает valid. Независимая проверка51отрицательных/контрольных тестов PASS.
+
+Выявлен реальный performance-блокер.400ASGI reads при10сессиях корректны, но p95
+рекомендаций1.1096s >1s. Через настоящий HTTPS при восстановлении LLM:499/500успешны,
+один503, p951.404224s. Во время подтверждённой успешной LLM-генерации500/500корректны,
+но p951.28517s. Остальные endpoints укладываются. Процесс LLM восстанавливается23.4531s.
+[Отчёты, ресурсы, исходники и границы](../testing/stage9-capacity-run.md).
+
+Порог не ослаблен; ни общий p950.910812s, ни успешная генерация не отменяют FAILED
+конкретного endpoint. Серия20настоящих вертикальных проверок ещё выполняется; после
+неё предстоят профиль узкого места, необходимые исправления и повтор acceptance.
+Gold/численные пороги требуют человеческого утверждения до оценки. Stage9 BLOCKED,
+production AI/положительная policy отключены, merge и следующий этап не выполнялись.
+
+### Stage9 — завершённые замеры и финальная проверка, 29 октября 2026
+
+Серия20настоящих Qwen-вертикалей завершена:20/20PASS, LLM-job
+p50/p95/max53.8491/60.8512/87.2469s. Это повторяемые технические fixtures, не оценка
+качества на человеческом Gold. По результатам профилирования устранено повторное
+кодирование двух уже замороженных JSON и повторная загрузка approved profile digests
+внутри одной оценки. Все10000сохранённых context/evidence hashes совпали; история,
+scope, модели, политика, таймауты и обязательные NFR не изменены.
+
+Финальный business source43fcf12:385backend unit+73frontend PASS,568integration PASS,
+15обычных browser tests PASS, SAST/SCA/secrets/negative-security PASS. Отдельные3теста
+с настоящими моделями PASS; независимый повтор всех3тестов PASS за117.48s,
+блокирующих замечаний к коду и достоверности отчётов не выявлено.
+Все94Python/JSON-файла
+нагрузочного API совпадают с исходниками; model isolation повторно PASS.
+
+На полном10kиндексе/10сессиях ASGI400/400PASS, p95рекомендаций0.868401s; настоящий
+HTTPS без генерации500/500PASS, p950.801118s. При запуске LLM все500ответов корректны,
+но p951.044695s; во время настоящей успешной генерации500/500корректны,
+но p951.102804s. Оба loaded NFR **FAILED**, требование1s не ослаблено.
+4CPU/32GiB остаются ограниченным development-профилем, промышленное AI-железо
+не принято. [Актуальный акт и оставшиеся gates](../testing/reports/stage9-development-acceptance-2026-10-29.md).
+
+Stage9 **BLOCKED / не READY TO MERGE**: performance под AI-нагрузкой, human-approved
+Gold/пороги, production profile/policy и подписанная поставка#32 остаются открытыми.
+29октября временно не работала авторизация GitHub: API401, git remote authentication
+failed. Доступ восстановился, отчётный checkpoint5b17f29 отправлен в PR.
+
+В CI43fcf12 обнаружена гонка admission: победитель создавал тот же job между двумя
+WATCH-чтениями, а проигравший ошибочно возвращал503 вместо проверки привязанного языка.
+В9971e94 отказ теперь предварительно проверяет WATCH пустым EXEC; при изменении ключей
+повтор читает существующую запись, не создавая второй job и не меняя исходный язык.
+Два детерминированных теста на настоящем Redis воспроизвели обе ошибки до исправления;
+независимые5admission+6health тестов PASS после него. Лимиты8global/1actor не изменены.
+
+Отдельный нестабильный health unit test больше не измеряет накладные расходы TestClient
+как deadline зависимости: настоящие asyncio-операции всё ещё получают0.02s, ответ503
+обязан вернуться до окончания заблокированной зависимости. Runtime health не изменён;
+старые timing FAIL сохранены. После admission-исправления прошли 570 интеграционных,
+15 браузерных, 385 backend и 73 frontend-теста, все шесть локальных обязательных gates.
+Три теста настоящих моделей PASS за 116.33 s; независимый повтор всех трёх PASS за
+107.72 s. Все 86 Python-файлов runtime совпадают с 9971e94 до и после проверки.
+Результаты нагрузки43fcf12 сохраняют свой исходный SHA; логика ранжирования и рекомендаций
+с готовым query-вектором не менялась. GET без готового query-вектора ставит фоновую задачу
+через исправленный admission, поэтому его cold-enqueue путь изменён; синхронный inference
+не добавлен. Финальный отчётный CI проверяется отдельно в PR33.
+
+CI9971 ветки SUCCESS; его PR-прогон сохранил два иных FAILED: QUEUE_UNAVAILABLE в
+normalization recovery и RECOMMENDATION_TIMEOUT. Причины не установлены; полная локальная
+регрессия и отдельные instrumented targets PASS их не отменяют. В тесты добавлена
+санитизированная диагностика только при ошибке, без изменения assertions, concurrency,
+таймаутов или лимитов. Для итогового коммита нужны собственные push/PR CI; промежуточный
+SUCCESS не подменяет exact-final-HEAD. Stage9 остаётся BLOCKED по условиям выше.

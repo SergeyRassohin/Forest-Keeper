@@ -1,0 +1,8 @@
+{
+  "kind": "legally-synthetic-development-vertical-not-gold",
+  "passed": false,
+  "backfill_seconds": 13.862,
+  "llm_job_seconds": 118.1443,
+  "explanation_state": "FAILED",
+  "elapsed_seconds": 138.6015
+}

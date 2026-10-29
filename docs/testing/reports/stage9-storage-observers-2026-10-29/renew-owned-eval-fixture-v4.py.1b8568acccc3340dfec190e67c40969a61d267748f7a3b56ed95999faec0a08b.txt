@@ -1,0 +1,104 @@
+"""Operator-only fresh test sessions; keep original 10k state and auth rows intact."""
+import hashlib
+import json
+import os
+import re
+import secrets
+import subprocess
+from pathlib import Path
+
+from tests.benchmark_ai_https_core import probe
+
+root = Path('/workspace/Forest-Keeper')
+base = root / 'work/stage9-capacity-private'
+original_path = base / 'actual-10k-v1/fixture.json'
+original_bytes = original_path.read_bytes()
+original = json.loads(original_bytes)
+assert original['kind'] == 'owned-stage9-distinct-file-capacity-v1-not-gold'
+assert original['phase'] == 'INDEXED' and original['target'] == 10000
+assert re.fullmatch(r'auth_test_[a-f0-9]{32}', original['schema'])
+assert len(original['tokens']) == 10
+server = 'fk-stage9-capacity-ai-browser-backend-1'
+label = subprocess.check_output(['docker', 'inspect', server, '--format',
+    '{{index .Config.Labels "com.docker.compose.project"}}'], text=True).strip()
+assert label == 'fk-stage9-capacity'
+fixture = base / 'actual-10k-eval-v4'
+assert not fixture.exists()
+before = probe(original)
+assert before['vectors'] == 10000 and before['index_status'] == 'COMPLETED'
+fixture.mkdir(mode=0o700)
+for folder in ['imports', 'evidence']:
+    (fixture / folder).mkdir(mode=0o700)
+os.link(base / 'actual-10k-v1/runner.lock', fixture / 'runner.lock')
+tokens = [secrets.token_urlsafe(32) for _ in range(10)]
+code = '''
+import json,re,sys
+from datetime import UTC,datetime,timedelta
+from sqlalchemy import select,text,func
+from sqlalchemy.orm import Session
+from app.common.config import Settings
+from app.common.database import make_engine
+from app.auth.models import AuthSession,User
+from app.auth.security import token_digest
+d=json.load(sys.stdin);assert re.fullmatch(r'auth_test_[a-f0-9]{32}',d['schema'])
+s=Settings();assert s.import_queue_name==d['queue'];e=make_engine(s)
+with Session(e) as db:
+ assert db.scalar(text('SELECT current_schema()'))==d['schema']
+ accounts=[]
+ for i,old in enumerate(d['old_tokens']):
+  auth=db.scalar(select(AuthSession).where(AuthSession.token_hash==token_digest(old)))
+  assert auth is not None and auth.revoked_at is None and auth.expires_at<=datetime.now(UTC)
+  user=db.get(User,auth.user_id)
+  assert user.login=='capacity_'+str(i) and user.full_name=='Automated capacity fixture'
+  assert user.status=='ACTIVE' and user.data_domains==['*']
+  assert [role.role_code for role in user.roles]==(['DATA_OWNER'] if i==0 else ['VIEWER'])
+  accounts.append(user.id)
+ assert len(set(accounts))==10
+ count_before=db.scalar(select(func.count()).select_from(AuthSession))
+ users_before=db.scalar(text("SELECT md5(string_agg(to_jsonb(t)::text,'' ORDER BY id)) FROM users t"))
+ roles_before=db.scalar(text("SELECT md5(coalesce(string_agg(to_jsonb(t)::text,'' ORDER BY to_jsonb(t)::text),'')) FROM user_roles t"))
+ old_rows=db.scalars(select(AuthSession).order_by(AuthSession.token_hash)).all()
+ old_values=[(r.token_hash,r.user_id,r.created_at,r.expires_at,r.revoked_at) for r in old_rows]
+ now=datetime.now(UTC)
+ for user_id,token in zip(accounts,d['new_tokens'],strict=True):
+  db.add(AuthSession(token_hash=token_digest(token),user_id=user_id,created_at=now,
+      expires_at=now+timedelta(hours=24)))
+ db.flush()
+ assert db.scalar(select(func.count()).select_from(AuthSession))==count_before+10
+ assert users_before==db.scalar(text("SELECT md5(string_agg(to_jsonb(t)::text,'' ORDER BY id)) FROM users t"))
+ assert roles_before==db.scalar(text("SELECT md5(coalesce(string_agg(to_jsonb(t)::text,'' ORDER BY to_jsonb(t)::text),'')) FROM user_roles t"))
+ previous=db.scalars(select(AuthSession).where(AuthSession.token_hash.not_in(
+     [token_digest(t) for t in d['new_tokens']])).order_by(AuthSession.token_hash)
+     .execution_options(populate_existing=True)).all()
+ assert old_values==[(r.token_hash,r.user_id,r.created_at,r.expires_at,r.revoked_at) for r in previous]
+ db.commit()
+e.dispose()
+print(json.dumps({'created_fixture_sessions':10,'session_ttl_hours':24,
+ 'existing_sessions_modified':False,'user_password_roles_scope_modified':False,
+ 'users_digest_preserved':True,'original_expired_sessions_preserved':True}))
+'''
+done = subprocess.run(['docker','exec','-i',server,'python','-c',code],
+    input=json.dumps({'schema':original['schema'],'queue':original['queue'],
+        'old_tokens':original['tokens'],'new_tokens':tokens}),
+    text=True,capture_output=True,timeout=60)
+(fixture / 'renewal-private.log').write_text(done.stderr)
+assert done.returncode == 0, 'Owned fixture renewal failed; private log retained'
+renewal = json.loads(done.stdout)
+after = probe(original)
+assert before == after
+assert original_path.read_bytes() == original_bytes
+value = dict(original)
+value.update(tokens=tokens, measurement_only=True, index_source_fixture='actual-10k-v1',
+    index_artifact_sha256=hashlib.sha256((base/'actual-10k-v1/evidence/index-completed-original.json').read_bytes()).hexdigest(),
+    auth_source_fixture_sha256=hashlib.sha256(original_bytes).hexdigest())
+fd=os.open(fixture/'fixture.json',os.O_WRONLY|os.O_CREAT|os.O_EXCL,0o600)
+with os.fdopen(fd,'w') as out:json.dump(value,out);out.write('\n')
+proof={'kind':'new-owned-capacity-cookie-sessions-not-runtime-auth-change',
+    'fixture':'actual-10k-eval-v4',**renewal,'business_probe_before':before,
+    'business_probe_after':after,'business_state_unchanged':True,
+    'original_private_fixture_sha256':hashlib.sha256(original_bytes).hexdigest(),
+    'operator_source_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+    'production_accepted':False,'semantic_quality_evaluated':False}
+(fixture/'evidence/session-renewal-provenance.json').write_text(json.dumps(proof,indent=2)+'\n')
+print(json.dumps({k:proof[k] for k in ['fixture','created_fixture_sessions',
+    'session_ttl_hours','existing_sessions_modified','business_state_unchanged']}))

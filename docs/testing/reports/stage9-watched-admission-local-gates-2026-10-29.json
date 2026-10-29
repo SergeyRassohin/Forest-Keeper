@@ -1,0 +1,54 @@
+{
+  "kind": "six-local-gates-on-watched-admission-source-not-remote-CI",
+  "assembled_at_utc": "2026-10-29T14:46:34.558485+00:00",
+  "tested_source_commit": "9971e94d1efee899b06d0342ef4838f7b759b7f4",
+  "gates": [
+    {
+      "command": "bash scripts/check.sh",
+      "passed": true,
+      "private_log_basename": "watched-refusal-final-core-check.log",
+      "private_log_sha256": "2725a894e8c6b75aac2e4292af994a4a91d1c1a9d438cbb2d746554b222d51f8",
+      "backend_unit_passed": 385,
+      "frontend_passed": 73
+    },
+    {
+      "command": "bash scripts/check-sast.sh",
+      "passed": true,
+      "private_log_basename": "watched-refusal-final-sast.log",
+      "private_log_sha256": "089f6869e106adfb4519053b03567824f35fee57cd429ab0d1fe69d6a4760b6d"
+    },
+    {
+      "command": "bash scripts/test-security-gates.sh",
+      "passed": true,
+      "private_log_basename": "watched-refusal-final-security-negative.log",
+      "private_log_sha256": "d81657ee8c5ed6c7781ab7c1e3f562de0c9fdef65c7ce49d6abd905a9d1637f5"
+    },
+    {
+      "command": "bash scripts/check-dependencies.sh",
+      "passed": true,
+      "private_log_basename": "watched-refusal-final-dependencies.log",
+      "private_log_sha256": "12a4589ad81e8027f5b19e4ac7797695e388255abccfff2fdc61208ab5ce981b"
+    },
+    {
+      "command": "bash scripts/check-secrets.sh",
+      "passed": true,
+      "private_log_basename": "watched-refusal-source-secrets.log",
+      "private_log_sha256": "b8dffd508f74fc5be860fd23e9003fd80000ef2d992a64782abadeff173470d0"
+    },
+    {
+      "command": "bash scripts/check-integration.sh",
+      "passed": true,
+      "private_log_basename": "watched-refusal-final-full-integration.log",
+      "private_log_sha256": "c4d268d26aaecc9b41920f41a20359ea2f073a2a86a06b6cbb6ba9a3c3ade182",
+      "integration_passed": 570,
+      "actual_model_skipped": 3,
+      "browser_passed": 15,
+      "integration_seconds": 619.4,
+      "selector": "explicit FK_ENV_FILE selecting configured owned root development DB/Redis and ordinary HTTPS browser deployment"
+    }
+  ],
+  "scope": "Source bytes equal9971; report changes alone are uncommitted. Core\u2192SAST\u2192integration executed sequentially and exited0; negative/SCA/secrets executions each exited0 separately. Native actual-model tests are a separate opt-in run.",
+  "production_accepted": false,
+  "semantic_quality_evaluated": false,
+  "stage_status": "BLOCKED"
+}

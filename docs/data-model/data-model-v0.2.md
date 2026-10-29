@@ -74,7 +74,7 @@ CURRENT → STALE → SUPERSEDED.
 
 Recommendation не имеет состояния ACCEPTED. Согласие пользователя создаёт Decision.
 
-Реализация Stage 8 (отдельный PR #30, не принята): логический Recommendation
+Реализация Stage 8 (принята в main через PR #30): логический Recommendation
 представлен stateless RecommendationResult и bounded immutable AuditEvent receipt,
 без отдельной SQL-таблицы/миграции. API outcome RECOMMENDED/ABSTAINED/UNAVAILABLE
 не заменяет CURRENT/STALE/SUPERSEDED. Значимость receipt проверяется по fingerprint

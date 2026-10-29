@@ -1,0 +1,3417 @@
+{
+  "kind": "owned-stage9-distinct-file-capacity-v1-not-gold",
+  "production_accepted": false,
+  "semantic_quality_evaluated": false,
+  "target": 20,
+  "batch_job_seconds": [
+    19.139659,
+    19.265353,
+    9.434897,
+    0.03813
+  ],
+  "workload": "20 material families, distinct genuine file rows and fixture API Decisions",
+  "benchmark_sha256": "3d75a102dbe68488a96df95cd391e6044bec920ac334ed9aec85ca910ea28fb7",
+  "model_file_sha256": "0437e45c94563b09e13cb7a64478fc406947a93cb34a7e05870fc8dcd48e23fd",
+  "dimensions": 1024,
+  "processed": 20,
+  "indexed": 20,
+  "status": "COMPLETED",
+  "error_code": null,
+  "actual_vectors": 20,
+  "sessions": 10,
+  "requests": 400,
+  "http_failures": 0,
+  "invalid_responses": 0,
+  "transport": "Warm ASGI TestClient + actual PostgreSQL/Redis, not HTTPS end-to-end",
+  "cache_profile": "warm; no OS/PostgreSQL cache flush",
+  "index_benchmark_sha256": "3d75a102dbe68488a96df95cd391e6044bec920ac334ed9aec85ca910ea28fb7",
+  "passed": true,
+  "measurement_attempt": "d106cd17-ae90-4a86-b282-7060c2a14297",
+  "measurement_started_at": "2026-10-27T20:57:10.621962+00:00",
+  "measurement_benchmark_sha256": "e1adf81c17fc0314fc1a153d9eaeab36821919ff9b204c6daaa7c05c05475e97",
+  "concurrent_model_inference": false,
+  "provenance_limit": "Two bulk files correlate this fixture; no independent-positive-path claim",
+  "planned_requests": 400,
+  "immutable_history_preserved": true,
+  "measurements": [
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.057285
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.071651
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.08117
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.079642
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.125781
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.130702
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.136901
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.146853
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.14349
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.155624
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.111874
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.087885
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.092649
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.103982
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.108767
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.094589
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.091077
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.094867
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.119788
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.098441
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.186512
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.189623
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.27548
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.267217
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.278278
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.237412
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.262601
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.272649
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.290305
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.302736
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.552529
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.572088
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.603422
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.58901
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.531546
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.071109
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.548954
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.60144
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.7503
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.073273
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.615553
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.106373
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.089867
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.624903
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.102318
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.090943
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.070247
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.085363
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.122932
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.104383
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.100065
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.10008
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.086238
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.085304
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.128762
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.147818
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.092489
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.090409
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.067207
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.134598
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.234396
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.251588
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.256255
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.1876
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.204572
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.210645
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.245027
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.28679
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.219838
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.289259
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.516573
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.495696
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.527591
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.083734
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.089967
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.588917
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.609039
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.511134
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.096701
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.085167
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.610967
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.062652
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.570205
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.078226
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.582818
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.075028
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.077181
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.095786
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.07834
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.061489
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.055613
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.107952
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.113623
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.062297
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.140107
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.087102
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.203187
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.703427
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.16611
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.250462
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.106237
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.200874
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.096188
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.25134
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.23788
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.232642
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.111083
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.249326
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.233833
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.227485
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.547071
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.572476
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.072625
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.497977
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.544606
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.112399
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.633507
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.687445
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.070633
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.10501
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.099918
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.613482
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.11799
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.062752
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.086834
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.12508
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.113015
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.66044
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.127695
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.620617
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.133615
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.098227
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.226973
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.085577
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.108298
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.11785
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.258766
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.218482
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.041254
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.075972
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.71144
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.268551
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.239515
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.244511
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.068344
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.291857
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.198025
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.242337
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.079649
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.576788
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.520194
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.252124
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.080113
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.088107
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.506013
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.062753
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.675698
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.10445
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.594253
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.576382
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.123772
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.096748
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.579595
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.58094
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.201406
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.15538
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.15772
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.641177
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.115287
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.121133
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.273608
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.238314
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.224922
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.411459
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.257488
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.278042
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.342561
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.27996
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.167291
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.123208
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.781029
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.353687
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.292333
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.246479
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.145067
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.210792
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.253031
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.238452
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.107234
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.732516
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.08722
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.079267
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.694064
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.257986
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.335726
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.934791
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.061092
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.858428
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.108367
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.922257
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.934215
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.568587
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.085825
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.852083
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.078821
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.91078
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.090628
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.212506
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.089221
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.114707
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.091958
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.954437
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.138312
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.121312
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.132248
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.150124
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.16059
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.26921
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.115967
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.079298
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.260708
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.927706
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.227558
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.271198
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.259436
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.12488
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.270803
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.267474
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.089258
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.65124
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.102934
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.728177
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.228757
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.162447
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.220605
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.131958
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.973965
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.955057
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.44152
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.877134
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.931666
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.124553
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.184004
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.97643
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 1.171258
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.242331
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.205509
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.493418
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.225508
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.286165
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.132283
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.225901
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.184462
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.136778
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 1.369381
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.271695
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.158612
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 1.168799
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.363241
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.416707
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.299765
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.133029
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.200583
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.283843
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.159664
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.297019
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.270417
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.093025
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.961024
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.13524
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.295489
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.887205
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.12936
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.314561
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.64778
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.135405
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.126814
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.740572
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.152612
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.768725
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.100125
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.367946
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.113658
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.15506
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.087558
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.791675
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.2823
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.865553
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.201704
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.129097
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.934137
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.126112
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.274103
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.100738
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.277412
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.160159
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.722131
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.12677
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.220946
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.877651
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.148391
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.146481
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.281779
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.14006
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.14114
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.119342
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.212392
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.360135
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.800469
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.215283
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.814416
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.20389
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.340752
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.109102
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.76785
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.101853
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.842927
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.108523
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.167437
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.845782
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.136852
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.158988
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.326317
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.836064
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.184173
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.197486
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.745185
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.329953
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.746491
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.096131
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.139653
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.118204
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.152308
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.723314
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.292285
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.279155
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.170564
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.113358
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.096835
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.127857
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.056075
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.802391
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.278698
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.109269
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.203747
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.279129
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.268863
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.168821
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.31581
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.806815
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.797632
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.133474
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.286359
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.139127
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.737904
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.217913
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.160756
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.974084
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.21571
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.815541
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.121467
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.96993
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.237506
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.135018
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.812669
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.28271
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.154849
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.114539
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.095359
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.156385
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.063214
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.965424
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.090934
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.070222
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.28697
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.998495
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.211221
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.135103
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.070167
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.820098
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.089992
+    },
+    {
+      "endpoint": "conflicts?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.141128
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.340973
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.384975
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.175993
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.346594
+    },
+    {
+      "endpoint": "decisions?limit=50",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": null,
+      "error_code": null,
+      "seconds": 0.106961
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.322848
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.740503
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.245537
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.274392
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.862681
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.675899
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.765941
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.566626
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.54942
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.579895
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.391063
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.46017
+    },
+    {
+      "endpoint": "recommendation",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "INSUFFICIENT_INDEPENDENT_EVIDENCE",
+      "error_code": null,
+      "seconds": 0.317086
+    }
+  ],
+  "warmup": [
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.121772
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.028566
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.020313
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.021704
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.022575
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.031851
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.028229
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.028836
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.030118
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.027831
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.032091
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.027161
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.034882
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.028482
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.032595
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.029562
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.02759
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.026409
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.036214
+    },
+    {
+      "endpoint": "similar-decisions",
+      "status_code": 200,
+      "valid": true,
+      "reason_code": "MATCHES",
+      "error_code": null,
+      "seconds": 0.024186
+    }
+  ],
+  "p50_seconds": 0.212506,
+  "p95_seconds": 0.877651,
+  "max_seconds": 1.369381,
+  "warmup_failures": 0,
+  "outcomes": {
+    "HTTP_200": 200,
+    "MATCHES": 100,
+    "INSUFFICIENT_INDEPENDENT_EVIDENCE": 100
+  },
+  "endpoint_p95_seconds": {
+    "decisions?limit=50": 0.224922,
+    "conflicts?limit=50": 0.225901,
+    "similar-decisions": 0.384975,
+    "recommendation": 0.974084
+  },
+  "acceptance_scope": "CALIBRATION_ONLY_NOT_10K_NOT_FULL_STAGE9_ACCEPTANCE",
+  "background_workload": "Distinct 10k fixture preparation active; no simultaneous model inference during timed warm reads"
+}

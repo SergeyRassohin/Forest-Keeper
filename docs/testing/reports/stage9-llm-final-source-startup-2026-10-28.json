@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "kind": "owned-llm-process-startup-not-os-cold-cache",
+  "observer_sha256": "c1f2caef33638452160d843c1b023d8c78bef1568c5e2eb034526d5b049ac617",
+  "observer_artifact": "startup-observer-c1f2caef33638452160d843c1b023d8c78bef1568c5e2eb034526d5b049ac617.py.txt",
+  "model_image": "sha256:998a8e65d16b5ca6f7f3b7065ff501250cb672cb1ac1e407c0e45bafb616abe3",
+  "started_at": "2026-10-28T04:29:07.937205+00:00",
+  "os_cache_flushed": false,
+  "production_accepted": false,
+  "restart_command_seconds": 0.7159,
+  "healthy_observed_at": "2026-10-28T04:29:32.381318+00:00",
+  "first_retained_successful_healthcheck_at": "2026-10-28T04:29:31.390268555Z",
+  "restart_to_successful_healthcheck_seconds": 23.4531
+}

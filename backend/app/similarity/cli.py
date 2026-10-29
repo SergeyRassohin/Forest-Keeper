@@ -19,7 +19,9 @@ from app.similarity.service import start_run
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("action", choices=["start", "status", "activate"])
-    parser.add_argument("--revision", choices=["test-v1", "test-v2"], default="test-v1")
+    parser.add_argument(
+        "--revision", choices=["test-v1", "test-v2", "qwen-demo-v1"], default="test-v1"
+    )
     parser.add_argument("--activate", action="store_true")
     parser.add_argument("--version", type=UUID)
     parser.add_argument("--batch-size", type=int, default=100)

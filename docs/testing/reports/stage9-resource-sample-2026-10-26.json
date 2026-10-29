@@ -1,0 +1,21 @@
+{
+  "interpretation": "single post-inference cgroup sample, not NFR/capacity acceptance",
+  "components": {
+    "embedding": {
+      "memory.current": "2929483776",
+      "memory.peak": "2990837760",
+      "memory.max": "6442450944",
+      "cpu.max": "75000 100000",
+      "pids.current": "7",
+      "pids.max": "128"
+    },
+    "llm": {
+      "memory.current": "8620322816",
+      "memory.peak": "8642256896",
+      "memory.max": "17179869184",
+      "cpu.max": "200000 100000",
+      "pids.current": "15",
+      "pids.max": "128"
+    }
+  }
+}

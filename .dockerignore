@@ -1,0 +1,19 @@
+# Root context is used only by the isolated AI images.
+**
+!ai/
+!ai/pyproject.toml
+!ai/uv.lock
+!ai/Dockerfile
+!ai/native-artifact.lock.json
+!backend/
+!backend/app/
+!backend/app/__init__.py
+!backend/app/ai/
+!backend/app/ai/*.py
+!models/
+!models/artifacts.lock.json
+!work/
+!work/stage9-native-src/
+!work/stage9-native-src/**
+!work/stage9-native-release/
+!work/stage9-native-release/**

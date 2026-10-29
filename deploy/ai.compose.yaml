@@ -1,0 +1,157 @@
+# Opt-in development/demo profile. Production activation is deliberately unavailable.
+# Preload images and exact model artifacts first; runtime needs no Internet.
+x-ai-env: &ai-env
+  FK_DEPLOYMENT_MODE: development
+  FK_SIMILARITY_PROVIDER: qwen-demo
+  FK_SIMILARITY_ALLOW_QWEN_DEMO: "true"
+  FK_SIMILARITY_AUTOINDEX: "true"
+  FK_RECOMMENDATION_ENABLED: "true"
+  FK_RECOMMENDATION_SOURCE_MAP: ${FK_RECOMMENDATION_SOURCE_MAP:-{}}
+  FK_AI_ENABLED: "true"
+  FK_AI_SERVICE_KEY_FILE: /run/secrets/fk_ai_key
+  FK_AI_EMBEDDING_ENDPOINT: http://fk-ai-embedding:8091
+  FK_AI_LLM_ENDPOINT: http://fk-ai-llm:8092
+  FK_IMPORT_QUEUE_NAME: ${FK_IMPORT_QUEUE_NAME:-forest-keeper}
+  HTTP_PROXY: ""
+  HTTPS_PROXY: ""
+  ALL_PROXY: ""
+  http_proxy: ""
+  https_proxy: ""
+  all_proxy: ""
+  NO_PROXY: "*"
+  no_proxy: "*"
+
+x-model-env: &model-env
+  HTTP_PROXY: ""
+  HTTPS_PROXY: ""
+  ALL_PROXY: ""
+  http_proxy: ""
+  https_proxy: ""
+  all_proxy: ""
+  NO_PROXY: "*"
+  no_proxy: "*"
+
+x-model: &model
+  profiles: [ai]
+  restart: unless-stopped
+  read_only: true
+  user: "10001:10001"
+  group_add: ["${FK_AI_FILES_GID:?Set the group permitted to read the artifact/key files}"]
+  cap_drop: [ALL]
+  security_opt: [no-new-privileges:true]
+  networks: [ai_private]
+  dns: [127.0.0.1]
+  tmpfs: ["/tmp:rw,noexec,nosuid,size=64m,mode=1777"]
+  pids_limit: 128
+  cpu_shares: 128
+  secrets: [fk_ai_key]
+  stop_grace_period: 10s
+  healthcheck:
+    test: [CMD, python, -m, app.ai.supervisor, --health]
+    interval: 10s
+    timeout: 3s
+    retries: 3
+    start_period: 180s
+
+x-worker: &ai-worker
+  profiles: [ai]
+  build: ./backend
+  image: ${FK_AI_BACKEND_IMAGE:-forest-keeper-backend}
+  restart: unless-stopped
+  environment:
+    <<: *ai-env
+    FK_DATABASE_URL: postgresql+psycopg://forest_keeper:${FK_POSTGRES_PASSWORD:?Run scripts/dev-init.sh}@postgres:5432/forest_keeper
+    FK_REDIS_URL: redis://redis:6379/0
+    FK_ALLOWED_ORIGINS: '${FK_ALLOWED_ORIGINS:-["https://localhost:8443"]}'
+  networks: [default, ai_private]
+  dns: [127.0.0.1]
+  secrets: [fk_ai_key]
+  group_add: ["${FK_AI_FILES_GID:?Set the artifact/key reader group}"]
+  cap_drop: [ALL]
+  security_opt: [no-new-privileges:true]
+  read_only: true
+  tmpfs: ["/tmp:rw,noexec,nosuid,size=64m,mode=1777"]
+  pids_limit: 128
+  mem_limit: 512m
+  cpus: 0.5
+  cpu_shares: 256
+  depends_on:
+    backend:
+      condition: service_healthy
+  healthcheck:
+    interval: 10s
+    timeout: 5s
+    retries: 3
+    start_period: 30s
+
+services:
+  # Neither core startup nor manual review waits for model health.
+  backend:
+    environment: *ai-env
+    networks: [default, ai_private]
+    dns: [127.0.0.1]
+    secrets: [fk_ai_key]
+    group_add: ["${FK_AI_FILES_GID:?Set the artifact/key reader group}"]
+  worker:
+    environment: *ai-env
+    dns: [127.0.0.1]
+  migrate:
+    environment: *model-env
+    dns: [127.0.0.1]
+  frontend:
+    environment: *model-env
+    dns: [127.0.0.1]
+  postgres:
+    environment: *model-env
+    dns: [127.0.0.1]
+  redis:
+    environment: *model-env
+    dns: [127.0.0.1]
+
+  fk-ai-embedding:
+    <<: *model
+    image: forest-keeper-ai-embedding:stage9
+    build:
+      context: .
+      dockerfile: ai/Dockerfile
+      target: embedding
+    environment: *model-env
+    cpus: 0.75
+    mem_limit: 6g
+    volumes:
+      - ${FK_AI_MODEL_ROOT:?Verified model root required}/embedding:/models/embedding:ro
+
+  fk-ai-llm:
+    <<: *model
+    image: forest-keeper-ai-llm:stage9
+    build:
+      context: .
+      dockerfile: ai/Dockerfile
+      target: ${FK_AI_LLM_BUILD_TARGET:-llm}
+    environment: *model-env
+    cpus: 2
+    mem_limit: 16g
+    volumes:
+      - ${FK_AI_MODEL_ROOT:?Verified model root required}/llm:/models/llm:ro
+
+  ai-embedding-worker:
+    <<: *ai-worker
+    command: [python, -m, app.ai.worker, --kind, embedding]
+    healthcheck:
+      test: [CMD, python, -m, app.ai.worker, --kind, embedding, --health]
+  ai-llm-worker:
+    <<: *ai-worker
+    command: [python, -m, app.ai.worker, --kind, llm]
+    healthcheck:
+      test: [CMD, python, -m, app.ai.worker, --kind, llm, --health]
+
+networks:
+  # No worker can acquire Internet access from a second, outbound-capable bridge.
+  default:
+    internal: true
+  ai_private:
+    internal: true
+
+secrets:
+  fk_ai_key:
+    file: ${FK_AI_KEY_FILE:?Create a private capability file, do not commit it}

@@ -246,6 +246,10 @@ def test_downgrade_with_vectors_refuses_without_losing_decision_history(client, 
     from alembic.config import Config
     from sqlalchemy.exc import DBAPIError
 
+    # Own the populated precondition rather than depending on earlier tests in
+    # this module having left Decisions in its shared disposable schema.
+    first = real_case(client, auth_env)
+    save(client, first, selection(begin(client, first)))
     index(auth_env)
     engine = make_engine(auth_env)
     with Session(engine) as session:
@@ -258,7 +262,9 @@ def test_downgrade_with_vectors_refuses_without_losing_decision_history(client, 
     with Session(engine) as session:
         assert session.scalar(select(func.count()).select_from(Decision)) == before
         assert session.scalar(select(func.count()).select_from(DecisionEmbedding)) == vectors
-        assert session.scalar(text("SELECT version_num FROM alembic_version")) == "0008_similarity"
+        assert (
+            session.scalar(text("SELECT version_num FROM alembic_version")) == "0009_inline_vectors"
+        )
     engine.dispose()
 
 
@@ -550,7 +556,7 @@ def test_real_statement_timeout_is_local_and_registry_remains_readable(client, a
 
     case = real_case(client, auth_env)
 
-    def slow(session, *args):
+    def slow(session, *args, **kwargs):
         session.execute(text("SELECT pg_sleep(3)"))
 
     started = time.monotonic()

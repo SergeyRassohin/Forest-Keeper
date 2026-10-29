@@ -7,6 +7,8 @@ from fastapi.responses import JSONResponse
 from redis import Redis
 from sqlalchemy.exc import SQLAlchemyError
 
+from app.ai.http_limits import AIRequestLimits
+from app.ai.routes import router as ai_router
 from app.auth.dependencies import require_permission
 from app.auth.routes import router as auth_router
 from app.common.config import Settings
@@ -48,6 +50,7 @@ def create_app(settings: Settings | None = None, checker: HealthChecker | None =
             engine.dispose()
 
     app = FastAPI(title="Forest Keeper API", version="0.1.0", lifespan=lifespan)
+    app.add_middleware(AIRequestLimits)
     app.include_router(auth_router)
     app.include_router(import_router)
     app.include_router(normalization_router)
@@ -56,6 +59,7 @@ def create_app(settings: Settings | None = None, checker: HealthChecker | None =
     app.include_router(decision_router)
     app.include_router(similarity_router)
     app.include_router(recommendation_router)
+    app.include_router(ai_router)
 
     @app.exception_handler(ApiError)
     async def api_error(request: Request, error: ApiError) -> JSONResponse:

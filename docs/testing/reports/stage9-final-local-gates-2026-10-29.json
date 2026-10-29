@@ -1,0 +1,55 @@
+{
+  "kind": "local-final-business-source-gates-not-exact-final-remote-CI",
+  "assembled_at": "2026-10-29T14:21:27.358203+00:00",
+  "tested_source_commit": "43fcf12b334a5d457bfafbf3afe56be801d33c4b",
+  "gates": [
+    {
+      "command": "bash scripts/check.sh",
+      "passed": true,
+      "private_log_basename": "profile-snapshot-final-core-check-isolated.log",
+      "private_log_sha256": "f5dd71ffbc287ea114298bf6a5ff6424885bb33693c7a1eaafd4f3b222ac5da9",
+      "backend_unit_passed": 385,
+      "frontend_passed": 73
+    },
+    {
+      "command": "bash scripts/check-integration.sh",
+      "passed": true,
+      "private_log_basename": "profile-snapshot-full-integration-correct-env.log",
+      "private_log_sha256": "7a63fa16d13fca5f7b753f6dc40068c36bcdc648f27a0b8d32368a52afaa7a2f",
+      "integration_passed": 568,
+      "actual_model_skipped": 3,
+      "browser_passed": 15,
+      "selector": "explicit FK_ENV_FILE selects configured root development PostgreSQL/Redis and ordinary HTTPS browser deployment"
+    },
+    {
+      "command": "bash scripts/check-sast.sh",
+      "passed": true,
+      "private_log_basename": "final-sast-43fcf12.log",
+      "private_log_sha256": "2243e50a6185e04a8643525b502d3d041b7c6c38fc1caf242b87b88d9dc4cd8c"
+    },
+    {
+      "command": "bash scripts/test-security-gates.sh",
+      "passed": true,
+      "private_log_basename": "final-security_negative-43fcf12.log",
+      "private_log_sha256": "d81657ee8c5ed6c7781ab7c1e3f562de0c9fdef65c7ce49d6abd905a9d1637f5"
+    },
+    {
+      "command": "bash scripts/check-dependencies.sh",
+      "passed": true,
+      "private_log_basename": "final-dependencies-43fcf12.log",
+      "private_log_sha256": "12a4589ad81e8027f5b19e4ac7797695e388255abccfff2fdc61208ab5ce981b"
+    },
+    {
+      "command": "bash scripts/check-secrets.sh",
+      "passed": true,
+      "private_log_basename": "final-secrets-43fcf12.log",
+      "private_log_sha256": "6cb628f7b7345dac320ce8d0e5c818d1a9917bf3969318de99732fb87bdf86b7"
+    }
+  ],
+  "exit_status_provenance": "All six completed exit0 in recorded operator executions; summaries cross-checked against retained private logs. Initial failed runs are separately retained, not counted as passed.",
+  "remote_exact_final_ci_verified": false,
+  "remote_access_failure": "2026-10-29 configured GitHub API401 Bad credentials and git remote authentication unavailable",
+  "semantic_quality_evaluated": false,
+  "production_accepted": false,
+  "stage_status": "BLOCKED"
+}

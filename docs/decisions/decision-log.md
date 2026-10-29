@@ -351,3 +351,91 @@ confirmation needs exclusive gate, fresh auth/ORM and bounded recomputation. A c
 SQL hook applies remaining monotonic budget before every SQL, with cleanup at transaction end.
 Audit integrity validates basis digest, event type/actor/case/reference and aware timestamp.
 No advisory-lock claim is made against DB superuser/direct SQL outside the quiesce protocol.
+
+
+## 2026-10-26 — Stage 9 entry and preimplementation contract
+
+Stage8 is accepted in main through PR #30, merge
+`54d3939d704bfe6aa1c943bef3e70b83b01c0527`, exact main CI40198679543 SUCCESS.
+The owner instruction «Приступай к разработке 9 этапа» authorizes Stage9 implementation
+on a separate branch/PR, not merge or previously unspecified semantic quality thresholds.
+
+[Preimplementation architecture/hardware/offline/threat/gold/metrics/decision matrix](../development/stage9-local-ai-proposal.md)
+is published before business code per issue #31 §10. Pinned models/1024 dimensions/Q4_K_M/
+32768 context and Stage8 deterministic demo policy are unchanged. Qwen runtime development
+and actual inference tests may proceed; production semantic activation/positive recommendation
+policy remain blocked without explicit approved quality evidence/policy. Proposed numerical
+quality targets and human-labelled evaluation set are NOT APPROVED, not achievements.
+Historical Stage8 proposal/acceptance records are preserved. #17/#18/#20/#32 are not closed.
+
+
+### 2026-10-26 — Stage9 asynchronous explanation and bounded generation refinement
+
+Implementation refinement of issue31, not a new numerical policy/production approval.
+Actual initial Qwen generation exceeded the256token output bound and was rejected. The
+bound stays256; versioned grounded-clauses-v4 generates exactly3factual clause codes with
+at most1authorized example citation. Immutable case/status/action/context metadata is bound
+by the server, not generated. LLM input now includes bounded verified current normalized
+values/units/source roles and selected precedent summaries; names/reasons/raw are omitted.
+Russian/English text is rendered solely from these validated facts/clauses. Unsupported
+free prose is rejected. Earlier model failures remain failed evidence, not relabeled.
+
+Public cookie+Origin interface requires conflict.view + decision.view + recommendation.view:
+POST /api/v1/conflicts/{id}/ai-explanation accepts only request_id UUID and language ru/en,
+returns202with opaque session/actor/case-bound request handle. GET
+/api/v1/conflicts/{id}/ai-explanations/{handle} returns QUEUED/PROCESSING/COMPLETED/FAILED
+as derived technical API execution status, not canonical Conflict/Decision state. Failure
+reasons cover stale, unavailable and cancelled work. POST the same URL with /cancel marks
+logical cancellation/discard; in-flight local inference may finish under its hard resource
+bound, never deliver after cancellation. One actor lease remains until that work exits.
+All new requests are explicit, no inference on GET. Requests/results expire, are isolated
+by session/actor/case and recheck fresh auth/scope, full evidence/model/prompt/config digest
+before input and delivery. No server-generated Decision, Rule or business write.
+
+Bounded metadata-only AI_EXPLANATION_EVALUATED audit stores actor/case/request ID, model/
+prompt/input/output hashes, safe cited IDs, clause codes and duration, without prompt/raw/
+reasons/vectors. Model services remain internal-only. Production AI activation hard-disabled.
+Shadow derivation workers may build a different version in their separate queue while API
+replicas continue their old uniform configuration; no mixed API configuration is accepted.
+Final cutover/rollback still quiesces and drains API/business workers before the explicit
+active-version/config switch. Qwen backfill releases SQL transactions/connections/gates
+before a single bounded batch inference and revalidates immutable inputs/current eligibility
+before checkpoint; only an expiring Redis coordination lease spans inference.
+
+### 2026-10-26 — Stage9 measured timeout and smaller LLM prompt projection
+
+The first isolated real-Registry LLM vertical exceeded118seconds on the provisional2CPU
+LLM quota. This remains FAILED, not a passed quality/performance metric. The supervisor
+terminated native computation and Docker restarted the service. Do not raise the deadline,
+weaken core NFR or substitute the pinned model/context/quantization to hide this result.
+
+Before the next implementation attempt: retain the complete strictly validated Facts at
+the service boundary, but serialize a smaller versioned prompt projection to the native
+LLM. It retains current normalized comparison, quality/presence/unit/explicit source roles,
+verified supporting/contradictory precedent IDs and their normalized outcome summaries,
+deterministic status/reason/action and independent-group count. Each precedent ID occurs
+once, inside its evidence category. Server-only conflict/source/value IDs/fingerprint and
+redundant ID arrays stay outside the native prompt; the server still binds/validates them.
+Do not remove meaningful comparison or precedent facts. Output remains exactly3grounded
+clauses/one supplied evidence citation,256tokens, context32768, deadline118/120seconds.
+Version/hash this projection with the system prompt; stale receipts remain invalid.
+Record only bounded input/output token counts/duration/finish code, never prompt/raw/text.
+This technical minimization does not approve human-gold labels/targets or production policy.
+
+### 2026-10-26 — restore ranking planner hints before recommendation writes
+
+Stage9 verification exposed intermittent RECOMMENDATION_TIMEOUT on the initial human
+submission using a recommendation receipt, locally and in PR CI. The existing ranking
+query used transaction-local enable_nestloop=off/jit=off and assumed its caller was only
+a read transaction. Receipt revalidation also calls ranking inside the eventual Decision
+write transaction. A new deterministic integration regression confirms both settings leak
+into that caller before commit (expectedon/on, observedoff/off).
+
+Keep the current ranking plan controls, scope/coverage/filtering and1500ms total deadline,
+but save the caller's two planner settings, fully fetch the bounded ranked page, and restore
+those settings before any caller provenance/receipt/write work. Aborted SQL transactions
+still require rollback and thereby restore all SET LOCAL state. No longer transaction or
+weaker timeout, no change to recommendation policy/threshold/evidence/Decision semantics.
+Prove all four caller setting combinations and rerun receipt acceptance, concurrency,
+retrieval/recommendation/full CI. Prior failed runs remain failed evidence; an isolated
+retry alone does not close this gate.

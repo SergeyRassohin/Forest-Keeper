@@ -9,6 +9,8 @@ from sqlalchemy import Float, Select, cast, exists, func, literal, literal_colum
 from sqlalchemy import case as sql_case
 from sqlalchemy.orm import Session, defer
 
+from app.ai import baseline
+from app.ai.identity import expected_model_info
 from app.auth.models import AuditEvent, User
 from app.common.config import Settings
 from app.conflicts.models import Conflict
@@ -34,10 +36,34 @@ from app.similarity.provider import (
     ProviderError,
     permitted,
     provider,
+    revision_name,
 )
 
 
 def configuration(revision: str = "test-v1") -> dict[str, Any]:
+    if revision == "qwen-demo-v1":
+        return {
+            "provider": "qwen-local-demo",
+            "model_id": baseline.EMBEDDING_MODEL,
+            "revision": baseline.EMBEDDING_REVISION,
+            "artifact_sha256": baseline.EMBEDDING_SHA256,
+            "artifact_lock_sha256": baseline.ARTIFACT_LOCK_SHA256,
+            "dimensions": DIMENSIONS,
+            "input_schema": SCHEMA,
+            "preprocessing": baseline.PREPROCESSING,
+            "instruction_sha256": baseline.INSTRUCTION_SHA256,
+            "input_schema_sha256": expected_model_info("embedding").input_schema_sha256,
+            "output_schema_sha256": expected_model_info("embedding").output_schema_sha256,
+            "runtime_versions": baseline.component_versions("embedding"),
+            "eligibility": "resolved-effective-value-v1",
+            "metric": "cosine",
+            "threshold": THRESHOLD,
+            "is_test": True,
+            "quality_provenance": "LOCAL_QWEN_DEMO",
+            "production_accepted": False,
+            "default_limit": 5,
+            "max_limit": 20,
+        }
     if revision not in REVISIONS:
         raise ProviderError("UNSUPPORTED_VERSION")
     return {
@@ -77,7 +103,8 @@ def start_run(
 ) -> IndexRun:
     config = configuration(revision)
     provider(settings, config["revision"])
-    if not 1 <= batch_size <= 500:
+    maximum = 8 if revision == "qwen-demo-v1" else 500
+    if not 1 <= batch_size <= maximum:
         raise ProviderError("INVALID_BATCH_SIZE")
     identifier = uuid5(NAMESPACE_URL, "forest-keeper:retrieval:" + digest(config))
     # Operator transactions serialize creation/retry; no duplicate version registration.
@@ -144,6 +171,7 @@ def retrieval(
     *,
     prepare_query: bool = True,
     prepared_features: dict[str, Any] | None = None,
+    actor_session_hash: str | None = None,
 ) -> dict[str, Any]:
     state = session.get(RetrievalState, 1)
     version = (
@@ -176,9 +204,14 @@ def retrieval(
     if not permitted(settings) or version is None:
         return result
     try:
-        if version.config != configuration(
-            next(k for k, v in REVISIONS.items() if v == version.config["revision"])
-        ):
+        if version.config != configuration(revision_name(version.config["revision"])):
+            raise ProviderError("UNSUPPORTED_VERSION")
+        selected_provider = (
+            "qwen-local-demo"
+            if settings.similarity_provider == "qwen-demo"
+            else "deterministic-test"
+        )
+        if version.config.get("provider") != selected_provider:
             raise ProviderError("UNSUPPORTED_VERSION")
         # Private same-snapshot reuse by RecommendationService; public routes
         # never accept feature/policy overrides and keep building their context.
@@ -187,13 +220,18 @@ def retrieval(
             if prepared_features is not None
             else context(historical_context(session, case, include_review=False))
         )
-        if not features["synthetic"]:
+        if settings.similarity_provider == "test" and not features["synthetic"]:
             raise ProviderError("SYNTHETIC_ONLY")
     except (ProviderError, StopIteration, KeyError, TypeError) as error:
         result["reason_code"] = (
             str(error) if isinstance(error, ProviderError) else "UNSUPPORTED_VERSION"
         )
         return result
+    if settings.similarity_provider == "qwen-demo":
+        result["known_limitations"][0] = (
+            "Actual local Qwen vectors in development mode; production semantic quality "
+            "is not accepted. Not interchangeable with synthetic-test vectors."
+        )
     feature_hash = fingerprint(features)
     result["query_context_hash"] = feature_hash
     result["query_context"] = features
@@ -205,7 +243,14 @@ def retrieval(
         from app.similarity.jobs import request_query
 
         try:
-            request_query(case.id, version.id, feature_hash, settings)
+            request_query(
+                case.id,
+                version.id,
+                feature_hash,
+                settings,
+                actor_id=str(actor.id),
+                auth_session_hash=actor_session_hash,
+            )
         except ProviderError as error:
             result["reason_code"] = str(error)
             return result
@@ -394,7 +439,11 @@ def retrieval(
     )
     # Cross-table effective-head correlation is underestimated by PostgreSQL17.
     # Prefer hash joins for this set operation; avoid JIT startup on its tiny
-    # singleton cross joins. SET LOCAL is rolled back with this read transaction.
+    # singleton cross joins. A receipt check may reuse this transaction for a
+    # Decision write, so scope the plan hints to the bounded ranking query itself.
+    planner = session.execute(
+        text("SELECT current_setting('enable_nestloop'), current_setting('jit')")
+    ).one()
     session.execute(text("SET LOCAL enable_nestloop=off; SET LOCAL jit=off"))
     rows = typed_cast(
         Iterable[
@@ -410,7 +459,13 @@ def retrieval(
                 bool,
             ]
         ],
-        session.execute(query),
+        session.execute(query).all(),
+    )
+    # Fetch before restoration. SQL errors abort the caller's transaction; its
+    # required rollback restores SET LOCAL state, without issuing SQL after error.
+    session.execute(
+        text("SELECT set_config('enable_nestloop', :nested, true), set_config('jit', :jit, true)"),
+        {"nested": planner[0], "jit": planner[1]},
     )
     for (
         artifact,
