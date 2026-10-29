@@ -1,0 +1,49 @@
+{
+  "kind": "new-owned-capacity-cookie-sessions-not-runtime-auth-change",
+  "fixture": "actual-10k-eval-v4",
+  "created_fixture_sessions": 10,
+  "session_ttl_hours": 24,
+  "existing_sessions_modified": false,
+  "user_password_roles_scope_modified": false,
+  "users_digest_preserved": true,
+  "original_expired_sessions_preserved": true,
+  "business_probe_before": {
+    "decisions": 10000,
+    "vectors": 10000,
+    "index_status": "COMPLETED",
+    "business_digests": {
+      "source_systems": "ba8ec6164fd2844b5e659cd51228f5b4",
+      "import_batches": "b78245c7637a76225818ca252356fc19",
+      "raw_records": "57622992ebb34494bdd10d06aa81c214",
+      "analysis_runs": "ecdebd98f330db479bb1febc172263e8",
+      "canonical_entities": "deca4d7812569e742d24fe048418b871",
+      "entity_values": "580d002610618fbc072409b1fbe35061",
+      "matching_runs": "b67b47491ebeef6396c4bae3f065ee00",
+      "match_candidates": "8f901803d0ae72393502cf0198473c42",
+      "conflicts": "4b0bae24b71c3f2ecd7d1e3d91339c93",
+      "decisions": "47205a767c1bab308a1dd1d5421c607c"
+    }
+  },
+  "business_probe_after": {
+    "decisions": 10000,
+    "vectors": 10000,
+    "index_status": "COMPLETED",
+    "business_digests": {
+      "source_systems": "ba8ec6164fd2844b5e659cd51228f5b4",
+      "import_batches": "b78245c7637a76225818ca252356fc19",
+      "raw_records": "57622992ebb34494bdd10d06aa81c214",
+      "analysis_runs": "ecdebd98f330db479bb1febc172263e8",
+      "canonical_entities": "deca4d7812569e742d24fe048418b871",
+      "entity_values": "580d002610618fbc072409b1fbe35061",
+      "matching_runs": "b67b47491ebeef6396c4bae3f065ee00",
+      "match_candidates": "8f901803d0ae72393502cf0198473c42",
+      "conflicts": "4b0bae24b71c3f2ecd7d1e3d91339c93",
+      "decisions": "47205a767c1bab308a1dd1d5421c607c"
+    }
+  },
+  "business_state_unchanged": true,
+  "original_private_fixture_sha256": "b77ee62ae6caee7d7c2d58b999af2ad1ec42ecdfea3d4327850cdf730befd9f1",
+  "operator_source_sha256": "1b8568acccc3340dfec190e67c40969a61d267748f7a3b56ed95999faec0a08b",
+  "production_accepted": false,
+  "semantic_quality_evaluated": false
+}

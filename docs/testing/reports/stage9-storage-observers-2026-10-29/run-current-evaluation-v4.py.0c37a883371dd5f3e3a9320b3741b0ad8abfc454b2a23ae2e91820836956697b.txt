@@ -1,0 +1,73 @@
+"""Operator-only warmup and read-only profile after the frozen genuine-model series."""
+import hashlib
+import json
+import ssl
+import subprocess
+from pathlib import Path
+
+import httpx
+
+from app.auth.dependencies import COOKIE_NAME
+
+root = Path('/workspace/Forest-Keeper')
+private = root / 'work/stage9-capacity-private'
+series = json.loads((private / 'real-series-v2/evidence/llm-series/series.json').read_text())
+assert series['passed'] is True and series['completed_observations'] == 20
+fixture = json.loads((private / 'actual-10k-eval-v4/fixture.json').read_text())
+assert fixture['kind'] == 'owned-stage9-distinct-file-capacity-v1-not-gold'
+assert fixture['phase'] == 'INDEXED' and fixture['target'] == 10000
+server = 'fk-stage9-capacity-ai-browser-backend-1'
+label = subprocess.check_output(['docker', 'inspect', server, '--format',
+    '{{index .Config.Labels "com.docker.compose.project"}}'], text=True).strip()
+assert label == 'fk-stage9-capacity'
+owned = {'token':fixture['tokens'][0], 'query':fixture['queries'][0],
+         'schema':fixture['schema'], 'queue':fixture['queue']}
+context = ssl.create_default_context(cafile=str(root / 'deploy/local/tls/dev.crt'))
+with httpx.Client(base_url='https://localhost:18457', verify=context, trust_env=False,
+    headers={'Cookie':COOKIE_NAME+'='+owned['token']}, timeout=5) as client:
+    path='/api/v1/conflicts/'+owned['query']+'/similar-decisions'
+    response=client.get(path);assert response.status_code==200
+    if response.json().get('reason_code') == 'QUERY_CONTEXT_PENDING':
+        worker='''import json,sys
+from sqlalchemy import text
+from redis import Redis
+from rq import Queue,SimpleWorker
+from app.common.config import Settings
+from app.common.database import make_engine
+from app.similarity.provider import inference_queue
+d=json.load(sys.stdin);s=Settings();assert s.import_queue_name==d['queue']
+e=make_engine(s)
+with e.connect() as c:assert c.scalar(text('SELECT current_schema()'))==d['schema']
+e.dispose()
+with Redis.from_url(s.redis_url.get_secret_value()) as r:
+ q=Queue(inference_queue(s),connection=r);assert q.count>0
+ assert SimpleWorker([q],connection=r).work(burst=True,max_jobs=1,logging_level='ERROR')
+'''
+        done=subprocess.run(['docker','exec','-i',server,'python','-c',worker],
+            input=json.dumps({k:owned[k] for k in ['schema','queue']}),text=True,
+            capture_output=True,timeout=180)
+        (private/'actual-10k-v1/profile-warmup-private.log').write_text(done.stdout+done.stderr)
+        assert done.returncode==0, 'Private warmup failed; do not expose diagnostic bodies'
+        response=client.get(path);assert response.status_code==200
+    data=response.json();assert data['state']=='READY'
+    assert 0<data['total_above_threshold']<=20
+    assert data['retrieval_version']==fixture['version_id']
+code=(private/'profile-current-evaluation-v4.py').read_text()
+done=subprocess.run(['docker','exec','-i',server,'python','-c',code],
+    input=json.dumps(owned),text=True,capture_output=True,timeout=60)
+(private/'actual-10k-v1/profile-runtime-private.log').write_text(done.stderr)
+assert done.returncode==0, 'Private profile failed; preserve diagnostics'
+report=json.loads(done.stdout)
+report['observer_sha256']=hashlib.sha256(code.encode()).hexdigest()
+report['index_vectors']=10000
+report['executed_api_image']=subprocess.check_output(['docker','inspect',server,'--format','{{.Image}}'],text=True).strip()
+report['source_scope']='Direct read-only evaluation in recorded43fcf12 API image; warm recommendation/evidence source bytes match current ed240cd, admission-only delta is not executed here. Not NFR or semantic scoring.'
+report['warmup_above_threshold']=data['total_above_threshold']
+report['code_source_commit']=subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip()
+output=private/'actual-10k-eval-v4/evidence/evaluation-readonly-profile-v4-2026-10-29.json'
+with output.open('x') as out:json.dump(report,out,indent=2);out.write('\n')
+print(json.dumps({
+ 'output':str(output.relative_to(root)),
+ 'observations':[{k:r.get(k) for k in ['mode','completed','reason_code','error_code','execution_ms','caller_guc_preserved']}
+    for r in report['observations']],
+}))

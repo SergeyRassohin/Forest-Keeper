@@ -1,0 +1,101 @@
+"""Owned TEMP-table storage comparison, not API/quality acceptance; no source-row writes."""
+import fcntl
+import hashlib
+import json
+import subprocess
+from pathlib import Path
+
+base = Path('/workspace/Forest-Keeper/work/stage9-capacity-private')
+profile = base / 'actual-10k-eval-v4'
+fixture = json.loads((profile / 'fixture.json').read_text())
+baseline = json.loads((base / 'actual-10k-v1/evidence/index-completed-original.json').read_text())
+assert fixture['measurement_only'] and fixture['index_source_fixture'] == 'actual-10k-v1'
+assert fixture['phase'] == 'INDEXED' and fixture['target'] == 10000
+assert (profile/'runner.lock').stat().st_ino == (base/'actual-10k-v1/runner.lock').stat().st_ino
+server = 'fk-stage9-capacity-ai-browser-backend-1'
+label = subprocess.check_output(['docker','inspect',server,'--format',
+    '{{index .Config.Labels "com.docker.compose.project"}}'],text=True).strip()
+assert label == 'fk-stage9-capacity'
+code = '''
+import json,sys,time,re,statistics
+from uuid import UUID
+from sqlalchemy import select,text,func
+from sqlalchemy.orm import Session
+from app.common.config import Settings
+from app.common.database import make_engine
+from app.similarity.models import DecisionEmbedding,QueryEmbedding,IndexRun,RetrievalState,RetrievalVersion
+d=json.load(sys.stdin);assert re.fullmatch(r'auth_test_[a-f0-9]{32}',d['schema'])
+s=Settings();assert s.import_queue_name==d['queue'];e=make_engine(s)
+report={'kind':'owned-temporary-vector-storage-diagnostic-not-NFR-or-quality',
+ 'source_rows_modified':False,'temporary_tables_only':True,'timings':[]}
+with Session(e) as db:
+ db.connection(execution_options={'isolation_level':'REPEATABLE READ'})
+ assert db.scalar(text('SELECT current_schema()'))==d['schema']
+ db.execute(text("SET LOCAL statement_timeout='1500ms'"))
+ version=UUID(d['version_id']);run=db.get(IndexRun,UUID(d['run_id']))
+ assert run.status=='COMPLETED' and run.version_id==version
+ assert db.get(RetrievalState,1).active_version_id==version
+ config=db.get(RetrievalVersion,version).config
+ assert config==d['expected_config']
+ assert config['provider']=='qwen-local-demo' and config['dimensions']==1024
+ assert config['model_id']=='Qwen/Qwen3-Embedding-0.6B'
+ assert config['revision']=='97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3'
+ assert config['artifact_sha256']=='0437e45c94563b09e13cb7a64478fc406947a93cb34a7e05870fc8dcd48e23fd'
+ counts=db.execute(text("SELECT count(*),count(DISTINCT input_hash),min(public.vector_dims(embedding)),max(public.vector_dims(embedding)),count(*) FILTER(WHERE vector_hash=encode(sha256(public.vector_send(embedding)),'hex') AND feature_hash=input_hash AND dimensions=1024 AND public.vector_norm(embedding)>0) FROM decision_embeddings WHERE version_id=:version"),{'version':version}).one()
+ assert tuple(counts)==(10000,10000,1024,1024,10000)
+ assert db.scalar(select(func.count()).select_from(DecisionEmbedding))==10000
+ linked=db.scalar(text('SELECT count(*) FROM decision_embeddings e JOIN decisions d ON d.id=e.decision_id WHERE e.version_id=:version'),{'version':version});assert linked==10000
+ report['index_verification']={'active_version_and_run_match':True,'pinned_model_config_match':True,
+  'vectors':10000,'distinct_input_hashes':10000,'dimensions':1024,
+  'vector_hash_nonzero_and_metadata_checks':10000,'owned_decision_links':linked,
+  'unexpected_version_vectors':0}
+ # Only TEMP tables are written. Copy identical full derived rows and indexes;
+ # compare both storage layouts in alternating order on the same connection.
+ for suffix,storage in [('external','EXTERNAL'),('plain','PLAIN')]:
+  name='fk_storage_probe_'+suffix
+  db.execute(text('CREATE TEMP TABLE '+name+' (LIKE decision_embeddings INCLUDING ALL) ON COMMIT DROP'))
+  db.execute(text('ALTER TABLE pg_temp.'+name+' ALTER COLUMN embedding SET STORAGE '+storage))
+  db.execute(text('INSERT INTO pg_temp.'+name+' SELECT * FROM decision_embeddings WHERE version_id=:version'),{'version':version})
+  db.execute(text('ANALYZE pg_temp.'+name))
+  row=db.execute(text("SELECT pg_relation_size(c.oid) AS heap_bytes,pg_relation_size(c.reltoastrelid) AS toast_bytes,pg_total_relation_size(c.oid) AS total_bytes FROM pg_class c WHERE c.oid=('pg_temp."+name+"')::regclass")).mappings().one()
+  report[suffix+'_storage']=dict(row)
+ assert db.scalar(text('SELECT count(*) FROM pg_temp.fk_storage_probe_external a FULL JOIN pg_temp.fk_storage_probe_plain b ON a.id=b.id WHERE a.id IS NULL OR b.id IS NULL OR public.vector_send(a.embedding) IS DISTINCT FROM public.vector_send(b.embedding)'))==0
+ report['all_10000_vector_bytes_identical']=True
+ queries=db.scalars(select(QueryEmbedding).where(QueryEmbedding.version_id==version).order_by(QueryEmbedding.context_hash).limit(3)).all();assert len(queries)==3
+ for cycle in range(3):
+  for qi,q in enumerate(queries):
+   values={"query":str(list(map(float,q.embedding))),'version':version}
+   scores={}
+   for suffix in (['external','plain'] if (cycle+qi)%2==0 else ['plain','external']):
+    started=time.monotonic()
+    score=db.scalar(text('SELECT min(embedding OPERATOR(public.<=>) CAST(:query AS public.vector)) FROM pg_temp.fk_storage_probe_'+suffix+' WHERE version_id=:version'),values)
+    report['timings'].append({'cycle':cycle,'query_position':qi,'storage':suffix,'seconds':round(time.monotonic()-started,6)})
+    scores[suffix]=score
+   assert scores['external']==scores['plain']
+ report['all_exact_distance_minima_identical']=True
+ for q in queries:
+  assert db.scalar(text('SELECT count(*) FROM pg_temp.fk_storage_probe_external a JOIN pg_temp.fk_storage_probe_plain b ON a.id=b.id WHERE (a.embedding OPERATOR(public.<=>) CAST(:query AS public.vector)) IS DISTINCT FROM (b.embedding OPERATOR(public.<=>) CAST(:query AS public.vector))'),{'query':str(list(map(float,q.embedding)))})==0
+ report['exact_per_row_distances_compared']=30000
+ report['exact_per_row_distance_differences']=0
+ report['diagnostic_median_seconds']={name:round(statistics.median(r['seconds'] for r in report['timings'] if r['storage']==name),6) for name in ['external','plain']}
+ db.rollback()  # Drops all temporary copies; original schema, vectors and model remain intact.
+e.dispose()
+print(json.dumps(report))
+'''
+out = profile / 'evidence/vector-storage-comparison.json'
+assert not out.exists()
+with (profile/'runner.lock').open('r+') as lock:
+    fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
+    done = subprocess.run(['docker','exec','-i',server,'python','-c',code],
+        input=json.dumps({k:fixture[k] for k in ['schema','queue','version_id','run_id']} |
+            {'expected_config':baseline['observed_model_configuration']}),
+        capture_output=True,text=True,timeout=60)
+    (profile/'storage-comparison-private.log').write_text(done.stderr)
+    assert done.returncode == 0, 'Private TEMP storage comparison failed; original rows untouched'
+    report = json.loads(done.stdout)
+    report['operator_source_sha256'] = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
+    report['cooperating_runner_lock_held'] = True
+    report['production_accepted'] = False
+    report['semantic_quality_evaluated'] = False
+    out.write_text(json.dumps(report,indent=2)+'\n')
+print(json.dumps({k:report[k] for k in ['diagnostic_median_seconds','all_10000_vector_bytes_identical','all_exact_distance_minima_identical']}))

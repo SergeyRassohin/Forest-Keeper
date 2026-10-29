@@ -160,3 +160,15 @@ baseline. The4CPU/32GiB host is a limited development demonstration, not an acce
 production AI hardware profile. No8CPU/100k/GPU sizing guarantee follows from it.
 Human Gold/targets, production policy, signed packaging#32 and final exact-SHA CI
 remain separate gates; Stage9 is BLOCKED and production activation stays disabled.
+
+### Derived-vector storage maintenance
+
+The Stage9 branch now requires `0009_inline_vectors`. Its physical1024-dimensional
+vector rewrite preserves immutable artifact bytes and all business rows, and retains
+the SQL mutation guards. It acquires ACCESS EXCLUSIVE and needs transient heap/index/
+TOAST and WAL space. Coordinate downtime of API and index producers, check database
+volume headroom and test a disposable copy; this is not a zero-downtime update.
+The measured10k TEMP layout uses about34% more total storage in exchange for faster
+exact distance reads; a fresh loaded HTTPS test is required before any NFR PASS.
+[Migration, rollback and disk details](../development/similarity-retrieval.md#persistence-background-work-and-recovery).
+No model replacement, re-embedding or automatic version activation is involved.

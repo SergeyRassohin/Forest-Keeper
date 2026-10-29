@@ -1,0 +1,72 @@
+{
+  "kind": "independent-physical-vector-migration-review-not-stage-acceptance",
+  "observed_at_utc": "2026-10-29T19:48:40Z",
+  "reviewer": "independent Stage 9 verification agent",
+  "base_head": "ed240cd62cc7cbc3d5953c55effbb948fd7d8835",
+  "source_provenance": "Uncommitted candidate files on the stated base; the following SHA256 values identify the tested bytes. This is not a claim of exact-final-HEAD CI.",
+  "candidate_sha256": {
+    "backend/migrations/versions/0009_inline_vectors.py": "17ae6fd1adc709b502ff7c9faeeef807fe2007012efe70c965c36b63f4ff231f",
+    "backend/tests/test_vector_storage_migration.py": "e668c3768ea2d59f5f95afd35d57b5fd5fd689b346a767b0ecfdd68f3779796e",
+    "backend/app/common/health.py": "9a67bb709986ae8ca8afca0f3f3b8c3cdcdbb5840a795b0bb767f62bd9923408"
+  },
+  "independent_execution": {
+    "target": "backend/tests/test_vector_storage_migration.py",
+    "test": "test_populated_inline_vector_upgrade_downgrade_and_interruption_preserve_all_facts",
+    "result": "PASS",
+    "passed": 1,
+    "skipped": 0,
+    "seconds": 7.93,
+    "exit_code": 0,
+    "warning_class": "StarletteDeprecationWarning",
+    "isolation": "Fresh owned auth_test schema from the existing integration fixtures; test provider, no real model calls.",
+    "private_log_sha256": "059a1a0a8b228351da99d28928b45f38825365be32a9193f07b57dc4cc5ff466",
+    "candidate_hashes_unchanged_after_test": true
+  },
+  "verified_by_independent_test": {
+    "populated_upgrade_and_downgrade": true,
+    "plain_and_external_storage_policies": true,
+    "all_logical_table_digests_preserved": true,
+    "binary_vector_payloads_preserved": true,
+    "signed_zero_subnormal_and_maximum_finite_float32_edges": true,
+    "indexes_constraints_and_triggers_preserved": true,
+    "update_and_delete_still_rejected": true,
+    "post_ddl_interruption_rolls_back_revision_storage_and_rows": true,
+    "repeated_upgrade_to_head": true
+  },
+  "source_review": {
+    "blocking_security_or_product_intent_findings": [],
+    "runtime_auth_policy_or_threshold_changes": false,
+    "model_or_version_activation_changes": false,
+    "update_statements_or_trigger_disable": false,
+    "business_history_mutation": false,
+    "migration_analyzes_rewritten_table": true,
+    "health_revision_matches_candidate_migration": true
+  },
+  "reviewed_parent_diagnostic_not_independently_executed": {
+    "scope": "Owned TEMP copies of the actual 10000-vector fixture; original table preserved.",
+    "version_and_pinned_model_checks_reviewed": true,
+    "distinct_input_hashes": 10000,
+    "copy_binary_vector_equality_rows": 10000,
+    "distance_comparisons": 30000,
+    "distance_differences": 0,
+    "ddl_roundtrip_original_row_differences": 0,
+    "diagnostic_statement_timeout_seconds": 30,
+    "api_budget_seconds_unchanged": 1.5,
+    "limitation": "TEMP diagnostics and this migration regression are not endpoint performance or semantic-quality acceptance. Earlier failed diagnostics remain historical."
+  },
+  "operational_constraints": [
+    "ACCESS EXCLUSIVE table lock and physical heap/index rewrite require coordinated maintenance before API/workers resume.",
+    "Budget transient old/new heap, indexes, TOAST, WAL and replication/archive space; observed TEMP relation totals grew from 72802304 to 97607680 bytes for 10000 rows.",
+    "Re-measure actual endpoints under the required concurrent model load before asserting an NFR improvement."
+  ],
+  "stage_accepted": false,
+  "ready_to_merge": false,
+  "merge_performed": false,
+  "remaining_stage_gates": [
+    "Final committed source and exact-final-HEAD CI",
+    "Fresh real-model regression and required loaded endpoint NFR evidence",
+    "Human-approved Gold Reference and semantic-quality acceptance",
+    "Production hardware/profile and signed offline delivery dependencies"
+  ],
+  "privacy": "Contains counts, source hashes and safe test evidence only; raw logs, cookies, DSNs, prompts and vector payloads remain private."
+}
