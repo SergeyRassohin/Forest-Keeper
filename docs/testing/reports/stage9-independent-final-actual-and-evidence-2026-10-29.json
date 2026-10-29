@@ -298,7 +298,7 @@
       "Human-approved independent materialized Gold, sealed separation and preapproved numerical targets absent.",
       "Supported production AI hardware/profile and positive policy not accepted; no100k/GPU guarantee.",
       "Signed offline distribution dependency#32 unresolved.",
-      "Final report commit delivery and exact-final-HEAD push/PR CI not verified; configured GitHub authorization unavailable."
+      "Exact-final-HEAD push/PR CI remains pending. Initial configured GitHub authentication failure was temporary; normal access recovered and report checkpoint5b17f2900211cb8f3939278e2c3fe82ade7a84e7 was pushed. Its queued CI does not establish final report-followup CI success."
     ],
     "protected_followups": [
       "#17",
@@ -312,5 +312,20 @@
     "Fresh own-file disposable fixtures use legally synthetic histories and explicit fixture confirmation, not customer Gold labels.",
     "Earlier actual browser/restart/security evidence retains its own historical source and execution scope.",
     "Current report-only changes require their own final remote synchronization/CI; launch SHA43fcf12 is not automatically that final SHA."
-  ]
+  ],
+  "remote_sync_update": {
+    "kind": "parent-observed-restored-normal-access-not-final-CI-acceptance",
+    "initial_authentication_failure_retained_as_historical": true,
+    "normal_git_and_github_api_access_restored": true,
+    "pushed_report_checkpoint": "5b17f2900211cb8f3939278e2c3fe82ade7a84e7",
+    "pr_number": 33,
+    "pr_open": true,
+    "pr_draft": true,
+    "checkpoint_push_ci_run": 40891443450,
+    "checkpoint_pr_ci_run": 40891444945,
+    "checkpoint_ci_status_when_reported": "queued",
+    "report_followup_commit_ci_still_pending": true,
+    "exact_final_head_ci_verified": false,
+    "actual_source_and_measurements_unchanged": true
+  }
 }

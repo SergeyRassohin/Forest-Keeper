@@ -286,12 +286,38 @@ def test_exact_committed_reference_retry_does_not_require_redis_or_new_evaluatio
 
 
 def test_current_and_past_evidence_share_one_profile_snapshot_per_evaluation(client):
+    import json
+    import time
+    from pathlib import Path
+    from traceback import extract_stack
     from unittest.mock import patch
 
+    from app.common.basis_lock import Budget
+    from app.common.errors import ApiError
     from app.recommendations.evidence import prepare, profile_digests
 
     query = Cases(client).prepared()
     captured = []
+    budget_errors = []
+    original_remaining = Budget.remaining
+
+    def observe_remaining(budget):
+        try:
+            return original_remaining(budget)
+        except ApiError:
+            # Observe the real deadline without extending/retrying it. Only safe
+            # callsites and lateness are recorded if the original assertion fails.
+            budget_errors.append(
+                {
+                    "overdue_ms": round((time.monotonic() - budget.deadline) * 1000, 3),
+                    "frames": [
+                        [Path(frame.filename).name, frame.name, frame.lineno]
+                        for frame in extract_stack(limit=30)
+                        if "/app/" in frame.filename
+                    ],
+                }
+            )
+            raise
 
     def load_profiles():
         approved = profile_digests()
@@ -301,9 +327,14 @@ def test_current_and_past_evidence_share_one_profile_snapshot_per_evaluation(cli
     with (
         patch("app.recommendations.service.profile_digests", side_effect=load_profiles),
         patch("app.recommendations.service.prepare", wraps=prepare) as observe,
+        patch.object(Budget, "remaining", observe_remaining),
     ):
         for request_number in range(2):
-            assert recommendation(client, query)["status"] == "RECOMMENDED"
+            try:
+                assert recommendation(client, query)["status"] == "RECOMMENDED"
+            except AssertionError as error:
+                error.add_note("Sanitized budget diagnostics: " + json.dumps(budget_errors))
+                raise
             calls = observe.call_args_list[request_number * 6 : (request_number + 1) * 6]
             assert len(calls) == 6  # Current comparison plus five genuine histories.
             assert all(call.kwargs["profiles"] is captured[request_number] for call in calls)

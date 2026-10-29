@@ -3,6 +3,7 @@ import os
 from concurrent.futures import ThreadPoolExecutor
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
+from traceback import extract_tb
 from unittest.mock import patch
 from uuid import UUID, uuid4
 
@@ -368,14 +369,41 @@ def test_idle_worker_recovers_new_run_after_quick_restart(client, auth_env):
 
 def test_concurrent_start_requests_coalesce_one_active_run(client, auth_env, role_tokens):
     batch = imported(client, auth_env)
+    recovery_errors = []
+
+    def observe_recovery(*args, **kwargs):
+        try:
+            return recover_runs(*args, **kwargs)
+        except Exception as error:
+            # The public API deliberately sanitizes recovery failures. Retain only
+            # diagnostic types/callsites here, never exception text, SQL or inputs.
+            recovery_errors.append(
+                {
+                    "type": type(error).__name__,
+                    "sqlstate": getattr(getattr(error, "orig", None), "sqlstate", None),
+                    "frames": [
+                        [Path(frame.filename).name, frame.name, frame.lineno]
+                        for frame in extract_tb(error.__traceback__)
+                        if "/app/" in frame.filename
+                    ],
+                }
+            )
+            raise
 
     def request(_):
         with TestClient(create_app(settings=auth_env), base_url="https://localhost:8443") as other:
             other.cookies.set(COOKIE_NAME, role_tokens["ADMIN"])
             return start(other, batch)["id"]
 
-    with ThreadPoolExecutor(max_workers=6) as pool:
-        identifiers = list(pool.map(request, range(6)))
+    try:
+        with (
+            patch("app.normalization.routes.recover_runs", side_effect=observe_recovery),
+            ThreadPoolExecutor(max_workers=6) as pool,
+        ):
+            identifiers = list(pool.map(request, range(6)))
+    except Exception as error:
+        error.add_note("Sanitized recovery diagnostics: " + json.dumps(recovery_errors))
+        raise
     assert len(set(identifiers)) == 1
     execute_run(UUID(identifiers[0]), auth_env)
     assert client.get("/api/v1/analysis/" + identifiers[0]).json()["records_processed"] == 5

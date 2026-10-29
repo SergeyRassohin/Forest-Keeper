@@ -321,7 +321,7 @@ it does not reduce the required twenty-observation timing-series denominator.
 The application bytes are from `43fcf12b334a5d457bfafbf3afe56be801d33c4b`
 (business source unchanged from `d47fa17`). The measurement-only profile reuses the
 original completed10k index and its shared lock. All94 deployed Python/JSON file
-digests match this checkout; the verification runner separately records86 Python
+digests match the measured43fcf12 snapshot; the verification runner separately records86 Python
 digests. [Deployment provenance](reports/stage9-profiles-v3-deployment-2026-10-28.json)
 retains the exact image, source context/recipe/dependency hashes and bounds. The
 source-only offline development image overlay is not signed industrial packaging.
@@ -387,3 +387,29 @@ Passing idle reads and the20-model-job series do not establish a supported indus
 ten-session profile with concurrent AI. The loaded NFR still fails. More hardware has
 not been measured, so no8CPU,100k, GPU or customer-capacity guarantee is made. Model,
 quality, rate, timeout and policy limits were not relaxed. Stage9 remains **BLOCKED**.
+
+### Subsequent admission correction, 29 October
+
+Commit `9971e94d1efee899b06d0342ef4838f7b759b7f4` fixes a separate concurrent POST
+admission race found in live CI after remote access recovered. It changes only
+`app/ai/admission.py` in business source: a queue/actor refusal validates WATCH using an
+empty EXEC, so dirty watched reads retry and discover the already bound idempotency
+winner. The winner's request language/record and single job/lease are preserved.
+Global/actor bounds and deadlines are unchanged. Real-Redis deterministic actor/full
+queue interleavings failed before the fix and pass afterwards.
+
+The four raw profiles-v3 performance observations above remain measurements of43fcf12;
+they are not relabelled as new-image tests. The owned performance API still runs that
+recorded image. Warm cached ranking/recommendation source files and logic are unchanged.
+A GET missing its query vector enqueues background preparation through the fixed
+admission helper, so that cold-enqueue path is affected; no synchronous inference is
+added. The separate final source/security/inference regression is recorded in
+the [current acceptance checkpoint](reports/stage9-development-acceptance-2026-10-29.md).
+No new final-image latency or supported-hardware PASS is inferred from the POST fix.
+The new-source six local gates pass:385unit/73frontend,570integration/15ordinary
+browser, SAST/SCA/secrets/negative security. [Parent actual3tests](reports/stage9-watched-admission-actual-tests-2026-10-29.json)
+PASS116.33s and [independent actual3repetition](reports/stage9-watched-admission-independent-actual-2026-10-29.md)
+PASS107.72s. Both use9971business bytes and the same pinned real models, not provider/output
+mocks. No additional semantic or performance acceptance follows. Intermediate remote
+CI failures are retained with their exact SHA/log hashes in the current checkpoint;
+final push/PR CI must be verified for the final report commit separately.

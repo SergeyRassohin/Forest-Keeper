@@ -1,0 +1,92 @@
+{
+  "kind": "independent-watched-admission-and-health-instrument-review-not-model-performance",
+  "reviewed_at_utc": "2026-10-29T14:36:44.543157+00:00",
+  "tested_source_commit": "9971e94d1efee899b06d0342ef4838f7b759b7f4",
+  "application_python_files": 86,
+  "application_inventory_sha256": "624480e2e72b319264fc3f205e429e2dba57c160535780089669dfff75ffa466",
+  "inventory_method": "SHA256 of UTF8 compact sorted JSON mapping relative backend/app Python filenames to file SHA256; reconstructible from tested Git commit.",
+  "business_delta_from_actual_source_43fcf12": {
+    "ai/admission.py": {
+      "before_sha256": "d13a0f829e49ba16860d380a7d7f58c03c59ddd7a5b64acaf17a19a5b40fd1f1",
+      "after_sha256": "ba988a720fa88e13c966043cb15471f823244b4044943537c5f1cc637aa61b6d"
+    }
+  },
+  "unchanged_application_python_files": 85,
+  "runtime_health_source_sha256": "f69d90d7080691c037207f655b7f996c38592b4ecf2258f340b6359eaba9857f",
+  "test_source_sha256": {
+    "test_ai_admission_integration.py": "e3e98064a05e9276f70dd6e08ce94723f85cca13e1e7ec80e01273cb7afdde86",
+    "test_health.py": "50e816816c19f854702578a062f8b4874ad648da8da990193eb040b956a592ae"
+  },
+  "independent_execution": {
+    "command": "FK_TEST_INTEGRATION=1 uv run --project backend --env-file <private configured core-check.env> --frozen pytest backend/tests/test_health.py backend/tests/test_ai_admission_integration.py -q --tb=short --show-capture=no -p no:cacheprovider",
+    "health_tests_passed": 6,
+    "actual_redis_admission_tests_passed": 5,
+    "summary": "11 passed, 1 warning in 1.89s",
+    "exit_code": 0,
+    "redis_namespaces": "Fresh owned ai-admission-test UUID per fixture; no model worker consumes those queues.",
+    "model_calls": 0,
+    "business_source_edits_by_reviewer": 0
+  },
+  "before_fix_evidence": {
+    "executed_by": "parent",
+    "summary": "2 failed, 3 deselected in 0.33s",
+    "cases": [
+      "Same-job winner commits after missing-job read; loser sees actor busy.",
+      "Same-job winner fills global queue after missing-job read; loser sees queue full."
+    ],
+    "observed_codes": [
+      "AI_ACTOR_BUSY",
+      "AI_QUEUE_FULL"
+    ],
+    "raw_log_private": true
+  },
+  "retained_private_log_sha256": {
+    "admission-watched-race-before-fix.log": "9d18c2322bcf671c401a857f5edbf31883bce9274bdbf481ce966cadbed0f20f",
+    "independent-admission-health-final-delta.log": "80e54dd28e2a5a249994b50835ff053a86f4b3e77ea24507a119d1009db20917"
+  },
+  "code_review": {
+    "blocking_findings": [],
+    "watched_refusals_validate_empty_multi_exec_before_raising": true,
+    "dirty_watch_retries_discover_existing_idempotency_winner": true,
+    "winner_ru_record_preserved_against_loser_en": true,
+    "global_actor_capacity_limits_unchanged": true,
+    "limits": {
+      "global_jobs": 8,
+      "background_jobs": 6,
+      "per_actor_active_lease": 1,
+      "watch_attempts": 3,
+      "lease_seconds": 450,
+      "queue_wait_ttl_seconds": 240
+    },
+    "empty_validation_transaction_mutation_commands": 0,
+    "health_runtime_changed": false,
+    "health_configured_test_probe_deadline_seconds": 0.02,
+    "health_real_wait_for_calls_observed": 2,
+    "health_503_before_blocked_dependency_completion": true,
+    "health_dependency_release_in_finally_inside_testclient": true,
+    "health_cleanup_failsafe_seconds_not_deadline": 5,
+    "health_test_measures_endpoint_wall_latency": false
+  },
+  "acceptance": {
+    "stage_status": "BLOCKED",
+    "actual_three_models_on_this_new_source": {
+      "status": "PASS independent3tests107.72s",
+      "evidence": "stage9-watched-admission-independent-actual-2026-10-29.json"
+    },
+    "historical_actual_and_performance_source": "43fcf12b334a5d457bfafbf3afe56be801d33c4b",
+    "historical_actual_report_unchanged": "stage9-independent-final-actual-and-evidence-2026-10-29.json",
+    "new_source_performance_measured": false,
+    "final_exact_head_ci_verified": false,
+    "production_accepted": false,
+    "semantic_quality_evaluated": false,
+    "ready_to_merge": false,
+    "merged": false
+  },
+  "limits": [
+    "The Redis fix changes refusal validation, not capacity, actor/session ownership, immutable request binding or model policy.",
+    "The health test replaces an arbitrary TestClient wall-clock bound with causal completion ordering and observed real configured deadlines; it does not establish the separate runtime health NFR.",
+    "Original failed health/race CI and before-fix reproduction remain failures.",
+    "43fcf12 historical actual inference/performance measurements retain their original application/source inventory; deployed admission.py differs from this reviewed commit.",
+    "Loaded NFR, human Gold/targets, supported production hardware/policy, signed distribution and final remote CI remain separate gates."
+  ]
+}

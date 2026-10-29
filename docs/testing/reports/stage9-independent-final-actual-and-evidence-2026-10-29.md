@@ -105,8 +105,12 @@ The independent actual-model gate is **PASS**. Stage9 remains **BLOCKED** becaus
   accepted. No8CPU,100k/GPU or industrial-capacity guarantee follows.
 - Signed offline distribution remains the bounded unresolved dependency#32; SHA checks
   are not supplier signatures.
-- Final report delivery and exact-final-HEAD push/PR CI remain unverified while configured
-  GitHub authentication fails. Earlier green CI is not a final-green claim.
+- Exact-final-HEAD push/PR CI remains pending. The initial configured GitHub authentication
+  failure was temporary: normal access recovered and report checkpoint
+  `5b17f2900211cb8f3939278e2c3fe82ade7a84e7` was pushed to the open draft PR33.
+  Its push40891443450/PR40891444945 runs were queued when reported. Neither those
+  queued runs nor earlier green CI establish success for the subsequent final report
+  follow-up commit. The original access failure remains historical evidence.
 
 Production AI/positive production recommendations stay disabled. No merge, issue closure
 or next-stage implementation is authorized. #17/#18/#20 retain their separate DoD.
